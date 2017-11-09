@@ -141,8 +141,8 @@ printInstantiateMsg(){
 }
 
 joinChannel () {
-	## join peers on farmers channel
-	CHANNEL_NAME="farmerschannel"
+	## join peers on abattoir channel
+	CHANNEL_NAME="abattoirchannel"
 	for ch in 0 1 2 3; do
 		setGlobals $ch
 		joinWithRetry $ch
@@ -151,8 +151,8 @@ joinChannel () {
 		echo
 	done
 	
-	## join peers on processors channel
-	CHANNEL_NAME="processorschannel"
+	## join peers on processor channel
+	CHANNEL_NAME="processorchannel"
 	for ch in 1 2 3; do
 		setGlobals $ch
 		joinWithRetry $ch
@@ -259,11 +259,11 @@ chaincodeInvoke () {
 }
 
 ## Create channel
-echo "Creating channel... farmerschannel"
-CHANNEL_NAME="farmerschannel"
+echo "Creating channel... abattoirchannel"
+CHANNEL_NAME="abattoirchannel"
 createChannel 0
-echo "Creating channel... processorschannel"
-CHANNEL_NAME="processorschannel"
+echo "Creating channel... processorchannel"
+CHANNEL_NAME="processorchannel"
 createChannel 2
 echo "Creating channel... ikeachannel"
 CHANNEL_NAME="ikeachannel"
@@ -281,32 +281,32 @@ echo "Updating anchor peers for org2..."
 
 ## Install chaincode on Peer0/Org1 and Peer2/Org2
 echo "Installing chaincode on org1/peer0..."
-installChaincode 0 "farmersCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/farmers"
-installChaincode 1 "farmersCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/farmers"
-installChaincode 2 "farmersCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/farmers"
-installChaincode 3 "farmersCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/farmers"
-installChaincode 1 "processorsCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/processors"
-installChaincode 2 "processorsCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/processors"
-installChaincode 3 "processorsCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/processors"
+installChaincode 0 "abattoirCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/abattoir"
+installChaincode 1 "abattoirCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/abattoir"
+installChaincode 2 "abattoirCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/abattoir"
+installChaincode 3 "abattoirCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/abattoir"
+installChaincode 1 "processorCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/processor"
+installChaincode 2 "processorCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/processor"
+installChaincode 3 "processorCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/processor"
 installChaincode 3 "ikeaCC" "1.0" "github.com/hyperledger/fabric/examples/chaincode/go/ikea"
 
 #Instantiate chaincode
 echo "Instantiating chaincode"
-CHANNEL_NAME="farmerschannel"
-instantiateChaincode 0 "farmersCC" "1.0" '{"Args":["init","a","100","b","200"]}'
-CHANNEL_NAME="processorschannel"
-instantiateChaincode 1 "processorsCC" "1.0" '{"Args":["init","a","100","b","200"]}'
+CHANNEL_NAME="abattoirchannel"
+instantiateChaincode 0 "abattoirCC" "1.0" '{"Args":["init","a","100","b","200"]}'
+CHANNEL_NAME="processorchannel"
+instantiateChaincode 1 "processorCC" "1.0" '{"Args":["init","a","100","b","200"]}'
 CHANNEL_NAME="ikeachannel"
 instantiateChaincode 3 "ikeaCC" "1.0" '{"Args":["init","a","100","b","200"]}'
 
 #Query on chaincode on Peer0/Org1
 echo "Querying chaincode"
-CHANNEL_NAME="farmerschannel"
-chaincodeQuery 0 100 "farmersCC" '{"Args":["getAllParts","a"]}'
-chaincodeQuery 1 100 "farmersCC" '{"Args":["getAllParts","a"]}'
-CHANNEL_NAME="processorschannel"
-chaincodeQuery 1 100 "processorsCC" '{"Args":["getAllVehicles","a"]}'
-chaincodeQuery 2 100 "processorsCC" '{"Args":["getAllVehicles","a"]}'
+CHANNEL_NAME="abattoirchannel"
+chaincodeQuery 0 100 "abattoirCC" '{"Args":["getAllParts","a"]}'
+chaincodeQuery 1 100 "abattoirCC" '{"Args":["getAllParts","a"]}'
+CHANNEL_NAME="processorchannel"
+chaincodeQuery 1 100 "processorCC" '{"Args":["getAllVehicles","a"]}'
+chaincodeQuery 2 100 "processorCC" '{"Args":["getAllVehicles","a"]}'
 CHANNEL_NAME="ikeachannel"
 chaincodeQuery 3 100 "ikeaCC" '{"Args":["query","a"]}'
 

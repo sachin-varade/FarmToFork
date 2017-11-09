@@ -19,7 +19,7 @@ registry:
 
   # Contains identity information which is used when LDAP is disabled
   identities:
-     - name: processorsadmin
+     - name: processoradmin
        pass: adminpw
        type: client
        affiliation: ""

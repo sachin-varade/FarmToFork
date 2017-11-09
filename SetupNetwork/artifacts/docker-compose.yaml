@@ -12,7 +12,7 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/6fff3dd298c02d530b54de571e1b34dcd354c86f8c21de88956385673c4523c0_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/dbdc2b708df564dd63ea697e77c61162521d6a9f12bebe68d17c339ba64adc47_sk
       #- FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-tlsca-server-config/tlsca.org1.example.com-cert.pem
       #- FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-tlsca-server-config/94758aa1f9c2abdc36feca8f40f77f00a3e1c95d6a6e457cf70d815e6d75c6fb_sk
       - FABRIC_CA_SERVER_CA_NAME=ca.org1.example.com
@@ -34,7 +34,7 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/0e92f45b8d4eb59cad258600f7cc74fc750d65b0d1ce7fe6b944f18012db798f_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b02c79af34a51e334dd17cc1202f3a5887a53eba760dbf22b5444ac39213c7f1_sk
       - FABRIC_CA_SERVER_CA_NAME=ca.org2.example.com
       # - FABRIC_CA_SERVER_TLS_ENABLED=true
       # - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-tlsca-server-config/tlsca.org2.example.com-cert.pem
@@ -54,7 +54,7 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org3.example.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/36ea237b4dec78da80f50ec7f9e0d5b93e7c91d807161fe389802643d4304ad1_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/11145d692ddbc2453ff0c58cc618ec44428e41c6a2d3760a75f81afd571ef33d_sk
       - FABRIC_CA_SERVER_CA_NAME=ca.org3.example.com
       # - FABRIC_CA_SERVER_TLS_ENABLED=true
       # - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-tlsca-server-config/tlsca.org3.example.com-cert.pem
@@ -74,7 +74,7 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org4.example.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/9df800580c079a601ea1fba1448fc50efceeada90c5b81bd5071d6218e16a3ce_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/6cc473fdea927690031e3d43f26752fa965d40ca158bcc173d3915ea83fa75dd_sk
       - FABRIC_CA_SERVER_CA_NAME=ca.org4.example.com
       # - FABRIC_CA_SERVER_TLS_ENABLED=true
       # - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-tlsca-server-config/tlsca.org4.example.com-cert.pem

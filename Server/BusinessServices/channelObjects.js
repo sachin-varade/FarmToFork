@@ -6,18 +6,22 @@ var util = require('util');
 var os = require('os');
 
 var fabric_client = new Fabric_Client();
-var store_path = path.join(__dirname, 'hfc-key-store');
+var store_path = path.join(__dirname, '../hfcInterface/hfc-key-store');
 console.log('Store path:'+store_path);
+var config = require('../config/config.js');
 
-// setup the fabric network
-var abattoirchannel = fabric_client.newChannel('abattoirchannel');
-var processorchannel = fabric_client.newChannel('processorchannel');
-var ikeachannel = fabric_client.newChannel('ikeachannel');
+var abattoirConfig = config.network.abattoir;
+var logisticConfig = config.network.logistic;
+var processorConfig = config.network.processor;
+var ikeaConfig = config.network.ikea;
+var abattoirchannel = fabric_client.newChannel(abattoirConfig.channels.abattoirchannel.name);
+var processorchannel = fabric_client.newChannel(processorConfig.channels.processorchannel.name);
+var ikeachannel = fabric_client.newChannel(ikeaConfig.channels.ikeachannel.name);
 
-var abattoirPeer = fabric_client.newPeer('grpc://localhost:7051');
-var logisticPeer = fabric_client.newPeer('grpc://localhost:8051');
-var processorPeer = fabric_client.newPeer('grpc://localhost:9051');
-var ikeaPeer = fabric_client.newPeer('grpc://localhost:10051');
+var abattoirPeer = fabric_client.newPeer(abattoirConfig.anchorPeer);
+var logisticPeer = fabric_client.newPeer(logisticConfig.anchorPeer);
+var processorPeer = fabric_client.newPeer(processorConfig.anchorPeer);
+var ikeaPeer = fabric_client.newPeer(ikeaConfig.anchorPeer);
 
 var peers = {
     abattoirPeer: abattoirPeer,
@@ -26,10 +30,10 @@ var peers = {
     ikeaPeer: ikeaPeer
 }
 
-var abattoirEventHubPeer = fabric_client.newPeer('grpc://localhost:7051');
-var logisticEventHubPeer = fabric_client.newPeer('grpc://localhost:8051');
-var processorEventHubPeer = fabric_client.newPeer('grpc://localhost:9051');
-var ikeaEventHubPeer = fabric_client.newPeer('grpc://localhost:10051');
+var abattoirEventHubPeer = fabric_client.newPeer(abattoirConfig.eventHubPeer);
+var logisticEventHubPeer = fabric_client.newPeer(logisticConfig.eventHubPeer);
+var processorEventHubPeer = fabric_client.newPeer(processorConfig.eventHubPeer);
+var ikeaEventHubPeer = fabric_client.newPeer(ikeaConfig.eventHubPeer);
 
 var eventHubPeers={
     abattoirEventHubPeer: abattoirEventHubPeer,
@@ -42,10 +46,16 @@ abattoirchannel.addPeer(abattoirPeer);
 processorchannel.addPeer(processorPeer);
 ikeachannel.addPeer(ikeaPeer);
 
-var orderer = fabric_client.newOrderer('grpc://localhost:7050')
+var orderer = fabric_client.newOrderer(config.network.orderer.orderer);
 abattoirchannel.addOrderer(orderer);
 processorchannel.addOrderer(orderer);
 ikeachannel.addOrderer(orderer);
+
+var channels = {
+	abattoirchannel: abattoirchannel,
+	processorchannel: processorchannel,
+	ikeachannel: ikeachannel
+}
 
 Fabric_Client.newDefaultKeyValueStore({ path: store_path
 }).then((state_store) => {
@@ -61,10 +71,16 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 	throw err;
 });
 
+var usersForTransaction = {
+	abattoirUser: config.network.users.filter(function(x){return x.enrollmentID == "abattoir1"})[0],
+	logisticUser: config.network.users.filter(function(x){return x.enrollmentID == "logistic1"})[0],
+	processorUser: config.network.users.filter(function(x){return x.enrollmentID == "processor1"})[0],
+	ikeaUser: config.network.users.filter(function(x){return x.enrollmentID == "ikea1"})[0]
+}
+
 exports.fabric_client = fabric_client;
-exports.abattoirchannel = abattoirchannel;
-exports.processorchannel = processorchannel;
-exports.ikeachannel = ikeachannel;
+exports.channels = channels;
 exports.peers = peers;
 exports.eventHubPeers = eventHubPeers;
 exports.orderer = orderer;
+exports.usersForTransaction =usersForTransaction;

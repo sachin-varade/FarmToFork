@@ -47,14 +47,13 @@ function restartNetwork() {
 	echo
 }
 
-function registerUsers() {	
-	cd hfcInterface
+function registerUsers() {		
 	echo $PWD
 	rm -rf hfc-key-store
-	node users.js
+	node ../Server/hfcInterface/users.js
 }
 
 
-restartNetwork
+#restartNetwork
 registerUsers
 
