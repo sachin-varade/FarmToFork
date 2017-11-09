@@ -12,13 +12,13 @@ var Fabric_Client = require('fabric-client');
 var path = require('path');
 var util = require('util');
 var os = require('os');
+var queryChainCode = require('./queryChainCode.js');
 
-//
 var fabric_client = new Fabric_Client();
 
 // setup the fabric network
 var channel = fabric_client.newChannel('ikeachannel');
-var peer = fabric_client.newPeer('grpc://localhost:7051');
+var peer = fabric_client.newPeer('grpc://localhost:10051');
 channel.addPeer(peer);
 
 //
@@ -40,7 +40,7 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 	fabric_client.setCryptoSuite(crypto_suite);
 
 	// get the enrolled user from persistence, this user will sign all requests
-	return fabric_client.getUserContext('processorsadmin', true);
+	return fabric_client.getUserContext('ikeasadmin', true);
 }).then((user_from_store) => {
 	if (user_from_store && user_from_store.isEnrolled()) {
 		console.log('Successfully loaded user1 from persistence');
@@ -48,30 +48,9 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 	} else {
 		throw new Error('Failed to get user1.... run registerUser.js');
 	}
-
-	// queryCar chaincode function - requires 1 argument, ex: args: ['CAR4'],
-	// queryAllCars chaincode function - requires no arguments , ex: args: [''],
-	const request = {
-		//targets : --- letting this default to the peers assigned to the channel
-		chaincodeId: 'ikeaCC',
-		fcn: 'query',
-		args: ['a']
-	};
-
-	// send the query proposal to the peer
-	return channel.queryByChaincode(request);
+    return queryChainCode.queryChainCode(channel, "ikeaCC", "query",["a"]);
 }).then((query_responses) => {
-	console.log("Query has completed, checking results");
-	// query_responses could have more than one  results if there multiple peers were used as targets
-	if (query_responses && query_responses.length == 1) {
-		if (query_responses[0] instanceof Error) {
-			console.error("error from query = ", query_responses[0]);
-		} else {
-			console.log("Response is ", query_responses[0].toString());
-		}
-	} else {
-		console.log("No payloads were returned from query");
-	}
+	console.log(query_responses);
 }).catch((err) => {
 	console.error('Failed to query successfully :: ' + err);
 });

@@ -1,4 +1,3 @@
-
 var enrollAdmin = require('./enrollAdmin.js');
 var registerUser = require('./registerUser.js');
 var admins = [

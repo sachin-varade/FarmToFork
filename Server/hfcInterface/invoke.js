@@ -15,10 +15,10 @@ var os = require('os');
 
 //
 var fabric_client = new Fabric_Client();
-
+var invokeChainCode = require('./invokeChainCode.js');
 // setup the fabric network
-var channel = fabric_client.newChannel('mychannel');
-var peer = fabric_client.newPeer('grpc://localhost:7051');
+var channel = fabric_client.newChannel('ikeachannel');
+var peer = fabric_client.newPeer('grpc://localhost:10051');
 channel.addPeer(peer);
 var order = fabric_client.newOrderer('grpc://localhost:7050')
 channel.addOrderer(order);
@@ -28,7 +28,6 @@ var member_user = null;
 var store_path = path.join(__dirname, 'hfc-key-store');
 console.log('Store path:'+store_path);
 var tx_id = null;
-
 // create the key value store as defined in the fabric-client/config/default.json 'key-value-store' setting
 Fabric_Client.newDefaultKeyValueStore({ path: store_path
 }).then((state_store) => {
@@ -42,7 +41,7 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 	fabric_client.setCryptoSuite(crypto_suite);
 
 	// get the enrolled user from persistence, this user will sign all requests
-	return fabric_client.getUserContext('user1', true);
+	return fabric_client.getUserContext('ikea1', true);
 }).then((user_from_store) => {
 	if (user_from_store && user_from_store.isEnrolled()) {
 		console.log('Successfully loaded user1 from persistence');
@@ -51,24 +50,26 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 		throw new Error('Failed to get user1.... run registerUser.js');
 	}
 
-	// get a transaction id object based on the current user assigned to fabric client
-	tx_id = fabric_client.newTransactionID();
-	console.log("Assigning transaction_id: ", tx_id._transaction_id);
+    return invokeChainCode.invokeChainCode(fabric_client, channel, "grpc://localhost:10053", "ikeaCC", "invoke", ["a","b","10"]);
 
-	// createCar chaincode function - requires 5 args, ex: args: ['CAR12', 'Honda', 'Accord', 'Black', 'Tom'],
-	// changeCarOwner chaincode function - requires 2 args , ex: args: ['CAR10', 'Barry'],
-	// must send the proposal to endorsing peers
-	var request = {
-		//targets: let default to the peer assigned to the client
-		chaincodeId: 'example02',
-		fcn: '',
-		args: [''],
-		chainId: 'mychannel',
-		txId: tx_id
-	};
+	// // // // // get a transaction id object based on the current user assigned to fabric client
+	// // // // tx_id = fabric_client.newTransactionID();
+	// // // // console.log("Assigning transaction_id: ", tx_id._transaction_id);
 
-	// send the transaction proposal to the peers
-	return channel.sendTransactionProposal(request);
+	// // // // // createCar chaincode function - requires 5 args, ex: args: ['CAR12', 'Honda', 'Accord', 'Black', 'Tom'],
+	// // // // // changeCarOwner chaincode function - requires 2 args , ex: args: ['CAR10', 'Barry'],
+	// // // // // must send the proposal to endorsing peers
+	// // // // var request = {
+	// // // // 	//targets: let default to the peer assigned to the client
+	// // // // 	chaincodeId: 'fabcar',
+	// // // // 	fcn: '',
+	// // // // 	args: [''],
+	// // // // 	chainId: 'mychannel',
+	// // // // 	txId: tx_id
+	// // // // };
+
+	// // // // // send the transaction proposal to the peers
+	// // // // return channel.sendTransactionProposal(request);
 }).then((results) => {
 	var proposalResponses = results[0];
 	var proposal = results[1];
