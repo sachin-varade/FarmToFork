@@ -2,14 +2,53 @@
   <h1>Abattoir Inward</h1>
   <form>
     <div class="form-group">
-      <label for="name">Farmer</label>
-      <select class="form-control" id="name" required>
+      <label for="selectFarmer">Farmer</label>
+      <select class="form-control" id="selectFarmer" required>  
+          <option *ngFor="let farmer of userData.users.farmers" [value]="farmer.name">{{farmer.name}}</option>      
       </select>
     </div>
 
     <div class="form-group">
-      <label for="alterEgo">Material Inward Number</label>
-      <input type="text" class="form-control" id="alterEgo">
+        <label for="guidGtin">GUID/GTIN</label>
+        <input type="text" class="form-control" id="guidGtin">
+    </div>
+
+    <div class="form-group">
+      <label for="materialInwardNumber">Material Inward Number</label>
+      <input type="text" class="form-control" id="materialInwardNumber">
+    </div>
+
+    <div class="form-group">
+        <label for="materialName">Material Name</label>
+        <input type="text" class="form-control" id="materialName">
+    </div>
+
+    <div class="form-group">
+        <label for="materialGrade">Material Grade</label>
+        <select class="form-control" id="materialGrade" required>
+            <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="usedByDate">Used By Date</label>
+        <input type="text" class="form-control" id="usedByDate">
+        <!-- <ngb-datepicker #dp (navigate)="date = $event.next"></ngb-datepicker> -->
+        
+        <!-- <date-picker formControlName="date"></date-picker> -->
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="text" class="form-control" id="quantity">
+        <select class="form-control" id="qunatityUnit" required>
+            <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="alterEgo">Certificates</label>
+        <input type="text" class="form-control" id="alterEgo">
     </div>
 
     <button type="submit" class="btn btn-success">Submit</button>

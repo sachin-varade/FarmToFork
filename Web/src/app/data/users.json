@@ -1,5 +1,5 @@
 {
-    "users":{
+    "users": {
         "farmers": [
             {
                 "name": "farmer1",
@@ -33,6 +33,5 @@
                 "certificates": ["GFSI", "BRC", "KRAV", "IFOAM"]
             }
         ]
-    
     }
 }

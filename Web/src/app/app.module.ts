@@ -11,6 +11,9 @@ import { AuthguardGuard } from './authguard.guard';
 import { UserService } from './user.service';
 import { AbattoirInwardComponent } from './abattoir/abattoir-inward/abattoir-inward.component';
 import { AbattoirOutwardComponent } from './abattoir/abattoir-outward/abattoir-outward.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+
 
 const appRoutes:Routes = [
   {
@@ -39,7 +42,8 @@ const appRoutes:Routes = [
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
-  BrowserModule
+  BrowserModule,
+  NgbModule
   ],
   providers: [UserService, AuthguardGuard],
   bootstrap: [AppComponent]

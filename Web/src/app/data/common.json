@@ -1,3 +1,4 @@
 {
-    "units":["Kg", "Tonne"]
+"units" : ["Kg", "Tonne"],
+"materialGrades": ["A", "B", "C"]
 }
