@@ -49,11 +49,11 @@ function restartNetwork() {
 
 function registerUsers() {		
 	echo $PWD
-	rm -rf hfc-key-store
+	rm -rf ../Server/hfcInterface/hfc-key-store
 	node ../Server/hfcInterface/users.js
 }
 
 
-#restartNetwork
+restartNetwork
 registerUsers
 

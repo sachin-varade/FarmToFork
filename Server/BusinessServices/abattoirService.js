@@ -14,6 +14,7 @@ var logisticConfig = config.network.logistic;
 var processorConfig = config.network.processor;
 var ikeaConfig = config.network.ikea;
 var member_user;
+
 module.exports = function (fabric_client, channels, peers, eventHubPeers, orderer, users) {
 	var abattoirService = {};
     fabric_client = fabric_client;
@@ -45,13 +46,11 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             helper.checkUserEnrolled(user_from_store);            
             return invokeChainCode.invokeChainCode(fabric_client, 
                 channels.abattoirchannel, 
-                //eventHubPeers.ikeaEventHubPeer._url, 
-                "grpc://localhost:7053",
+                eventHubPeers.abattoirEventHubPeer._url, 
+                //"grpc://localhost:7053",
                 abattoirConfig.channels.abattoirchannel.chaincodeId, 
                 "createPart",  
-                ["P002", "C001", "01-01-2017", "Jim", "Break", "Break", "na", "B001", "" ]);
-                // return invokeChainCode.invokeChainCode(channelObjects.fabric_client, 
-                //     channelObjects.ikeachannel, "grpc://localhost:10053", "ikeaCC", "invoke", ["a","b","10"]);
+                ["P001", "C001", "01-01-2017", "Jim", "Break", "Break", "na", "B001", "" ]);                
         }).then((results) => {
             return results;
         }).catch((err) => {

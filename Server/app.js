@@ -1,14 +1,15 @@
+"use strict";
 
-channelObjects = require("./BusinessServices/channelObjects.js");
-setTimeout(function() {    
-    abattoirService = require("./BusinessServices/abattoirService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
-}, 2000);
-
-setTimeout(function() {
-    abattoirService.createPart();    
-}, 5000);
+var express = require("express");
+var bodyParser = require('body-parser');
+var app = express();
+var router = require("./routes/routes");
+app.use('/api', router);
 
 
-setTimeout(function() {
-    //abattoirService.getAllParts();
-}, 10000);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+var port = process.env.PORT || 8080;       
+app.listen(port);
+console.log('Running on port ' + port);
