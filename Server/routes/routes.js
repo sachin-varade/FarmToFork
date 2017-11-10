@@ -1,11 +1,12 @@
 "use strict";
 var express = require("express");
 var channelObjects = require("../BusinessServices/channelObjects.js");
-var abattoirService, logisticService, processorService;
+var abattoirService, logisticService, processorService, ikeaService;
 setTimeout(function() {    
     abattoirService = require("../BusinessServices/abattoirService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
     logisticService = require("../BusinessServices/logisticService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
     processorService = require("../BusinessServices/processorService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
+    ikeaService = require("../BusinessServices/ikeaService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
 }, 2000);
 
 // ROUTES FOR OUR API
@@ -66,5 +67,20 @@ router.get("/createVehicle1", function(req, res) {
 		res.send(resp);
 	});	
 });
+
+router.get("/query", function(req, res) {    
+    var promise = ikeaService.query();
+	promise.then(function(resp,err){
+		res.send({"a": resp});
+	});	
+});
+
+router.get("/invoke", function(req, res) {    
+    var promise = ikeaService.invoke();
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
 
 module.exports = router;
