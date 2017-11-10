@@ -8,7 +8,9 @@ import { FooterComponent } from './footer/footer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthguardGuard } from './authguard.guard';
-import { UserService } from './user.service'
+import { UserService } from './user.service';
+import { AbattoirInwardComponent } from './abattoir/abattoir-inward/abattoir-inward.component';
+import { AbattoirOutwardComponent } from './abattoir/abattoir-outward/abattoir-outward.component';
 
 const appRoutes:Routes = [
   {
@@ -19,12 +21,22 @@ const appRoutes:Routes = [
     path: 'dashboard',
     canActivate: [AuthguardGuard],
     component: DashboardComponent
+  },
+  {
+    path: 'abattoir/inward',
+    //canActivate: [AuthguardGuard],
+    component: AbattoirInwardComponent
+  },
+  {
+    path: 'abattoir/outward',
+    //canActivate: [AuthguardGuard],
+    component: AbattoirOutwardComponent
   }
 ]
 
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, DashboardComponent],
+  declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   BrowserModule
