@@ -1,0 +1,13 @@
+#header {
+	text-align: left;
+	padding: 2px 0;
+	font-size: 30px;
+    border-bottom: 2px solid #403D3D;
+    height: 70px;
+}
+
+#companyLogoImg {
+    float: left;
+    height: 40;
+    margin: 10px 0px 3px 10px;
+}
