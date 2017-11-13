@@ -42,6 +42,32 @@ func main() {
 type SimpleChaincode struct {
 }
 
+type FarmerMaterialInward struct {
+	FarmerId			string	`json:"farmerId"`
+	AbattoirInwardId	string	`json:"abattoir"`
+	MaterialName		string	`json:"materialName"`
+	MaterialGrade		string	`json:"materialGrade"`
+	UseByDate			string	`json:"useByDate"`
+	Quantity			string	`json:"quantity"`
+	GUIDNumber			string	`json:"guidNumber"`
+	Certificates		[]string	`json:"certificates"`
+}
+
+type AbattoirDispatch struct {
+	AbattoirId				string	`json:"abattoirId"`
+	ConsignmentNumber		string	`json:"consignmentNumber"`
+	AbattoirInwardId		string	`json:"abattoirInwardId"`
+	GUIDNumber				string	`json:"guidNumber"`
+	MaterialName			string	`json:"materialName"`
+	MaterialGrade			string	`json:"materialGrade"`
+	TemperatureStorageMin	string	`json:"temperatureStorageMin"`
+	TemperatureStorageMax	string	`json:"temperatureStorageMax"`
+	ProductionDate			string	`json:"productionDate"`
+	UseByDate				string	`json:"useByDate"`
+	Quantity				string	`json:"quantity"`	
+	Certificates			[]string	`json:"certificates"`
+}
+
 type Part struct {
 	PartId 			string 	`json:"partId"`
 	PartCode 		string  `json:"partCode"`
