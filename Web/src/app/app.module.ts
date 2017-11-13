@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgControl } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { NgModel, NgForm } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
@@ -11,9 +12,8 @@ import { AuthguardGuard } from './authguard.guard';
 import { UserService } from './user.service';
 import { AbattoirInwardComponent } from './abattoir/abattoir-inward/abattoir-inward.component';
 import { AbattoirOutwardComponent } from './abattoir/abattoir-outward/abattoir-outward.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 const appRoutes:Routes = [
   {
@@ -37,15 +37,17 @@ const appRoutes:Routes = [
   }
 ]
 
-
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent],
+  declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
-  BrowserModule,
-  NgbModule
+  FormsModule,
+  BrowserModule,    
+  BsDatepickerModule.forRoot(),
+  TimepickerModule.forRoot()
   ],
-  providers: [UserService, AuthguardGuard],
+  providers: [UserService, AuthguardGuard, FormsModule],
   bootstrap: [AppComponent]
 })
 

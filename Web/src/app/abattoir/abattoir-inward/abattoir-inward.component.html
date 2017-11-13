@@ -1,13 +1,12 @@
-<div class="container">
+<div class="container" style="width:600px;">
   <h1>Abattoir Inward</h1>
   <form>
     <div class="form-group">
-      <label for="selectFarmer">Farmer</label>
-      <select class="form-control" id="selectFarmer" required>  
+      <label>Farmer</label>
+      <select class="form-control" [(ngModel)]="selectFarmer" (change)="setFarmer()" name="selectFarmer" id="selectFarmer" required>  
           <option *ngFor="let farmer of userData.users.farmers" [value]="farmer.name">{{farmer.name}}</option>      
       </select>
-    </div>
-
+    </div>      
     <div class="form-group">
         <label for="guidGtin">GUID/GTIN</label>
         <input type="text" class="form-control" id="guidGtin">
@@ -32,10 +31,7 @@
     
     <div class="form-group">
         <label for="usedByDate">Used By Date</label>
-        <input type="text" class="form-control" id="usedByDate">
-        <!-- <ngb-datepicker #dp (navigate)="date = $event.next"></ngb-datepicker> -->
-        
-        <!-- <date-picker formControlName="date"></date-picker> -->
+        <input type="text" class="form-control" bsDatepicker/>     
     </div>
 
     <div class="form-group">
@@ -48,7 +44,13 @@
 
     <div class="form-group">
         <label for="alterEgo">Certificates</label>
-        <input type="text" class="form-control" id="alterEgo">
+        <div *ngFor="let farmer of userData.users.farmers">                
+            <div *ngIf="farmer.name==selectFarmer">
+                <div *ngFor="let cert of farmer.certificates">
+                    <input checked [value]="cert" type="checkbox"/> {{cert}}
+                </div>
+            </div>
+        </div>
     </div>
 
     <button type="submit" class="btn btn-success">Submit</button>

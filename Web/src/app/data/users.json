@@ -13,7 +13,7 @@
                 "role": "farmer",
                 "uniqueId": "F002",
                 "GUID-GTIN": "GUID-F002",
-                "certificates": ["GFSI", "BRC", "KRAV", "IFOAM"]
+                "certificates": ["BRC", "KRAV", "IFOAM"]
             }
         ],
 
@@ -30,7 +30,7 @@
                 "role": "abattoir",
                 "uniqueId": "A002",
                 "GUID-GTIN": "GUID-A002",
-                "certificates": ["GFSI", "BRC", "KRAV", "IFOAM"]
+                "certificates": ["BRC", "KRAV", "IFOAM"]
             }
         ]
     }
