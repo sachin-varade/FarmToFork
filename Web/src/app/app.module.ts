@@ -19,6 +19,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LogisticInwardComponent } from './logistic/logistic-inward/logistic-inward.component';
 import { LogisticOutwardComponent } from './logistic/logistic-outward/logistic-outward.component';
 import { LogisticDashboardComponent } from './logistic/logistic-dashboard/logistic-dashboard.component';
+import { ProcessorInwardComponent } from './processor/processor-inward/processor-inward.component';
+import { ProcessorDispatchComponent } from './processor/processor-dispatch/processor-dispatch.component';
+import { ProcessItemComponent } from './processor/process-item/process-item.component';
+import { IkeaInwardComponent } from './ikea/ikea-inward/ikea-inward.component';
 
 const appRoutes:Routes = [
   {
@@ -54,12 +58,32 @@ const appRoutes:Routes = [
     path: 'logistic/outward/:consignmentNumber',
     //canActivate: [AuthguardGuard],
     component: LogisticOutwardComponent
+  },
+  {
+    path: 'processor/inward',
+    //canActivate: [AuthguardGuard],
+    component: ProcessorInwardComponent
+  },
+  {
+    path: 'processor/process',
+    //canActivate: [AuthguardGuard],
+    component: ProcessItemComponent
+  },
+  {
+    path: 'processor/dispatch',
+    //canActivate: [AuthguardGuard],
+    component: ProcessorDispatchComponent
+  },
+  {
+    path: 'ikea/inward',
+    //canActivate: [AuthguardGuard],
+    component: IkeaInwardComponent
   }
 ]
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
-    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent],
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   FormsModule,

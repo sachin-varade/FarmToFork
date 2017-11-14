@@ -49,6 +49,23 @@
                 "GUID-GTIN": "GUID-L002",
                 "type": "Processor-to-Ikea"
             }
+        ],
+
+        "processors": [
+            {
+                "name": "processor1",
+                "role": "processor",
+                "uniqueId": "P001",
+                "GUID-GTIN": "GUID-P001",
+                "unit": "processor unit 1"        
+            },
+            {
+                "name": "processor2",
+                "role": "processor",
+                "uniqueId": "P002",
+                "GUID-GTIN": "GUID-P002",
+                "unit": "processor unit 2"        
+            }
         ]
     }
 }
