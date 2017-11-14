@@ -165,6 +165,47 @@ func getAllAbattoirInwards(stub  shim.ChaincodeStubInterface, user string) pb.Re
 }
 
 // ============================================================================================================================
+// Get All Abattoir Dispatch
+// ============================================================================================================================
+func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, user string) pb.Response {
+	fmt.Println("getAllAbattoirDispatch:Looking for All Abattoir Dispatch");
+
+	//get the AllAbattoirInwards index
+	allBAsBytes, err := stub.GetState("allAbattoirDispatch")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Inwards")
+	}
+
+	var res AllAbattoirDispatch
+	err = json.Unmarshal(allBAsBytes, &res)
+	//fmt.Println(allBAsBytes);
+	if err != nil {
+		fmt.Println("Printing Unmarshal error:-");
+		fmt.Println(err);
+		return shim.Error("Failed to Unmarshal all Abattoir Dispatch records")
+	}
+
+	var rab AllAbattoirDispatch
+
+	for i := range res.AbattoirDispatchList{
+
+		sbAsBytes, err := stub.GetState(res.AbattoirDispatchList[i].ConsignmentNumber)
+		if err != nil {
+			return shim.Error("Failed to get Abattoir Dispatch record.")
+		}
+		var sb AbattoirDispatch
+		json.Unmarshal(sbAsBytes, &sb)
+
+		// currently we show all Inwards to users
+		rab.AbattoirDispatchList = append(rab.AbattoirDispatchList,sb);
+	}
+
+	rabAsBytes, _ := json.Marshal(rab)
+
+	return shim.Success(rabAsBytes)
+}
+
+// ============================================================================================================================
 // Get All Parts
 // ============================================================================================================================
 func getAllPartDetails(stub  shim.ChaincodeStubInterface, filter string, filterValue string) pb.Response {

@@ -69,6 +69,23 @@ type AbattoirDispatch struct {
 	Certificates			[]string	`json:"certificates"`
 }
 
+type LogisticsTransaction struct {
+	LogisticProviderId				string	`json:"logisticProviderId"`
+	ConsignmentNumber				string	`json:"consignmentNumber"`
+	RouteId							string	`json:"RouteId"`
+	AbattoirConsignmentId			string	`json:"AbattoirConsignmentId"`
+	VehicleId						string	`json:"vehicleId"`
+	VehicleType						string	`json:"vehicleType"`
+	PickupDateTime					string	`json:"pickupDateTime"`
+	ExpectedDeliveryDateTime		string	`json:"expectedDeliveryDateTime"`
+	ActualDeliveryDateTime			string	`json:"actualDeliveryDateTime"`
+	TemperatureStorageMin			string	`json:"temperatureStorageMin"`
+	TemperatureStorageMax			string	`json:"temperatureStorageMax"`
+	Quantity						string	`json:"quantity"`	
+	HandlingInstruction				string	`json:"handlingInstruction"`
+	ShipmentStatus					string	`json:"shipmentStatus"`
+}
+
 type Part struct {
 	PartId 			string 	`json:"partId"`
 	PartCode 		string  `json:"partCode"`
@@ -106,6 +123,14 @@ type AllPartDetails struct{
 
 type AllAbattoirInwardIds struct{
 	AbattoirInwardIds []string `json:"abattoirInwardIds"`
+}
+
+type AllAbattoirDispatch struct{
+	AbattoirDispatchList []AbattoirDispatch `json:"abattoirDispatchList"`
+}
+
+type AllLogisticsTransactions struct{
+	LogisticsTransactionList []LogisticsTransaction `json:"logisticsTransactionList"`
 }
 
 // Part tracker end
@@ -157,6 +182,25 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		//return nil, err
 		return shim.Error(err.Error())
 	}
+	
+	var allAbattoirDispatch AllAbattoirDispatch
+	
+	jsonAsBytesAllAbattoirDispatch, _ := json.Marshal(allAbattoirDispatch)
+	err = stub.PutState("allAbattoirDispatch", jsonAsBytesAllAbattoirDispatch)
+	if err != nil {
+		//return nil, err
+		return shim.Error(err.Error())
+	}
+	
+	var allLogisticsTransactions AllLogisticsTransactions
+	
+	jsonAsBytesAllLogisticsTransactions, _ := json.Marshal(allLogisticsTransactions)
+	err = stub.PutState("allLogisticsTransactions", jsonAsBytesAllLogisticsTransactions)
+	if err != nil {
+		//return nil, err
+		return shim.Error(err.Error())
+	}
+
 
 	// Part tracker end
 	fmt.Println(" - ready for action")                          //self-test pass
@@ -191,6 +235,10 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return getAllAbattoirInwards(stub, args[0])	
 	} else if function == "createAbattoirInward" {
 		return createAbattoirInward(stub, args)
+	} else if function == "getAllAbattoirDispatch" {
+		return getAllAbattoirDispatch(stub, args[0])
+	} else if function == "createAbattoirDispatch" {
+		return createAbattoirDispatch(stub, args)
 	}
 
 	// error out

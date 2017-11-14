@@ -139,7 +139,7 @@ func createAbattoirInward(stub  shim.ChaincodeStubInterface, args []string) pb.R
 		return shim.Error("Incorrect number of arguments. Expecting 9")
 	}
 
-	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]);
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]);
 
 	var bt AbattoirMaterialInward
 	bt.AbattoirId				= args[0]
@@ -183,6 +183,64 @@ func createAbattoirInward(stub  shim.ChaincodeStubInterface, args []string) pb.R
 
 	allBuAsBytes, _ := json.Marshal(allb)
 	err = stub.PutState("allAbattoirInwardIds", allBuAsBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
+
+//Create AbattoirDispatch block
+func createAbattoirDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+	var err error
+	fmt.Println("Running createAbattoirDispatch..")
+
+	if len(args) != 12 {
+		fmt.Println("Incorrect number of arguments. Expecting 9 - AbattoirId..")
+		return shim.Error("Incorrect number of arguments. Expecting 9")
+	}
+
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]);
+
+	var bt AbattoirDispatch	
+	bt.AbattoirId				= args[0]
+	bt.ConsignmentNumber		= args[1]
+	bt.AbattoirInwardId			= args[2]
+	bt.GUIDNumber				= args[3]
+	bt.MaterialName				= args[4]
+	bt.MaterialGrade			= args[5]
+	bt.TemperatureStorageMin	= args[6]
+	bt.TemperatureStorageMax	= args[7]
+	bt.ProductionDate			= args[8]
+	bt.UseByDate				= args[9]
+	bt.Quantity					= args[10]
+	
+	var certificate string
+	certificate			= args[11]
+	bt.Certificates = append(bt.Certificates, certificate)
+
+	//Commit Inward entry to ledger
+	fmt.Println("createAbattoirDispatch - Commit AbattoirDispatch To Ledger");
+	btAsBytes, _ := json.Marshal(bt)
+	err = stub.PutState(bt.ConsignmentNumber, btAsBytes)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+
+	//Update All AbattoirDispatch Array
+	allBAsBytes, err := stub.GetState("allAbattoirDispatch")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Dispatch")
+	}
+	var allb AllAbattoirDispatch
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all dispatch")
+	}
+	allb.AbattoirDispatchList = append(allb.AbattoirDispatchList,bt)
+
+	allBuAsBytes, _ := json.Marshal(allb)
+	err = stub.PutState("allAbattoirDispatch", allBuAsBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
