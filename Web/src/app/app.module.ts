@@ -51,7 +51,7 @@ const appRoutes:Routes = [
     component: LogisticDashboardComponent
   },
   {
-    path: 'logistic/outward',
+    path: 'logistic/outward/:consignmentNumber',
     //canActivate: [AuthguardGuard],
     component: LogisticOutwardComponent
   }
