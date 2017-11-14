@@ -32,6 +32,23 @@
                 "GUID-GTIN": "GUID-A002",
                 "certificates": ["BRC", "KRAV", "IFOAM"]
             }
+        ],
+
+        "logistics": [
+            {
+                "name": "logiscic1",
+                "role": "logiscic",
+                "uniqueId": "L001",
+                "GUID-GTIN": "GUID-L001",
+                "type": "Abattoir-to-Processor"
+            },
+            {
+                "name": "logiscic2",
+                "role": "logiscic",
+                "uniqueId": "L002",
+                "GUID-GTIN": "GUID-L002",
+                "type": "Processor-to-Ikea"
+            }
         ]
     }
 }

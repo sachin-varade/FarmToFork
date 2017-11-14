@@ -22,7 +22,7 @@ export class AbattoirInwardComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+     
   }
   setFarmer(){      
     let comp = this;

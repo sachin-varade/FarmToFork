@@ -14,6 +14,11 @@ import { AbattoirInwardComponent } from './abattoir/abattoir-inward/abattoir-inw
 import { AbattoirOutwardComponent } from './abattoir/abattoir-outward/abattoir-outward.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { LogisticInwardComponent } from './logistic/logistic-inward/logistic-inward.component';
+import { LogisticOutwardComponent } from './logistic/logistic-outward/logistic-outward.component';
+import { LogisticDashboardComponent } from './logistic/logistic-dashboard/logistic-dashboard.component';
 
 const appRoutes:Routes = [
   {
@@ -34,18 +39,34 @@ const appRoutes:Routes = [
     path: 'abattoir/outward',
     //canActivate: [AuthguardGuard],
     component: AbattoirOutwardComponent
+  },
+  {
+    path: 'logistic/inward',
+    //canActivate: [AuthguardGuard],
+    component: LogisticInwardComponent
+  },
+  {
+    path: 'logistic/dashboard',
+    //canActivate: [AuthguardGuard],
+    component: LogisticDashboardComponent
+  },
+  {
+    path: 'logistic/outward',
+    //canActivate: [AuthguardGuard],
+    component: LogisticOutwardComponent
   }
 ]
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
-    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent],
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   FormsModule,
   BrowserModule,    
   BsDatepickerModule.forRoot(),
-  TimepickerModule.forRoot()
+  TimepickerModule.forRoot(),
+  NgbModule.forRoot()
   ],
   providers: [UserService, AuthguardGuard, FormsModule],
   bootstrap: [AppComponent]

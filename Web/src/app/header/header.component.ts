@@ -10,7 +10,7 @@ export class HeaderComponent implements OnInit {
   companyLogoImagePath: string;
   
   constructor() { 
-    this.companyLogoImagePath = 'assets/images/ikea-logo.jpg'
+    
   }
 
   ngOnInit() {

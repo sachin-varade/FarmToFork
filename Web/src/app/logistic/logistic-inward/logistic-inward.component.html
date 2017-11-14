@@ -1,0 +1,120 @@
+<div class="container" style="width:600px;">
+  <h1>Logistic Inward</h1>
+  <form>
+    <div class="form-group">
+        <label>Logistic Id</label>
+        <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
+    </div>
+    <div class="form-group">
+      <label for="selectRoute">Route</label>
+      <select class="form-control" [(ngModel)]="selectRoute" (change)="setRoute()" name="selectRoute" id="selectRoute" required>  
+          <option *ngFor="let route of commonData.routes" [value]="route">{{route}}</option>      
+      </select>
+    </div>      
+    <div class="form-group">
+        <label for="consignmentNumber">Consignment Number</label>
+        <input type="text" class="form-control" id="consignmentNumber">
+    </div>
+
+    <div class="form-group">
+      <label for="abattoirConsignmentNumber">Abattoir Consignment Number</label>
+      <select class="form-control" id="abattoirConsignmentNumber" required>          
+      </select>
+    </div>
+
+    <div class="form-group">
+        <label for="pickupLocation">Pickup Location</label>
+        <select class="form-control" id="pickupLocation" required>
+            <option *ngFor="let loc of commonData.pickDropLocations" [value]="loc.name">{{loc.name}}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="deliveryLocation">Delivery Location</label>
+        <select class="form-control" id="deliveryLocation" required>
+            <option *ngFor="let loc of commonData.pickDropLocations" [value]="loc.name">{{loc.name}}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="vehicleId">Vehicle Id</label>
+        <input type="text" class="form-control" id="vehicleId">
+    </div>
+    
+    <div class="form-group">
+        <label for="vehicleType">Vehicle Type</label>
+        <select class="form-control" id="vehicleType" required>
+            <option *ngFor="let type of commonData.vehicleTypes" [value]="type">{{type}}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="dispatchDate">Dispatch Date/Time</label>
+    </div>
+
+    <div class="form-group date-picker-div">
+        <input type="text" class="form-control date-picker-date" bsDatepicker/>     
+        <ngb-timepicker class="date-picker-time"></ngb-timepicker>
+    </div>
+
+    <div class="form-group">
+        <label for="expectedDate">Expected Delivery Date/Time</label>
+    </div>
+
+    <div class="form-group date-picker-div">
+        <input type="text" class="form-control date-picker-date" bsDatepicker/>     
+        <ngb-timepicker class="date-picker-time"></ngb-timepicker>
+    </div>
+
+    <div class="form-group">
+        <label for="actualDate">Actual Delivery Date/Time</label>
+    </div>
+
+    <div class="form-group date-picker-div">
+        <input type="text" class="form-control date-picker-date" bsDatepicker/>     
+        <ngb-timepicker class="date-picker-time"></ngb-timepicker>
+    </div>
+
+    <div class="form-group">
+        <label for="minTemp">Temp storage instruction (Min-Max)</label>      
+      </div>
+      <div class="form-group temp-min-max">      
+        <div class="min-max-temp-label">      
+          <label>Min</label>
+        </div>
+        <div class="min-max-temp-field">      
+          <input type="text" class="form-control" id="minTemp">
+        </div>
+        <div class="min-max-temp-label">      
+          <label>Max</label>
+        </div>
+        <div class="min-max-temp-field">      
+          <input type="text" class="form-control" id="maxTemp">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="quantity" style="display: block;">Quantity</label>
+        <input type="text" class="form-control" style="display: inline-block; width:100px;" id="quantity">
+        <select class="form-control" id="qunatityUnit" required  style="display: inline-block; width:100px;">
+            <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="handInstructions">Handling Instructions</label>
+        <textarea class="form-control" id="handInstructions"></textarea>        
+    </div>
+
+    <div class="form-group">
+        <label for="shipmentStatus">Shipment Status</label>
+        <select disabled class="form-control" id="shipmentStatus" required>
+            <option *ngFor="let status of commonData.shipmentStatus" [value]="status">{{status}}</option>
+        </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Submit</button>
+
+  </form>
+</div>
