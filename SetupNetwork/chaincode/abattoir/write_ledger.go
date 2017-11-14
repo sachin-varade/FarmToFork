@@ -128,3 +128,64 @@ func updatePart(stub  shim.ChaincodeStubInterface, args []string) pb.Response {
 	fmt.Println("success");
 	return shim.Success(nil)
 }
+
+//Create AbattoirInward block
+func createAbattoirInward(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+	var err error
+	fmt.Println("Running createAbattoirInward..")
+
+	if len(args) != 9 {
+		fmt.Println("Incorrect number of arguments. Expecting 9 - AbattoirId..")
+		return shim.Error("Incorrect number of arguments. Expecting 9")
+	}
+
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]);
+
+	var bt AbattoirMaterialInward
+	bt.AbattoirId				= args[0]
+	bt.AbattoirInwardId			= args[1]
+	bt.FarmerId					= args[2]
+	bt.MaterialName				= args[3]
+	bt.MaterialGrade			= args[4]
+	bt.UseByDate				= args[5]
+	bt.Quantity					= args[6]
+	bt.GUIDNumber				= args[7]
+
+	// var tx Transaction
+	// tx.DateOfManufacture		= args[2]
+	// tx.TType 			= "CREATE"
+	// tx.User 			= args[3]
+	// bt.Transactions = append(bt.Transactions, tx)
+
+	var certificate string
+	certificate			= args[8]
+	bt.Certificates = append(bt.Certificates, certificate)
+
+	//Commit Inward entry to ledger
+	fmt.Println("createAbattoirInward - Commit AbattoirInward To Ledger");
+	btAsBytes, _ := json.Marshal(bt)
+	err = stub.PutState(bt.AbattoirInwardId, btAsBytes)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+
+	//Update All Parts Array
+	allBAsBytes, err := stub.GetState("allAbattoirInwardIds")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Inward Ids")
+	}
+	var allb AllAbattoirInwardIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Inwards")
+	}
+	allb.AbattoirInwardIds = append(allb.AbattoirInwardIds,bt.AbattoirInwardId)
+
+	allBuAsBytes, _ := json.Marshal(allb)
+	err = stub.PutState("allAbattoirInwardIds", allBuAsBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}

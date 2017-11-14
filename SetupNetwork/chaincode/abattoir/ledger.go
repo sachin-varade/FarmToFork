@@ -42,9 +42,10 @@ func main() {
 type SimpleChaincode struct {
 }
 
-type FarmerMaterialInward struct {
-	FarmerId			string	`json:"farmerId"`
-	AbattoirInwardId	string	`json:"abattoir"`
+type AbattoirMaterialInward struct {
+	AbattoirId			string	`json:"abattoirId"`
+	AbattoirInwardId	string	`json:"abattoirInwardId"`
+	FarmerId			string	`json:"farmerId"`	
 	MaterialName		string	`json:"materialName"`
 	MaterialGrade		string	`json:"materialGrade"`
 	UseByDate			string	`json:"useByDate"`
@@ -103,6 +104,10 @@ type AllPartDetails struct{
 	Parts []Part `json:"parts"`
 }
 
+type AllAbattoirInwardIds struct{
+	AbattoirInwardIds []string `json:"abattoirInwardIds"`
+}
+
 // Part tracker end
 
 // ============================================================================================================================
@@ -144,6 +149,15 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
+	var allAbattoirInwardIds AllAbattoirInwardIds
+
+	jsonAsBytesabattoirInwardIds, _ := json.Marshal(allAbattoirInwardIds)
+	err = stub.PutState("allAbattoirInwardIds", jsonAsBytesabattoirInwardIds)
+	if err != nil {
+		//return nil, err
+		return shim.Error(err.Error())
+	}
+
 	// Part tracker end
 	fmt.Println(" - ready for action")                          //self-test pass
 	return shim.Success(nil)
@@ -173,6 +187,10 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return updatePart(stub, args)	
 	} else if function == "getAllPartDetails" {			//create a part
 		return getAllPartDetails(stub, args[0],args[1])	
+	} else if function == "getAllAbattoirInwards" {
+		return getAllAbattoirInwards(stub, args[0])	
+	} else if function == "createAbattoirInward" {
+		return createAbattoirInward(stub, args)
 	}
 
 	// error out
