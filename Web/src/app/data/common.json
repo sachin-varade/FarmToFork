@@ -10,6 +10,8 @@
                         {"name": "Loc5"}
                     ],
 "vehicleTypes": ["Normal Container", "Container with Freezer"],
-"shipmentStatus": ["PickedUp & InTransit", "Delivered"]
+"shipmentStatus": ["PickedUp & InTransit", "Delivered"],
+"processorAcceptanceChecklist": ["Condition1", "Condition2", "Condition3"],
+"processingActions": ["Washed", "Processed", "Freezed"]
 }
  
