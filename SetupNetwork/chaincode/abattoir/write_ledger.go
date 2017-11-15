@@ -253,12 +253,12 @@ func createLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string)
 	var err error
 	fmt.Println("Running createLogisticTransaction..")
 
-	if len(args) != 14 {
-		fmt.Println("Incorrect number of arguments. Expecting 14")
-		return shim.Error("Incorrect number of arguments. Expecting 14")
+	if len(args) != 15 {
+		fmt.Println("Incorrect number of arguments. Expecting 15")
+		return shim.Error("Incorrect number of arguments. Expecting 15")
 	}
 
-	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]);
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]+","+args[14]);
 
 	var bt LogisticTransaction
 	bt.LogisticProviderId				= args[0]
@@ -274,9 +274,13 @@ func createLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string)
 	bt.TemperatureStorageMax			= args[10]
 	bt.Quantity							= args[11]
 	bt.HandlingInstruction				= args[12]
-	bt.ShipmentStatus					= args[13]
 	
 	
+	var st ShipmentStatusTransaction
+	st.ShipmentStatus		= args[13]		// Default shipment status should be PickedUp
+	st.ShipmentDate 		= args[14]	
+	bt.ShipmentStatus = append(bt.ShipmentStatus, st)
+
 	//Commit Inward entry to ledger
 	fmt.Println("createLogisticTransaction - Commit LogisticTransaction To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
@@ -300,6 +304,90 @@ func createLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string)
 	allBuAsBytes, _ := json.Marshal(allb)
 	err = stub.PutState("allLogisticTransactions", allBuAsBytes)
 	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
+
+
+
+// **********************************************************************
+//		Updating Logistics transation status in blockchain
+// **********************************************************************
+func updateLogisticTransactionStatus(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+	var err error
+	fmt.Println("Running updateLogisticTransactionStatus..")
+
+	if len(args) != 4 {
+		fmt.Println("Incorrect number of arguments. Expecting 4 - ConsignmentNumber, LogisticProviderId, ShipmentStatus, ShipmentDate.")
+		return shim.Error("Incorrect number of arguments. Expecting 4")
+	}
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]);
+
+	//Get and Update LogisticTransaction data
+	bAsBytes, err := stub.GetState(args[0])
+	if err != nil {
+		return shim.Error("Failed to get LogisticTransaction # " + args[0])
+	}
+	var bch LogisticTransaction
+	err = json.Unmarshal(bAsBytes, &bch)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal LogisticTransaction # " + args[0])
+	}
+
+	var tx ShipmentStatusTransaction
+	tx.ShipmentStatus 	= args[2];
+	tx.ShipmentDate		= args[3];
+
+	bch.ShipmentStatus = append(bch.ShipmentStatus, tx)
+
+	//Commit updates LogisticTransaction status to ledger
+	fmt.Println("updateLogisticTransactionStatus Commit Updates To Ledger");
+	btAsBytes, _ := json.Marshal(bch)
+	err = stub.PutState(bch.ConsignmentNumber, btAsBytes)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
+
+// **********************************************************************
+//		Updating Logistics transation status in blockchain
+// **********************************************************************
+func pushIotDetailsToLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+	var err error
+	fmt.Println("Running pushIotDetailsToLogisticTransaction..")
+
+	if len(args) != 4 {
+		fmt.Println("Incorrect number of arguments. Expecting 4 - ConsignmentNumber, LogisticProviderId, ShipmentStatus, ShipmentDate.")
+		return shim.Error("Incorrect number of arguments. Expecting 4")
+	}
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]);
+
+	//Get and Update LogisticTransaction data
+	bAsBytes, err := stub.GetState(args[0])
+	if err != nil {
+		return shim.Error("Failed to get LogisticTransaction # " + args[0])
+	}
+	var bch LogisticTransaction
+	err = json.Unmarshal(bAsBytes, &bch)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal LogisticTransaction # " + args[0])
+	}
+
+	var tx IotHistory
+	tx.Temperature 	= args[2];
+	tx.Location		= args[3];
+
+	bch.IotTemperatureHistory = append(bch.IotTemperatureHistory, tx)
+
+	//Commit updates LogisticTransaction status to ledger
+	fmt.Println("pushIotDetailsToLogisticTransaction Commit Updates To Ledger");
+	btAsBytes, _ := json.Marshal(bch)
+	err = stub.PutState(bch.ConsignmentNumber, btAsBytes)
+	if err != nil {		
 		return shim.Error(err.Error())
 	}
 
