@@ -8,8 +8,12 @@ import {UserService} from '../user.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-  constructor(private router:Router, private user:UserService) { }
+  errorMessage: string = "";
+  constructor(private router:Router, private user:UserService) { 
+    if(this.user.isUserLoggedIn() === "true"){
+      this.router.navigate(['dashboard']);
+    }
+  }
 
   ngOnInit() {
   }
@@ -19,11 +23,21 @@ export class LoginComponent implements OnInit {
   	console.log(e);
   	var username = e.target.elements[0].value;
   	var password = e.target.elements[1].value;
-  	
-  	if(username == 'admin' && password == 'admin') {
-      this.user.setUserLoggedIn();
-  		this.router.navigate(['dashboard']);
-  	}
+    this.user.login({userName: username, password: password})
+    .then((results) => {
+      if(results._body.indexOf("Error") > -1){
+        this.errorMessage = results._body;
+        return;
+      }
+      else {
+        this.errorMessage = '';
+        this.user.setUserLoggedIn();
+        this.router.navigate(['dashboard']);
+        this.user.getUserData();
+        this.user.getCommonData();
+      }
+    }).catch((err) => {
+        throw err;
+    });
   }
-
 }

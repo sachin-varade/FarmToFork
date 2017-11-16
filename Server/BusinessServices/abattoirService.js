@@ -38,6 +38,38 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             throw err;
         });
     }
+    
+    abattoirService.saveAbattoirReceived = function(abattoirReceived){
+        console.log("saveAbattoirReceived");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);            
+            return invokeChainCode.invokeChainCode(fabric_client, 
+                channels.abattoirchannel, 
+                eventHubPeers.abattoirEventHubPeer._url, 
+                //"grpc://localhost:7053",
+                abattoirConfig.channels.abattoirchannel.chaincodeId, 
+                "saveAbattoirReceived",  
+                [
+                    abattoirReceived.abattoirId, 
+                    abattoirReceived.purchaseOrderReferenceNumber,
+                    abattoirReceived.farmer.id,
+                    abattoirReceived.guidGtin,
+                    abattoirReceived.materialName,
+                    abattoirReceived.materialGrade,
+                    abattoirReceived.userByDate,
+                    abattoirReceived.quantity,
+                    abattoirReceived.quantityUnit,
+                    abattoirReceived.certificates
+                ]
+                //["P001", "C001", "01-01-2017", "Jim", "Break", "Break", "na", "B001", "" ]
+            );                
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
 
     abattoirService.createPart = function(){
         console.log("createPart");

@@ -10,6 +10,6 @@ export class AuthguardGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return this.user.getUserLoggedIn();
+    return this.user.isUserLoggedIn() == "true" ? true : false;
    }
 }

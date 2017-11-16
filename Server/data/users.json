@@ -1,0 +1,106 @@
+{
+    "users": {
+        "farmers": [
+            {
+                "id": 1,
+                "name": "farmer1",
+                "role": "farmer",
+                "password": "123456",
+                "uniqueId": "F001",
+                "GUID-GTIN": "GUID-F001",
+                "certificates": ["GFSI", "BRC", "KRAV", "IFOAM"]
+            },
+            {
+                "id": 2,
+                "name": "farmer2",
+                "role": "farmer",
+                "password": "123456",
+                "uniqueId": "F002",
+                "GUID-GTIN": "GUID-F002",
+                "certificates": ["BRC", "KRAV", "IFOAM"]
+            }
+        ],
+
+        "abattoirs": [
+            {
+                "id": 1,
+                "name": "abattoir1",
+                "role": "abattoir",
+                "password": "123456",
+                "uniqueId": "A001",
+                "GUID-GTIN": "GUID-A001",
+                "certificates": ["GFSI", "BRC", "KRAV", "IFOAM"]
+            },
+            {
+                "id": 2,
+                "name": "abattoir2",
+                "role": "abattoir",
+                "password": "123456",
+                "uniqueId": "A002",
+                "GUID-GTIN": "GUID-A002",
+                "certificates": ["BRC", "KRAV", "IFOAM"]
+            }
+        ],
+
+        "logistics": [
+            {
+                "id": 1,
+                "name": "logiscic1",
+                "role": "logiscic",
+                "password": "123456",
+                "uniqueId": "L001",
+                "GUID-GTIN": "GUID-L001",
+                "type": "Abattoir-to-Processor"
+            },
+            {
+                "id": 2,
+                "name": "logiscic2",
+                "role": "logiscic",
+                "password": "123456",
+                "uniqueId": "L002",
+                "GUID-GTIN": "GUID-L002",
+                "type": "Processor-to-Ikea"
+            }
+        ],
+
+        "processors": [
+            {
+                "id": 1,
+                "name": "processor1",
+                "role": "processor",
+                "password": "123456",
+                "uniqueId": "P001",
+                "GUID-GTIN": "GUID-P001",
+                "unit": "processor unit 1"        
+            },
+            {
+                "id": 2,
+                "name": "processor2",
+                "role": "processor",
+                "password": "123456",
+                "uniqueId": "P002",
+                "GUID-GTIN": "GUID-P002",
+                "unit": "processor unit 2"        
+            }
+        ],
+
+        "ikeas": [
+            {
+                "id": 1,
+                "name": "ikea1",
+                "role": "ikea",
+                "password": "123456",
+                "uniqueId": "I001",
+                "GUID-GTIN": "GUID-I001"                
+            },
+            {
+                "id": 2,
+                "name": "ikea2",
+                "role": "ikea",
+                "password": "123456",
+                "uniqueId": "I002",
+                "GUID-GTIN": "GUID-I002"
+            }
+        ]
+    }
+}

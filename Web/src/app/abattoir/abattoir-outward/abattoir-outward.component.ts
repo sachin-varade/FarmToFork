@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgModel, NgForm } from '@angular/forms';
-import * as commonData from '../../data/common.json';
-import * as userData from '../../data/users.json';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-abattoir-outward',
@@ -12,10 +11,9 @@ import * as userData from '../../data/users.json';
 export class AbattoirOutwardComponent implements OnInit {
   commonData: any;
   userData: any;
-  constructor() {
-    this.commonData = commonData;
-    this.userData = userData;
-    //console.log(userData);
+  constructor(private user: UserService) {
+    this.userData = this.user.getUserData();
+    this.commonData = this.user.getCommonData();
   }
 
   ngOnInit() {

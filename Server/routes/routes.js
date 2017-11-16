@@ -1,12 +1,13 @@
 "use strict";
 var express = require("express");
 var channelObjects = require("../BusinessServices/channelObjects.js");
-var abattoirService, logisticService, processorService, ikeaService;
+var abattoirService, logisticService, processorService, ikeaService, userService;
 setTimeout(function() {    
     abattoirService = require("../BusinessServices/abattoirService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
     logisticService = require("../BusinessServices/logisticService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
     processorService = require("../BusinessServices/processorService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
-    ikeaService = require("../BusinessServices/ikeaService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
+	ikeaService = require("../BusinessServices/ikeaService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
+	userService = require("../BusinessServices/userService.js")();
 }, 2000);
 
 // ROUTES FOR OUR API
@@ -26,6 +27,28 @@ router.get("/", function(req, res) {
 });
 
 // REGISTER OUR ROUTES -------------------------------
+router.post("/login", function(req, res) {    
+	var userData = userService.login(req.body);	
+	res.send(userData);
+});
+
+router.get("/getUserData", function(req, res) {    
+	var userData = userService.getUserData();	
+	res.send(userData);
+});
+
+router.get("/getCommonData", function(req, res) {    
+	var commonData = userService.getCommonData();	
+	res.send(commonData);
+});
+
+router.post("/saveAbattoirReceived", function(req, res) {    
+	var request = abattoirService.saveAbattoirReceived(req.body);	
+	res.send(request);
+});
+
+
+
 router.get("/getAllParts", function(req, res) {    
     var promise = abattoirService.getAllParts();
 	promise.then(function(resp,err){

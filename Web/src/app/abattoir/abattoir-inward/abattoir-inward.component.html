@@ -1,55 +1,56 @@
 <div class="container" style="width:600px;">
-  <h1>Abattoir Inward</h1>
+  <h1>Abattoir Received</h1>
   <form>
     <div class="form-group">
       <label>Farmer</label>
-      <select class="form-control" [(ngModel)]="selectFarmer" (change)="setFarmer()" name="selectFarmer" id="selectFarmer" required>  
+      <select class="form-control" [(ngModel)]="abattoirReceived.farmer" (change)="setFarmer()" name="selectFarmer" id="selectFarmer" required>  
           <option *ngFor="let farmer of userData.users.farmers" [value]="farmer.name">{{farmer.name}}</option>      
       </select>
     </div>      
+    
+    <div class="form-group">
+      <label for="materialInwardNumber">Purchase Order Reference Number</label>
+      <input type="text" [(ngModel)]="abattoirReceived.purchaseOrderReferenceNumber"  class="form-control" name="purchaseOrderReferenceNumber">
+    </div>
+
     <div class="form-group">
         <label for="guidGtin">GUID/GTIN</label>
-        <input type="text" class="form-control" id="guidGtin">
+        <select class="form-control" [(ngModel)]="abattoirReceived.guidGtin" (change)="setGuid()" name="guidGtin" required>
+            <option value="0" selected="selected"></option>
+            <option *ngFor="let guid of commonData.farmersProducts" [value]="guid.id +'-'+ guid.name">{{guid.code}}</option>
+        </select>
     </div>
-
-    <div class="form-group">
-      <label for="materialInwardNumber">Material Inward Number</label>
-      <input type="text" class="form-control" id="materialInwardNumber">
-    </div>
-
+    
     <div class="form-group">
         <label for="materialName">Material Name</label>
-        <input type="text" class="form-control" id="materialName">
+        <input type="text" [(ngModel)]="abattoirReceived.materialName" class="form-control" name="materialName">
     </div>
 
     <div class="form-group">
         <label for="materialGrade">Material Grade</label>
-        <select class="form-control" id="materialGrade" required>
+        <select class="form-control" [(ngModel)]="abattoirReceived.materialGrade" name="materialGrade" required>
             <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
         </select>
     </div>
     
     <div class="form-group">
         <label for="usedByDate">Used By Date</label>
-        <input type="text" class="form-control" bsDatepicker/>     
+        <input type="text" [(ngModel)]="abattoirReceived.userByDate" name="userByDate" class="form-control" bsDatepicker/>     
     </div>
 
     <div class="form-group">
         <label for="quantity" style="display: block;">Quantity</label>
-        <input type="text" class="form-control" style="display: inline-block; width:100px;" id="quantity">
-        <select class="form-control" id="qunatityUnit" required  style="display: inline-block; width:100px;">
+        <input type="text" class="form-control" [(ngModel)]="abattoirReceived.quantity" style="display: inline-block; width:100px;" name="quantity">
+        <select class="form-control" [(ngModel)]="abattoirReceived.qunatityUnit" name="qunatityUnit" required  style="display: inline-block; width:100px;">
             <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="alterEgo">Certificates</label>
-        <div *ngFor="let farmer of userData.users.farmers">                
-            <div *ngIf="farmer.name==selectFarmer">
-                <div *ngFor="let cert of farmer.certificates">
-                    <input checked [value]="cert" type="checkbox"/> {{cert}}
-                </div>
-            </div>
+        <div *ngFor="let cert of certificates">
+            <input [(ngModel)]="cert.checked" name="certificates" 
+                [value]="cert.id" type="checkbox"/> {{cert.name}}
         </div>
     </div>
 

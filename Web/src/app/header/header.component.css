@@ -12,3 +12,13 @@
     height: 40;
     margin: 10px 0px 3px 10px;
 }
+.menu-nav{
+    width: 80%
+}
+.user-name{
+    float: right;
+    padding: 10px;
+}
+.user-name a{
+    cursor: pointer;
+}

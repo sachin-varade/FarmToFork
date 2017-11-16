@@ -1,0 +1,37 @@
+{
+"abattoirDispatchUnits" : ["Tonne CWE"],
+"units" : ["Kg", "Tonne"],
+"materialGrades": ["A", "B", "C"],
+"routes":[
+            {
+                "routeid": 1, "name": "Vikhroli-Jogeshwari-Borivali"
+            },
+            {
+                "routeid": 1, "name": "Vikhroli-Mira Road-Borivali"
+            }
+        ],
+"pickDropLocations": [
+                        {"name": "Loc1"},
+                        {"name": "Loc2"},
+                        {"name": "Loc3"},
+                        {"name": "Loc4"},
+                        {"name": "Loc5"}
+                    ],
+"vehicleTypes": ["Normal Container", "Container with Freezer"],
+"shipmentStatus": ["PickedUp & InTransit", "Delivered"],
+"processorAcceptanceChecklist": ["Condition1", "Condition2", "Condition3"],
+"processingActions": ["Washed", "Processed", "Freezed"],
+"farmersCertificates": [
+                            { "id": 1, "name": "GFSI"},
+                            { "id": 1, "name": "BRC"},
+                            { "id": 1, "name": "KRAV"},
+                            { "id": 1, "name": "IFOAM"}
+                        ],
+"farmersProducts": [
+                            { "id": 1, "code": "899900461", "name": "Meatballs frozen 1000g SE"},
+                            { "id": 2, "code": "899900462", "name": "Meatballs frozen 2000g SE"},
+                            { "id": 3, "code": "899900463", "name": "Meatballs frozen 3000g SE"},
+                            { "id": 4, "code": "899900464", "name": "Meatballs frozen 4000g SE"}
+                        ]
+}
+ 

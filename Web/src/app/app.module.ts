@@ -15,6 +15,7 @@ import { AbattoirOutwardComponent } from './abattoir/abattoir-outward/abattoir-o
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {HttpModule} from '@angular/http';
 
 import { LogisticInwardComponent } from './logistic/logistic-inward/logistic-inward.component';
 import { LogisticOutwardComponent } from './logistic/logistic-outward/logistic-outward.component';
@@ -23,7 +24,7 @@ import { ProcessorInwardComponent } from './processor/processor-inward/processor
 import { ProcessorDispatchComponent } from './processor/processor-dispatch/processor-dispatch.component';
 import { ProcessItemComponent } from './processor/process-item/process-item.component';
 import { IkeaInwardComponent } from './ikea/ikea-inward/ikea-inward.component';
-
+import { AbattoirService } from './abattoir.service';
 const appRoutes:Routes = [
   {
     path: '',
@@ -36,47 +37,47 @@ const appRoutes:Routes = [
   },
   {
     path: 'abattoir/inward',
-    //canActivate: [AuthguardGuard],
+    canActivate: [AuthguardGuard],
     component: AbattoirInwardComponent
   },
   {
     path: 'abattoir/outward',
-    //canActivate: [AuthguardGuard],
+    canActivate: [AuthguardGuard],
     component: AbattoirOutwardComponent
   },
   {
     path: 'logistic/inward',
-    //canActivate: [AuthguardGuard],
+    canActivate: [AuthguardGuard],
     component: LogisticInwardComponent
   },
   {
     path: 'logistic/dashboard',
-    //canActivate: [AuthguardGuard],
+    canActivate: [AuthguardGuard],
     component: LogisticDashboardComponent
   },
   {
     path: 'logistic/outward/:consignmentNumber',
-    //canActivate: [AuthguardGuard],
+    canActivate: [AuthguardGuard],
     component: LogisticOutwardComponent
   },
   {
     path: 'processor/inward',
-    //canActivate: [AuthguardGuard],
+    canActivate: [AuthguardGuard],
     component: ProcessorInwardComponent
   },
   {
     path: 'processor/process',
-    //canActivate: [AuthguardGuard],
+    canActivate: [AuthguardGuard],
     component: ProcessItemComponent
   },
   {
     path: 'processor/dispatch',
-    //canActivate: [AuthguardGuard],
+    canActivate: [AuthguardGuard],
     component: ProcessorDispatchComponent
   },
   {
     path: 'ikea/inward',
-    //canActivate: [AuthguardGuard],
+    canActivate: [AuthguardGuard],
     component: IkeaInwardComponent
   }
 ]
@@ -90,9 +91,10 @@ const appRoutes:Routes = [
   BrowserModule,    
   BsDatepickerModule.forRoot(),
   TimepickerModule.forRoot(),
-  NgbModule.forRoot()
+  NgbModule.forRoot(),
+  HttpModule
   ],
-  providers: [UserService, AuthguardGuard, FormsModule],
+  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService],
   bootstrap: [AppComponent]
 })
 
