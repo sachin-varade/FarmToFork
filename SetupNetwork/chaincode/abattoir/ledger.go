@@ -42,16 +42,23 @@ func main() {
 type SimpleChaincode struct {
 }
 
-type AbattoirMaterialInward struct {
+type AbattoirMaterialReceived struct {
 	AbattoirId			string	`json:"abattoirId"`
-	AbattoirInwardId	string	`json:"abattoirInwardId"`
+	PurchaseOrderReferenceNumber	string	`json:"purchaseOrderReferenceNumber"`
+	RawMaterialBatchNumber	string	`json:"rawMaterialBatchNumber"`	
 	FarmerId			string	`json:"farmerId"`	
+	GUIDNumber			string	`json:"guidNumber"`
 	MaterialName		string	`json:"materialName"`
 	MaterialGrade		string	`json:"materialGrade"`
 	UseByDate			string	`json:"useByDate"`
 	Quantity			string	`json:"quantity"`
-	GUIDNumber			string	`json:"guidNumber"`
-	Certificates		[]string	`json:"certificates"`
+	QuantityUnit			string	`json:"quantityUnit"`	
+	Certificates		[]FarmersCertificate	`json:"certificates"`
+}
+
+type FarmersCertificate struct {
+	Id			string	`json:"id"`	
+	Name			string	`json:"name"`
 }
 
 type AbattoirDispatch struct {
@@ -134,8 +141,11 @@ type AllPartDetails struct{
 	Parts []Part `json:"parts"`
 }
 
-type AllAbattoirInwardIds struct{
-	AbattoirInwardIds []string `json:"abattoirInwardIds"`
+type AllAbattoirReceivedIds struct{
+	PurchaseOrderReferenceNumbers []string `json:"purchaseOrderReferenceNumbers"`
+}
+type AllAbattoirReceivedDetails struct{
+	AbattoirMaterialReceived []AbattoirMaterialReceived `json:"abattoirMaterialReceived"`
 }
 
 type AllAbattoirDispatch struct{
@@ -187,10 +197,10 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
-	var allAbattoirInwardIds AllAbattoirInwardIds
+	var allAbattoirReceivedIds AllAbattoirReceivedIds
 
-	jsonAsBytesabattoirInwardIds, _ := json.Marshal(allAbattoirInwardIds)
-	err = stub.PutState("allAbattoirInwardIds", jsonAsBytesabattoirInwardIds)
+	jsonAsBytesPurchaseOrderReferenceNumbers, _ := json.Marshal(allAbattoirReceivedIds)
+	err = stub.PutState("allAbattoirReceivedIds", jsonAsBytesPurchaseOrderReferenceNumbers)
 	if err != nil {
 		//return nil, err
 		return shim.Error(err.Error())
@@ -244,10 +254,10 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return updatePart(stub, args)	
 	} else if function == "getAllPartDetails" {			//create a part
 		return getAllPartDetails(stub, args[0],args[1])	
-	} else if function == "getAllAbattoirInwards" {
-		return getAllAbattoirInwards(stub, args[0])	
-	} else if function == "createAbattoirInward" {
-		return createAbattoirInward(stub, args)
+	} else if function == "getAllAbattoirReceived" {
+		return getAllAbattoirReceived(stub, args[0])	
+	} else if function == "saveAbattoirReceived" {
+		return saveAbattoirReceived(stub, args)
 	} else if function == "getAllAbattoirDispatch" {
 		return getAllAbattoirDispatch(stub, args[0])
 	} else if function == "createAbattoirDispatch" {

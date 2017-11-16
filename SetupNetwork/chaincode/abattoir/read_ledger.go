@@ -124,44 +124,53 @@ func getAllParts(stub  shim.ChaincodeStubInterface, user string) pb.Response {
 
 
 // ============================================================================================================================
-// Get All Abattoir Inwards
+// Get All Abattoir Received
 // ============================================================================================================================
-func getAllAbattoirInwards(stub  shim.ChaincodeStubInterface, user string) pb.Response {
-	fmt.Println("getAllAbattoirInwards:Looking for All Abattoir Inwards");
+func getAllAbattoirReceived(stub  shim.ChaincodeStubInterface, option string) pb.Response {
+	fmt.Println("getAllAbattoirReceived:Looking for All Abattoir Received");
 
-	//get the AllAbattoirInwards index
-	allBAsBytes, err := stub.GetState("allAbattoirInwardIds")
+	//get the AllAbattoirReceived index
+	allBAsBytes, err := stub.GetState("allAbattoirReceivedIds")
 	if err != nil {
-		return shim.Error("Failed to get all Abattoir Inwards")
+		return shim.Error("Failed to get all Abattoir Received")
 	}
 
-	var res AllAbattoirInwardIds
+	var res AllAbattoirReceivedIds
 	err = json.Unmarshal(allBAsBytes, &res)
 	//fmt.Println(allBAsBytes);
 	if err != nil {
 		fmt.Println("Printing Unmarshal error:-");
 		fmt.Println(err);
-		return shim.Error("Failed to Unmarshal all Abattoir Inwards")
+		return shim.Error("Failed to Unmarshal all Abattoir Received")
 	}
 
-	var rab AllAbattoirInwardIds
+	var allIds AllAbattoirReceivedIds
+	var allDetails AllAbattoirReceivedDetails
+	for i := range res.PurchaseOrderReferenceNumbers{
 
-	for i := range res.AbattoirInwardIds{
-
-		sbAsBytes, err := stub.GetState(res.AbattoirInwardIds[i])
+		sbAsBytes, err := stub.GetState(res.PurchaseOrderReferenceNumbers[i])
 		if err != nil {
-			return shim.Error("Failed to get Abattoir Inward Id ")
+			return shim.Error("Failed to get Abattoir Received Id ")
 		}
-		var sb AbattoirMaterialInward
+		var sb AbattoirMaterialReceived
 		json.Unmarshal(sbAsBytes, &sb)
 
-		// currently we show all Inwards to users
-		rab.AbattoirInwardIds = append(rab.AbattoirInwardIds,sb.AbattoirInwardId);
+		if option == "IDS" {
+			allIds.PurchaseOrderReferenceNumbers = append(allIds.PurchaseOrderReferenceNumbers,sb.PurchaseOrderReferenceNumber);	
+		} else if option == "DETAILS" {
+			allDetails.AbattoirMaterialReceived = append(allDetails.AbattoirMaterialReceived,sb);	
+		}		
 	}
-
-	rabAsBytes, _ := json.Marshal(rab)
-
-	return shim.Success(rabAsBytes)
+	
+	if option == "IDS" {
+		rabAsBytes, _ := json.Marshal(allIds)		
+		return shim.Success(rabAsBytes)	
+	} else if option == "DETAILS" {
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+	
+	return shim.Success(nil)
 }
 
 // ============================================================================================================================
@@ -170,10 +179,10 @@ func getAllAbattoirInwards(stub  shim.ChaincodeStubInterface, user string) pb.Re
 func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, user string) pb.Response {
 	fmt.Println("getAllAbattoirDispatch:Looking for All Abattoir Dispatch");
 
-	//get the AllAbattoirInwards index
+	//get the AllAbattoirReceived index
 	allBAsBytes, err := stub.GetState("allAbattoirDispatch")
 	if err != nil {
-		return shim.Error("Failed to get all Abattoir Inwards")
+		return shim.Error("Failed to get all Abattoir Received")
 	}
 
 	var res AllAbattoirDispatch
@@ -196,7 +205,7 @@ func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, user string) pb.R
 		var sb AbattoirDispatch
 		json.Unmarshal(sbAsBytes, &sb)
 
-		// currently we show all Inwards to users
+		// currently we show all Received to users
 		rab.AbattoirDispatchList = append(rab.AbattoirDispatchList,sb);
 	}
 
@@ -215,7 +224,7 @@ func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, user string) 
 	//get the LogisticTransactions index
 	allBAsBytes, err := stub.GetState("allLogisticTransactions")
 	if err != nil {
-		return shim.Error("Failed to get all Abattoir Inwards")
+		return shim.Error("Failed to get all Abattoir Received")
 	}
 
 	var res AllLogisticTransactions

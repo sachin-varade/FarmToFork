@@ -20,6 +20,9 @@ export class UserService {
     const url = `${this.BASE_URL}/login`;
     return this.http.post(url, user).toPromise()
     .then((results: any) => {
+      if(results._body.indexOf("Error") > -1){
+        return results;
+      }
       this.loggedInUser = JSON.parse(results._body);
       localStorage.setItem('loggedInUser', results._body);
       return results;

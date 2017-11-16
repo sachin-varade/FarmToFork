@@ -3,21 +3,26 @@
   <form>
     <div class="form-group">
       <label>Farmer</label>
-      <select class="form-control" [(ngModel)]="abattoirReceived.farmer" (change)="setFarmer()" name="selectFarmer" id="selectFarmer" required>  
-          <option *ngFor="let farmer of userData.users.farmers" [value]="farmer.name">{{farmer.name}}</option>      
+      <select class="form-control" [(ngModel)]="abattoirReceived.farmer.id" (change)="setFarmer()" name="selectFarmer" id="selectFarmer" required>  
+          <option *ngFor="let farmer of userData.users.farmers" [value]="farmer.id">{{farmer.name}}</option>      
       </select>
     </div>      
     
+    <div class="form-group">
+        <label for="rawMaterialBatchNumber">Raw Material Batch Number</label>
+        <input type="text" [(ngModel)]="abattoirReceived.rawMaterialBatchNumber"  class="form-control" name="rawMaterialBatchNumber">
+    </div>
+
     <div class="form-group">
       <label for="materialInwardNumber">Purchase Order Reference Number</label>
       <input type="text" [(ngModel)]="abattoirReceived.purchaseOrderReferenceNumber"  class="form-control" name="purchaseOrderReferenceNumber">
     </div>
 
     <div class="form-group">
-        <label for="guidGtin">GUID/GTIN</label>
-        <select class="form-control" [(ngModel)]="abattoirReceived.guidGtin" (change)="setGuid()" name="guidGtin" required>
+        <label for="guidNumber">GUID/GTIN</label>
+        <select class="form-control" [(ngModel)]="abattoirReceived.guidNumber" (change)="setGuid()" name="guidNumber" required>
             <option value="0" selected="selected"></option>
-            <option *ngFor="let guid of commonData.farmersProducts" [value]="guid.id +'-'+ guid.name">{{guid.code}}</option>
+            <option *ngFor="let guid of commonData.farmersProducts" [value]="guid.code">{{guid.code}}</option>
         </select>
     </div>
     
@@ -41,7 +46,7 @@
     <div class="form-group">
         <label for="quantity" style="display: block;">Quantity</label>
         <input type="text" class="form-control" [(ngModel)]="abattoirReceived.quantity" style="display: inline-block; width:100px;" name="quantity">
-        <select class="form-control" [(ngModel)]="abattoirReceived.qunatityUnit" name="qunatityUnit" required  style="display: inline-block; width:100px;">
+        <select class="form-control" [(ngModel)]="abattoirReceived.quantityUnit" name="quantityUnit" required  style="display: inline-block; width:100px;">
             <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
         </select>
     </div>
@@ -54,7 +59,7 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-success">Submit</button>
+    <button type="submit" (click)="saveAbattoirReceived();" class="btn btn-success">Submit</button>
 
   </form>
 </div>

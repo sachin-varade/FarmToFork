@@ -2,7 +2,7 @@
   <h1>IKEA Inward</h1>
   <form>
     <div class="form-group">
-      <label for="guidGtin">GUID/GTIN</label>
+      <label for="guidNumber">GUID/GTIN</label>
       <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
     </div>
     
@@ -34,7 +34,7 @@
     <div class="form-group">
       <label for="quantity" style="display: block;">Quantity</label>
       <input type="text" class="form-control" style="display: inline-block; width:100px;" id="quantity">
-      <select class="form-control" id="qunatityUnit" required  style="display: inline-block; width:100px;">
+      <select class="form-control" id="quantityUnit" required  style="display: inline-block; width:100px;">
           <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
       </select>
     </div>

@@ -42,9 +42,18 @@ router.get("/getCommonData", function(req, res) {
 	res.send(commonData);
 });
 
+router.get("/getAllAbattoirReceived/:option", function(req, res) {    
+    var promise = abattoirService.getAllAbattoirReceived(req.params.option);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
 router.post("/saveAbattoirReceived", function(req, res) {    
-	var request = abattoirService.saveAbattoirReceived(req.body);	
-	res.send(request);
+	var promise = abattoirService.saveAbattoirReceived(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
 });
 
 

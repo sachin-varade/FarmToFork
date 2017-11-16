@@ -11,9 +11,11 @@ export class FarmersCertificate {
 }
 
 export class AbattoirReceived {
-    farmer: Farmer;
+    abattoirId: number;
+    farmer: Farmer = new Farmer();
     purchaseOrderReferenceNumber: string;
-    guidGtin: string;
+    rawMaterialBatchNumber: string;
+    guidNumber: string;
     materialName: string;
     materialGrade: string;
     userByDate: Date;

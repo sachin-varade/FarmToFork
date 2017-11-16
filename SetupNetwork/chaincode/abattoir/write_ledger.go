@@ -22,6 +22,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -130,59 +131,63 @@ func updatePart(stub  shim.ChaincodeStubInterface, args []string) pb.Response {
 }
 
 //Create AbattoirInward block
-func createAbattoirInward(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
 	var err error
-	fmt.Println("Running createAbattoirInward..")
+	fmt.Println("Running saveAbattoirReceived..")
 
-	if len(args) != 9 {
+	if len(args) != 11 {
 		fmt.Println("Incorrect number of arguments. Expecting 9 - AbattoirId..")
 		return shim.Error("Incorrect number of arguments. Expecting 9")
 	}
 
-	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]);
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]);
 
-	var bt AbattoirMaterialInward
+	var bt AbattoirMaterialReceived
 	bt.AbattoirId				= args[0]
-	bt.AbattoirInwardId			= args[1]
-	bt.FarmerId					= args[2]
-	bt.MaterialName				= args[3]
-	bt.MaterialGrade			= args[4]
-	bt.UseByDate				= args[5]
-	bt.Quantity					= args[6]
-	bt.GUIDNumber				= args[7]
+	bt.PurchaseOrderReferenceNumber			= args[1]
+	bt.RawMaterialBatchNumber			= args[2]	
+	bt.FarmerId					= args[3]
+	bt.GUIDNumber					= args[4]
+	bt.MaterialName				= args[5]
+	bt.MaterialGrade			= args[6]
+	bt.UseByDate				= args[7]
+	bt.Quantity					= args[8]
+	bt.QuantityUnit					= args[9]	
 
-	// var tx Transaction
-	// tx.DateOfManufacture		= args[2]
-	// tx.TType 			= "CREATE"
-	// tx.User 			= args[3]
-	// bt.Transactions = append(bt.Transactions, tx)
-
-	var certificate string
-	certificate			= args[8]
-	bt.Certificates = append(bt.Certificates, certificate)
+	var cert FarmersCertificate
+	
+	if args[10] != "" {
+		p := strings.Split(args[10], ",")
+		for i := range p {
+			c := strings.Split(p[i], "^")
+			cert.Id = c[0]
+			cert.Name = c[1]
+			bt.Certificates = append(bt.Certificates, cert)
+		}
+	}
 
 	//Commit Inward entry to ledger
-	fmt.Println("createAbattoirInward - Commit AbattoirInward To Ledger");
+	fmt.Println("saveAbattoirReceived - Commit AbattoirInward To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
-	err = stub.PutState(bt.AbattoirInwardId, btAsBytes)
+	err = stub.PutState(bt.PurchaseOrderReferenceNumber, btAsBytes)
 	if err != nil {		
 		return shim.Error(err.Error())
 	}
 
-	//Update All Parts Array
-	allBAsBytes, err := stub.GetState("allAbattoirInwardIds")
+	//Update All Abattoirs Array
+	allBAsBytes, err := stub.GetState("allAbattoirReceivedIds")
 	if err != nil {
 		return shim.Error("Failed to get all Abattoir Inward Ids")
 	}
-	var allb AllAbattoirInwardIds
+	var allb AllAbattoirReceivedIds
 	err = json.Unmarshal(allBAsBytes, &allb)
 	if err != nil {
-		return shim.Error("Failed to Unmarshal all Inwards")
+		return shim.Error("Failed to Unmarshal all Received")
 	}
-	allb.AbattoirInwardIds = append(allb.AbattoirInwardIds,bt.AbattoirInwardId)
+	allb.PurchaseOrderReferenceNumbers = append(allb.PurchaseOrderReferenceNumbers, bt.PurchaseOrderReferenceNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
-	err = stub.PutState("allAbattoirInwardIds", allBuAsBytes)
+	err = stub.PutState("allAbattoirReceivedIds", allBuAsBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}

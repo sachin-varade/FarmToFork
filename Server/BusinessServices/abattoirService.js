@@ -39,8 +39,31 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
     
+    abattoirService.getAllAbattoirReceived = function(option){
+        console.log("getAllAbattoirReceived");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.abattoirchannel, 
+                abattoirConfig.channels.abattoirchannel.chaincodeId, 
+                "getAllAbattoirReceived", 
+                [option]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
     abattoirService.saveAbattoirReceived = function(abattoirReceived){
         console.log("saveAbattoirReceived");
+        var certString = "";        
+        abattoirReceived.certificates.forEach(element => {
+            if(certString == "")
+                certString = element.id +"^"+ element.name;
+            else
+                certString += ","+ element.id +"^"+ element.name;
+        });
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
@@ -51,16 +74,17 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                 abattoirConfig.channels.abattoirchannel.chaincodeId, 
                 "saveAbattoirReceived",  
                 [
-                    abattoirReceived.abattoirId, 
+                    abattoirReceived.abattoirId.toString(), 
                     abattoirReceived.purchaseOrderReferenceNumber,
-                    abattoirReceived.farmer.id,
-                    abattoirReceived.guidGtin,
+                    abattoirReceived.rawMaterialBatchNumber,
+                    abattoirReceived.farmer.id.toString(),
+                    abattoirReceived.guidNumber,
                     abattoirReceived.materialName,
                     abattoirReceived.materialGrade,
                     abattoirReceived.userByDate,
                     abattoirReceived.quantity,
                     abattoirReceived.quantityUnit,
-                    abattoirReceived.certificates
+                    certString
                 ]
                 //["P001", "C001", "01-01-2017", "Jim", "Break", "Break", "na", "B001", "" ]
             );                

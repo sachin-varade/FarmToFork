@@ -2,8 +2,8 @@
   <h1>Abattoir Outward</h1>
   <form>
     <div class="form-group">
-        <label for="guidGtin">GUID/GTIN</label>
-        <input type="text" class="form-control" id="guidGtin">
+        <label for="guidNumber">GUID/GTIN</label>
+        <input type="text" class="form-control" id="guidNumber">
     </div>
     
     <div class="form-group">
@@ -11,6 +11,7 @@
         <input type="text" class="form-control" id="consignmentNumber">
     </div>
 
+    
     <div class="form-group">
       <label for="materialInwardNumber">Material Inward Number</label>      
       <select class="form-control" id="materialInwardNumber" required>
@@ -20,12 +21,12 @@
 
     <div class="form-group">
         <label for="materialName">Material Name</label>
-        <input type="text" class="form-control" id="materialName" readonly>
+        <input type="text" class="form-control" id="materialName">
     </div>
 
     <div class="form-group">
         <label for="materialGrade">Material Grade</label>
-        <select class="form-control" id="materialGrade" required readonly>
+        <select class="form-control" id="materialGrade" required>
             <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
         </select>
     </div>
@@ -61,7 +62,7 @@
     <div class="form-group">
         <label for="quantity" style="display: block;">Quantity</label>
         <input type="text" class="form-control" style="display: inline-block; width:100px;" id="quantity">
-        <select class="form-control" id="qunatityUnit" required  style="display: inline-block; width:100px;">
+        <select class="form-control" id="quantityUnit" required  style="display: inline-block; width:100px;">
             <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
         </select>
     </div>
