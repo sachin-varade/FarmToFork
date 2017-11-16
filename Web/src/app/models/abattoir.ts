@@ -24,3 +24,18 @@ export class AbattoirReceived {
     certificates: FarmersCertificate[];
 }
 
+export class AbattoirDispatch {
+    abattoirId: number;    
+    consignmentNumber: string;
+    purchaseOrderReferenceNumber: string;
+    rawMaterialBatchNumber: string;
+    guidNumber: string;
+    materialName: string;
+    materialGrade: string;
+    temperatureStorageMin: string;
+    temperatureStorageMax: string;
+    productionDate: Date;
+    userByDate: Date;
+    quantity: number;
+    quantityUnit: string;
+}

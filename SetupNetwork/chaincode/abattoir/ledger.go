@@ -64,7 +64,8 @@ type FarmersCertificate struct {
 type AbattoirDispatch struct {
 	AbattoirId				string	`json:"abattoirId"`
 	ConsignmentNumber		string	`json:"consignmentNumber"`
-	AbattoirInwardId		string	`json:"abattoirInwardId"`
+	PurchaseOrderReferenceNumber		string	`json:"purchaseOrderReferenceNumber"`
+	RawMaterialBatchNumber				string	`json:"rawMaterialBatchNumber"`
 	GUIDNumber				string	`json:"guidNumber"`
 	MaterialName			string	`json:"materialName"`
 	MaterialGrade			string	`json:"materialGrade"`
@@ -73,7 +74,7 @@ type AbattoirDispatch struct {
 	ProductionDate			string	`json:"productionDate"`
 	UseByDate				string	`json:"useByDate"`
 	Quantity				string	`json:"quantity"`	
-	Certificates			[]string	`json:"certificates"`
+	QuantityUnit				string	`json:"quantityUnit"`	
 }
 
 type LogisticTransaction struct {	
@@ -148,8 +149,12 @@ type AllAbattoirReceivedDetails struct{
 	AbattoirMaterialReceived []AbattoirMaterialReceived `json:"abattoirMaterialReceived"`
 }
 
-type AllAbattoirDispatch struct{
-	AbattoirDispatchList []AbattoirDispatch `json:"abattoirDispatchList"`
+type AllAbattoirDispatchIds struct{
+	ConsignmentNumbers []string `json:"consignmentNumbers"`
+}
+
+type AllAbattoirDispatchDetails struct{
+	AbattoirMaterialDispatch []AbattoirDispatch `json:"abattoirMaterialDispatch"`
 }
 
 type AllLogisticTransactions struct{
@@ -206,10 +211,10 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 	
-	var allAbattoirDispatch AllAbattoirDispatch
+	var allAbattoirDispatchIds AllAbattoirDispatchIds
 	
-	jsonAsBytesAllAbattoirDispatch, _ := json.Marshal(allAbattoirDispatch)
-	err = stub.PutState("allAbattoirDispatch", jsonAsBytesAllAbattoirDispatch)
+	jsonAsBytesAllAbattoirDispatchIds, _ := json.Marshal(allAbattoirDispatchIds)
+	err = stub.PutState("allAbattoirDispatchIds", jsonAsBytesAllAbattoirDispatchIds)
 	if err != nil {
 		//return nil, err
 		return shim.Error(err.Error())
@@ -260,8 +265,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return saveAbattoirReceived(stub, args)
 	} else if function == "getAllAbattoirDispatch" {
 		return getAllAbattoirDispatch(stub, args[0])
-	} else if function == "createAbattoirDispatch" {
-		return createAbattoirDispatch(stub, args)
+	} else if function == "saveAbattoirDispatch" {
+		return saveAbattoirDispatch(stub, args)
 	} else if function == "getAllLogisticTransactions" {
 		return getAllLogisticTransactions(stub, args[0])
 	} else if function == "createLogisticTransaction" {

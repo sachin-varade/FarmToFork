@@ -55,6 +55,22 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
+    abattoirService.getAllAbattoirDispatch = function(option){
+        console.log("getAllAbattoirDispatch");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.abattoirchannel, 
+                abattoirConfig.channels.abattoirchannel.chaincodeId, 
+                "getAllAbattoirDispatch", 
+                [option]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
     abattoirService.saveAbattoirReceived = function(abattoirReceived){
         console.log("saveAbattoirReceived");
         var certString = "";        
@@ -87,6 +103,40 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     certString
                 ]
                 //["P001", "C001", "01-01-2017", "Jim", "Break", "Break", "na", "B001", "" ]
+            );                
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    abattoirService.saveAbattoirDispatch = function(abattoirDispatch){
+        console.log("saveAbattoirDispatch");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);            
+            return invokeChainCode.invokeChainCode(fabric_client, 
+                channels.abattoirchannel, 
+                eventHubPeers.abattoirEventHubPeer._url, 
+                //"grpc://localhost:7053",
+                abattoirConfig.channels.abattoirchannel.chaincodeId, 
+                "saveAbattoirDispatch",  
+                [                    
+                    abattoirDispatch.abattoirId.toString(), 
+                    abattoirDispatch.consignmentNumber,
+                    abattoirDispatch.purchaseOrderReferenceNumber,
+                    abattoirDispatch.rawMaterialBatchNumber,                    
+                    abattoirDispatch.guidNumber,
+                    abattoirDispatch.materialName,
+                    abattoirDispatch.materialGrade,
+                    abattoirDispatch.temperatureStorageMin,
+                    abattoirDispatch.temperatureStorageMax,
+                    abattoirDispatch.productionDate,
+                    abattoirDispatch.userByDate,
+                    abattoirDispatch.quantity,
+                    abattoirDispatch.quantityUnit,                    
+                ]                
             );                
         }).then((results) => {
             return results;

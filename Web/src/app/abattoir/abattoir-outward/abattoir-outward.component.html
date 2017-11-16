@@ -1,34 +1,41 @@
 <div class="container" style="width:600px;">
-  <h1>Abattoir Outward</h1>
+  <h1>Abattoir Dispatch</h1>
   <form>
     <div class="form-group">
-        <label for="guidNumber">GUID/GTIN</label>
-        <input type="text" class="form-control" id="guidNumber">
-    </div>
-    
-    <div class="form-group">
         <label for="consignmentNumber">Consignment Number</label>
-        <input type="text" class="form-control" id="consignmentNumber">
+        <input type="text" [(ngModel)]="abattoirDispatch.consignmentNumber" class="form-control" name="consignmentNumber">
     </div>
 
-    
     <div class="form-group">
-      <label for="materialInwardNumber">Material Inward Number</label>      
-      <select class="form-control" id="materialInwardNumber" required>
-        <option *ngFor="" [value]=""></option>
+      <label for="purchaseOrderReferenceNumber">Purchase Order Reference Number</label>      
+      <select class="form-control" [(ngModel)]="abattoirDispatch.purchaseOrderReferenceNumber" (change)="getProductDetails()" name="purchaseOrderReferenceNumber" required>        
+        <option *ngFor="let rec of abattoirReceivedList" [value]="rec.purchaseOrderReferenceNumber">{{rec.purchaseOrderReferenceNumber}}</option>
       </select>
     </div>
 
     <div class="form-group">
-        <label for="materialName">Material Name</label>
-        <input type="text" class="form-control" id="materialName">
+      <label for="rawMaterialBatchNumber">Raw Material Batch Number</label>
+      <input type="text" [(ngModel)]="abattoirDispatch.rawMaterialBatchNumber"  class="form-control" name="rawMaterialBatchNumber">
     </div>
 
     <div class="form-group">
-        <label for="materialGrade">Material Grade</label>
-        <select class="form-control" id="materialGrade" required>
-            <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
+        <label for="guidNumber">GUID/GTIN</label>
+        <select class="form-control" [(ngModel)]="abattoirDispatch.guidNumber" (change)="setGuid()" name="guidNumber" required>
+            <option value="0" selected="selected"></option>
+            <option *ngFor="let guid of commonData.abattoirsProducts" [value]="guid.code">{{guid.code}}</option>
         </select>
+    </div>
+
+    <div class="form-group">
+        <label for="materialName">Material Name</label>
+        <input type="text" [(ngModel)]="abattoirDispatch.materialName" class="form-control" name="materialName">
+    </div>
+
+    <div class="form-group">
+      <label for="materialGrade">Material Grade</label>
+      <select class="form-control" [(ngModel)]="abattoirDispatch.materialGrade" name="materialGrade" required>
+          <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
+      </select>
     </div>
     
     <div class="form-group">
@@ -39,35 +46,35 @@
         <label>Min</label>
       </div>
       <div class="min-max-temp-field">      
-        <input type="text" class="form-control" id="minTemp">
+        <input type="text" class="form-control" [(ngModel)]="abattoirDispatch.temperatureStorageMin" name="temperatureStorageMin">
       </div>
       <div class="min-max-temp-label">      
         <label>Max</label>
       </div>
       <div class="min-max-temp-field">      
-        <input type="text" class="form-control" id="maxTemp">
+        <input type="text" class="form-control" [(ngModel)]="abattoirDispatch.temperatureStorageMax" name="temperatureStorageMax">
       </div>
     </div>
     
     <div class="form-group">
         <label for="productionDate">Production Date</label>
-        <input type="text" class="form-control" bsDatepicker/>
+        <input type="text" [(ngModel)]="abattoirDispatch.productionDate" name="productionDate" class="form-control" bsDatepicker/>
     </div>
 
     <div class="form-group">
         <label for="usedByDate">Used By Date</label>
-        <input type="text" class="form-control" bsDatepicker/>
+        <input type="text" [(ngModel)]="abattoirDispatch.userByDate" name="userByDate" class="form-control" bsDatepicker/>
     </div>
 
     <div class="form-group">
-        <label for="quantity" style="display: block;">Quantity</label>
-        <input type="text" class="form-control" style="display: inline-block; width:100px;" id="quantity">
-        <select class="form-control" id="quantityUnit" required  style="display: inline-block; width:100px;">
-            <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
-        </select>
-    </div>
+      <label for="quantity" style="display: block;">Quantity</label>
+      <input type="text" class="form-control" [(ngModel)]="abattoirDispatch.quantity" style="display: inline-block; width:100px;" name="quantity">
+      <select class="form-control" [(ngModel)]="abattoirDispatch.quantityUnit" name="quantityUnit" required  style="display: inline-block; width:100px;">
+          <option *ngFor="let unit of commonData.abattoirDispatchUnits" [value]="unit">{{unit}}</option>
+      </select>
+  </div>
 
-    <button type="submit" class="btn btn-success">Submit</button>
+    <button type="submit" (click)="saveAbattoirDispatch();" class="btn btn-success">Submit</button>
 
   </form>
 </div>

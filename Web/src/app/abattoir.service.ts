@@ -13,6 +13,31 @@ export class AbattoirService {
 
   saveAbattoirReceived(abattoirReceived: AbattoirModels.AbattoirReceived): Promise<any> {
     this.url = `${this.BASE_URL}/saveAbattoirReceived`;
-    return this.http.post(this.url, abattoirReceived).toPromise();
+    return this.http.post(this.url, abattoirReceived).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      alert("Error Occured.....");
+    });
+  }
+
+  saveAbattoirDispatch(abattoirDispatch: AbattoirModels.AbattoirDispatch): Promise<any> {
+    this.url = `${this.BASE_URL}/saveAbattoirDispatch`;
+    return this.http.post(this.url, abattoirDispatch).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      alert("Error Occured.....");
+    });
+  }
+
+  getAllAbattoirReceived(option: string): Promise<any> {
+    this.url = `${this.BASE_URL}/getAllAbattoirReceived`;
+    return this.http.get(this.url+"/"+ option).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      alert("Error Occured.....");
+    });
   }
 }

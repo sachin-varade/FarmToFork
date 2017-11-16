@@ -56,7 +56,19 @@ router.post("/saveAbattoirReceived", function(req, res) {
 	});			
 });
 
+router.get("/getAllAbattoirDispatch/:option", function(req, res) {    
+    var promise = abattoirService.getAllAbattoirDispatch(req.params.option);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
 
+router.post("/saveAbattoirDispatch", function(req, res) {    
+	var promise = abattoirService.saveAbattoirDispatch(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
 
 router.get("/getAllParts", function(req, res) {    
     var promise = abattoirService.getAllParts();

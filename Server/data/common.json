@@ -28,10 +28,16 @@
                             { "id": 1, "name": "IFOAM"}
                         ],
 "farmersProducts": [
-                            { "id": 1, "code": "899900461", "name": "Meatballs frozen 1000g SE"},
-                            { "id": 2, "code": "899900462", "name": "Meatballs frozen 2000g SE"},
-                            { "id": 3, "code": "899900463", "name": "Meatballs frozen 3000g SE"},
-                            { "id": 4, "code": "899900464", "name": "Meatballs frozen 4000g SE"}
+                            { "id": 1, "code": "199900461", "name": "Meatballs frozen 1000g SE"},
+                            { "id": 2, "code": "199900462", "name": "Meatballs frozen 2000g SE"},
+                            { "id": 3, "code": "199900463", "name": "Meatballs frozen 3000g SE"},
+                            { "id": 4, "code": "199900464", "name": "Meatballs frozen 4000g SE"}
+                        ],
+"abattoirsProducts": [
+                            { "id": 1, "code": "299900461", "name": "Meatballs frozen 1000g SE"},
+                            { "id": 2, "code": "299900462", "name": "Meatballs frozen 2000g SE"},
+                            { "id": 3, "code": "299900463", "name": "Meatballs frozen 3000g SE"},
+                            { "id": 4, "code": "299900464", "name": "Meatballs frozen 4000g SE"}
                         ]
 }
  

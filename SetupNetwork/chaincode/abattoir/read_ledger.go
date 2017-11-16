@@ -176,16 +176,16 @@ func getAllAbattoirReceived(stub  shim.ChaincodeStubInterface, option string) pb
 // ============================================================================================================================
 // Get All Abattoir Dispatch
 // ============================================================================================================================
-func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, user string) pb.Response {
+func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, option string) pb.Response {
 	fmt.Println("getAllAbattoirDispatch:Looking for All Abattoir Dispatch");
 
 	//get the AllAbattoirReceived index
-	allBAsBytes, err := stub.GetState("allAbattoirDispatch")
+	allBAsBytes, err := stub.GetState("allAbattoirDispatchIds")
 	if err != nil {
-		return shim.Error("Failed to get all Abattoir Received")
+		return shim.Error("Failed to get all Abattoir dispatch")
 	}
 
-	var res AllAbattoirDispatch
+	var res AllAbattoirDispatchIds
 	err = json.Unmarshal(allBAsBytes, &res)
 	//fmt.Println(allBAsBytes);
 	if err != nil {
@@ -193,25 +193,34 @@ func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, user string) pb.R
 		fmt.Println(err);
 		return shim.Error("Failed to Unmarshal all Abattoir Dispatch records")
 	}
+	
+	var allIds AllAbattoirDispatchIds
+	var allDetails AllAbattoirDispatchDetails
+	for i := range res.ConsignmentNumbers{
 
-	var rab AllAbattoirDispatch
-
-	for i := range res.AbattoirDispatchList{
-
-		sbAsBytes, err := stub.GetState(res.AbattoirDispatchList[i].ConsignmentNumber)
+		sbAsBytes, err := stub.GetState(res.ConsignmentNumbers[i])
 		if err != nil {
 			return shim.Error("Failed to get Abattoir Dispatch record.")
 		}
 		var sb AbattoirDispatch
 		json.Unmarshal(sbAsBytes, &sb)
 
-		// currently we show all Received to users
-		rab.AbattoirDispatchList = append(rab.AbattoirDispatchList,sb);
+		if option == "IDS" {
+			allIds.ConsignmentNumbers = append(allIds.ConsignmentNumbers,sb.ConsignmentNumber);	
+		} else if option == "DETAILS" {
+			allDetails.AbattoirMaterialDispatch = append(allDetails.AbattoirMaterialDispatch,sb);	
+		}			
 	}
 
-	rabAsBytes, _ := json.Marshal(rab)
-
-	return shim.Success(rabAsBytes)
+	if option == "IDS" {
+		rabAsBytes, _ := json.Marshal(allIds)		
+		return shim.Success(rabAsBytes)	
+	} else if option == "DETAILS" {
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+	
+	return shim.Success(nil)
 }
 
 

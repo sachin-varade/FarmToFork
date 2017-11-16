@@ -54,15 +54,13 @@ export class AbattoirInwardComponent implements OnInit {
     this.abattoirReceived.abattoirId = this.currentUser.id;
     this.abattoirService.saveAbattoirReceived(this.abattoirReceived)
     .then((results: any) => {
-      if(results._body.indexOf('SUCCESS') > -1){
+      if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm();
         alert("Saved successfully.....");
       }
       else{
         alert("Error Occured.....");
       }
-    }).catch((err) => {
-      alert("Error Occured.....");
     });
   }
 
