@@ -1,1 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
+.temp-min-max{
+    width:200px;
+    margin-top: -15px;
+    height: 50px;
+    display: table;
+}
+.min-max-temp-label{
+    float: left;
+    width:40px;
+    margin-left: 10px;
+    padding-top: 3px;
+}
+.min-max-temp-field{
+    float: left;
+    width:100px;
+    margin-left: 10px;
+    padding-top: 3px;
+}
+.date-picker-div{
+    margin-top:0px;
+    margin-top: -40px;
+    display: table;
+    margin-bottom: 0px;    
+}
+.date-picker-date{
+    width:200px;
+    float: left;
+    margin-top: 26px;
+}
+.date-picker-time{
+    width:150px;
+    float: left;
+    margin-left:10px;    
+}
+
+#header {
+	text-align: left;
+	padding: 2px 0;
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 2px solid #403D3D;
+    height: 70px;
+}
+
+#companyLogoImg {
+    float: left;
+    height: 40;
+    margin: 10px 0px 3px 10px;
+}
+.menu-nav{
+    width: 80%
+}
+.user-name{
+    float: right;
+    padding: 10px;
+}
+.user-name a{
+    cursor: pointer;
+}
+.grid-table{
+    padding: 3px;
+}
+.grid-table th{
+    border: solid 1px #ccc;
+    padding: 3px;
+    background-color: #ccc;
+}
+.grid-table td{
+    border: solid 1px #ccc;
+    padding: 3px;
+}
+

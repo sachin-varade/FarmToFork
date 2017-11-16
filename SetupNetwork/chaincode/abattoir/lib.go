@@ -41,7 +41,6 @@ func sanitize_arguments(strs []string) error{
 	return nil
 }
 
-
 func NewUniqueId() string{
 	n := 10
     b := make([]byte, n)

@@ -35,9 +35,6 @@ func main() {
 	}
 }
 
-// Part tracker start
-
-
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
 }
@@ -106,42 +103,6 @@ type IotHistory struct {
 	Location	string `json:"location"`
 }
 
-
-type Part struct {
-	PartId 			string 	`json:"partId"`
-	PartCode 		string  `json:"partCode"`
-	BatchCode 		string  `json:"batchCode"`
-	PartType 		string  `json:"partType"`
-	PartName 		string  `json:"partName"`
-	QRCode 		string  `json:"qrcode"`
-	Description 		string  `json:"description"`
-	Transactions		[]Transaction `json:"transactions"`
-}
-
-// PART TRANSACTION HISTORY
-type Transaction struct {
-	User  			string  `json:"user"`
-	DateOfManufacture	string  `json:"dateOfManufacture"`
-	DateOfDelivery		string	`json:"dateOfDelivery"`
-	DateOfInstallation	string	`json:"dateOfInstallation"`
-	VehicleId		string	`json:"vehicleId"`
-	Vin		string	`json:"vin"`
-	WarrantyStartDate	string	`json:"warrantyStartDate"`
-	WarrantyEndDate		string	`json:"warrantyEndDate"`
-	TType 			string   `json:"ttype"`
-}
-
-//==============================================================================================================================
-//				Used as an index when querying all parts.
-//==============================================================================================================================
-type AllParts struct{
-	Parts []string `json:"parts"`
-}
-
-type AllPartDetails struct{
-	Parts []Part `json:"parts"`
-}
-
 type AllAbattoirReceivedIds struct{
 	PurchaseOrderReferenceNumbers []string `json:"purchaseOrderReferenceNumbers"`
 }
@@ -160,8 +121,6 @@ type AllAbattoirDispatchDetails struct{
 type AllLogisticTransactions struct{
 	LogisticTransactionList []LogisticTransaction `json:"LogisticTransactionList"`
 }
-
-// Part tracker end
 
 // ============================================================================================================================
 // Init - initialize the chaincode 
@@ -191,47 +150,29 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 			fmt.Println("args[0] is not empty, must be instantiating")
 		}
 	}
-
-	// Part Tracker start
-	var parts AllParts
-
-	jsonAsBytesParts, _ := json.Marshal(parts)
-	err = stub.PutState("allParts", jsonAsBytesParts)
-	if err != nil {
-		//return nil, err
-		return shim.Error(err.Error())
-	}
-
+	
 	var allAbattoirReceivedIds AllAbattoirReceivedIds
-
 	jsonAsBytesPurchaseOrderReferenceNumbers, _ := json.Marshal(allAbattoirReceivedIds)
 	err = stub.PutState("allAbattoirReceivedIds", jsonAsBytesPurchaseOrderReferenceNumbers)
-	if err != nil {
-		//return nil, err
+	if err != nil {		
 		return shim.Error(err.Error())
 	}
 	
 	var allAbattoirDispatchIds AllAbattoirDispatchIds
-	
 	jsonAsBytesAllAbattoirDispatchIds, _ := json.Marshal(allAbattoirDispatchIds)
 	err = stub.PutState("allAbattoirDispatchIds", jsonAsBytesAllAbattoirDispatchIds)
-	if err != nil {
-		//return nil, err
+	if err != nil {		
 		return shim.Error(err.Error())
 	}
 	
 	var allLogisticTransactions AllLogisticTransactions
-	
 	jsonAsBytesAllLogisticTransactions, _ := json.Marshal(allLogisticTransactions)
 	err = stub.PutState("allLogisticTransactions", jsonAsBytesAllLogisticTransactions)
-	if err != nil {
-		//return nil, err
+	if err != nil {		
 		return shim.Error(err.Error())
 	}
 
-
-	// Part tracker end
-	fmt.Println(" - ready for action")                          //self-test pass
+	fmt.Println(" - ready for action")                        
 	return shim.Success(nil)
 }
 
@@ -240,25 +181,12 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 // Invoke - Our entry point for Invocations
 // ============================================================================================================================
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
-	function, args := stub.GetFunctionAndParameters()
-	fmt.Println(" ")
+	function, args := stub.GetFunctionAndParameters()	
 	fmt.Println("starting invoke, for - " + function)
 
 	// Handle different functions
 	if function == "init" {                    //initialize the chaincode state, used as reset
 		return t.Init(stub)
-	} else if function == "read" {             //generic read ledger
-		return read(stub, args)
-	} else if function == "getPart" { 
-		return getPart(stub, args[0])
-	} else if function == "getAllParts" { 
-		return getAllParts(stub, args[0])
-	} else if function == "createPart" {			//create a part
-		return createPart(stub, args)	
-	} else if function == "updatePart" {			//create a part
-		return updatePart(stub, args)	
-	} else if function == "getAllPartDetails" {			//create a part
-		return getAllPartDetails(stub, args[0],args[1])	
 	} else if function == "getAllAbattoirReceived" {
 		return getAllAbattoirReceived(stub, args[0])	
 	} else if function == "saveAbattoirReceived" {
@@ -277,12 +205,10 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return pushIotDetailsToLogisticTransaction(stub, args)
 	}
 	
-
 	// error out
 	fmt.Println("Received unknown invoke function name - " + function)
 	return shim.Error("Received unknown invoke function name - '" + function + "'")
 }
-
 
 // ============================================================================================================================
 // Query - legacy function
