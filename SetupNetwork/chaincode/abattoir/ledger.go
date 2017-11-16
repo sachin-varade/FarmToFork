@@ -69,9 +69,10 @@ type AbattoirDispatch struct {
 	Certificates			[]string	`json:"certificates"`
 }
 
-type LogisticsTransaction struct {
-	LogisticProviderId				string	`json:"logisticProviderId"`
+type LogisticTransaction struct {	
 	ConsignmentNumber				string	`json:"consignmentNumber"`
+	LogisticProviderId				string	`json:"logisticProviderId"`
+	LogisticType					string	`json:"logisticType"`
 	RouteId							string	`json:"RouteId"`
 	AbattoirConsignmentId			string	`json:"AbattoirConsignmentId"`
 	VehicleId						string	`json:"vehicleId"`
@@ -83,8 +84,20 @@ type LogisticsTransaction struct {
 	TemperatureStorageMax			string	`json:"temperatureStorageMax"`
 	Quantity						string	`json:"quantity"`	
 	HandlingInstruction				string	`json:"handlingInstruction"`
-	ShipmentStatus					string	`json:"shipmentStatus"`
+	ShipmentStatus					[]ShipmentStatusTransaction	`json:"shipmentStatus"`
+	IotTemperatureHistory			[]IotHistory `json:"iotTemperatureHistory"`
 }
+
+type ShipmentStatusTransaction struct {
+	ShipmentStatus 			string 	`json:"shipmentStatus"`
+	ShipmentDate 			string  `json:"shipmentDate"`
+}
+
+type IotHistory struct {
+	Temperature	string `json:"temperature"`
+	Location	string `json:"location"`
+}
+
 
 type Part struct {
 	PartId 			string 	`json:"partId"`
@@ -129,8 +142,8 @@ type AllAbattoirDispatch struct{
 	AbattoirDispatchList []AbattoirDispatch `json:"abattoirDispatchList"`
 }
 
-type AllLogisticsTransactions struct{
-	LogisticsTransactionList []LogisticsTransaction `json:"logisticsTransactionList"`
+type AllLogisticTransactions struct{
+	LogisticTransactionList []LogisticTransaction `json:"LogisticTransactionList"`
 }
 
 // Part tracker end
@@ -192,10 +205,10 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 	
-	var allLogisticsTransactions AllLogisticsTransactions
+	var allLogisticTransactions AllLogisticTransactions
 	
-	jsonAsBytesAllLogisticsTransactions, _ := json.Marshal(allLogisticsTransactions)
-	err = stub.PutState("allLogisticsTransactions", jsonAsBytesAllLogisticsTransactions)
+	jsonAsBytesAllLogisticTransactions, _ := json.Marshal(allLogisticTransactions)
+	err = stub.PutState("allLogisticTransactions", jsonAsBytesAllLogisticTransactions)
 	if err != nil {
 		//return nil, err
 		return shim.Error(err.Error())
@@ -239,7 +252,16 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return getAllAbattoirDispatch(stub, args[0])
 	} else if function == "createAbattoirDispatch" {
 		return createAbattoirDispatch(stub, args)
+	} else if function == "getAllLogisticTransactions" {
+		return getAllLogisticTransactions(stub, args[0])
+	} else if function == "createLogisticTransaction" {
+		return createLogisticTransaction(stub, args)
+	} else if function == "updateLogisticTransactionStatus" {
+		return updateLogisticTransactionStatus(stub, args)
+	} else if function == "pushIotDetailsToLogisticTransaction" {
+		return pushIotDetailsToLogisticTransaction(stub, args)
 	}
+	
 
 	// error out
 	fmt.Println("Received unknown invoke function name - " + function)
