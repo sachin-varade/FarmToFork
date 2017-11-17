@@ -1,24 +1,80 @@
 #header {
-	text-align: left;
-	padding: 2px 0;
-    font-size: 12px;
-    font-weight: bold;
-    border-bottom: 2px solid #403D3D;
-    height: 70px;
+	padding: 0;
+}
+
+.header-inner{
+    padding: 10px;
+    background: #fff;
 }
 
 #companyLogoImg {
     float: left;
-    height: 40;
-    margin: 10px 0px 3px 10px;
+    height: 40px;
+    margin: 0;
 }
-.menu-nav{
-    width: 80%
+.user-control{
+    float: right;
+    height: 40px;
+    line-height: 40px;
 }
 .user-name{
-    float: right;
-    padding: 10px;
+    float: left;
+    padding-left: 40px;
+    position: relative;
 }
 .user-name a{
     cursor: pointer;
+}
+
+.user-name img{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    left: 0;
+    margin-top:5px; 
+}
+
+.user-name span{
+    display: inline-block;
+    color: #777;
+    font-size: 14px;
+    line-height: 40px;
+}
+
+.logout{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    margin-top: 8px;
+    float: left;
+    margin-left: 30px;
+}
+
+.logout img{
+    width: 100%;
+    vertical-align: top;
+}
+
+.menu-nav{
+    background: #232f84;
+    color: #fff;
+    border-radius: 0;
+    height: 40px;
+    min-height: 40px;
+    line-height: 40px;
+    border:none;
+}
+
+
+
+.menu-nav ul li a{
+    padding: 0 15px;
+    line-height: 40px;
+    color: #b7bef4;
+}
+
+.menu-nav ul li a:hover, .menu-nav ul li a:focus{
+    background: #3e4bad;
+    color: #fff;
 }

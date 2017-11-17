@@ -21,8 +21,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"strings"
+	"fmt"	
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -31,7 +30,7 @@ import (
 // ============================================================================================================================
 // Get All Abattoir Received
 // ============================================================================================================================
-func getAllAbattoirReceived(stub  shim.ChaincodeStubInterface, option string) pb.Response {
+func getAllAbattoirReceived(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
 	fmt.Println("getAllAbattoirReceived:Looking for All Abattoir Received");
 
 	//get the AllAbattoirReceived index
@@ -81,7 +80,7 @@ func getAllAbattoirReceived(stub  shim.ChaincodeStubInterface, option string) pb
 // ============================================================================================================================
 // Get All Abattoir Dispatch
 // ============================================================================================================================
-func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, option string) pb.Response {
+func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
 	fmt.Println("getAllAbattoirDispatch:Looking for All Abattoir Dispatch");
 
 	//get the AllAbattoirReceived index
@@ -99,6 +98,18 @@ func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, option string) pb
 		return shim.Error("Failed to Unmarshal all Abattoir Dispatch records")
 	}
 	
+	if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(value)
+		if err != nil {
+			return shim.Error("Failed to get Abattoir Dispatch record.")
+		}
+		var sb AbattoirDispatch
+		json.Unmarshal(sbAsBytes, &sb)
+		allDetails.AbattoirMaterialDispatch = append(allDetails.AbattoirMaterialDispatch,sb);	
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+	
 	var allIds AllAbattoirDispatchIds
 	var allDetails AllAbattoirDispatchDetails
 	for i := range res.ConsignmentNumbers{
@@ -110,17 +121,16 @@ func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, option string) pb
 		var sb AbattoirDispatch
 		json.Unmarshal(sbAsBytes, &sb)
 
-		if option == "IDS" {
+		if strings.ToLower(option) == "ids" {
 			allIds.ConsignmentNumbers = append(allIds.ConsignmentNumbers,sb.ConsignmentNumber);	
-		} else if option == "DETAILS" {
+		} else if strings.ToLower(option) == "details" {
 			allDetails.AbattoirMaterialDispatch = append(allDetails.AbattoirMaterialDispatch,sb);	
-		}			
-	}
+		}}
 
-	if option == "IDS" {
+	if strings.ToLower(option) == "ids" {
 		rabAsBytes, _ := json.Marshal(allIds)		
 		return shim.Success(rabAsBytes)	
-	} else if option == "DETAILS" {
+	} else if strings.ToLower(option) == "details" {
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}
@@ -132,16 +142,16 @@ func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, option string) pb
 // ============================================================================================================================
 // Get All Logistic Transactions
 // ============================================================================================================================
-func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, user string) pb.Response {
+func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
 	fmt.Println("getAllLogisticTransactions: Looking for All Logistic Transactions");
 
 	//get the LogisticTransactions index
-	allBAsBytes, err := stub.GetState("allLogisticTransactions")
+	allBAsBytes, err := stub.GetState("allLogisticTransactionIds")
 	if err != nil {
 		return shim.Error("Failed to get all Abattoir Received")
 	}
 
-	var res AllLogisticTransactions
+	var res AllLogisticTransactionIds
 	err = json.Unmarshal(allBAsBytes, &res)
 	//fmt.Println(allBAsBytes);
 	if err != nil {
@@ -149,23 +159,32 @@ func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, user string) 
 		fmt.Println(err);
 		return shim.Error("Failed to Unmarshal all Logistic Transactions records")
 	}
+	
+	var allIds AllLogisticTransactionIds
+	var allDetails AllLogisticTransactionDetails
+	for i := range res.ConsignmentNumbers{
 
-	var rab AllLogisticTransactions
-
-	for i := range res.LogisticTransactionList{
-
-		sbAsBytes, err := stub.GetState(res.LogisticTransactionList[i].ConsignmentNumber)
+		sbAsBytes, err := stub.GetState(res.ConsignmentNumbers[i])
 		if err != nil {
 			return shim.Error("Failed to get Logistic Transaction record.")
 		}
 		var sb LogisticTransaction
 		json.Unmarshal(sbAsBytes, &sb)
 
-		// append all transactions to list
-		rab.LogisticTransactionList = append(rab.LogisticTransactionList,sb);
+		if option == "IDS" {
+			allIds.ConsignmentNumbers = append(allIds.ConsignmentNumbers, sb.ConsignmentNumber);	
+		} else if option == "DETAILS" {
+			allDetails.LogisticTransactions = append(allDetails.LogisticTransactions, sb);	
+		}	
 	}
 
-	rabAsBytes, _ := json.Marshal(rab)
-
-	return shim.Success(rabAsBytes)
+	if option == "IDS" {
+		rabAsBytes, _ := json.Marshal(allIds)		
+		return shim.Success(rabAsBytes)	
+	} else if option == "DETAILS" {
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+	
+	return shim.Success(nil)
 }

@@ -51,6 +51,8 @@ type AbattoirMaterialReceived struct {
 	Quantity			string	`json:"quantity"`
 	QuantityUnit			string	`json:"quantityUnit"`	
 	Certificates		[]FarmersCertificate	`json:"certificates"`
+	UpdatedOn			string	`json:"updatedOn"`
+	UpdatedBy			string	`json:"updatedBy"`
 }
 
 type FarmersCertificate struct {
@@ -71,26 +73,32 @@ type AbattoirDispatch struct {
 	ProductionDate			string	`json:"productionDate"`
 	UseByDate				string	`json:"useByDate"`
 	Quantity				string	`json:"quantity"`	
-	QuantityUnit				string	`json:"quantityUnit"`	
+	QuantityUnit				string	`json:"quantityUnit"`
+	UpdatedOn			string	`json:"updatedOn"`
+	UpdatedBy			string	`json:"updatedBy"`	
 }
 
 type LogisticTransaction struct {	
-	ConsignmentNumber				string	`json:"consignmentNumber"`
-	LogisticProviderId				string	`json:"logisticProviderId"`
+	LogisticId				string	`json:"logisticId"`
 	LogisticType					string	`json:"logisticType"`
-	RouteId							string	`json:"RouteId"`
-	AbattoirConsignmentId			string	`json:"AbattoirConsignmentId"`
+	ConsignmentNumber				string	`json:"consignmentNumber"`		
+	RouteId							string	`json:"routeId"`
+	AbattoirConsignmentNumber			string	`json:"abattoirConsignmentNumber"`	
 	VehicleId						string	`json:"vehicleId"`
-	VehicleType						string	`json:"vehicleType"`
-	PickupDateTime					string	`json:"pickupDateTime"`
+	VehicleTypeId						string	`json:"vehicleTypeId"`
+	DispatchDateTime					string	`json:"dispatchDateTime"`
 	ExpectedDeliveryDateTime		string	`json:"expectedDeliveryDateTime"`
 	ActualDeliveryDateTime			string	`json:"actualDeliveryDateTime"`
 	TemperatureStorageMin			string	`json:"temperatureStorageMin"`
 	TemperatureStorageMax			string	`json:"temperatureStorageMax"`
 	Quantity						string	`json:"quantity"`	
+	QuantityUnit						string	`json:"quantityUnit"`	
+	CurrentStatus						string	`json:"currentStatus"`	
 	HandlingInstruction				string	`json:"handlingInstruction"`
 	ShipmentStatus					[]ShipmentStatusTransaction	`json:"shipmentStatus"`
 	IotTemperatureHistory			[]IotHistory `json:"iotTemperatureHistory"`
+	UpdatedOn			string	`json:"updatedOn"`
+	UpdatedBy			string	`json:"updatedBy"`
 }
 
 type ShipmentStatusTransaction struct {
@@ -101,6 +109,7 @@ type ShipmentStatusTransaction struct {
 type IotHistory struct {
 	Temperature	string `json:"temperature"`
 	Location	string `json:"location"`
+	UpdatedOn			string	`json:"updatedOn"`
 }
 
 type AllAbattoirReceivedIds struct{
@@ -118,8 +127,12 @@ type AllAbattoirDispatchDetails struct{
 	AbattoirMaterialDispatch []AbattoirDispatch `json:"abattoirMaterialDispatch"`
 }
 
-type AllLogisticTransactions struct{
-	LogisticTransactionList []LogisticTransaction `json:"LogisticTransactionList"`
+type AllLogisticTransactionIds struct{
+	ConsignmentNumbers []string `json:"ConsignmentNumbers"`
+}
+
+type AllLogisticTransactionDetails struct{
+	LogisticTransactions []LogisticTransaction `json:"logisticTransactions"`
 }
 
 // ============================================================================================================================
@@ -165,9 +178,9 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 	
-	var allLogisticTransactions AllLogisticTransactions
-	jsonAsBytesAllLogisticTransactions, _ := json.Marshal(allLogisticTransactions)
-	err = stub.PutState("allLogisticTransactions", jsonAsBytesAllLogisticTransactions)
+	var allLogisticTransactionIds AllLogisticTransactionIds
+	jsonAsBytesAllLogisticTransactionIds, _ := json.Marshal(allLogisticTransactionIds)
+	err = stub.PutState("allLogisticTransactionIds", jsonAsBytesAllLogisticTransactionIds)
 	if err != nil {		
 		return shim.Error(err.Error())
 	}
@@ -197,8 +210,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return saveAbattoirDispatch(stub, args)
 	} else if function == "getAllLogisticTransactions" {
 		return getAllLogisticTransactions(stub, args[0])
-	} else if function == "createLogisticTransaction" {
-		return createLogisticTransaction(stub, args)
+	} else if function == "saveLogisticTransaction" {
+		return saveLogisticTransaction(stub, args)
 	} else if function == "updateLogisticTransactionStatus" {
 		return updateLogisticTransactionStatus(stub, args)
 	} else if function == "pushIotDetailsToLogisticTransaction" {

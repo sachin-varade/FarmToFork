@@ -23,22 +23,6 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
     eventHubPeers = eventHubPeers;
     orderer = orderer;
 
-    abattoirService.getAllParts = function(){
-        console.log("getAllParts");
-        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
-        .then((user_from_store) => {
-            helper.checkUserEnrolled(user_from_store);
-            return queryChainCode.queryChainCode(channels.abattoirchannel, 
-                abattoirConfig.channels.abattoirchannel.chaincodeId, 
-                "getAllParts", 
-                ["a","b","10"]);
-        }).then((results) => {
-            return results;
-        }).catch((err) => {
-            throw err;
-        });
-    }
-    
     abattoirService.getAllAbattoirReceived = function(option){
         console.log("getAllAbattoirReceived");
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
@@ -63,6 +47,22 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             return queryChainCode.queryChainCode(channels.abattoirchannel, 
                 abattoirConfig.channels.abattoirchannel.chaincodeId, 
                 "getAllAbattoirDispatch", 
+                [option]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    abattoirService.getAllLogisticTransactions = function(option){
+        console.log("getAllLogisticTransactions");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.abattoirchannel, 
+                abattoirConfig.channels.abattoirchannel.chaincodeId, 
+                "getAllLogisticTransactions", 
                 [option]);
         }).then((results) => {
             return results;
@@ -100,9 +100,10 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     abattoirReceived.userByDate,
                     abattoirReceived.quantity,
                     abattoirReceived.quantityUnit,
-                    certString
-                ]
-                //["P001", "C001", "01-01-2017", "Jim", "Break", "Break", "na", "B001", "" ]
+                    certString,
+                    abattoirReceived.updatedBy.toString(),
+                    abattoirReceived.updatedOn                    
+                ]                
             );                
         }).then((results) => {
             return results;
@@ -135,7 +136,9 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     abattoirDispatch.productionDate,
                     abattoirDispatch.userByDate,
                     abattoirDispatch.quantity,
-                    abattoirDispatch.quantityUnit,                    
+                    abattoirDispatch.quantityUnit,
+                    abattoirDispatch.updatedBy.toString(),
+                    abattoirDispatch.updatedOn                  
                 ]                
             );                
         }).then((results) => {
@@ -145,8 +148,8 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
-    abattoirService.createPart = function(){
-        console.log("createPart");
+    abattoirService.saveLogisticTransaction = function(logisticTransaction){
+        console.log("saveLogisticTransaction");
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
@@ -155,8 +158,53 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                 eventHubPeers.abattoirEventHubPeer._url, 
                 //"grpc://localhost:7053",
                 abattoirConfig.channels.abattoirchannel.chaincodeId, 
-                "createPart",  
-                ["P001", "C001", "01-01-2017", "Jim", "Break", "Break", "na", "B001", "" ]);                
+                "saveLogisticTransaction",  
+                [                    
+                    logisticTransaction.logisticId.toString(), 
+                    logisticTransaction.logisticType,
+                    logisticTransaction.consignmentNumber,
+                    logisticTransaction.routeId,
+                    logisticTransaction.abattoirConsignmentNumber,
+                    logisticTransaction.vehicleId.toString(),                    
+                    logisticTransaction.vehicleTypeId.toString(),
+                    logisticTransaction.dispatchDateTime,
+                    logisticTransaction.expectedDeliveryDateTime,                    
+                    logisticTransaction.temperatureStorageMin,
+                    logisticTransaction.temperatureStorageMax,
+                    logisticTransaction.quantity,
+                    logisticTransaction.quantityUnit,                    
+                    logisticTransaction.handlingInstruction,
+                    logisticTransaction.updatedOn,
+                    logisticTransaction.updatedBy.toString(),
+                    logisticTransaction.currentStatus
+                ]                
+            );                
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    abattoirService.updateLogisticTransactionStatus = function(logisticTransaction){
+        console.log("updateLogisticTransactionStatus");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);            
+            return invokeChainCode.invokeChainCode(fabric_client, 
+                channels.abattoirchannel, 
+                eventHubPeers.abattoirEventHubPeer._url, 
+                //"grpc://localhost:7053",
+                abattoirConfig.channels.abattoirchannel.chaincodeId, 
+                "updateLogisticTransactionStatus",  
+                [   
+                    logisticTransaction.consignmentNumber,                 
+                    logisticTransaction.logisticId.toString(), 
+                    logisticTransaction.currentStatus,
+                    logisticTransaction.updatedOn,
+                    logisticTransaction.actualDeliveryDateTime                
+                ]                
+            );                
         }).then((results) => {
             return results;
         }).catch((err) => {

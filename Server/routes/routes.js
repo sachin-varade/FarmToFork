@@ -70,61 +70,25 @@ router.post("/saveAbattoirDispatch", function(req, res) {
 	});			
 });
 
-router.get("/getAllParts", function(req, res) {    
-    var promise = abattoirService.getAllParts();
+router.get("/getAllLogisticTransactions/:option", function(req, res) {    
+    var promise = abattoirService.getAllLogisticTransactions(req.params.option);
 	promise.then(function(resp,err){
 		res.send(resp);
 	});	
 });
 
-router.get("/createPart", function(req, res) {    
-    var promise = abattoirService.createPart();
+router.post("/saveLogisticTransaction", function(req, res) {    
+	var promise = abattoirService.saveLogisticTransaction(req.body);
 	promise.then(function(resp,err){
 		res.send(resp);
-	});	
+	});			
 });
 
-router.get("/getAllVehicles", function(req, res) {    
-    var promise = logisticService.getAllVehicles();
+router.post("/updateLogisticTransactionStatus", function(req, res) {    
+	var promise = abattoirService.saveLogisticTransaction(req.body);
 	promise.then(function(resp,err){
 		res.send(resp);
-	});	
+	});			
 });
-
-router.get("/createVehicle", function(req, res) {    
-    var promise = logisticService.createVehicle();
-	promise.then(function(resp,err){
-		res.send(resp);
-	});	
-});
-
-router.get("/getAllVehicles1", function(req, res) {    
-    var promise = processorService.getAllVehicles();
-	promise.then(function(resp,err){
-		res.send(resp);
-	});	
-});
-
-router.get("/createVehicle1", function(req, res) {    
-    var promise = processorService.createVehicle();
-	promise.then(function(resp,err){
-		res.send(resp);
-	});	
-});
-
-router.get("/query", function(req, res) {    
-    var promise = ikeaService.query();
-	promise.then(function(resp,err){
-		res.send({"a": resp});
-	});	
-});
-
-router.get("/invoke", function(req, res) {    
-    var promise = ikeaService.invoke();
-	promise.then(function(resp,err){
-		res.send(resp);
-	});	
-});
-
 
 module.exports = router;

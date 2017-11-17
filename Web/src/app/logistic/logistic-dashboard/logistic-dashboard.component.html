@@ -4,16 +4,36 @@
 <tr class="form-group">
   <th>Consignment Number</th>
   <th>Abattoir Consignment Number</th>
-  <th>Pickup Location</th>
-  <th>Delivery Location</th>
-  <th>Shipment Status</th>
+  <th>PickedUp</th>
+  <th>InTransit</th>
+  <th>Delivered</th>
 </tr>
-<tr *ngFor="let consignment of consignments">
-  <td>{{consignment.consignmentNumber}}</td>
+<tr *ngFor="let consignment of logisticTransactionList">
+  <td>
+      <a [routerLink]="['/logistic/outward', consignment.consignmentNumber]">{{consignment.consignmentNumber}}</a>
+  </td>
   <td>{{consignment.abattoirConsignmentNumber}}</td>
-  <td>{{consignment.pickupLocation}}</td>
-  <td>{{consignment.deliveryLocation}}</td>  
-  <td><a [routerLink]="['/logistic/outward', consignment.consignmentNumber]">{{consignment.shipmentStatus}}</a></td>
+  <td>
+    <div *ngIf="consignment.shipmentStatus && consignment.shipmentStatus[0]">
+        <div style="background: green;"> 
+          {{consignment.shipmentStatus[0].shipmentDate | date : "short"}}
+        </div>
+    </div>    
+  </td>
+  <td>
+    <div *ngIf="consignment.shipmentStatus && consignment.shipmentStatus[1]">
+        <div style="background: green;"> 
+          {{consignment.shipmentStatus[1].shipmentDate}}
+        </div>
+    </div>    
+  </td>  
+  <td>
+    <div *ngIf="consignment.shipmentStatus && consignment.shipmentStatus[2]">
+        <div style="background: green;"> 
+          {{consignment.shipmentStatus[2].shipmentDate}}
+        </div>
+    </div>    
+  </td>
 </tr>
 </table>
 

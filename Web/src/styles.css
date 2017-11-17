@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files
 .temp-min-max{
     width:200px;
     margin-top: -15px;
@@ -69,5 +69,163 @@
 .grid-table td{
     border: solid 1px #ccc;
     padding: 3px;
+}
+ */
+
+
+ /* You can add global styles to this file, and also import other style files */
+body{
+    background: #f4f4f4;
+}
+.title-main{
+    font-family: 'sans-serif', 'roboto','helvetica';
+    font-weight: 100;
+    font-size: 28px;
+    padding-bottom: 7px;
+    margin-bottom: 30px;
+    border-bottom: solid 1px #ccc;
+    color: #6d7be0;
+}
+
+.form-control{
+    background: #fff;
+    border-radius: 0;
+    border: none;
+    border-bottom: solid 1px #e3e3e3;
+    box-shadow: none;
+}
+
+.form-control:focus{
+    box-shadow: none;
+}
+
+.form-control optgroup{
+    border: none !important;
+    outline: none !important;
+}
+
+option{
+    border: none;
+    outline: none;
+    padding: 10px !important;
+    line-height: 19px !important;
+}
+.align-center{
+    text-align: center;
+}
+
+.checkbox-style{
+    display: inline-block;
+    padding: 9px 12px;
+    border-radius: 4px;
+    border: solid 1px #e3e3e3;
+    background: #fff;
+    line-height: 16px;
+    font-size: 14px;
+    font-weight: normal;
+    margin-right: 5px;
+    position: relative;
+    min-width: 70px;
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-style.selected{
+    border-color: #6d7be0;
+}
+
+.checkbox-style input[type=checkbox]{
+    width: 16px;
+    height: 16px;
+    margin-top: -3px;
+    opacity: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 8px;
+    left: 7px;
+    height: 18px;
+    width: 18px;
+    background-color: #eee;
+    border: solid 1px #ccc;
+}
+
+.checkbox-style:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+.checkbox-style input:checked ~ .checkmark {
+    background-color: #2196F3;
+    border-color: #2196F3;
+    
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-style input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-style .checkmark:after {
+    left: 6px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.block-button-area{
+    text-align: center;
+    float: left;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.form-group label{
+    color: #666;
+}
+
+.btn-normal{
+    color:#fff;
+    background-color: #232f84;
+    border-color: #232f84;
+}
+
+.btn-normal:hover{
+    background-color: #3e4bad;
+    color:#fff;
+}
+
+.btn-border{
+    color:#232f84;
+    background-color: #fff;
+    border-color: #232f84;
+}
+.btn-border:hover{
+    color:#fff;
+    background-color: #232f84;
+    border-color: #232f84;
+}
+
+.btn{
+    margin: 0 5px;
+    padding: 7px 16px;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
+    background-color: #dedede;
 }
 

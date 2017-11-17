@@ -45,6 +45,8 @@ export class AbattoirInwardComponent implements OnInit {
     });
   }
   saveAbattoirReceived() {
+    this.abattoirReceived.updatedBy = this.currentUser.id;
+    this.abattoirReceived.updatedOn = new Date();
     this.abattoirReceived.certificates = new Array<AbattoirModels.FarmersCertificate>();
     this.certificates.forEach(element => {
       if (element.checked === true){

@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { UserService } from '../../user.service';
+import { AbattoirService } from '../../abattoir.service';
+import * as AbattoirModels from '../../models/abattoir';
 
 @Component({
   selector: 'app-logistic-dashboard',
@@ -7,17 +10,21 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class LogisticDashboardComponent implements OnInit {
-  consignments: any;
-  constructor() {
-    this.consignments = 
-    [
-      {consignmentNumber: "111111", abattoirConsignmentNumber: "999999", pickupLocation: "Loc1", deliveryLocation: "Loc5", shipmentStatus: "PickedUp & InTransit"},
-      {consignmentNumber: "222222", abattoirConsignmentNumber: "999999", pickupLocation: "Loc2", deliveryLocation: "Loc5", shipmentStatus: "PickedUp & InTransit"},
-      {consignmentNumber: "333333", abattoirConsignmentNumber: "999999", pickupLocation: "Loc3", deliveryLocation: "Loc5", shipmentStatus: "PickedUp & InTransit"},
-      {consignmentNumber: "444444", abattoirConsignmentNumber: "999999", pickupLocation: "Loc4", deliveryLocation: "Loc5", shipmentStatus: "PickedUp & InTransit"}
-    ]
+  currentUser: any;
+  commonData: any;
+  userData: any;
+  logisticTransactionList: Array<AbattoirModels.LogisticTransaction> = new Array<AbattoirModels.LogisticTransaction>();
+  constructor(private user: UserService,
+    private abattoirService: AbattoirService) {
+    this.currentUser = JSON.parse(this.user.getUserLoggedIn());
+    this.userData = this.user.getUserData();
+    this.commonData = this.user.getCommonData();    
+    this.abattoirService.getAllLogisticTransactions('DETAILS')
+    .then((results: any) => {
+      this.logisticTransactionList = <Array<AbattoirModels.LogisticTransaction>>results.LogisticTransactions;
+    });
   }
-
+  
   ngOnInit() {
   }
 

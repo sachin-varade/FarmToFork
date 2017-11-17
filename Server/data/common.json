@@ -4,10 +4,10 @@
 "materialGrades": ["A", "B", "C"],
 "routes":[
             {
-                "routeid": 1, "name": "Vikhroli-Jogeshwari-Borivali"
+                "id": 1, "name": "Vikhroli-Jogeshwari-Borivali"
             },
             {
-                "routeid": 1, "name": "Vikhroli-Mira Road-Borivali"
+                "id": 1, "name": "Vikhroli-Mira Road-Borivali"
             }
         ],
 "pickDropLocations": [
@@ -17,8 +17,15 @@
                         {"name": "Loc4"},
                         {"name": "Loc5"}
                     ],
-"vehicleTypes": ["Normal Container", "Container with Freezer"],
-"shipmentStatus": ["PickedUp & InTransit", "Delivered"],
+"vehicles": [
+    { "id": 1, "lpn": "TAT180", "type": "Normal Container"}, 
+    { "id": 2, "lpn": "TAT181", "type": "Container with Freezer"}
+],
+"vehicleTypes": [
+                    { "id": 1, "type": "Normal Container"}, 
+                    { "id": 2, "type": "Container with Freezer"}
+                ],
+"shipmentStatus": ["PickedUp", "InTransit", "Delivered"],
 "processorAcceptanceChecklist": ["Condition1", "Condition2", "Condition3"],
 "processingActions": ["Washed", "Processed", "Freezed"],
 "farmersCertificates": [

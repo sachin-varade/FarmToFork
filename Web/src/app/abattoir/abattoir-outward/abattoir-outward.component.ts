@@ -26,8 +26,6 @@ export class AbattoirOutwardComponent implements OnInit {
     this.abattoirService.getAllAbattoirReceived('DETAILS')
     .then((results: any) => {
       this.abattoirReceivedList = <Array<AbattoirModels.AbattoirReceived>>results.abattoirMaterialReceived;
-    }).catch((err) => {
-      alert("Error Occured.....");
     });
   }
 
@@ -53,6 +51,8 @@ export class AbattoirOutwardComponent implements OnInit {
 
   saveAbattoirDispatch(){
     this.abattoirDispatch.abattoirId = this.currentUser.id;
+    this.abattoirDispatch.updatedBy = this.currentUser.id;
+    this.abattoirDispatch.updatedOn = new Date();
     this.abattoirService.saveAbattoirDispatch(this.abattoirDispatch)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
