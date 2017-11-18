@@ -16,6 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 */
+
 package main
 
 import (
@@ -24,7 +25,6 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
-
 // ============================================================================================================================
 // Main
 // ============================================================================================================================
@@ -35,103 +35,129 @@ func main() {
 	}
 }
 
-// Vehicle tracker start
-
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
 }
 
-//VehicleId, Description, RegistrationNumber, Make, VIN, DateofRegistration, ChassisNumber, Color, OwnerName, OwnerPhoneNumber, OwnerEmail
-type Vehicle struct {
-	VehicleId 			string 	`json:"vehicleId"`
-	Make 		string  `json:"make"`
-	Variant 		string  `json:"variant"`
-	Engine 		string  `json:"engine"`
-	GearBox 		string  `json:"gearBox"`
-	Color 		string  `json:"color"`
-	Image 		string  `json:"image"`
-	ChassisNumber 		string  `json:"chassisNumber"`
-	Vin 		string  `json:"vin"`
-	DateOfManufacture 		string  `json:"dateOfManufacture"`	
-	Owner Owner `json:"owner"`
-	Dealer Dealer `json:"dealer"`
-	LicensePlateNumber 		string  `json:"licensePlateNumber"`
-	WarrantyStartDate 		string  `json:"warrantyStartDate"`	
-	WarrantyEndDate 		string  `json:"warrantyEndDate"`	
-	DateofDelivery 		string  `json:"dateofDelivery"`
-	ServiceRequestRaised	string 	`json:"serviceRequestRaised"`	
-	Parts		[]Part `json:"parts"`
-	VehicleTransactions		[]VehicleTransaction `json:"vehicleTransactions"`
-	VehicleService		[]VehicleService `json:"vehicleService"`
+type ProcessingCompanyReceived struct {
+	ProcessingCompanyReceiptNumber		string	`json:"processingCompanyReceiptNumber"`
+	ProcessingCompanyId					string	`json:"processingCompanyId"`
+	PurchaseOrderNumber					string	`json:"purchaseOrderNumber"`	
+	ConsignmentNumber					string	`json:"consignmentNumber"`	
+	TransportConsitionSatisfied			string	`json:"transportConsitionSatisfied"`
+	GUIDNumber							string	`json:"guidNumber"`
+	MaterialName						string	`json:"materialName"`
+	MaterialGrade						string	`json:"materialGrade"`	
+	Quantity							string	`json:"quantity"`
+	QuantityUnit						string	`json:"quantityUnit"`	
+	UseByDate							string	`json:"useByDate"`
+	ReceivedDate						string	`json:"receivedDate"`	
+	TransitTime							string	`json:"transitTime"`
+	Storage								string	`json:"storage"`
+	AcceptanceCheckList					[]AcceptanceCriteria	`json:"acceptanceCheckList"`
 }
 
-type VehicleService struct {	
-	ServiceDescription		string  `json:"serviceDescription"`
-	Parts		[]Part `json:"parts"`
-	ServiceDoneBy  			string  `json:"serviceDoneBy"`
-	ServiceDoneOn  			string  `json:"serviceDoneOn"`
-}
-
-type VehicleTransaction struct {	
-	WarrantyStartDate 		string  `json:"warrantyStartDate"`	
-	WarrantyEndDate 		string  `json:"warrantyEndDate"`	
-	TType 			string   `json:"ttype"`
-	TValue 			string   `json:"tvalue"`
-	UpdatedBy  			string  `json:"updatedBy"`
-	UpdatedOn  			string  `json:"updatedOn"`
-}
-
-type Owner struct {
-	Name 		string  `json:"name"`
-	PhoneNumber 		string  `json:"phoneNumber"`
-	Email 		string  `json:"email"`
-}
-
-type Dealer struct {
-	Name 		string  `json:"name"`
-	PhoneNumber 		string  `json:"phoneNumber"`
-	Email 		string  `json:"email"`
-}
-
-type Part struct {
-	PartId 			string 	`json:"partId"`
-	ProductCode 		string  `json:"productCode"`
-	PartCode 		string  `json:"partCode"`
-	PartType 		string  `json:"partType"`
-	PartName 		string  `json:"partName"`
-	Transactions		[]Transaction `json:"transactions"`
-}
-
-// PART TRANSACTION HISTORY
-type Transaction struct {
-	User  			string  `json:"user"`
-	DateOfManufacture	string  `json:"dateOfManufacture"`
-	DateOfDelivery		string	`json:"dateOfDelivery"`
-	DateOfInstallation	string	`json:"dateOfInstallation"`
-	VehicleId		string	`json:"vehicleId"`
-	WarrantyStartDate	string	`json:"warrantyStartDate"`
-	WarrantyEndDate		string	`json:"warrantyEndDate"`
-	TType 			string   `json:"ttype"`
-}
-
-//==============================================================================================================================
-//				Used as an index when querying all vehicles and parts.
-//==============================================================================================================================
-
-type AllVehicles struct{
-	Vehicles []string `json:"vehicles"`
-}
-
-type AllVehicleDetails struct{
-	Vehicles []Vehicle `json:"vehicles"`
+type AcceptanceCriteria struct {
+	Id						string	`json:"id"`	
+	RuleCondition			string	`json:"ruleCondition"`
+	ConditionSatisfied		string	`json:"conditionSatisfied"`
 }
 
 
-type AllParts struct{
-	Parts []string `json:"parts"`
+
+type ProcessingCompanyTransaction struct {
+	ProcessorBatchCode					string	`json:"processorBatchCode"`	
+	ProcessingCompanyId					string	`json:"processingCompanyId"`
+	ProcessingCompanyReceiptNumber		string	`json:"processingCompanyReceiptNumber"`
+	ProductCode							string	`json:"productCode"`
+	GUIDNumber							string	`json:"guidNumber"`
+	MaterialName						string	`json:"materialName"`
+	MaterialGrade						string	`json:"materialGrade"`	
+	Quantity							string	`json:"quantity"`
+	QuantityUnit						string	`json:"quantityUnit"`	
+	UseByDate							string	`json:"useByDate"`
+	QualityControlDocument				string	`json:"qualityControlDocument"`	
+	Storage								string	`json:"storage"`
+	ProcessingAction					string	`json:"processingAction"`
+}
+// ProcessingAction - (W - St - P - QC - F)
+
+
+type ProcessingCompanyDispatch struct {
+	ConsignmentNumber				string	`json:"consignmentNumber"`
+	ProcessorBatchCode				string	`json:"processorBatchCode"`
+	ProcessingCompanyId				string	`json:"processingCompanyId"`
+	IkeaPurchaseOrderNumber			string	`json:"ikeaPurchaseOrderNumber"`	
+	GUIDNumber						string	`json:"guidNumber"`
+	MaterialName					string	`json:"materialName"`
+	MaterialGrade					string	`json:"materialGrade"`
+	TemperatureStorageMin			string	`json:"temperatureStorageMin"`
+	TemperatureStorageMax			string	`json:"temperatureStorageMax"`
+	PackagingDate					string	`json:"packagingDate"`
+	UseByDate						string	`json:"useByDate"`
+	Quantity						string	`json:"quantity"`	
+	QuantityUnit					string	`json:"quantityUnit"`
+	QualityControlDocument			string	`json:"qualityControlDocument"`	
+	Storage							string	`json:"storage"`	
 }
 
-// Vehicle tracker end
+
+type LogisticTransaction struct {	
+	ConsignmentNumber				string	`json:"consignmentNumber"`
+	LogisticProviderId				string	`json:"logisticProviderId"`
+	LogisticType					string	`json:"logisticType"`
+	RouteId							string	`json:"RouteId"`
+	AbattoirConsignmentId			string	`json:"AbattoirConsignmentId"`
+	VehicleId						string	`json:"vehicleId"`
+	VehicleType						string	`json:"vehicleType"`
+	PickupDateTime					string	`json:"pickupDateTime"`
+	ExpectedDeliveryDateTime		string	`json:"expectedDeliveryDateTime"`
+	ActualDeliveryDateTime			string	`json:"actualDeliveryDateTime"`
+	TemperatureStorageMin			string	`json:"temperatureStorageMin"`
+	TemperatureStorageMax			string	`json:"temperatureStorageMax"`
+	Quantity						string	`json:"quantity"`	
+	HandlingInstruction				string	`json:"handlingInstruction"`
+	ShipmentStatus					[]ShipmentStatusTransaction	`json:"shipmentStatus"`
+	IotTemperatureHistory			[]IotHistory `json:"iotTemperatureHistory"`
+}
+
+type ShipmentStatusTransaction struct {
+	ShipmentStatus 			string 	`json:"shipmentStatus"`
+	ShipmentDate 			string  `json:"shipmentDate"`
+}
+
+type IotHistory struct {
+	Temperature	string `json:"temperature"`
+	Location	string `json:"location"`
+}
+
+type AllProcessingCompanyReceivedIds struct{
+	ProcessingCompanyReceiptNumbers []string `json:"processingCompanyReceiptNumbers"`
+}
+
+type AllProcessingCompanyReceivedDetails struct{
+	ProcessingCompanyReceived []ProcessingCompanyReceived `json:"processingCompanyReceived"`
+}
+
+type AllProcessingCompanyBatchCodes struct{
+	ProcessorBatchCodes []string `json:"processorBatchCodes"`
+}
+
+type AllProcessingCompanyTransactionDetails struct{
+	ProcessingCompanyTransaction []ProcessingCompanyTransaction `json:"processingCompanyTransaction"`
+}
+
+type AllProcessingCompanyDispatchIds struct{
+	ConsignmentNumbers []string `json:"consignmentNumbers"`
+}
+
+type AllProcessingCompanyDispatchDetails struct{
+	ProcessingCompanyDispatch []ProcessingCompanyDispatch `json:"processingCompanyDispatch"`
+}
+
+type AllLogisticTransactions struct{
+	LogisticTransactionList []LogisticTransaction `json:"LogisticTransactionList"`
+}
 
 // ============================================================================================================================
 // Init - initialize the chaincode 
@@ -139,7 +165,6 @@ type AllParts struct{
 // Shows off PutState() and how to pass an input argument to chaincode.
 //
 // Inputs - Array of strings
-//  ["314"]
 // 
 // Returns - shim.Success or error
 // ============================================================================================================================
@@ -162,28 +187,37 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 			fmt.Println("args[0] is not empty, must be instantiating")
 		}
 	}
-
-	// Vehicle Tracker start
-	var vehicles AllVehicles
-	var parts AllParts
-
-	jsonAsBytesVehicles, _ := json.Marshal(vehicles)
-	err = stub.PutState("allVehicles", jsonAsBytesVehicles)
-	if err != nil {
-		//return nil, err
+	
+	var allProcessingCompanyReceivedIds AllProcessingCompanyReceivedIds
+	jsonAsBytesProcessingCompanyReceiptNumbers, _ := json.Marshal(allProcessingCompanyReceivedIds)
+	err = stub.PutState("allProcessingCompanyReceivedIds", jsonAsBytesProcessingCompanyReceiptNumbers)
+	if err != nil {		
 		return shim.Error(err.Error())
 	}
 
-	jsonAsBytesParts, _ := json.Marshal(parts)
-	err = stub.PutState("allParts", jsonAsBytesParts)
-	if err != nil {
-		//return nil, err
+	var allProcessingCompanyBatchCodes AllProcessingCompanyBatchCodes
+	jsonAsBytesProcessingCompanyBatchCodes, _ := json.Marshal(allProcessingCompanyBatchCodes)
+	err = stub.PutState("allProcessingCompanyBatchCodes", jsonAsBytesProcessingCompanyBatchCodes)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+	
+	
+	var allProcessingCompanyDispatchIds AllProcessingCompanyDispatchIds
+	jsonAsBytesAllProcessingCompanyDispatchIds, _ := json.Marshal(allProcessingCompanyDispatchIds)
+	err = stub.PutState("allProcessingCompanyDispatchIds", jsonAsBytesAllProcessingCompanyDispatchIds)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+	
+	var allLogisticTransactions AllLogisticTransactions
+	jsonAsBytesAllLogisticTransactions, _ := json.Marshal(allLogisticTransactions)
+	err = stub.PutState("allLogisticTransactions", jsonAsBytesAllLogisticTransactions)
+	if err != nil {		
 		return shim.Error(err.Error())
 	}
 
-	// Vehicle tracker end
-
-	fmt.Println("ready for action")                          //self-test pass
+	fmt.Println(" - ready for action")                        
 	return shim.Success(nil)
 }
 
@@ -192,37 +226,34 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 // Invoke - Our entry point for Invocations
 // ============================================================================================================================
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
-	function, args := stub.GetFunctionAndParameters()
-	fmt.Println(" ")
+	function, args := stub.GetFunctionAndParameters()	
 	fmt.Println("starting invoke, for - " + function)
 
 	// Handle different functions
 	if function == "init" {                    //initialize the chaincode state, used as reset
 		return t.Init(stub)
-	} else if function == "read" {             //generic read ledger
-		return read(stub, args)
-	} else if function == "getPart" { 
-		return getPart(stub, args[0])
-	} else if function == "getAllParts" { 
-		return getAllParts(stub, args[0])
-	} else if function == "createPart" {			//create a part
-		return createPart(stub, args)	
-	} else if function == "updatePart" {			//create a part
-		return updatePart(stub, args)	
-	} else if function == "getVehicle" { 
-		return getVehicle(stub, args[0]) 
-	} else if function == "getVehicleByVIN" { 
-		return getVehicleByVIN(stub, args[0]) 
-	} else if function == "getVehicleByChassisNumber" { 
-		return getVehicleByChassisNumber(stub, args[0]) 
-	} else if function == "getAllVehicles" { 
-		return getAllVehicles(stub, args[0]) 
-	} else if function == "createVehicle" {			//create a vehicle
-		return createVehicle(stub, args)	
-	} else if function == "updateVehicle" {			//create a vehicle
-		return updateVehicle(stub, args)	
+	} else if function == "getAllProcessingCompanyReceivedIds" {
+		return getAllProcessingCompanyReceivedIds(stub, args[0])	
+	} else if function == "saveProcessingCompanyReceived" {
+		return saveProcessingCompanyReceived(stub, args)
+	} else if function == "getAllProcessingCompanyTransactions" {
+		return getAllProcessingCompanyTransactions(stub, args[0])
+	} else if function == "saveProcessingCompanyTransaction" {
+		return saveProcessingCompanyTransaction(stub, args)
+	} else if function == "getAllProcessingCompanyDispatch" {
+		return getAllProcessingCompanyDispatch(stub, args[0])
+	} else if function == "saveAllProcessingCompanyDispatch" {
+		return saveAllProcessingCompanyDispatch(stub, args)
+	} else if function == "getAllLogisticTransactions" {
+		return getAllLogisticTransactions(stub, args[0])
+	} else if function == "createLogisticTransaction" {
+		return createLogisticTransaction(stub, args)
+	} else if function == "updateLogisticTransactionStatus" {
+		return updateLogisticTransactionStatus(stub, args)
+	} else if function == "pushIotDetailsToLogisticTransaction" {
+		return pushIotDetailsToLogisticTransaction(stub, args)
 	}
-
+	
 	// error out
 	fmt.Println("Received unknown invoke function name - " + function)
 	return shim.Error("Received unknown invoke function name - '" + function + "'")

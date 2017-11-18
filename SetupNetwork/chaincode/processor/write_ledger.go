@@ -16,267 +16,80 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 */
+
 package main
 
 import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"		
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
 
-// creating new vehicle in blockchain
-///func (t *SimpleChaincode) createVehicle(stub  shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-func createVehicle(stub shim.ChaincodeStubInterface, args []string) pb.Response {	
-
+//Create ProcessingCompanyReceived block
+func saveProcessingCompanyReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
 	var err error
-	fmt.Println("Running createVehicle")
+	fmt.Println("Running saveProcessingCompanyReceived..")
 
-	if len(args) != 9 {
-		fmt.Println("Incorrect number of arguments. Expecting 9 - Make, ChassisNumber, Vin, User, Variant, Engine, Gear box, color, image")
-		return shim.Error("Incorrect number of arguments. Expecting 9")
+	if len(args) != 14 {
+		fmt.Println("Incorrect number of arguments. Expecting 14")
+		return shim.Error("Incorrect number of arguments. Expecting 14")
 	}
 
-	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]);
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]);
 
-	var bt Vehicle
-	bt.VehicleId = NewUniqueId()
-	bt.Make			= args[0]
-	bt.ChassisNumber = args[1]
-	bt.Vin = args[2]
-	bt.DateOfManufacture = time.Now().Local().String()
-	bt.Variant = args[4]
-	bt.Engine = args[5]
-	bt.GearBox = args[6]
-	bt.Color = args[7]
-	bt.Image = args[8]
+	var bt ProcessingCompanyReceived
+	bt.ProcessingCompanyReceiptNumber	= args[0]
+	bt.ProcessingCompanyId				= args[1]
+	bt.PurchaseOrderNumber				= args[2]
+	bt.ConsignmentNumber				= args[3]	
+	bt.TransportConsitionSatisfied		= args[4]
+	bt.GUIDNumber						= args[5]
+	bt.MaterialName						= args[6]
+	bt.MaterialGrade					= args[7]	
+	bt.Quantity							= args[8]
+	bt.QuantityUnit						= args[9]	
+	bt.UseByDate						= args[10]
+	bt.ReceivedDate						= args[11]
+	bt.TransitTime						= args[12]
 
-	var own Owner
-	own.Name = ""
-	own.PhoneNumber = ""
-	own.Email = ""
-	var del Dealer
-	del.Name = ""
-	del.PhoneNumber = ""
-	del.Email = ""
-	bt.Owner = own
-	bt.Dealer = del
+	var acceptanceCriteria AcceptanceCriteria
 	
-	var tx VehicleTransaction 	
-	tx.TType 			= "CREATE"
-	tx.UpdatedBy 			= args[3]
-	tx.UpdatedOn   			= time.Now().Local().String()
-	bt.VehicleTransactions = append(bt.VehicleTransactions, tx)
-
-	//Commit vehicle to ledger
-	fmt.Println("createVehicle Commit Vehicle To Ledger");
-	btAsBytes, _ := json.Marshal(bt)
-	err = stub.PutState(bt.VehicleId, btAsBytes)
-	if err != nil {
-		//return nil, err
-		return shim.Error(err.Error())
-	}
-
-	//Update All Vehicles Array
-	allBAsBytes, err := stub.GetState("allVehicles")
-	if err != nil {
-		return shim.Error("Failed to get all Vehicles")
-	}
-	var allb AllVehicles
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all Vehicles")
-	}
-	allb.Vehicles = append(allb.Vehicles,bt.VehicleId)
-
-	allBuAsBytes, _ := json.Marshal(allb)
-	err = stub.PutState("allVehicles", allBuAsBytes)
-	if err != nil {
-		//return nil, err
-		return shim.Error(err.Error())
-	}
-
-	///return nil, nil
-	return shim.Success(nil)
-}
-	
-// Updating existing vehicle in blockchain
-func updateVehicle(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
-
-	var err error
-	fmt.Println("Running updateVehicle")
-
-	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]);
-
-	//Get and Update Part data
-	bAsBytes, err := stub.GetState(args[0])
-	if err != nil {
-		return shim.Error("Failed to get Vehicle #" + args[0])
-	}
-	var bch Vehicle
-	err = json.Unmarshal(bAsBytes, &bch)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal Vehicle #" + args[0])
-	}	
-	
-	var updateStr string
-	if bch.Owner.Name 	!= args[2] {
-		bch.Owner.Name 	= args[2]
-		updateStr += ",Owner Name to "+ args[2]
-	}
-
-	if bch.Owner.PhoneNumber != args[3] {
-		bch.Owner.PhoneNumber 	= args[3]
-		updateStr += ",Owner Phone to "+ args[3]
-	}
-
-	if bch.Owner.Email != args[4] {
-		bch.Owner.Email 	= args[4]
-		updateStr += ",Owner Email to "+ args[4]
-	}
-	
-	bch.Dealer.Name 	= args[5]
-	bch.Dealer.PhoneNumber 	= args[6]
-	bch.Dealer.Email 	= args[7]
-	
-	if bch.LicensePlateNumber != args[8] {
-		bch.LicensePlateNumber=  args[8]
-		updateStr += ",License Plate Number to "+ args[8]
-	}
-
-	if bch.DateofDelivery != args[9] {
-		bch.DateofDelivery =  args[9]
-		updateStr += ",Date of Delivery to "+ args[9]
-	}
-
-	////// create warranty end date, 1 yr's from warranty start date 
-	if args[10] != "" {
-		var tt =time.Now()
-		const shortForm = "2006-Jan-02"
-		tt, _ = time.Parse(shortForm, args[10])
-		fmt.Println(tt)
-		fmt.Println(tt.AddDate(1, 0, 0).Local().String())
-		args[11] = tt.AddDate(1, 0, 0).Local().String()
-		args[11] = strings.Split(args[11], " ")[0]	
-	}
-
-	if bch.WarrantyStartDate != args[10] {
-		bch.WarrantyStartDate =  args[10]
-		updateStr += ",Warranty Start Date to "+ args[10]
-	}
-
-	if bch.WarrantyEndDate != args[11] {
-		bch.WarrantyEndDate =  args[11]
-		updateStr += ",Warranty End Date to "+ args[11]
-	}	
-	
-	var tx VehicleTransaction 
-	
-	tx.WarrantyStartDate	= args[10]
-	tx.WarrantyEndDate	=  args[11]
-	tx.UpdatedBy   	= args[12]
-	tx.UpdatedOn   	= time.Now().Local().String()
-	
-	//parts-13
-	var serv VehicleService
 	if args[13] != "" {
 		p := strings.Split(args[13], ",")
-		var pr Part
-		//var prFound string
-		updateStr += ",Parts: "
 		for i := range p {
 			c := strings.Split(p[i], "^")
-			pr.PartId = c[0]
-			pr.PartCode = c[1]
-			pr.PartType = c[2]
-			pr.PartName = c[3]
-			// for j := range bch.Parts {
-			// 	if bch.Parts[j].PartId == pr.PartId {
-			// 		prFound = "Y"
-			// 	}
-			// }
-
-			// if prFound == "Y" {
-			// 	updateStr += "~Replaced Part #"+ pr.PartId			
-			// 	prFound = "N"
-			// } else{
-				updateStr += "~Added Part #"+ pr.PartId	+"("+ pr.PartName +")"		
-			//}
-			bch.Parts = append(bch.Parts, pr)
-			serv.Parts = append(serv.Parts, pr)
+			acceptanceCriteria.Id 					= c[0]
+			acceptanceCriteria.RuleCondition 		= c[1]
+			acceptanceCriteria.ConditionSatisfied 	= c[2]
+			bt.AcceptanceCheckList	= append(bt.AcceptanceCheckList, acceptanceCriteria)
 		}
 	}
-	
-	tx.TType 	= args[1]
-	// saving update string
-	tx.TValue = updateStr
-	bch.VehicleTransactions = append(bch.VehicleTransactions, tx)
 
-	// service
-	if args[14] == "Y" {		
-		serv.ServiceDescription = args[15]
-		serv.ServiceDoneBy = args[12]
-		serv.ServiceDoneOn = time.Now().Local().String()
-		bch.VehicleService = append(bch.VehicleService, serv)		
-	}
-		
-	//Commit updates part to ledger
-	fmt.Println("updateVehicle Commit Updates To Ledger");
-	btAsBytes, _ := json.Marshal(bch)
-	err = stub.PutState(bch.VehicleId, btAsBytes)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-
-	return shim.Success(nil)
-}
-
-// creating new part in blockchain
-func createPart(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
-	var err error
-	fmt.Println("Running createPart")
-
-	if len(args) != 4 {
-		fmt.Println("Incorrect number of arguments. Expecting 4 - PartId, Product Code, Manufacture Date, User")
-		return shim.Error("Incorrect number of arguments. Expecting 4")
-	}
-
-	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]);
-
-	var bt Part
-	bt.PartId 			= args[0]
-	bt.ProductCode			= args[1]
-	var tx Transaction
-	tx.DateOfManufacture		= args[2]
-	tx.TType 			= "CREATE"
-	tx.User 			= args[3]
-	bt.Transactions = append(bt.Transactions, tx)
-
-	//Commit part to ledger
-	fmt.Println("createPart Commit Part To Ledger");
+	//Commit Inward entry to ledger
+	fmt.Println("saveProcessingCompanyReceived - Commit ProcessingCompanyReceived To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
-	err = stub.PutState(bt.PartId, btAsBytes)
+	err = stub.PutState(bt.ProcessingCompanyReceiptNumber, btAsBytes)
 	if err != nil {		
 		return shim.Error(err.Error())
 	}
 
-	//Update All Parts Array
-	allBAsBytes, err := stub.GetState("allParts")
+	//Update All Processing Company ReceivedIds Array
+	allBAsBytes, err := stub.GetState("allProcessingCompanyReceivedIds")
 	if err != nil {
-		return shim.Error("Failed to get all Parts")
+		return shim.Error("Failed to get all Processing Company Received Ids")
 	}
-	var allb AllParts
+	var allb AllProcessingCompanyReceivedIds
 	err = json.Unmarshal(allBAsBytes, &allb)
 	if err != nil {
-		return shim.Error("Failed to Unmarshal all Parts")
+		return shim.Error("Failed to Unmarshal all Received")
 	}
-	allb.Parts = append(allb.Parts,bt.PartId)
+	allb.ProcessingCompanyReceiptNumbers = append(allb.ProcessingCompanyReceiptNumbers, bt.ProcessingCompanyReceiptNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
-	err = stub.PutState("allParts", allBuAsBytes)
+	err = stub.PutState("allProcessingCompanyReceivedIds", allBuAsBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -284,48 +97,262 @@ func createPart(stub  shim.ChaincodeStubInterface, args []string) pb.Response {
 	return shim.Success(nil)
 }
 
-// Updating existing part in blockchain
-func updatePart(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+//Create Processing Company Transaction block
+func saveProcessingCompanyTransaction(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
 	var err error
-	fmt.Println("Running updatePart")
+	fmt.Println("Running saveProcessingCompanyTransaction..")
 
-	if len(args) != 8 {
-		fmt.Println("Incorrect number of arguments. Expecting 8 - PartId, Vehicle Id, Delivery Date, Installation Date, User, Warranty Start Date, Warranty End Date, Type")
-		return shim.Error("Incorrect number of arguments. Expecting 8")
+	if len(args) != 13 {
+		fmt.Println("Incorrect number of arguments. Expecting 13..")
+		return shim.Error("Incorrect number of arguments. Expecting 13")
 	}
-	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]);
 
-	//Get and Update Part data
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
+
+	var bt ProcessingCompanyTransaction	
+	bt.ProcessorBatchCode				= args[0]
+	bt.ProcessingCompanyId				= args[1]
+	bt.ProcessingCompanyReceiptNumber	= args[2]
+	bt.ProductCode						= args[3]
+	bt.GUIDNumber						= args[4]
+	bt.MaterialName						= args[5]
+	bt.MaterialGrade					= args[6]
+	bt.Quantity							= args[7]
+	bt.QuantityUnit						= args[8]
+	bt.UseByDate						= args[9]
+	bt.QualityControlDocument			= args[10]	
+	bt.Storage							= args[11]
+	bt.ProcessingAction					= args[12]
+		
+	//Commit Inward entry to ledger
+	fmt.Println("saveProcessingCompanyTransaction - Commit ProcessingCompanyTransaction To Ledger");
+	btAsBytes, _ := json.Marshal(bt)
+	err = stub.PutState(bt.ProcessorBatchCode, btAsBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	//Update All Processing Company Transaction Array
+	allBAsBytes, err := stub.GetState("allProcessingCompanyBatchCodes")
+	if err != nil {
+		return shim.Error("Failed to get all Processing Company BatchCodes")
+	}
+	var allb AllProcessingCompanyBatchCodes
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Processing Batch Codes")
+	}
+	allb.ProcessorBatchCodes = append(allb.ProcessorBatchCodes,bt.ProcessorBatchCode)
+
+	allBuAsBytes, _ := json.Marshal(allb)
+	err = stub.PutState("allProcessingCompanyBatchCodes", allBuAsBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
+
+
+//Create Processing Company Dispatch block
+func saveAllProcessingCompanyDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+	var err error
+	fmt.Println("Running saveAllProcessingCompanyDispatch..")
+
+	if len(args) != 15 {
+		fmt.Println("Incorrect number of arguments. Expecting 15..")
+		return shim.Error("Incorrect number of arguments. Expecting 15")
+	}
+
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
+
+	var bt ProcessingCompanyDispatch	
+	bt.ConsignmentNumber				= args[0]
+	bt.ProcessorBatchCode				= args[1]
+	bt.ProcessingCompanyId				= args[2]
+	bt.IkeaPurchaseOrderNumber			= args[3]
+	bt.GUIDNumber						= args[4]
+	bt.MaterialName						= args[5]
+	bt.MaterialGrade					= args[6]
+	bt.TemperatureStorageMin			= args[7]
+	bt.TemperatureStorageMax			= args[8]
+	bt.PackagingDate					= args[9]
+	bt.UseByDate						= args[10]	
+	bt.Quantity							= args[11]
+	bt.QuantityUnit						= args[12]
+	bt.QualityControlDocument			= args[13]
+	bt.Storage							= args[14]
+		
+	//Commit Inward entry to ledger
+	fmt.Println("saveAllProcessingCompanyDispatch - Commit ProcessingCompanyDispatch To Ledger");
+	btAsBytes, _ := json.Marshal(bt)
+	err = stub.PutState(bt.ConsignmentNumber, btAsBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	//Update All Processing Company Dispatch Array
+	allBAsBytes, err := stub.GetState("allProcessingCompanyDispatchIds")
+	if err != nil {
+		return shim.Error("Failed to get all Processing Company Dispatch Consignment Numbers")
+	}
+	var allb AllProcessingCompanyDispatchIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Processing dispatch consignment numbers")
+	}
+	allb.ConsignmentNumbers = append(allb.ConsignmentNumbers,bt.ConsignmentNumber)
+
+	allBuAsBytes, _ := json.Marshal(allb)
+	err = stub.PutState("allProcessingCompanyDispatchIds", allBuAsBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
+
+//Create LogisticTransaction block
+func createLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+	var err error
+	fmt.Println("Running createLogisticTransaction..")
+
+	if len(args) != 15 {
+		fmt.Println("Incorrect number of arguments. Expecting 15")
+		return shim.Error("Incorrect number of arguments. Expecting 15")
+	}
+
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]+","+args[14]);
+
+	var bt LogisticTransaction
+	bt.LogisticProviderId				= args[0]
+	bt.ConsignmentNumber				= args[1]
+	bt.RouteId							= args[2]
+	bt.AbattoirConsignmentId			= args[3]
+	bt.VehicleId						= args[4]
+	bt.VehicleType						= args[5]
+	bt.PickupDateTime					= args[6]
+	bt.ExpectedDeliveryDateTime			= args[7]
+	bt.ActualDeliveryDateTime			= args[8]
+	bt.TemperatureStorageMin			= args[9]
+	bt.TemperatureStorageMax			= args[10]
+	bt.Quantity							= args[11]
+	bt.HandlingInstruction				= args[12]
+	
+	
+	var st ShipmentStatusTransaction
+	st.ShipmentStatus		= args[13]		// Default shipment status should be PickedUp
+	st.ShipmentDate 		= args[14]	
+	bt.ShipmentStatus = append(bt.ShipmentStatus, st)
+
+	//Commit Inward entry to ledger
+	fmt.Println("createLogisticTransaction - Commit LogisticTransaction To Ledger");
+	btAsBytes, _ := json.Marshal(bt)
+	err = stub.PutState(bt.ConsignmentNumber, btAsBytes)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+
+	//Update All AbattoirDispatch Array
+	allBAsBytes, err := stub.GetState("allLogisticTransactions")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Dispatch")
+	}
+	var allb AllLogisticTransactions
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all dispatch")
+	}
+	allb.LogisticTransactionList = append(allb.LogisticTransactionList,bt)
+
+	allBuAsBytes, _ := json.Marshal(allb)
+	err = stub.PutState("allLogisticTransactions", allBuAsBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
+
+// **********************************************************************
+//		Updating Logistics transation status in blockchain
+// **********************************************************************
+func updateLogisticTransactionStatus(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+	var err error
+	fmt.Println("Running updateLogisticTransactionStatus..")
+
+	if len(args) != 4 {
+		fmt.Println("Incorrect number of arguments. Expecting 4 - ConsignmentNumber, LogisticProviderId, ShipmentStatus, ShipmentDate.")
+		return shim.Error("Incorrect number of arguments. Expecting 4")
+	}
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]);
+
+	//Get and Update LogisticTransaction data
 	bAsBytes, err := stub.GetState(args[0])
 	if err != nil {
-		return shim.Error("Failed to get Part #" + args[0])
+		return shim.Error("Failed to get LogisticTransaction # " + args[0])
 	}
-	var bch Part
+	var bch LogisticTransaction
 	err = json.Unmarshal(bAsBytes, &bch)
 	if err != nil {
-		return shim.Error("Failed to Unmarshal Part #" + args[0])
+		return shim.Error("Failed to Unmarshal LogisticTransaction # " + args[0])
 	}
 
-	var tx Transaction
-	tx.TType 	= args[7];
+	var tx ShipmentStatusTransaction
+	tx.ShipmentStatus 	= args[2];
+	tx.ShipmentDate		= args[3];
 
-	tx.VehicleId		= args[1]
-	tx.DateOfDelivery	= args[2]
-	tx.DateOfInstallation	= args[3]
-	tx.User  		= args[4]
-	tx.WarrantyStartDate	= args[5]
-	tx.WarrantyEndDate	= args[6]
+	bch.ShipmentStatus = append(bch.ShipmentStatus, tx)
 
-
-	bch.Transactions = append(bch.Transactions, tx)
-
-	//Commit updates part to ledger
-	fmt.Println("updatePart Commit Updates To Ledger");
+	//Commit updates LogisticTransaction status to ledger
+	fmt.Println("updateLogisticTransactionStatus Commit Updates To Ledger");
 	btAsBytes, _ := json.Marshal(bch)
-	err = stub.PutState(bch.PartId, btAsBytes)
+	err = stub.PutState(bch.ConsignmentNumber, btAsBytes)
 	if err != nil {		
 		return shim.Error(err.Error())
 	}
 
 	return shim.Success(nil)
 }
+
+// **********************************************************************
+//		Updating Logistics transation status in blockchain
+// **********************************************************************
+func pushIotDetailsToLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+	var err error
+	fmt.Println("Running pushIotDetailsToLogisticTransaction..")
+
+	if len(args) != 4 {
+		fmt.Println("Incorrect number of arguments. Expecting 4 - ConsignmentNumber, LogisticProviderId, ShipmentStatus, ShipmentDate.")
+		return shim.Error("Incorrect number of arguments. Expecting 4")
+	}
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]);
+
+	//Get and Update LogisticTransaction data
+	bAsBytes, err := stub.GetState(args[0])
+	if err != nil {
+		return shim.Error("Failed to get LogisticTransaction # " + args[0])
+	}
+	var bch LogisticTransaction
+	err = json.Unmarshal(bAsBytes, &bch)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal LogisticTransaction # " + args[0])
+	}
+
+	var tx IotHistory
+	tx.Temperature 	= args[2];
+	tx.Location		= args[3];
+
+	bch.IotTemperatureHistory = append(bch.IotTemperatureHistory, tx)
+
+	//Commit updates LogisticTransaction status to ledger
+	fmt.Println("pushIotDetailsToLogisticTransaction Commit Updates To Ledger");
+	btAsBytes, _ := json.Marshal(bch)
+	err = stub.PutState(bch.ConsignmentNumber, btAsBytes)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
+
