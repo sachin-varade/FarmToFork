@@ -201,15 +201,15 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	if function == "init" {                    //initialize the chaincode state, used as reset
 		return t.Init(stub)
 	} else if function == "getAllAbattoirReceived" {
-		return getAllAbattoirReceived(stub, args[0])	
+		return getAllAbattoirReceived(stub, args[0], args[1])	
 	} else if function == "saveAbattoirReceived" {
 		return saveAbattoirReceived(stub, args)
 	} else if function == "getAllAbattoirDispatch" {
-		return getAllAbattoirDispatch(stub, args[0])
+		return getAllAbattoirDispatch(stub, args[0], args[1])
 	} else if function == "saveAbattoirDispatch" {
 		return saveAbattoirDispatch(stub, args)
 	} else if function == "getAllLogisticTransactions" {
-		return getAllLogisticTransactions(stub, args[0])
+		return getAllLogisticTransactions(stub, args[0], args[1])
 	} else if function == "saveLogisticTransaction" {
 		return saveLogisticTransaction(stub, args)
 	} else if function == "updateLogisticTransactionStatus" {

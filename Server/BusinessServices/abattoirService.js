@@ -23,7 +23,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
     eventHubPeers = eventHubPeers;
     orderer = orderer;
 
-    abattoirService.getAllAbattoirReceived = function(option){
+    abattoirService.getAllAbattoirReceived = function(option, value){
         console.log("getAllAbattoirReceived");
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
         .then((user_from_store) => {
@@ -31,7 +31,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             return queryChainCode.queryChainCode(channels.abattoirchannel, 
                 abattoirConfig.channels.abattoirchannel.chaincodeId, 
                 "getAllAbattoirReceived", 
-                [option]);
+                [option, value]);
         }).then((results) => {
             return results;
         }).catch((err) => {
@@ -39,7 +39,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
-    abattoirService.getAllAbattoirDispatch = function(option){
+    abattoirService.getAllAbattoirDispatch = function(option, value){
         console.log("getAllAbattoirDispatch");
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
         .then((user_from_store) => {
@@ -47,7 +47,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             return queryChainCode.queryChainCode(channels.abattoirchannel, 
                 abattoirConfig.channels.abattoirchannel.chaincodeId, 
                 "getAllAbattoirDispatch", 
-                [option]);
+                [option, value]);
         }).then((results) => {
             return results;
         }).catch((err) => {
@@ -55,7 +55,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
-    abattoirService.getAllLogisticTransactions = function(option){
+    abattoirService.getAllLogisticTransactions = function(option, value){
         console.log("getAllLogisticTransactions");
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
         .then((user_from_store) => {
@@ -63,7 +63,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             return queryChainCode.queryChainCode(channels.abattoirchannel, 
                 abattoirConfig.channels.abattoirchannel.chaincodeId, 
                 "getAllLogisticTransactions", 
-                [option]);
+                [option, value]);
         }).then((results) => {
             return results;
         }).catch((err) => {

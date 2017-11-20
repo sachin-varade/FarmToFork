@@ -51,9 +51,9 @@ export class AbattoirService {
     });
   }
   
-  getAllAbattoirReceived(option: string): Promise<any> {
+  getAllAbattoirReceived(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllAbattoirReceived`;
-    return this.http.get(this.url+"/"+ option).toPromise()
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
@@ -61,9 +61,9 @@ export class AbattoirService {
     });
   }
 
-  getAllAbattoirDispatch(option: string): Promise<any> {
+  getAllAbattoirDispatch(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllAbattoirDispatch`;
-    return this.http.get(this.url+"/"+ option).toPromise()
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
@@ -71,9 +71,9 @@ export class AbattoirService {
     });
   }
 
-  getAllLogisticTransactions(option: string): Promise<any> {
+  getAllLogisticTransactions(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllLogisticTransactions`;
-    return this.http.get(this.url+"/"+ option).toPromise()
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {

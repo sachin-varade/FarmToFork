@@ -19,9 +19,9 @@ export class LogisticDashboardComponent implements OnInit {
     this.currentUser = JSON.parse(this.user.getUserLoggedIn());
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
-    this.abattoirService.getAllLogisticTransactions('DETAILS')
+    this.abattoirService.getAllLogisticTransactions('details')
     .then((results: any) => {
-      this.logisticTransactionList = <Array<AbattoirModels.LogisticTransaction>>results.LogisticTransactions;
+      this.logisticTransactionList = <Array<AbattoirModels.LogisticTransaction>>results.logisticTransactions;
     });
   }
   

@@ -23,7 +23,7 @@ export class AbattoirOutwardComponent implements OnInit {
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();
 
-    this.abattoirService.getAllAbattoirReceived('DETAILS')
+    this.abattoirService.getAllAbattoirReceived('details')
     .then((results: any) => {
       this.abattoirReceivedList = <Array<AbattoirModels.AbattoirReceived>>results.abattoirMaterialReceived;
     });

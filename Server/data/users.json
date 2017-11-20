@@ -45,7 +45,7 @@
         "logistics": [
             {
                 "id": 1,
-                "name": "logiscic1",
+                "name": "logistic1",
                 "role": "logiscic",
                 "password": "123456",
                 "uniqueId": "L001",
@@ -54,7 +54,7 @@
             },
             {
                 "id": 2,
-                "name": "logiscic2",
+                "name": "logistic2",
                 "role": "logiscic",
                 "password": "123456",
                 "uniqueId": "L002",

@@ -22,6 +22,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"	
+	"strings"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -50,26 +51,39 @@ func getAllAbattoirReceived(stub  shim.ChaincodeStubInterface, option string, va
 
 	var allIds AllAbattoirReceivedIds
 	var allDetails AllAbattoirReceivedDetails
+	var sb AbattoirMaterialReceived
+	if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(value)
+		if err != nil {
+			return shim.Error("Failed to get Abattoir Dispatch record.")
+		}
+		
+		json.Unmarshal(sbAsBytes, &sb)
+		if sb.PurchaseOrderReferenceNumber != "" {
+			allDetails.AbattoirMaterialReceived = append(allDetails.AbattoirMaterialReceived,sb);	
+		}		
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+
 	for i := range res.PurchaseOrderReferenceNumbers{
 
 		sbAsBytes, err := stub.GetState(res.PurchaseOrderReferenceNumbers[i])
 		if err != nil {
 			return shim.Error("Failed to get Abattoir Received Id ")
 		}
-		var sb AbattoirMaterialReceived
 		json.Unmarshal(sbAsBytes, &sb)
-
-		if option == "IDS" {
+		if strings.ToLower(option) == "ids" {
 			allIds.PurchaseOrderReferenceNumbers = append(allIds.PurchaseOrderReferenceNumbers,sb.PurchaseOrderReferenceNumber);	
-		} else if option == "DETAILS" {
+		} else if strings.ToLower(option) == "details" {
 			allDetails.AbattoirMaterialReceived = append(allDetails.AbattoirMaterialReceived,sb);	
 		}		
 	}
 	
-	if option == "IDS" {
+	if strings.ToLower(option) == "ids" {
 		rabAsBytes, _ := json.Marshal(allIds)		
 		return shim.Success(rabAsBytes)	
-	} else if option == "DETAILS" {
+	} else if strings.ToLower(option) == "details" {
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}
@@ -97,21 +111,22 @@ func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, option string, va
 		fmt.Println(err);
 		return shim.Error("Failed to Unmarshal all Abattoir Dispatch records")
 	}
-	
+	var allIds AllAbattoirDispatchIds
+	var allDetails AllAbattoirDispatchDetails
+	var sb AbattoirDispatch
 	if strings.ToLower(option) == "id" && value != "" {
 		sbAsBytes, err := stub.GetState(value)
 		if err != nil {
 			return shim.Error("Failed to get Abattoir Dispatch record.")
 		}
-		var sb AbattoirDispatch
 		json.Unmarshal(sbAsBytes, &sb)
-		allDetails.AbattoirMaterialDispatch = append(allDetails.AbattoirMaterialDispatch,sb);	
+		if sb.ConsignmentNumber != "" {
+			allDetails.AbattoirMaterialDispatch = append(allDetails.AbattoirMaterialDispatch,sb);	
+		}
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}
 	
-	var allIds AllAbattoirDispatchIds
-	var allDetails AllAbattoirDispatchDetails
 	for i := range res.ConsignmentNumbers{
 
 		sbAsBytes, err := stub.GetState(res.ConsignmentNumbers[i])
@@ -159,9 +174,22 @@ func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, option string
 		fmt.Println(err);
 		return shim.Error("Failed to Unmarshal all Logistic Transactions records")
 	}
-	
+	var sb LogisticTransaction
 	var allIds AllLogisticTransactionIds
 	var allDetails AllLogisticTransactionDetails
+	if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(value)
+		if err != nil {
+			return shim.Error("Failed to get Logistic Transaction record.")
+		}
+		json.Unmarshal(sbAsBytes, &sb)
+		if sb.ConsignmentNumber != "" {
+			allDetails.LogisticTransactions = append(allDetails.LogisticTransactions, sb);	
+		}
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+	
 	for i := range res.ConsignmentNumbers{
 
 		sbAsBytes, err := stub.GetState(res.ConsignmentNumbers[i])
@@ -171,17 +199,17 @@ func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, option string
 		var sb LogisticTransaction
 		json.Unmarshal(sbAsBytes, &sb)
 
-		if option == "IDS" {
+		if strings.ToLower(option) == "ids" {
 			allIds.ConsignmentNumbers = append(allIds.ConsignmentNumbers, sb.ConsignmentNumber);	
-		} else if option == "DETAILS" {
+		} else if strings.ToLower(option) == "details" {
 			allDetails.LogisticTransactions = append(allDetails.LogisticTransactions, sb);	
 		}	
 	}
 
-	if option == "IDS" {
+	if strings.ToLower(option) == "ids" {
 		rabAsBytes, _ := json.Marshal(allIds)		
 		return shim.Success(rabAsBytes)	
-	} else if option == "DETAILS" {
+	} else if strings.ToLower(option) == "details" {
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}

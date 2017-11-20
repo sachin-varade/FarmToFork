@@ -27,7 +27,7 @@ export class LogisticInwardComponent implements OnInit {
     this.currentUser = JSON.parse(this.user.getUserLoggedIn());
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
-    this.abattoirService.getAllAbattoirDispatch('DETAILS')
+    this.abattoirService.getAllAbattoirDispatch('details')
     .then((results: any) => {
       this.abattoirDispatchList = <Array<AbattoirModels.AbattoirDispatch>>results.abattoirMaterialDispatch;
     });

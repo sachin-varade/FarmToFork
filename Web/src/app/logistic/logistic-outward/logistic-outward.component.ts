@@ -24,16 +24,41 @@ export class LogisticOutwardComponent implements OnInit {
               private abattoirService: AbattoirService) {
     this.currentUser = JSON.parse(this.user.getUserLoggedIn());
     this.userData = this.user.getUserData();
-    this.commonData = this.user.getCommonData();    
-    this.abattoirService.getAllAbattoirDispatch('DETAILS')
+    this.commonData = this.user.getCommonData();   
+    this.route.params.subscribe(params => {
+      this.abattoirService.getAllLogisticTransactions('id',  params['consignmentNumber'])
+      .then((results: any) => {
+        this.logisticTransaction = <AbattoirModels.LogisticTransaction>results.logisticTransactions[0];        
+      });
+   }); 
+    
+  }
+
+  ngOnInit() {    
+  }
+
+  saveLogisticTransaction(){
+    this.logisticTransaction.updatedBy = this.currentUser.id;
+    this.logisticTransaction.updatedOn = new Date();
+    this.logisticTransaction.logisticId = this.currentUser.id;
+    if (this.logisticTransaction.actualDeliveryDateTime && this.actualDeliveryDateTime){
+      this.logisticTransaction.actualDeliveryDateTime.setHours(this.actualDeliveryDateTime.hour);
+      this.logisticTransaction.actualDeliveryDateTime.setMinutes(this.actualDeliveryDateTime.minute);        
+    }    
+    this.abattoirService.updateLogisticTransactionStatus(this.logisticTransaction)
     .then((results: any) => {
-      //this.abattoirDispatchList = <Array<AbattoirModels.AbattoirDispatch>>results.abattoirMaterialDispatch;
+      if(results[0].status.indexOf('SUCCESS') > -1){
+        this.clearForm();
+        alert("Saved successfully.....");
+      }
+      else{
+        alert("Error Occured.....");
+      }
     });
   }
 
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      //this.consignmentNumber = params['consignmentNumber'];
-   });
+  clearForm(){    
+    this.actualDeliveryDateTime= null;
+    this.logisticTransaction = new AbattoirModels.LogisticTransaction();    
   }
 }

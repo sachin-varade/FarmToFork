@@ -42,8 +42,8 @@ router.get("/getCommonData", function(req, res) {
 	res.send(commonData);
 });
 
-router.get("/getAllAbattoirReceived/:option", function(req, res) {    
-    var promise = abattoirService.getAllAbattoirReceived(req.params.option);
+router.get("/getAllAbattoirReceived/:option/:value?", function(req, res) {    
+    var promise = abattoirService.getAllAbattoirReceived(req.params.option, req.params.value?req.params.value: "");
 	promise.then(function(resp,err){
 		res.send(resp);
 	});	
@@ -56,8 +56,8 @@ router.post("/saveAbattoirReceived", function(req, res) {
 	});			
 });
 
-router.get("/getAllAbattoirDispatch/:option", function(req, res) {    
-    var promise = abattoirService.getAllAbattoirDispatch(req.params.option);
+router.get("/getAllAbattoirDispatch/:option/:value?", function(req, res) {    
+    var promise = abattoirService.getAllAbattoirDispatch(req.params.option, req.params.value?req.params.value: "");
 	promise.then(function(resp,err){
 		res.send(resp);
 	});	
@@ -70,8 +70,8 @@ router.post("/saveAbattoirDispatch", function(req, res) {
 	});			
 });
 
-router.get("/getAllLogisticTransactions/:option", function(req, res) {    
-    var promise = abattoirService.getAllLogisticTransactions(req.params.option);
+router.get("/getAllLogisticTransactions/:option/:value?", function(req, res) {    
+    var promise = abattoirService.getAllLogisticTransactions(req.params.option, req.params.value?req.params.value: "");
 	promise.then(function(resp,err){
 		res.send(resp);
 	});	
@@ -85,7 +85,7 @@ router.post("/saveLogisticTransaction", function(req, res) {
 });
 
 router.post("/updateLogisticTransactionStatus", function(req, res) {    
-	var promise = abattoirService.saveLogisticTransaction(req.body);
+	var promise = abattoirService.updateLogisticTransactionStatus(req.body);
 	promise.then(function(resp,err){
 		res.send(resp);
 	});			

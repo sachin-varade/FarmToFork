@@ -39,7 +39,7 @@ export class UserService {
   }
 
   getUserData(): Promise<any> {
-    if (localStorage.getItem('userData') !== 'null') {
+    if (localStorage.getItem('userData') !== null && localStorage.getItem('userData') !== 'null') {
       return JSON.parse(localStorage.getItem('userData'));
     } else {
       const url = `${this.BASE_URL}/getUserData`;
@@ -54,7 +54,7 @@ export class UserService {
   }
 
   getCommonData(): Promise<any> {
-    if (localStorage.getItem('commonData') !== 'null') {
+    if (localStorage.getItem('commonData') !== null && localStorage.getItem('commonData') !== 'null') {
       return JSON.parse(localStorage.getItem('commonData'));
     } else {
       const url = `${this.BASE_URL}/getCommonData`;

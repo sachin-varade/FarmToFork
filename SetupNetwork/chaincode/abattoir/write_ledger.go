@@ -242,7 +242,7 @@ func updateLogisticTransactionStatus(stub  shim.ChaincodeStubInterface, args []s
 	}	
 	bch.CurrentStatus = args[2]
 	if strings.ToLower(bch.CurrentStatus) == "delivered" {
-		bt.ExpectedDeliveryDateTime			= args[4]	
+		bch.ExpectedDeliveryDateTime			= args[4]	
 	}
 	var tx ShipmentStatusTransaction
 	tx.ShipmentStatus 	= args[2];
