@@ -50,7 +50,7 @@ type ProcessorReceived struct {
 	MaterialGrade						string	`json:"materialGrade"`	
 	Quantity							string	`json:"quantity"`
 	QuantityUnit						string	`json:"quantityUnit"`	
-	UseByDate							string	`json:"useByDate"`
+	UsedByDate							string	`json:"usedByDate"`
 	ReceivedDate						string	`json:"receivedDate"`	
 	TransitTime							string	`json:"transitTime"`
 	Storage								string	`json:"storage"`
@@ -75,7 +75,7 @@ type ProcessingTransaction struct {
 	MaterialGrade						string	`json:"materialGrade"`	
 	Quantity							string	`json:"quantity"`
 	QuantityUnit						string	`json:"quantityUnit"`	
-	UseByDate							string	`json:"useByDate"`
+	UsedByDate							string	`json:"usedByDate"`
 	QualityControlDocument				string	`json:"qualityControlDocument"`	
 	Storage								string	`json:"storage"`
 	ProcessingAction					[]ProcessingAction	`json:"processingAction"`
@@ -100,7 +100,7 @@ type ProcessorDispatch struct {
 	TemperatureStorageMin			string	`json:"temperatureStorageMin"`
 	TemperatureStorageMax			string	`json:"temperatureStorageMax"`
 	PackagingDate					string	`json:"packagingDate"`
-	UseByDate						string	`json:"useByDate"`
+	UsedByDate						string	`json:"usedByDate"`
 	Quantity						string	`json:"quantity"`	
 	QuantityUnit					string	`json:"quantityUnit"`
 	QualityControlDocument			string	`json:"qualityControlDocument"`	

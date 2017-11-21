@@ -25,6 +25,7 @@ import { ProcessorDispatchComponent } from './processor/processor-dispatch/proce
 import { ProcessItemComponent } from './processor/process-item/process-item.component';
 import { IkeaInwardComponent } from './ikea/ikea-inward/ikea-inward.component';
 import { AbattoirService } from './abattoir.service';
+import { ProcessorService } from './processor.service';
 const appRoutes:Routes = [
   {
     path: '',
@@ -94,7 +95,7 @@ const appRoutes:Routes = [
   NgbModule.forRoot(),
   HttpModule
   ],
-  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService],
+  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService],
   bootstrap: [AppComponent]
 })
 

@@ -18,7 +18,7 @@ export class AbattoirReceived {
     guidNumber: string;
     materialName: string;
     materialGrade: string;
-    userByDate: Date;
+    usedByDate: Date;
     quantity: number;
     quantityUnit: string;
     certificates: FarmersCertificate[];
@@ -37,7 +37,7 @@ export class AbattoirDispatch {
     temperatureStorageMin: string;
     temperatureStorageMax: string;
     productionDate: Date;
-    userByDate: Date;
+    usedByDate: Date;
     quantity: number;
     quantityUnit: string;
     updatedOn: Date;

@@ -47,7 +47,7 @@ type AbattoirMaterialReceived struct {
 	GUIDNumber			string	`json:"guidNumber"`
 	MaterialName		string	`json:"materialName"`
 	MaterialGrade		string	`json:"materialGrade"`
-	UseByDate			string	`json:"useByDate"`
+	UsedByDate			string	`json:"usedByDate"`
 	Quantity			string	`json:"quantity"`
 	QuantityUnit			string	`json:"quantityUnit"`	
 	Certificates		[]FarmersCertificate	`json:"certificates"`
@@ -71,7 +71,7 @@ type AbattoirDispatch struct {
 	TemperatureStorageMin	string	`json:"temperatureStorageMin"`
 	TemperatureStorageMax	string	`json:"temperatureStorageMax"`
 	ProductionDate			string	`json:"productionDate"`
-	UseByDate				string	`json:"useByDate"`
+	UsedByDate				string	`json:"usedByDate"`
 	Quantity				string	`json:"quantity"`	
 	QuantityUnit				string	`json:"quantityUnit"`
 	UpdatedOn			string	`json:"updatedOn"`

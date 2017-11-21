@@ -25,6 +25,13 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
 
     processorService.saveProcessorReceived = function(processorReceived){
         console.log("saveProcessorReceived");
+        var acceptanceCriteria = "";
+        processorReceived.acceptanceCheckList.forEach(element => {
+            if(acceptanceCriteria == "")
+                acceptanceCriteria = element.id +"^"+ element.ruleCondition +"^"+ element.conditionSatisfied;
+            else
+                acceptanceCriteria += ","+ element.id +"^"+ element.ruleCondition +"^"+ element.conditionSatisfied;
+        });
         return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
@@ -36,20 +43,20 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                 "saveProcessorReceived",  
                 [
                     processorReceived.processorReceiptNumber,
-                    processorReceived.processorId,
+                    processorReceived.processorId.toString(),
                     processorReceived.purchaseOrderNumber,
                     processorReceived.consignmentNumber,
-                    processorReceived.transportConsitionSatisfied,
+                    processorReceived.transportConsitionSatisfied.toString(),
                     processorReceived.guidNumber,
                     processorReceived.materialName,
                     processorReceived.materialGrade,
                     processorReceived.quantity,
                     processorReceived.quantityUnit,
-                    processorReceived.useByDate,
+                    processorReceived.usedByDate,
                     processorReceived.receivedDate,
                     processorReceived.transitTime,
-                    processorReceived.acceptanceCheckList,
-                    processorReceived.updatedBy,
+                    acceptanceCriteria,
+                    processorReceived.updatedBy.toString(),
                     processorReceived.updatedOn
                 ]);                
         }).then((results) => {
@@ -73,7 +80,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                 [
                     processingTransaction.processorBatchCode,
                     processingTransaction.processorBatchCode,
-                    processingTransaction.processorId,
+                    processingTransaction.processorId.toString(),
                     processingTransaction.processorReceiptNumber,
                     processingTransaction.productCode,
                     processingTransaction.guidNumber,
@@ -81,11 +88,11 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     processingTransaction.materialGrade,
                     processingTransaction.quantity,
                     processingTransaction.quantityUnit,
-                    processingTransaction.useByDate,
+                    processingTransaction.usedByDate,
                     processingTransaction.qualityControlDocument,
                     processingTransaction.storage,
                     processingTransaction.processingAction,                    
-                    processingTransaction.updatedBy,
+                    processingTransaction.updatedBy.toString(),
                     processingTransaction.updatedOn                    
                 ]);                
         }).then((results) => {
@@ -109,7 +116,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                 [
                     processorDispatch.consignmentNumber,
                     processorDispatch.processorBatchCode,
-                    processorDispatch.processorId,
+                    processorDispatch.processorId.toString(),
                     processorDispatch.ikeaPurchaseOrderNumber,
                     processorDispatch.guidNumber,
                     processorDispatch.materialName,
@@ -117,12 +124,12 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     processorDispatch.temperatureStorageMin,
                     processorDispatch.temperatureStorageMax,
                     processorDispatch.packagingDate,
-                    processorDispatch.useByDate,
+                    processorDispatch.usedByDate,
                     processorDispatch.quantity,
                     processorDispatch.quantityUnit,
                     processorDispatch.qualityControlDocument,
                     processorDispatch.storage,
-                    processorDispatch.updatedBy,
+                    processorDispatch.updatedBy.toString(),
                     processorDispatch.updatedOn,
                 ]);                
         }).then((results) => {

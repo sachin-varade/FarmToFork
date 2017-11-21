@@ -7,7 +7,7 @@ export class ProcessorReceived {
     guidNumber: string;
     materialName: string;
     materialGrade: string;
-    userByDate: Date;
+    usedByDate: Date;
     receivedDate: Date;
     quantity: number;
     quantityUnit: string;
@@ -32,7 +32,7 @@ export class ProcessingTransaction{
     guidNumber: string;
     materialName: string;
     materialGrade: string;
-    userByDate: Date;    
+    usedByDate: Date;    
     quantity: number;
     quantityUnit: string;
     qualityControlDocument: string;
@@ -58,7 +58,7 @@ export class ProcessorDispatch{
     temperatureStorageMin: string;
     temperatureStorageMax: string;
     packagingDate: Date;
-    userByDate: Date;    
+    usedByDate: Date;    
     quantity: number;
     quantityUnit: string;
     qualityControlDocument: string;
