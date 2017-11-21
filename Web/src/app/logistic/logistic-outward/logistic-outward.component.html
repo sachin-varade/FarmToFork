@@ -1,105 +1,100 @@
-<div class="container" style="width:600px;">
-    <h1>Logistic Inward</h1>
+<div class="container">
+    <h1 class="title-main">Logistic Outward</h1>
     <form>
-      <div class="form-group">
-          <label>Logistic Id</label>
-          <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
-      </div>
-      <div class="form-group">
-        <label for="selectRoute">Route</label>
-        <span></span>
-      </div>      
-      <div class="form-group">
-          <label for="consignmentNumber">Consignment Number</label>
-          <span>{{consignmentNumber}}</span>
-      </div>
-  
-      <div class="form-group">
-        <label for="abattoirConsignmentNumber">Abattoir Consignment Number</label>
-        <span></span>
-      </div>
-  
-      <div class="form-group">
-          <label for="pickupLocation">Pickup Location</label>
-          <span></span>
-      </div>
-  
-      <div class="form-group">
-          <label for="deliveryLocation">Delivery Location</label>
-          <span></span>
-      </div>
-  
-      <div class="form-group">
-          <label for="vehicleId">Vehicle Id</label>
-          <span></span>
-      </div>
-      
-      <div class="form-group">
-          <label for="vehicleType">Vehicle Type</label>
-          <span></span>
-      </div>
-  
-      <div class="form-group">
-          <label for="dispatchDate">Dispatch Date/Time</label>
-      </div>
-  
-      <div class="form-group">
-          <span></span>
-      </div>
-  
-      <div class="form-group">
-          <label for="expectedDate">Expected Delivery Date/Time</label>
-      </div>
-  
-      <div class="form-group">
-          <span></span>
-      </div>
-  
-      <div class="form-group">
-        <label for="actualDate">Actual Delivery Date/Time</label>
-    </div>
-
-    <div class="form-group date-picker-div">
-        <input type="text" [(ngModel)]="logisticTransaction.actualDeliveryDateTime" name="actualDeliveryDate" class="form-control date-picker-date" bsDatepicker/>     
-        <ngb-timepicker [(ngModel)]="actualDeliveryDateTime" name="actualDeliveryDateTime" class="date-picker-time"></ngb-timepicker>
-    </div>
-  
-      <div class="form-group">
-          <label for="minTemp">Temp storage instruction (Min-Max)</label>      
+        <div class="col-lg-6 col-sm-12">
+            <div class="form-group">
+                <label>Logistic Id</label>
+                <span class="value-text">101-245936-2342897</span>
+            </div>
+            <div class="form-group">
+                <label for="selectRoute">Route</label>
+                <span class="value-text">Route Name</span>
+            </div>      
+            <div class="form-group">
+                <label for="consignmentNumber">Consignment Number</label>
+                <span class="value-text">{{consignmentNumber}}</span>
+            </div>
+        
+            <div class="form-group">
+                <label for="abattoirConsignmentNumber">Abattoir Consignment Number</label>
+                <span class="value-text">654732526</span>
+            </div>
+        
+            <div class="form-group">
+                <label for="pickupLocation">Pickup Location</label>
+                <span class="value-text">Pickup Location Name</span>
+            </div>
+        
+            <div class="form-group">
+                <label for="deliveryLocation">Delivery Location</label>
+                <span class="value-text">Delivery Location Name</span>
+            </div>
+        
+            <div class="form-group">
+                <label for="vehicleId">Vehicle Id</label>
+                <span class="value-text">VID-20145</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="vehicleType">Vehicle Type</label>
+                <span class="value-text">Vehicle Type 1</span>
+            </div>
         </div>
-        <div class="form-group temp-min-max">      
-          <div class="min-max-temp-label">      
-            <label>Min</label>
-          </div>
-          <div class="min-max-temp-field">      
-              <span></span>
-          </div>
-          <div class="min-max-temp-label">      
-            <label>Max</label>
-          </div>
-          <div class="min-max-temp-field">      
-              <span></span>
-          </div>
-      </div>
+        <div class="col-lg-6 col-sm-12">
+            <div class="form-group">
+                <label for="dispatchDate">Dispatch Date/Time</label>
+                <span class="value-text">11/20/17, 6:14 PM</span>
+            </div>
+                
+            <div class="form-group">
+                <label for="expectedDate">Expected Delivery Date/Time</label>
+                <span class="value-text">11/20/17, 6:14 PM</span>
+            </div>
+                
+            <div class="form-group date-picker-div">
+                <label for="actualDate">Actual Delivery Date/Time</label>
+                <div class="clearfix">
+                    <input type="text" [(ngModel)]="logisticTransaction.actualDeliveryDateTime" name="actualDeliveryDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker/>     
+                    <ngb-timepicker [(ngModel)]="actualDeliveryDateTime" name="actualDeliveryDateTime" class="date-picker-time float-left"></ngb-timepicker>
+                </div>
+            </div>
+        
+            <div class="form-group temp-min-max"> 
+                <label for="minTemp">Temp storage instruction (Min-Max)</label>      
+                <div class="clearfix">
+                    <div class="min-max-temp-label float-left">      
+                        <span class="value-text"><span>Min</span>45</span>
+                    </div>
+                    <div class="min-max-temp-label float-left">      
+                        <span class="value-text"><span>Max</span>60</span>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <span class="value-text">30</span>
+            </div>
+        
+            <div class="form-group">
+                <label for="handInstructions">Handling Instructions</label>
+                <span class="value-text">Handling instructions will come here</span>
+            </div>
+        
+            <div class="form-group">
+                <label for="currentStatus">Shipment Status</label>
+                <select class="form-control" [(ngModel)]="logisticTransaction.currentStatus" name="currentStatus" required>
+                    <option *ngFor="let status of commonData.shipmentStatus" [value]="status">{{status}}</option>
+                </select>
+            </div>		
+	  
+        </div>
   
-      <div class="form-group">
-          <label for="quantity" style="display: block;">Quantity</label>
-          <span></span>
-      </div>
   
-      <div class="form-group">
-          <label for="handInstructions">Handling Instructions</label>
-          <span></span>
-      </div>
-  
-      <div class="form-group">
-          <label for="currentStatus">Shipment Status</label>
-          <select class="form-control" [(ngModel)]="logisticTransaction.currentStatus" name="currentStatus" required>
-              <option *ngFor="let status of commonData.shipmentStatus" [value]="status">{{status}}</option>
-          </select>
-      </div>
-    
-      <button type="submit" (click)="saveLogisticTransaction()" class="btn btn-success"> Update </button>
+      <div class="block-button-area">
+        <button class="btn btn-border">Cancel</button>        
+		<button type="submit" (click)="saveLogisticTransaction()" class="btn btn-normal"> Update </button>
+    </div>
   
     </form>
   </div>

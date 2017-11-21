@@ -22,6 +22,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -30,16 +31,16 @@ import (
 // ============================================================================================================================
 // Get All Abattoir Received
 // ============================================================================================================================
-func getAllProcessingCompanyReceivedIds(stub  shim.ChaincodeStubInterface, option string) pb.Response {
-	fmt.Println("getAllProcessingCompanyReceivedIds:Looking for All Abattoir Received");
+func getAllProcessorReceived(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
+	fmt.Println("getAllProcessorReceived:Looking for All Abattoir Received");
 
 	//get the AllAbattoirReceived index
-	allBAsBytes, err := stub.GetState("allProcessingCompanyReceivedIds")
+	allBAsBytes, err := stub.GetState("allProcessorReceivedIds")
 	if err != nil {
 		return shim.Error("Failed to get all Abattoir Received")
 	}
 
-	var res AllProcessingCompanyReceivedIds
+	var res AllProcessorReceivedIds
 	err = json.Unmarshal(allBAsBytes, &res)
 	//fmt.Println(allBAsBytes);
 	if err != nil {
@@ -48,29 +49,40 @@ func getAllProcessingCompanyReceivedIds(stub  shim.ChaincodeStubInterface, optio
 		return shim.Error("Failed to Unmarshal all Processing Company Received Ids")
 	}
 
-	var allIds AllProcessingCompanyReceivedIds
-	var allDetails AllProcessingCompanyReceivedDetails
-
-	for i := range res.ProcessingCompanyReceiptNumbers{
-
-		sbAsBytes, err := stub.GetState(res.ProcessingCompanyReceiptNumbers[i])
+	var allIds AllProcessorReceivedIds
+	var allDetails AllProcessorReceivedDetails
+	var sb ProcessorReceived
+	if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(value)
 		if err != nil {
 			return shim.Error("Failed to get Processing Company Receipt Number ")
 		}
-		var sb ProcessingCompanyReceived
+		json.Unmarshal(sbAsBytes, &sb)
+		if sb.ProcessorReceiptNumber != "" {
+			allDetails.ProcessorReceived = append(allDetails.ProcessorReceived,sb);	
+		}
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+
+	for i := range res.ProcessorReceiptNumbers{
+		sbAsBytes, err := stub.GetState(res.ProcessorReceiptNumbers[i])
+		if err != nil {
+			return shim.Error("Failed to get Processing Company Receipt Number ")
+		}		
 		json.Unmarshal(sbAsBytes, &sb)
 
-		if option == "IDS" {
-			allIds.ProcessingCompanyReceiptNumbers = append(allIds.ProcessingCompanyReceiptNumbers,sb.ProcessingCompanyReceiptNumber);	
-		} else if option == "DETAILS" {
-			allDetails.ProcessingCompanyReceived = append(allDetails.ProcessingCompanyReceived,sb);	
+		if strings.ToLower(option) == "ids" {
+			allIds.ProcessorReceiptNumbers = append(allIds.ProcessorReceiptNumbers,sb.ProcessorReceiptNumber);	
+		} else if strings.ToLower(option) == "details" {
+			allDetails.ProcessorReceived = append(allDetails.ProcessorReceived,sb);	
 		}
 	}
 	
-	if option == "IDS" {
+	if strings.ToLower(option) == "ids" {
 		rabAsBytes, _ := json.Marshal(allIds)		
 		return shim.Success(rabAsBytes)	
-	} else if option == "DETAILS" {
+	} else if strings.ToLower(option) == "details" {
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}
@@ -81,16 +93,16 @@ func getAllProcessingCompanyReceivedIds(stub  shim.ChaincodeStubInterface, optio
 // ============================================================================================================================
 // Get All Processing Company Transactions
 // ============================================================================================================================
-func getAllProcessingCompanyTransactions(stub  shim.ChaincodeStubInterface, option string) pb.Response {
-	fmt.Println("getAllProcessingCompanyTransactions: Looking for All Processing Company Transactions");
+func getAllProcessingTransactions(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
+	fmt.Println("getAllProcessingTransactions: Looking for All Processing Company Transactions");
 
 	//get the All processing company batch codes index
-	allBAsBytes, err := stub.GetState("allProcessingCompanyBatchCodes")
+	allBAsBytes, err := stub.GetState("allProcessingTransactionIds")
 	if err != nil {
 		return shim.Error("Failed to get all Processing company Batch Codes")
 	}
 
-	var res AllProcessingCompanyBatchCodes
+	var res AllProcessingTransactionIds
 	err = json.Unmarshal(allBAsBytes, &res)
 	//fmt.Println(allBAsBytes);
 	if err != nil {
@@ -98,29 +110,39 @@ func getAllProcessingCompanyTransactions(stub  shim.ChaincodeStubInterface, opti
 		fmt.Println(err);
 		return shim.Error("Failed to Unmarshal all Processing company Batch Codes records")
 	}
+	var allIds AllProcessingTransactionIds
+	var allDetails AllProcessingTransactionDetails
+	var sb ProcessingTransaction
+	if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(value)
+		if err != nil {
+			return shim.Error("Failed to get processing company batch code record.")
+		}
+		json.Unmarshal(sbAsBytes, &sb)
+		if sb.ProcessorBatchCode != "" {
+			allDetails.ProcessingTransaction = append(allDetails.ProcessingTransaction,sb);	
+		}
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
 	
-	var allIds AllProcessingCompanyBatchCodes
-	var allDetails AllProcessingCompanyTransactionDetails
 	for i := range res.ProcessorBatchCodes{
-
 		sbAsBytes, err := stub.GetState(res.ProcessorBatchCodes[i])
 		if err != nil {
 			return shim.Error("Failed to get processing company batch code record.")
 		}
-		var sb ProcessingCompanyTransaction
 		json.Unmarshal(sbAsBytes, &sb)
-
-		if option == "IDS" {
+		if strings.ToLower(option) == "ids" {
 			allIds.ProcessorBatchCodes = append(allIds.ProcessorBatchCodes,sb.ProcessorBatchCode);	
-		} else if option == "DETAILS" {
-			allDetails.ProcessingCompanyTransaction = append(allDetails.ProcessingCompanyTransaction,sb);	
+		} else if strings.ToLower(option) == "details" {
+			allDetails.ProcessingTransaction = append(allDetails.ProcessingTransaction,sb);	
 		}
 	}
 
-	if option == "IDS" {
+	if strings.ToLower(option) == "ids" {
 		rabAsBytes, _ := json.Marshal(allIds)		
 		return shim.Success(rabAsBytes)	
-	} else if option == "DETAILS" {
+	} else if strings.ToLower(option) == "details" {
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}
@@ -132,16 +154,16 @@ func getAllProcessingCompanyTransactions(stub  shim.ChaincodeStubInterface, opti
 // ============================================================================================================================
 // Get All Processing Company Dispatch
 // ============================================================================================================================
-func getAllProcessingCompanyDispatch(stub  shim.ChaincodeStubInterface, option string) pb.Response {
-	fmt.Println("getAllProcessingCompanyDispatch: Looking for All Processing Company Dispatch records");
+func getAllProcessorDispatch(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
+	fmt.Println("getAllProcessorDispatch: Looking for All Processing Company Dispatch records");
 
 	//get the All processing company batch codes index
-	allBAsBytes, err := stub.GetState("allProcessingCompanyDispatchIds")
+	allBAsBytes, err := stub.GetState("allProcessorDispatchIds")
 	if err != nil {
 		return shim.Error("Failed to get all Processing company dispatch consignment numbers")
 	}
 
-	var res AllProcessingCompanyDispatchIds
+	var res AllProcessorDispatchIds
 	err = json.Unmarshal(allBAsBytes, &res)
 	//fmt.Println(allBAsBytes);
 	if err != nil {
@@ -149,29 +171,40 @@ func getAllProcessingCompanyDispatch(stub  shim.ChaincodeStubInterface, option s
 		fmt.Println(err);
 		return shim.Error("Failed to Unmarshal all Processing company dispatch records")
 	}
+	var allIds AllProcessorDispatchIds
+	var allDetails AllProcessorDispatchDetails
+	var sb ProcessorDispatch
+	if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(value)
+		if err != nil {
+			return shim.Error("Failed to get processing dispatch record.")
+		}
+		json.Unmarshal(sbAsBytes, &sb)
+		if sb.ConsignmentNumber != "" {
+			allDetails.ProcessorDispatch = append(allDetails.ProcessorDispatch,sb);	
+		}
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
 	
-	var allIds AllProcessingCompanyDispatchIds
-	var allDetails AllProcessingCompanyDispatchDetails
 	for i := range res.ConsignmentNumbers{
 
 		sbAsBytes, err := stub.GetState(res.ConsignmentNumbers[i])
 		if err != nil {
 			return shim.Error("Failed to get processing company batch code record.")
-		}
-		var sb ProcessingCompanyDispatch
+		}		
 		json.Unmarshal(sbAsBytes, &sb)
-
-		if option == "IDS" {
+		if strings.ToLower(option) == "ids" {
 			allIds.ConsignmentNumbers = append(allIds.ConsignmentNumbers,sb.ConsignmentNumber);	
-		} else if option == "DETAILS" {
-			allDetails.ProcessingCompanyDispatch = append(allDetails.ProcessingCompanyDispatch,sb);	
+		} else if strings.ToLower(option) == "details" {
+			allDetails.ProcessorDispatch = append(allDetails.ProcessorDispatch,sb);	
 		}
 	}
 
-	if option == "IDS" {
+	if strings.ToLower(option) == "ids" {
 		rabAsBytes, _ := json.Marshal(allIds)		
 		return shim.Success(rabAsBytes)	
-	} else if option == "DETAILS" {
+	} else if strings.ToLower(option) == "details" {
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}

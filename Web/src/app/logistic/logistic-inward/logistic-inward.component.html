@@ -1,97 +1,97 @@
-<div class="container" style="width:600px;">
-  <h1>Logistic Received</h1>
-  <form>
-    <div class="form-group">
-      <label for="selectRoute">Route</label>
-      <select class="form-control" [(ngModel)]="logisticTransaction.routeId" name="selectRoute" required>  
-          <option *ngFor="let route of commonData.routes" [value]="route.id">{{route.name}}</option>      
-      </select>
-    </div>      
-    <div class="form-group">
-        <label for="consignmentNumber">Consignment Number</label>
-        <input type="text" [(ngModel)]="logisticTransaction.consignmentNumber"  class="form-control" name="consignmentNumber">
-    </div>
-
-    <div class="form-group">
-        <label for="abattoirConsignmentNumber">Abattoir Consignment Number</label>      
-        <select class="form-control" [(ngModel)]="logisticTransaction.abattoirConsignmentNumber" name="abattoirConsignmentNumber" required>        
-          <option *ngFor="let rec of abattoirDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
-        </select>
-    </div>    
-
-    <div class="form-group">
-        <label for="vehicleId">Vehicle Id</label>        
-        <select class="form-control" [(ngModel)]="logisticTransaction.vehicleId" name="vehicleId" required>        
-            <option *ngFor="let rec of commonData.vehicles" [value]="rec.id">{{rec.lpn}}</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="vehicleType">Vehicle Type</label>
-        <select class="form-control" [(ngModel)]="logisticTransaction.vehicleTypeId" name="vehicleType" required>
-            <option *ngFor="let type of commonData.vehicleTypes" [value]="type.id">{{type.type}}</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="dispatchDate">Dispatch Date/Time</label>
-    </div>
-
-    <div class="form-group date-picker-div">
-        <input type="text" [(ngModel)]="logisticTransaction.dispatchDateTime" name="dispatchDate" class="form-control date-picker-date" bsDatepicker/>     
-        <ngb-timepicker [(ngModel)]="dispatchDateTime" name="dispatchDateTime" class="date-picker-time"></ngb-timepicker>
-    </div>
-
-    <div class="form-group">
-        <label for="expectedDate">Expected Delivery Date/Time</label>
-    </div>
-
-    <div class="form-group date-picker-div">
-        <input type="text" [(ngModel)]="logisticTransaction.expectedDeliveryDateTime" name="expectedDeliveryDate" class="form-control date-picker-date" bsDatepicker/>     
-        <ngb-timepicker [(ngModel)]="expectedDeliveryDateTime" name="expectedDeliveryDateTime" class="date-picker-time"></ngb-timepicker>
-    </div>
-
-    <!-- <div class="form-group">
-        <label for="actualDate">Actual Delivery Date/Time</label>
-    </div>
-
-    <div class="form-group date-picker-div">
-        <input type="text" [(ngModel)]="logisticTransaction.actualDeliveryDateTime" name="actualDeliveryDate" class="form-control date-picker-date" bsDatepicker/>     
-        <ngb-timepicker [(ngModel)]="actualDeliveryDateTime" name="actualDeliveryDateTime" class="date-picker-time"></ngb-timepicker>
-    </div> -->
-
-    <div class="form-group">
-        <label for="minTemp">Temp storage instruction (Min-Max)</label>      
+<div class="container">
+    <h1 class="title-main">Logistic Inward</h1>
+    <form>
+        <div class="col-lg-6 col-sm-12">
+          <div class="form-group">
+          <label for="selectRoute">Route</label>
+          <select class="form-control" [(ngModel)]="logisticTransaction.routeId" name="selectRoute" required>  
+              <option *ngFor="let route of commonData.routes" [value]="route.id">{{route.name}}</option>      
+          </select>
+          </div>      
+          <div class="form-group">
+              <label for="consignmentNumber">Consignment Number</label>
+              <input type="text" [(ngModel)]="logisticTransaction.consignmentNumber"  class="form-control" name="consignmentNumber">
+          </div>
+  
+          <div class="form-group">
+              <label for="abattoirConsignmentNumber">Abattoir Consignment Number</label>      
+              <select class="form-control" [(ngModel)]="logisticTransaction.abattoirConsignmentNumber" name="abattoirConsignmentNumber" required>        
+              <option *ngFor="let rec of abattoirDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
+              </select>
+          </div>    
+  
+          <div class="form-group">
+              <label for="vehicleId">Vehicle Id</label>        
+              <select class="form-control" [(ngModel)]="logisticTransaction.vehicleId" name="vehicleId" required>        
+                  <option *ngFor="let rec of commonData.vehicles" [value]="rec.id">{{rec.lpn}}</option>
+              </select>
+          </div>
+          
+          <div class="form-group">
+              <label for="vehicleType">Vehicle Type</label>
+              <select class="form-control" [(ngModel)]="logisticTransaction.vehicleTypeId" name="vehicleType" required>
+                  <option *ngFor="let type of commonData.vehicleTypes" [value]="type.id">{{type.type}}</option>
+              </select>
+          </div>
       </div>
-      <div class="form-group temp-min-max">      
-        <div class="min-max-temp-label">      
-          <label>Min</label>
-        </div>
-        <div class="min-max-temp-field">      
-          <input type="text" class="form-control" [(ngModel)]="logisticTransaction.temperatureStorageMin" name="temperatureStorageMin">
-        </div>
-        <div class="min-max-temp-label">      
-          <label>Max</label>
-        </div>
-        <div class="min-max-temp-field">      
-          <input type="text" class="form-control" [(ngModel)]="logisticTransaction.temperatureStorageMax" name="temperatureStorageMax">
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="quantity" style="display: block;">Quantity</label>
-        <input type="text" class="form-control" [(ngModel)]="logisticTransaction.quantity" style="display: inline-block; width:100px;" name="quantity">
-        <select class="form-control" [(ngModel)]="logisticTransaction.quantityUnit" name="quantityUnit" required  style="display: inline-block; width:100px;">
-            <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="handlingInstruction">Handling Instructions</label>
-        <textarea class="form-control" [(ngModel)]="logisticTransaction.handlingInstruction" name="handlingInstruction"></textarea>        
-    </div>
-
-    <button type="submit" (click)="saveLogisticTransaction()" class="btn btn-success"> Pickup </button>
-
-  </form>
-</div>
+  
+      <div class="col-lg-6 col-sm-12">
+          
+  
+          <div class="form-group date-picker-div">
+              <label for="dispatchDate">Dispatch Date/Time</label>
+              <div class="clearfix">
+                  <input type="text" placeholder="Date" [(ngModel)]="logisticTransaction.dispatchDateTime" name="dispatchDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker/>     
+                  <ngb-timepicker [(ngModel)]="dispatchDateTime" name="dispatchDateTime" class="date-picker-time float-left"></ngb-timepicker>
+              </div>
+          </div>
+  
+  
+          <div class="form-group date-picker-div">
+              <label for="expectedDate">Expected Delivery Date/Time</label>
+              <div class="clearfix">
+                  <input type="text" placeholder="Date" [(ngModel)]="logisticTransaction.expectedDeliveryDateTime" name="expectedDeliveryDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker/>     
+                  <ngb-timepicker [(ngModel)]="expectedDeliveryDateTime" name="expectedDeliveryDateTime" class="date-picker-time float-left"></ngb-timepicker>
+              </div>
+          </div>
+  
+          <!-- <div class="form-group">
+              <label for="actualDate">Actual Delivery Date/Time</label>
+          </div>
+  
+          <div class="form-group date-picker-div">
+              <input type="text" [(ngModel)]="logisticTransaction.actualDeliveryDateTime" name="actualDeliveryDate" class="form-control date-picker-date" bsDatepicker/>     
+              <ngb-timepicker [(ngModel)]="actualDeliveryDateTime" name="actualDeliveryDateTime" class="date-picker-time"></ngb-timepicker>
+          </div> -->
+  
+          
+          <div class="form-group temp-min-max"> 
+              <label for="minTemp">Temp storage instruction (Min-Max)</label>     
+              <div class="min-max-temp-field">
+                  <input type="text" placeholder="Min" class="form-control" [(ngModel)]="logisticTransaction.temperatureStorageMin" name="temperatureStorageMin">     
+                  <input type="text" placeholder="Max" class="form-control" [(ngModel)]="logisticTransaction.temperatureStorageMax" name="temperatureStorageMax">
+              </div>
+              
+          </div>
+  
+          <div class="form-group">
+              <label for="quantity" style="display: block;">Quantity</label>
+              <input type="text" class="form-control" [(ngModel)]="logisticTransaction.quantity" style="display: inline-block; width:100px;" name="quantity">
+              <select class="form-control" [(ngModel)]="logisticTransaction.quantityUnit" name="quantityUnit" required  style="display: inline-block; width:100px;">
+                  <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+              </select>
+          </div>
+  
+          <div class="form-group">
+              <label for="handlingInstruction">Handling Instructions</label>
+              <textarea class="form-control" [(ngModel)]="logisticTransaction.handlingInstruction" name="handlingInstruction"></textarea>        
+          </div>
+      </div>
+  
+      <div class="block-button-area">
+          <button type="reset" class="btn btn-border">Clear</button>
+          <button type="submit" (click)="saveLogisticTransaction()" class="btn btn-normal"> Pickup </button>
+      </div>
+  
+    </form>
+  </div>

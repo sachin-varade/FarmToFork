@@ -23,24 +23,8 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
     eventHubPeers = eventHubPeers;
     orderer = orderer;
 
-    processorService.getAllVehicles = function(){
-        console.log("getAllVehicles");
-        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
-        .then((user_from_store) => {
-            helper.checkUserEnrolled(user_from_store);
-            return queryChainCode.queryChainCode(channels.processorchannel, 
-                processorConfig.channels.processorchannel.chaincodeId, 
-                "getAllVehicles", 
-                [""]);
-        }).then((results) => {
-            return results;
-        }).catch((err) => {
-            throw err;
-        });
-    }
-
-    processorService.createVehicle = function(){
-        console.log("createVehicle");
+    processorService.saveProcessorReceived = function(processorReceived){
+        console.log("saveProcessorReceived");
         return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
@@ -49,8 +33,98 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                 eventHubPeers.processorEventHubPeer._url, 
                 //"grpc://localhost:7053",
                 processorConfig.channels.processorchannel.chaincodeId, 
-                "createVehicle",  
-                ["Volvo", "V001", "V001", "Jim", "X1", "E1", "G1", "White", ""]);                
+                "saveProcessorReceived",  
+                [
+                    processorReceived.processorReceiptNumber,
+                    processorReceived.processorId,
+                    processorReceived.purchaseOrderNumber,
+                    processorReceived.consignmentNumber,
+                    processorReceived.transportConsitionSatisfied,
+                    processorReceived.guidNumber,
+                    processorReceived.materialName,
+                    processorReceived.materialGrade,
+                    processorReceived.quantity,
+                    processorReceived.quantityUnit,
+                    processorReceived.useByDate,
+                    processorReceived.receivedDate,
+                    processorReceived.transitTime,
+                    processorReceived.acceptanceCheckList,
+                    processorReceived.updatedBy,
+                    processorReceived.updatedOn
+                ]);                
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    processorService.saveProcessingTransaction = function(processingTransaction){
+        console.log("saveProcessingTransaction");        
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);            
+            return invokeChainCode.invokeChainCode(fabric_client, 
+                channels.processorchannel, 
+                eventHubPeers.processorEventHubPeer._url, 
+                //"grpc://localhost:7053",
+                processorConfig.channels.processorchannel.chaincodeId, 
+                "saveProcessingTransaction",  
+                [
+                    processingTransaction.processorBatchCode,
+                    processingTransaction.processorBatchCode,
+                    processingTransaction.processorId,
+                    processingTransaction.processorReceiptNumber,
+                    processingTransaction.productCode,
+                    processingTransaction.guidNumber,
+                    processingTransaction.materialName,
+                    processingTransaction.materialGrade,
+                    processingTransaction.quantity,
+                    processingTransaction.quantityUnit,
+                    processingTransaction.useByDate,
+                    processingTransaction.qualityControlDocument,
+                    processingTransaction.storage,
+                    processingTransaction.processingAction,                    
+                    processingTransaction.updatedBy,
+                    processingTransaction.updatedOn                    
+                ]);                
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    processorService.saveProcessorDispatch = function(processorDispatch){
+        console.log("saveProcessorDispatch");        
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);            
+            return invokeChainCode.invokeChainCode(fabric_client, 
+                channels.processorchannel, 
+                eventHubPeers.processorEventHubPeer._url, 
+                //"grpc://localhost:7053",
+                processorConfig.channels.processorchannel.chaincodeId, 
+                "saveProcessorDispatch",  
+                [
+                    processorDispatch.consignmentNumber,
+                    processorDispatch.processorBatchCode,
+                    processorDispatch.processorId,
+                    processorDispatch.ikeaPurchaseOrderNumber,
+                    processorDispatch.guidNumber,
+                    processorDispatch.materialName,
+                    processorDispatch.materialGrade,
+                    processorDispatch.temperatureStorageMin,
+                    processorDispatch.temperatureStorageMax,
+                    processorDispatch.packagingDate,
+                    processorDispatch.useByDate,
+                    processorDispatch.quantity,
+                    processorDispatch.quantityUnit,
+                    processorDispatch.qualityControlDocument,
+                    processorDispatch.storage,
+                    processorDispatch.updatedBy,
+                    processorDispatch.updatedOn,
+                ]);                
         }).then((results) => {
             return results;
         }).catch((err) => {
@@ -58,6 +132,54 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
     
+    processorService.getAllProcessorReceived = function(option, value){
+        console.log("getAllProcessorReceived");
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.processorchannel, 
+                processorConfig.channels.processorchannel.chaincodeId, 
+                "getAllProcessorReceived", 
+                [option, value]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    processorService.getAllProcessingTransactions = function(option, value){
+        console.log("getAllProcessingTransactions");
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.processorchannel, 
+                processorConfig.channels.processorchannel.chaincodeId, 
+                "getAllProcessingTransactions", 
+                [option, value]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    processorService.getAllProcessorDispatch = function(option, value){
+        console.log("getAllProcessorDispatch");
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.processorchannel, 
+                processorConfig.channels.processorchannel.chaincodeId, 
+                "getAllProcessorDispatch", 
+                [option, value]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
 	return processorService;
 };
 

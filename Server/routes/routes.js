@@ -91,4 +91,46 @@ router.post("/updateLogisticTransactionStatus", function(req, res) {
 	});			
 });
 
+router.post("/saveProcessorReceived", function(req, res) {    
+	var promise = processorService.saveProcessorReceived(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
+
+router.post("/saveProcessingTransaction", function(req, res) {    
+	var promise = processorService.saveProcessingTransaction(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
+
+router.post("/saveProcessorDispatch", function(req, res) {    
+	var promise = processorService.saveProcessorDispatch(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
+
+router.get("/getAllProcessorReceived/:option/:value?", function(req, res) {    
+    var promise = processorService.getAllProcessorReceived(req.params.option, req.params.value?req.params.value: "");
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
+router.get("/getAllProcessingTransactions/:option/:value?", function(req, res) {    
+    var promise = processorService.getAllProcessingTransactions(req.params.option, req.params.value?req.params.value: "");
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
+router.get("/getAllProcessorDispatch/:option/:value?", function(req, res) {    
+    var promise = processorService.getAllProcessorDispatch(req.params.option, req.params.value?req.params.value: "");
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
 module.exports = router;

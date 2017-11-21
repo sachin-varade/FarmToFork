@@ -28,21 +28,21 @@ import (
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
 
-//Create ProcessingCompanyReceived block
-func saveProcessingCompanyReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+//Create ProcessorReceived block
+func saveProcessorReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
 	var err error
-	fmt.Println("Running saveProcessingCompanyReceived..")
+	fmt.Println("Running saveProcessorReceived..")
 
-	if len(args) != 14 {
-		fmt.Println("Incorrect number of arguments. Expecting 14")
-		return shim.Error("Incorrect number of arguments. Expecting 14")
+	if len(args) != 16 {
+		fmt.Println("Incorrect number of arguments. Expecting 16")
+		return shim.Error("Incorrect number of arguments. Expecting 16")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]);
 
-	var bt ProcessingCompanyReceived
-	bt.ProcessingCompanyReceiptNumber	= args[0]
-	bt.ProcessingCompanyId				= args[1]
+	var bt ProcessorReceived
+	bt.ProcessorReceiptNumber	= args[0]
+	bt.ProcessorId				= args[1]
 	bt.PurchaseOrderNumber				= args[2]
 	bt.ConsignmentNumber				= args[3]	
 	bt.TransportConsitionSatisfied		= args[4]
@@ -54,6 +54,8 @@ func saveProcessingCompanyReceived(stub  shim.ChaincodeStubInterface, args []str
 	bt.UseByDate						= args[10]
 	bt.ReceivedDate						= args[11]
 	bt.TransitTime						= args[12]
+	bt.UpdatedBy						= args[14]
+	bt.UpdatedOn						= args[15]
 
 	var acceptanceCriteria AcceptanceCriteria
 	
@@ -69,27 +71,27 @@ func saveProcessingCompanyReceived(stub  shim.ChaincodeStubInterface, args []str
 	}
 
 	//Commit Inward entry to ledger
-	fmt.Println("saveProcessingCompanyReceived - Commit ProcessingCompanyReceived To Ledger");
+	fmt.Println("saveProcessorReceived - Commit ProcessorReceived To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
-	err = stub.PutState(bt.ProcessingCompanyReceiptNumber, btAsBytes)
+	err = stub.PutState(bt.ProcessorReceiptNumber, btAsBytes)
 	if err != nil {		
 		return shim.Error(err.Error())
 	}
 
 	//Update All Processing Company ReceivedIds Array
-	allBAsBytes, err := stub.GetState("allProcessingCompanyReceivedIds")
+	allBAsBytes, err := stub.GetState("allProcessorReceivedIds")
 	if err != nil {
 		return shim.Error("Failed to get all Processing Company Received Ids")
 	}
-	var allb AllProcessingCompanyReceivedIds
+	var allb AllProcessorReceivedIds
 	err = json.Unmarshal(allBAsBytes, &allb)
 	if err != nil {
 		return shim.Error("Failed to Unmarshal all Received")
 	}
-	allb.ProcessingCompanyReceiptNumbers = append(allb.ProcessingCompanyReceiptNumbers, bt.ProcessingCompanyReceiptNumber)
+	allb.ProcessorReceiptNumbers = append(allb.ProcessorReceiptNumbers, bt.ProcessorReceiptNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
-	err = stub.PutState("allProcessingCompanyReceivedIds", allBuAsBytes)
+	err = stub.PutState("allProcessorReceivedIds", allBuAsBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -98,21 +100,21 @@ func saveProcessingCompanyReceived(stub  shim.ChaincodeStubInterface, args []str
 }
 
 //Create Processing Company Transaction block
-func saveProcessingCompanyTransaction(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+func saveProcessingTransaction(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
 	var err error
-	fmt.Println("Running saveProcessingCompanyTransaction..")
+	fmt.Println("Running saveProcessingTransaction..")
 
-	if len(args) != 13 {
-		fmt.Println("Incorrect number of arguments. Expecting 13..")
-		return shim.Error("Incorrect number of arguments. Expecting 13")
+	if len(args) != 15 {
+		fmt.Println("Incorrect number of arguments. Expecting 15..")
+		return shim.Error("Incorrect number of arguments. Expecting 15")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
 
-	var bt ProcessingCompanyTransaction	
+	var bt ProcessingTransaction	
 	bt.ProcessorBatchCode				= args[0]
-	bt.ProcessingCompanyId				= args[1]
-	bt.ProcessingCompanyReceiptNumber	= args[2]
+	bt.ProcessorId				= args[1]
+	bt.ProcessorReceiptNumber	= args[2]
 	bt.ProductCode						= args[3]
 	bt.GUIDNumber						= args[4]
 	bt.MaterialName						= args[5]
@@ -122,10 +124,14 @@ func saveProcessingCompanyTransaction(stub  shim.ChaincodeStubInterface, args []
 	bt.UseByDate						= args[9]
 	bt.QualityControlDocument			= args[10]	
 	bt.Storage							= args[11]
-	bt.ProcessingAction					= args[12]
-		
+	bt.UpdatedBy						= args[13]
+	bt.UpdatedOn						= args[14]
+	var pa ProcessingAction
+	pa.Action = args[12]
+	pa.DoneWhen = args[13]
+	bt.ProcessingAction					= append(bt.ProcessingAction, pa)	
 	//Commit Inward entry to ledger
-	fmt.Println("saveProcessingCompanyTransaction - Commit ProcessingCompanyTransaction To Ledger");
+	fmt.Println("saveProcessingTransaction - Commit ProcessingTransaction To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
 	err = stub.PutState(bt.ProcessorBatchCode, btAsBytes)
 	if err != nil {
@@ -133,11 +139,11 @@ func saveProcessingCompanyTransaction(stub  shim.ChaincodeStubInterface, args []
 	}
 
 	//Update All Processing Company Transaction Array
-	allBAsBytes, err := stub.GetState("allProcessingCompanyBatchCodes")
+	allBAsBytes, err := stub.GetState("allProcessingTransactionIds")
 	if err != nil {
 		return shim.Error("Failed to get all Processing Company BatchCodes")
 	}
-	var allb AllProcessingCompanyBatchCodes
+	var allb AllProcessingTransactionIds
 	err = json.Unmarshal(allBAsBytes, &allb)
 	if err != nil {
 		return shim.Error("Failed to Unmarshal all Processing Batch Codes")
@@ -145,7 +151,7 @@ func saveProcessingCompanyTransaction(stub  shim.ChaincodeStubInterface, args []
 	allb.ProcessorBatchCodes = append(allb.ProcessorBatchCodes,bt.ProcessorBatchCode)
 
 	allBuAsBytes, _ := json.Marshal(allb)
-	err = stub.PutState("allProcessingCompanyBatchCodes", allBuAsBytes)
+	err = stub.PutState("allProcessingTransactionIds", allBuAsBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -155,21 +161,21 @@ func saveProcessingCompanyTransaction(stub  shim.ChaincodeStubInterface, args []
 
 
 //Create Processing Company Dispatch block
-func saveAllProcessingCompanyDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+func saveProcessorDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
 	var err error
-	fmt.Println("Running saveAllProcessingCompanyDispatch..")
+	fmt.Println("Running saveProcessorDispatch..")
 
-	if len(args) != 15 {
-		fmt.Println("Incorrect number of arguments. Expecting 15..")
-		return shim.Error("Incorrect number of arguments. Expecting 15")
+	if len(args) != 17 {
+		fmt.Println("Incorrect number of arguments. Expecting 17..")
+		return shim.Error("Incorrect number of arguments. Expecting 17")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
 
-	var bt ProcessingCompanyDispatch	
+	var bt ProcessorDispatch	
 	bt.ConsignmentNumber				= args[0]
 	bt.ProcessorBatchCode				= args[1]
-	bt.ProcessingCompanyId				= args[2]
+	bt.ProcessorId				= args[2]
 	bt.IkeaPurchaseOrderNumber			= args[3]
 	bt.GUIDNumber						= args[4]
 	bt.MaterialName						= args[5]
@@ -182,9 +188,10 @@ func saveAllProcessingCompanyDispatch(stub  shim.ChaincodeStubInterface, args []
 	bt.QuantityUnit						= args[12]
 	bt.QualityControlDocument			= args[13]
 	bt.Storage							= args[14]
-		
+	bt.UpdatedBy						= args[15]
+	bt.UpdatedOn						= args[16]
 	//Commit Inward entry to ledger
-	fmt.Println("saveAllProcessingCompanyDispatch - Commit ProcessingCompanyDispatch To Ledger");
+	fmt.Println("saveProcessorDispatch - Commit ProcessorDispatch To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
 	err = stub.PutState(bt.ConsignmentNumber, btAsBytes)
 	if err != nil {
@@ -192,11 +199,11 @@ func saveAllProcessingCompanyDispatch(stub  shim.ChaincodeStubInterface, args []
 	}
 
 	//Update All Processing Company Dispatch Array
-	allBAsBytes, err := stub.GetState("allProcessingCompanyDispatchIds")
+	allBAsBytes, err := stub.GetState("allProcessorDispatchIds")
 	if err != nil {
 		return shim.Error("Failed to get all Processing Company Dispatch Consignment Numbers")
 	}
-	var allb AllProcessingCompanyDispatchIds
+	var allb AllProcessorDispatchIds
 	err = json.Unmarshal(allBAsBytes, &allb)
 	if err != nil {
 		return shim.Error("Failed to Unmarshal all Processing dispatch consignment numbers")
@@ -204,7 +211,7 @@ func saveAllProcessingCompanyDispatch(stub  shim.ChaincodeStubInterface, args []
 	allb.ConsignmentNumbers = append(allb.ConsignmentNumbers,bt.ConsignmentNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
-	err = stub.PutState("allProcessingCompanyDispatchIds", allBuAsBytes)
+	err = stub.PutState("allProcessorDispatchIds", allBuAsBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}

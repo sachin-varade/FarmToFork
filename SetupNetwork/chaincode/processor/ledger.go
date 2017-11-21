@@ -39,9 +39,9 @@ func main() {
 type SimpleChaincode struct {
 }
 
-type ProcessingCompanyReceived struct {
-	ProcessingCompanyReceiptNumber		string	`json:"processingCompanyReceiptNumber"`
-	ProcessingCompanyId					string	`json:"processingCompanyId"`
+type ProcessorReceived struct {
+	ProcessorReceiptNumber		string	`json:"processorReceiptNumber"`
+	ProcessorId					string	`json:"processorId"`
 	PurchaseOrderNumber					string	`json:"purchaseOrderNumber"`	
 	ConsignmentNumber					string	`json:"consignmentNumber"`	
 	TransportConsitionSatisfied			string	`json:"transportConsitionSatisfied"`
@@ -55,6 +55,8 @@ type ProcessingCompanyReceived struct {
 	TransitTime							string	`json:"transitTime"`
 	Storage								string	`json:"storage"`
 	AcceptanceCheckList					[]AcceptanceCriteria	`json:"acceptanceCheckList"`
+	UpdatedOn			string	`json:"updatedOn"`
+	UpdatedBy			string	`json:"updatedBy"`
 }
 
 type AcceptanceCriteria struct {
@@ -63,12 +65,10 @@ type AcceptanceCriteria struct {
 	ConditionSatisfied		string	`json:"conditionSatisfied"`
 }
 
-
-
-type ProcessingCompanyTransaction struct {
+type ProcessingTransaction struct {
 	ProcessorBatchCode					string	`json:"processorBatchCode"`	
-	ProcessingCompanyId					string	`json:"processingCompanyId"`
-	ProcessingCompanyReceiptNumber		string	`json:"processingCompanyReceiptNumber"`
+	ProcessorId					string	`json:"processorId"`
+	ProcessorReceiptNumber		string	`json:"processorReceiptNumber"`
 	ProductCode							string	`json:"productCode"`
 	GUIDNumber							string	`json:"guidNumber"`
 	MaterialName						string	`json:"materialName"`
@@ -78,15 +78,21 @@ type ProcessingCompanyTransaction struct {
 	UseByDate							string	`json:"useByDate"`
 	QualityControlDocument				string	`json:"qualityControlDocument"`	
 	Storage								string	`json:"storage"`
-	ProcessingAction					string	`json:"processingAction"`
+	ProcessingAction					[]ProcessingAction	`json:"processingAction"`
+	UpdatedOn			string	`json:"updatedOn"`
+	UpdatedBy			string	`json:"updatedBy"`
 }
+
 // ProcessingAction - (W - St - P - QC - F)
+type ProcessingAction struct {
+	Action								string	`json:"action"`
+	DoneWhen							string	`json:"doneWhen"`
+}
 
-
-type ProcessingCompanyDispatch struct {
+type ProcessorDispatch struct {
 	ConsignmentNumber				string	`json:"consignmentNumber"`
 	ProcessorBatchCode				string	`json:"processorBatchCode"`
-	ProcessingCompanyId				string	`json:"processingCompanyId"`
+	ProcessorId				string	`json:"processorId"`
 	IkeaPurchaseOrderNumber			string	`json:"ikeaPurchaseOrderNumber"`	
 	GUIDNumber						string	`json:"guidNumber"`
 	MaterialName					string	`json:"materialName"`
@@ -99,6 +105,8 @@ type ProcessingCompanyDispatch struct {
 	QuantityUnit					string	`json:"quantityUnit"`
 	QualityControlDocument			string	`json:"qualityControlDocument"`	
 	Storage							string	`json:"storage"`	
+	UpdatedOn			string	`json:"updatedOn"`
+	UpdatedBy			string	`json:"updatedBy"`
 }
 
 
@@ -131,28 +139,28 @@ type IotHistory struct {
 	Location	string `json:"location"`
 }
 
-type AllProcessingCompanyReceivedIds struct{
-	ProcessingCompanyReceiptNumbers []string `json:"processingCompanyReceiptNumbers"`
+type AllProcessorReceivedIds struct{
+	ProcessorReceiptNumbers []string `json:"processorReceiptNumbers"`
 }
 
-type AllProcessingCompanyReceivedDetails struct{
-	ProcessingCompanyReceived []ProcessingCompanyReceived `json:"processingCompanyReceived"`
+type AllProcessorReceivedDetails struct{
+	ProcessorReceived []ProcessorReceived `json:"processorReceived"`
 }
 
-type AllProcessingCompanyBatchCodes struct{
+type AllProcessingTransactionIds struct{
 	ProcessorBatchCodes []string `json:"processorBatchCodes"`
 }
 
-type AllProcessingCompanyTransactionDetails struct{
-	ProcessingCompanyTransaction []ProcessingCompanyTransaction `json:"processingCompanyTransaction"`
+type AllProcessingTransactionDetails struct{
+	ProcessingTransaction []ProcessingTransaction `json:"processingTransaction"`
 }
 
-type AllProcessingCompanyDispatchIds struct{
+type AllProcessorDispatchIds struct{
 	ConsignmentNumbers []string `json:"consignmentNumbers"`
 }
 
-type AllProcessingCompanyDispatchDetails struct{
-	ProcessingCompanyDispatch []ProcessingCompanyDispatch `json:"processingCompanyDispatch"`
+type AllProcessorDispatchDetails struct{
+	ProcessorDispatch []ProcessorDispatch `json:"processorDispatch"`
 }
 
 type AllLogisticTransactions struct{
@@ -188,24 +196,23 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		}
 	}
 	
-	var allProcessingCompanyReceivedIds AllProcessingCompanyReceivedIds
-	jsonAsBytesProcessingCompanyReceiptNumbers, _ := json.Marshal(allProcessingCompanyReceivedIds)
-	err = stub.PutState("allProcessingCompanyReceivedIds", jsonAsBytesProcessingCompanyReceiptNumbers)
+	var allProcessorReceivedIds AllProcessorReceivedIds
+	jsonAsBytesProcessorReceiptNumbers, _ := json.Marshal(allProcessorReceivedIds)
+	err = stub.PutState("allProcessorReceivedIds", jsonAsBytesProcessorReceiptNumbers)
 	if err != nil {		
 		return shim.Error(err.Error())
 	}
 
-	var allProcessingCompanyBatchCodes AllProcessingCompanyBatchCodes
-	jsonAsBytesProcessingCompanyBatchCodes, _ := json.Marshal(allProcessingCompanyBatchCodes)
-	err = stub.PutState("allProcessingCompanyBatchCodes", jsonAsBytesProcessingCompanyBatchCodes)
+	var allProcessingTransactionIds AllProcessingTransactionIds
+	jsonAsBytesProcessingCompanyBatchCodes, _ := json.Marshal(allProcessingTransactionIds)
+	err = stub.PutState("allProcessingTransactionIds", jsonAsBytesProcessingCompanyBatchCodes)
 	if err != nil {		
 		return shim.Error(err.Error())
 	}
 	
-	
-	var allProcessingCompanyDispatchIds AllProcessingCompanyDispatchIds
-	jsonAsBytesAllProcessingCompanyDispatchIds, _ := json.Marshal(allProcessingCompanyDispatchIds)
-	err = stub.PutState("allProcessingCompanyDispatchIds", jsonAsBytesAllProcessingCompanyDispatchIds)
+	var allProcessorDispatchIds AllProcessorDispatchIds
+	jsonAsBytesAllProcessorDispatchIds, _ := json.Marshal(allProcessorDispatchIds)
+	err = stub.PutState("allProcessorDispatchIds", jsonAsBytesAllProcessorDispatchIds)
 	if err != nil {		
 		return shim.Error(err.Error())
 	}
@@ -232,18 +239,18 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	// Handle different functions
 	if function == "init" {                    //initialize the chaincode state, used as reset
 		return t.Init(stub)
-	} else if function == "getAllProcessingCompanyReceivedIds" {
-		return getAllProcessingCompanyReceivedIds(stub, args[0])	
-	} else if function == "saveProcessingCompanyReceived" {
-		return saveProcessingCompanyReceived(stub, args)
-	} else if function == "getAllProcessingCompanyTransactions" {
-		return getAllProcessingCompanyTransactions(stub, args[0])
-	} else if function == "saveProcessingCompanyTransaction" {
-		return saveProcessingCompanyTransaction(stub, args)
-	} else if function == "getAllProcessingCompanyDispatch" {
-		return getAllProcessingCompanyDispatch(stub, args[0])
-	} else if function == "saveAllProcessingCompanyDispatch" {
-		return saveAllProcessingCompanyDispatch(stub, args)
+	} else if function == "getAllProcessorReceived" {
+		return getAllProcessorReceived(stub, args[0], args[1])	
+	} else if function == "saveProcessorReceived" {
+		return saveProcessorReceived(stub, args)
+	} else if function == "getAllProcessingTransactions" {
+		return getAllProcessingTransactions(stub, args[0], args[1])
+	} else if function == "saveProcessingTransaction" {
+		return saveProcessingTransaction(stub, args)
+	} else if function == "getAllProcessorDispatch" {
+		return getAllProcessorDispatch(stub, args[0], args[1])
+	} else if function == "saveProcessorDispatch" {
+		return saveProcessorDispatch(stub, args)
 	} else if function == "getAllLogisticTransactions" {
 		return getAllLogisticTransactions(stub, args[0])
 	} else if function == "createLogisticTransaction" {
