@@ -67,7 +67,14 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
     }
 
     processorService.saveProcessingTransaction = function(processingTransaction){
-        console.log("saveProcessingTransaction");        
+        console.log("saveProcessingTransaction");   
+        var processingAction = "";
+        processingTransaction.processingAction.forEach(element => {
+            if(processingAction === "")
+                processingAction = element.action;
+            else
+                processingAction += ","+ element.action;
+          });
         return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
@@ -77,8 +84,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                 //"grpc://localhost:7053",
                 processorConfig.channels.processorchannel.chaincodeId, 
                 "saveProcessingTransaction",  
-                [
-                    processingTransaction.processorBatchCode,
+                [                    
                     processingTransaction.processorBatchCode,
                     processingTransaction.processorId.toString(),
                     processingTransaction.processorReceiptNumber,
@@ -91,7 +97,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     processingTransaction.usedByDate,
                     processingTransaction.qualityControlDocument,
                     processingTransaction.storage,
-                    processingTransaction.processingAction,                    
+                    processingAction,
                     processingTransaction.updatedBy.toString(),
                     processingTransaction.updatedOn                    
                 ]);                

@@ -3,8 +3,8 @@
       <div class="container">
         <img id="companyLogoImg" src="assets/images/ikea-logo.png">
   
-        <div class="user-control">
-          <div *ngIf="router.url!='/'" class="user-name">
+        <div *ngIf="router.url!='/'" class="user-control">
+          <div class="user-name">
             <img src="assets/images/user.png">
             <span>{{user.loggedInUser.name}}</span>
           </div>

@@ -37,7 +37,7 @@ export class ProcessingTransaction{
     quantityUnit: string;
     qualityControlDocument: string;
     storage: string;
-    acceptanceCheckList: Array<ProcessingAction>;
+    processingAction: Array<ProcessingAction>;
     updatedOn: Date;
     updatedBy: string;  
 }

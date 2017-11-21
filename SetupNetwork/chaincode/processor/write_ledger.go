@@ -128,7 +128,7 @@ func saveProcessingTransaction(stub  shim.ChaincodeStubInterface, args []string)
 	bt.UpdatedOn						= args[14]
 	var pa ProcessingAction
 	pa.Action = args[12]
-	pa.DoneWhen = args[13]
+	pa.DoneWhen = args[14]
 	bt.ProcessingAction					= append(bt.ProcessingAction, pa)	
 	//Commit Inward entry to ledger
 	fmt.Println("saveProcessingTransaction - Commit ProcessingTransaction To Ledger");

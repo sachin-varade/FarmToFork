@@ -27,7 +27,11 @@
                 ],
 "shipmentStatus": ["PickedUp", "InTransit", "Delivered"],
 "processorAcceptanceChecklist": ["Condition1", "Condition2", "Condition3"],
-"processingActions": ["Washed", "Processed", "Freezed"],
+"processingActions": [
+                      {"id": 1, "action": "Washed"}, 
+                      {"id": 2, "action": "Processed"}, 
+                      {"id": 3, "action": "Freezed"}
+                    ],
 "farmersCertificates": [
                             { "id": 1, "name": "GFSI"},
                             { "id": 1, "name": "BRC"},
@@ -52,6 +56,19 @@
                             { "id": 3, "code": "499900463", "name": "Meatballs frozen 3000g SE"},
                             { "id": 4, "code": "499900464", "name": "Meatballs frozen 4000g SE"}
                         ],
+"processingTransactionProducts": [
+                            { "id": 1, "code": "599900461", "name": "Meatballs frozen 1000g SE"},
+                            { "id": 2, "code": "599900462", "name": "Meatballs frozen 2000g SE"},
+                            { "id": 3, "code": "599900463", "name": "Meatballs frozen 3000g SE"},
+                            { "id": 4, "code": "599900464", "name": "Meatballs frozen 4000g SE"}
+                        ],
+"processorDispatchProducts": [
+                            { "id": 1, "code": "699900461", "name": "Meatballs frozen 1000g SE"},
+                            { "id": 2, "code": "699900462", "name": "Meatballs frozen 2000g SE"},
+                            { "id": 3, "code": "699900463", "name": "Meatballs frozen 3000g SE"},
+                            { "id": 4, "code": "699900464", "name": "Meatballs frozen 4000g SE"}
+                        ],
+
 "processorAcceptanceCriteria": [
                             { "id": 1, "ruleCondition": "Temperature maintained", "conditionSatisfied": false}, 
                             { "id": 2, "ruleCondition": "Delivered On Time", "conditionSatisfied": false}

@@ -1,73 +1,90 @@
-<div class="container" style="width:600px;">
-  <h1>Processor Inward</h1>
+<div class="container">
+  <h1 class="title-main">Processor Dispatch</h1>
   <form>
-    <div class="form-group">
-        <label>Processor Id</label>
-        <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
-    </div>
-    <div class="form-group">  
-      <label>Processor Unit</label>
-      <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
-    </div>
-    <div class="form-group">
-      <label for="guidNumber">GUID/GTIN</label>
-      <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
-    </div>
-    
-    <div class="form-group">
-      <label for="processorBatchCode">Processor Batch Code</label>
-      <input type="text" class="form-control" id="processorBatchCode"/>     
-    </div>
-
-    <div class="form-group">
-        <label for="cosignmentNumber">Cosignment Number</label>
-        <input type="text" class="form-control" id="cosignmentNumber"/>     
-    </div>
-
-    <div class="form-group">
-        <label for="ikeaOrderNumber">IKEA Order Number</label>
-        <input type="text" class="form-control" id="ikeaOrderNumber"/>     
-    </div>
-
-    <div class="form-group">
-        <label for="qualityCheckDocument">Quality Check Document</label>
-        <input type="text" class="form-control" id="qualityCheckDocument"/>     
-    </div>
-
-    <div class="form-group">
-        <label for="packagingDate">Packaging Date</label>
-        <input type="text" class="form-control" bsDatepicker/>     
-    </div>
-
-    <div class="form-group">
-        <label for="usedByDate">Used By Date</label>
-        <input type="text" class="form-control" bsDatepicker/>     
-    </div>
-
-    <div class="form-group">
-        <label for="storage">Storage</label>
-        <input type="text" class="form-control" id="storage"/>     
-    </div>
-
-    <div class="form-group">
-        <label for="minTemp">Temp storage instruction (Min-Max)</label>      
+    <div class="col-lg-6 col-md-6 col-sm-12 left-pane"> 
+      <div class="form-group">
+        <label for="processorBatchCode">Processor Batch Code</label>
+        <select class="form-control" [(ngModel)]="processorDispatch.processorBatchCode" name="processorBatchCode" required>        
+          <option *ngFor="let rec of processingTransactionList" [value]="rec.processorBatchCode">{{rec.processorBatchCode}}</option>
+        </select>
       </div>
-      <div class="form-group temp-min-max">      
-        <div class="min-max-temp-label">      
-          <label>Min</label>
-        </div>
-        <div class="min-max-temp-field">      
-          <input type="text" class="form-control" id="minTemp">
-        </div>
-        <div class="min-max-temp-label">      
-          <label>Max</label>
-        </div>
-        <div class="min-max-temp-field">      
-          <input type="text" class="form-control" id="maxTemp">
-        </div>
+
+
+      <div class="form-group">
+        <label for="consignmentNumber">Consignment Number</label>
+        <input type="text" class="form-control" [(ngModel)]="processorDispatch.consignmentNumber" name="consignmentNumber">
+      </div>
+
+      <div class="form-group">
+        <label for="ikeaPurchaseOrderNumber">Ikea Purchase Order Number</label>
+        <input type="text" class="form-control" [(ngModel)]="processorDispatch.ikeaPurchaseOrderNumber" name="ikeaPurchaseOrderNumber">
+      </div>
+
+      <div class="form-group">
+        <label for="guidNumber">GUID/GTIN</label>
+        <select class="form-control" [(ngModel)]="processorDispatch.guidNumber" (click)="setGuid();" name="guidNumber" required>
+            <option value="0" selected="selected"></option>
+            <option *ngFor="let guid of commonData.processorDispatchProducts" [value]="guid.code">{{guid.code}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+          <label for="materialName">Material Name</label>
+          <input type="text" [(ngModel)]="processorDispatch.materialName" class="form-control" name="materialName">
+      </div>
+
+      <div class="form-group">
+        <label for="materialGrade">Material Grade</label>
+        <select class="form-control" [(ngModel)]="processorDispatch.materialGrade" name="materialGrade" required>
+            <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
+        </select>
+      </div>
     </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 right-pane">     
+
+      <div class="form-group">
+        <label for="packagingDate">Packaging Date</label>
+        <input type="text" [(ngModel)]="processorDispatch.packagingDate" name="packagingDate" class="form-control" bsDatepicker/>
+      </div>
+
+      <div class="form-group">
+        <label for="usedByDate">Used By Date</label>
+        <input type="text" [(ngModel)]="processorDispatch.usedByDate" name="usedByDate" class="form-control" bsDatepicker/>
+      </div>      
     
-    <button type="submit" class="btn btn-success">Submit</button>
+      <div class="form-group temp-min-max">
+        <label for="minTemp">Temp storage instruction (Min-Max)</label>      
+        <div class="min-max-temp-field">      
+          <input type="text" placeholder="Min" class="form-control input-inline-small" [(ngModel)]="processorDispatch.temperatureStorageMin" name="temperatureStorageMin">
+          <input type="text" placeholder="Max" class="form-control input-inline-small" [(ngModel)]="processorDispatch.temperatureStorageMax" name="temperatureStorageMax">
+        </div>        
+      </div>
+
+      <div class="form-group">
+        <label for="quantity" style="display: block;">Quantity</label>
+        <input type="text" class="form-control input-inline-small" [(ngModel)]="processorDispatch.quantity" style="display: inline-block; width:100px;" name="quantity">
+        <select class="form-control" [(ngModel)]="processorDispatch.quantityUnit" name="qunatityUnit" required  style="display: inline-block; width:100px;">
+            <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="qualityControlDocument">Quality Control Document</label>
+        <textarea [(ngModel)]="processorDispatch.qualityControlDocument" class="form-control" name="qualityControlDocument"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="storage">Storage</label>
+        <input type="text" [(ngModel)]="processorDispatch.storage" class="form-control" name="storage">
+      </div>
+      
+    </div>
+
+    <div class="block-button-area">
+          <button type="reset" class="btn btn-border">Clear</button>
+          <button type="submit" (click)="saveProcessorDispatch();" class="btn btn-normal">Submit</button>
+      </div>
 
   </form>
 </div>

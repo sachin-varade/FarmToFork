@@ -2,66 +2,73 @@
     <h1>Process Item</h1>
     <form>
       <div class="form-group">
-          <label>Processor Id</label>
-          <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
+        <label for="processorReceiptNumber">Processor Receipt Number</label>
+        <select class="form-control" [(ngModel)]="processingTransaction.processorReceiptNumber" name="processorReceiptNumber" required>        
+        <option *ngFor="let rec of processorReceivedList" [value]="rec.processorReceiptNumber">{{rec.processorReceiptNumber}}</option>
+        </select>
       </div>
-      <div class="form-group">  
-        <label>Processor Unit</label>
-        <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
-      </div>
+        
       <div class="form-group">
-        <label for="guidNumber">GUID/GTIN</label>
-        <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
-      </div>
-      
-      <div class="form-group">
-          <label for="batchCode">Batch Code</label>
-          <input type="text" class="form-control" id="batchCode"/>     
+        <label for="processorBatchCode">Processor Batch Code</label>
+        <input type="text" class="form-control" [(ngModel)]="processingTransaction.processorBatchCode" name="processorBatchCode">
       </div>
 
       <div class="form-group">
-        <label for="processorBatchCode">Processor Batch Code</label>
-        <input type="text" class="form-control" id="processorBatchCode"/>     
+        <label for="productCode">product Code</label>
+        <input type="text" class="form-control" [(ngModel)]="processingTransaction.productCode" name="productCode">
       </div>
-  
+
       <div class="form-group">
-        <label for="quantity" style="display: block;">Quantity</label>
-        <input type="text" class="form-control" style="display: inline-block; width:100px;" id="quantity">
-        <select class="form-control" id="quantityUnit" required  style="display: inline-block; width:100px;">
-            <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+        <label for="guidNumber">GUID/GTIN</label>
+        <select class="form-control" [(ngModel)]="processingTransaction.guidNumber" (click)="setGuid();" name="guidNumber" required>
+            <option value="0" selected="selected"></option>
+            <option *ngFor="let guid of commonData.processingTransactionProducts" [value]="guid.code">{{guid.code}}</option>
         </select>
       </div>
-  
+
+      <div class="form-group">
+          <label for="materialName">Material Name</label>
+          <input type="text" [(ngModel)]="processingTransaction.materialName" class="form-control" name="materialName">
+      </div>
+
       <div class="form-group">
         <label for="materialGrade">Material Grade</label>
-        <select class="form-control" id="materialGrade" required>
+        <select class="form-control" [(ngModel)]="processingTransaction.materialGrade" name="materialGrade" required>
             <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
         </select>
       </div>
-      
+
       <div class="form-group">
-          <label for="usedByDate">Used By Date</label>
-          <input type="text" class="form-control" bsDatepicker/>     
+        <label for="usedByDate">Used By Date</label>
+        <input type="text" [(ngModel)]="processingTransaction.usedByDate" name="usedByDate" class="form-control" bsDatepicker/>
       </div>
 
       <div class="form-group">
-          <label for="qualityCheckDocument">Quality Check Document</label>
-          <input type="text" class="form-control" id="qualityCheckDocument"/>     
+          <label for="quantity" style="display: block;">Quantity</label>
+          <input type="text" class="form-control" [(ngModel)]="processingTransaction.quantity" style="display: inline-block; width:100px;" name="quantity">
+          <select class="form-control" [(ngModel)]="processingTransaction.quantityUnit" name="qunatityUnit" required  style="display: inline-block; width:100px;">
+              <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+          </select>
       </div>
-      
+
       <div class="form-group">
-          <label for="storage">Storage</label>
-          <input type="text" class="form-control" id="storage"/>     
+        <label for="qualityControlDocument">Quality Control Document</label>
+        <textarea [(ngModel)]="processingTransaction.qualityControlDocument" class="form-control" name="qualityControlDocument"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="storage">Storage</label>
+        <input type="text" [(ngModel)]="processingTransaction.storage" class="form-control" name="storage">
       </div>
 
       <div class="form-group">
         <label for="processingActions">Processing Actions</label>
-        <div *ngFor="let action of commonData.processingActions">
-          <input checked [value]="action" type="checkbox"/> {{action}}
+        <div *ngFor="let item of commonData.processingActions">
+          <input [(ngModel)]="item.checked" name="processingAction" [value]="item.id" type="checkbox"/> {{item.action}}
         </div>
       </div>
 
-      <button type="submit" class="btn btn-success">Submit</button>
+      <button type="submit" (click)="saveProcessingTransaction();" class="btn btn-success">Submit</button>
   
     </form>
   </div>

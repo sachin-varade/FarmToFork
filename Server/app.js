@@ -6,11 +6,9 @@ var app = express();
 var router = require("./routes/routes");
 var cors = require("cors");
 
-
 // Enable CORS preflight across the board.
 app.options("*", cors());
 app.use(cors());
-//app.use(cors({origin: 'http://localhost'}));
 
 // Add headers
 app.use(function (req, res, next) {
