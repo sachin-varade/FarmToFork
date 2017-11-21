@@ -45,6 +45,16 @@
                             { "id": 2, "code": "299900462", "name": "Meatballs frozen 2000g SE"},
                             { "id": 3, "code": "299900463", "name": "Meatballs frozen 3000g SE"},
                             { "id": 4, "code": "299900464", "name": "Meatballs frozen 4000g SE"}
+                        ],
+"processorInwardProducts": [
+                            { "id": 1, "code": "499900461", "name": "Meatballs frozen 1000g SE"},
+                            { "id": 2, "code": "499900462", "name": "Meatballs frozen 2000g SE"},
+                            { "id": 3, "code": "499900463", "name": "Meatballs frozen 3000g SE"},
+                            { "id": 4, "code": "499900464", "name": "Meatballs frozen 4000g SE"}
+                        ],
+"processorAcceptanceCriteria": [
+                            { "id": 1, "ruleCondition": "Temperature maintained", "conditionSatisfied": false}, 
+                            { "id": 2, "ruleCondition": "Delivered On Time", "conditionSatisfied": false}
                         ]
 }
  

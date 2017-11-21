@@ -1,67 +1,87 @@
 <div class="container" style="width:600px;">
   <h1>Processor Inward</h1>
-  <form>
+  <form> 
     <div class="form-group">
-        <label>Processor Id</label>
-        <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
+        <label for="consignmentNumber">Transport Consignment Number</label>
+        <select class="form-control" [(ngModel)]="processorReceived.consignmentNumber" name="consignmentNumber" required>        
+        <option *ngFor="let rec of logisticTransactionList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
+        </select>
     </div>
-    <div class="form-group">  
-      <label>Processor Unit</label>
-      <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
-    </div>
+      
     <div class="form-group">
-      <label for="guidNumber">GUID/GTIN</label>
-      <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
-    </div>
-
-    <div class="form-group">
-      <label for="transportConsignmentNumber">Transport Consignment Number</label>
-      <input type="text" class="form-control" id="transportConsignmentNumber">
+      <label for="processorReceiptNumber">Processor Receipt Number</label>
+      <input type="text" class="form-control" [(ngModel)]="processorReceived.processorReceiptNumber" name="processorReceiptNumber">
     </div>
 
     <div class="form-group">
-      <label for="transportConditionsSatisfied">Transport conditions satisfied</label>
-      <input type="checkbox" id="transportConditionsSatisfied">
+        <label for="purchaseOrderNumber">Purchase Order Number</label>
+        <input type="text" class="form-control" [(ngModel)]="processorReceived.purchaseOrderNumber" name="purchaseOrderNumber">
     </div>
 
     <div class="form-group">
-      <label for="processorAcceptanceChecklist">Acceptance Checklist</label>
-      <div *ngFor="let option of commonData.processorAcceptanceChecklist">
-        <input checked [value]="option" type="checkbox"/> {{option}}
-      </div>
+      <label for="transportConsitionSatisfied">Transport conditions satisfied</label>
+      <input type="checkbox" [(ngModel)]="processorReceived.transportConsitionSatisfied" name="transportConsitionSatisfied">
     </div>
 
     <div class="form-group">
-      <label for="quantity" style="display: block;">Quantity</label>
-      <input type="text" class="form-control" style="display: inline-block; width:100px;" id="quantity">
-      <select class="form-control" id="quantityUnit" required  style="display: inline-block; width:100px;">
-          <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
-      </select>
+        <label for="guidNumber">GUID/GTIN</label>
+        <select class="form-control" [(ngModel)]="processorReceived.guidNumber" (click)="setGuid();" name="guidNumber" required>
+            <option value="0" selected="selected"></option>
+            <option *ngFor="let guid of commonData.processorInwardProducts" [value]="guid.code">{{guid.code}}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="materialName">Material Name</label>
+        <input type="text" [(ngModel)]="processorReceived.materialName" class="form-control" name="materialName">
     </div>
 
     <div class="form-group">
       <label for="materialGrade">Material Grade</label>
-      <select class="form-control" id="materialGrade" required>
+      <select class="form-control" [(ngModel)]="processorReceived.materialGrade" name="materialGrade" required>
           <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label for="storage">Storage</label>
-      <input type="text" class="form-control" id="storage"/>     
+        <label for="receivedDate">Received Date</label>
+        <input type="text" [(ngModel)]="processorReceived.receivedDate" name="receivedDate" class="form-control" bsDatepicker/>
     </div>
 
     <div class="form-group">
-      <label for="transitTime">Time in Transit (hrs)</label>
-      <input type="text" class="form-control" id="transitTime"/>     
+        <label for="usedByDate">Used By Date</label>
+        <input type="text" [(ngModel)]="processorReceived.userByDate" name="userByDate" class="form-control" bsDatepicker/>
     </div>
 
     <div class="form-group">
-      <label for="receivedDate">Received Date</label>
-      <input type="text" class="form-control" bsDatepicker/>     
+        <label for="quantity" style="display: block;">Quantity</label>
+        <input type="text" class="form-control" [(ngModel)]="processorReceived.quantity" style="display: inline-block; width:100px;" name="quantity">
+        <select class="form-control" [(ngModel)]="processorReceived.quantityUnit" name="qunatityUnit" required  style="display: inline-block; width:100px;">
+            <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+        </select>
     </div>
 
-    <button type="submit" class="btn btn-success">Submit</button>
+    <div class="form-group">
+        <label for="transitTime">Transit Time(Hrs)</label>
+        <input type="text" [(ngModel)]="processorReceived.transitTime" class="form-control" name="transitTime">
+    </div>
+
+    <div class="form-group">
+        <label for="storage">Storage</label>
+        <input type="text" [(ngModel)]="processorReceived.storage" class="form-control" name="storage">
+    </div>
+
+    <div class="form-group clearfix">
+        <label for="processorAcceptanceChecklist">Acceptance Checklist</label>
+        <br>
+        <label class="checkbox-style" *ngFor="let item of commonData.processorAcceptanceCriteria">
+            <input [(ngModel)]="item.conditionSatisfied" name="processorAcceptanceChecklist" 
+                [value]="item.id" type="checkbox"/> {{item.ruleCondition}}
+                <span class="checkmark"></span>
+            </label>
+    </div>
+
+    <button type="submit" (click)="saveProcessorReceived();" class="btn btn-success">Submit</button>
 
   </form>
 </div>
