@@ -31,7 +31,7 @@ export class ProcessItemComponent implements OnInit {
       this.processorReceivedList = <Array<ProcessorModels.ProcessorReceived>>results.processorReceived;
     }); 
     this.commonData.processingActions.forEach(element => {
-      element.checked = false;
+      element.checked = true;
     });   
   }
 
@@ -70,7 +70,7 @@ export class ProcessItemComponent implements OnInit {
 
   clearForm(){
     this.commonData.processingActions.forEach(element => {
-      element.checked = false;      
+      element.checked = true;      
     });
     this.processingTransaction = new ProcessorModels.ProcessingTransaction();    
   }

@@ -1,6 +1,6 @@
 <div class="container">
     <h1 class="title-main">Logistic Outward</h1>
-    <form>
+    <form #myForm="ngForm">
         <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
             <div class="form-group">
                 <label>Logistic Id</label>
@@ -92,8 +92,8 @@
   
   
       <div class="block-button-area">
-        <button class="btn btn-border">Cancel</button>
-        <button type="submit"  (click)="saveLogisticTransaction()" class="btn btn-normal"> Submit </button>
+        <button class="btn btn-border" (click)="clearForm()">Cancel</button>
+        <button type="submit" [disabled]="!myForm.form.valid" (click)="saveLogisticTransaction()" class="btn btn-normal"> Submit </button>
     </div>
   
     </form>

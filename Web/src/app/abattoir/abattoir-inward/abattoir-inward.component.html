@@ -1,6 +1,6 @@
 <div class="container">
     <h1 class="title-main">Abattoir Received1</h1>
-    <form class="clearfix">
+    <form #myForm="ngForm" class="clearfix">
         <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
           <div class="form-group">
           <label>Farmer</label>
@@ -11,12 +11,12 @@
           
           <div class="form-group">
           <label for="rawMaterialBatchNumber">Raw Material Batch Number</label>
-          <input type="text" [(ngModel)]="abattoirReceived.rawMaterialBatchNumber"  class="form-control" name="rawMaterialBatchNumber">
+          <input type="text" [(ngModel)]="abattoirReceived.rawMaterialBatchNumber"  class="form-control" name="rawMaterialBatchNumber" required>
           </div>
       
           <div class="form-group">
           <label for="materialInwardNumber">Purchase Order Reference Number</label>
-          <input type="text" [(ngModel)]="abattoirReceived.purchaseOrderReferenceNumber"  class="form-control" name="purchaseOrderReferenceNumber">
+          <input type="text" [(ngModel)]="abattoirReceived.purchaseOrderReferenceNumber"  class="form-control" name="purchaseOrderReferenceNumber" required>
           </div>
   
           <div class="form-group">
@@ -29,7 +29,7 @@
           
           <div class="form-group">
               <label for="materialName">Material Name</label>
-              <input type="text" [(ngModel)]="abattoirReceived.materialName" class="form-control" name="materialName">
+              <input type="text" [(ngModel)]="abattoirReceived.materialName" class="form-control" name="materialName" required>
           </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
@@ -42,12 +42,12 @@
           
           <div class="form-group">
               <label for="usedByDate">Used By Date</label>
-              <input type="text" [(ngModel)]="abattoirReceived.usedByDate" name="usedByDate" class="form-control" bsDatepicker/>     
+              <input type="text" [(ngModel)]="abattoirReceived.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>     
           </div>
   
           <div class="form-group">
               <label for="quantity" style="display: block;">Quantity</label>
-              <input type="text" class="form-control input-inline-small" [(ngModel)]="abattoirReceived.quantity" name="quantity">
+              <input type="text" class="form-control input-inline-small" [(ngModel)]="abattoirReceived.quantity" name="quantity" required>
               <select class="form-control" [(ngModel)]="abattoirReceived.quantityUnit" name="quantityUnit" required  style="display: inline-block; width:100px;">
                   <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
               </select>
@@ -65,8 +65,8 @@
         </div>
   
       <div class="block-button-area">
-          <button type="reset" class="btn btn-border">Clear</button>
-          <button type="submit" (click)="saveAbattoirReceived();" class="btn btn-normal">Submit</button>
+          <button type="reset" (click)="clearForm()" class="btn btn-border">Clear</button>
+          <button type="submit" [disabled]="!myForm.form.valid" (click)="saveAbattoirReceived();" class="btn btn-normal">Submit</button>
       </div>
   
     </form>
