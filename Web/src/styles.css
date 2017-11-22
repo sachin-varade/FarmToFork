@@ -9,7 +9,24 @@ border-left: 5px solid #a94442; /* red */
 .ng-untouched:not(form)  {
 border-left: 1px solid #ccc; /* red */
 }
-
+.delivery-fieldset {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+ 
+.delivery-legend {
+    display: block;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: 1px solid #ccc;
+    width: 115px;
+    color:#888;
+}
+.logistic-status{
+    margin-top: 20px;
+    width: 100%;
+    max-width: 100%;
+}
 
 /* You can add global styles to this file, and also import other style files */
 body{

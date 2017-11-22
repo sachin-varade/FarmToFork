@@ -43,7 +43,7 @@ export class ProcessorInwardComponent implements OnInit {
     });
   }
   
-  saveProcessorReceived(){
+  saveProcessorReceived(myForm: NgForm){
     this.processorReceived.updatedBy = this.currentUser.id;
     this.processorReceived.updatedOn = new Date();
     this.processorReceived.processorId = this.currentUser.id;
@@ -56,7 +56,7 @@ export class ProcessorInwardComponent implements OnInit {
     this.processorService.saveProcessorReceived(this.processorReceived)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
-        this.clearForm();
+        this.clearForm(myForm);
         alert("Saved successfully.....");
       }
       else{
@@ -65,7 +65,8 @@ export class ProcessorInwardComponent implements OnInit {
     });
   }
 
-  clearForm(){
+  clearForm(myForm: NgForm){
+    myForm.resetForm();
     this.commonData.processorAcceptanceCriteria.forEach(element => {
       element.conditionSatisfied = false;      
     });

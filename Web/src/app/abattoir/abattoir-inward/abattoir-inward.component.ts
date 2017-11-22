@@ -44,7 +44,7 @@ export class AbattoirInwardComponent implements OnInit {
       }
     });
   }
-  saveAbattoirReceived() {
+  saveAbattoirReceived(myForm: NgForm) {
     this.abattoirReceived.updatedBy = this.currentUser.id;
     this.abattoirReceived.updatedOn = new Date();
     this.abattoirReceived.certificates = new Array<AbattoirModels.FarmersCertificate>();
@@ -57,7 +57,7 @@ export class AbattoirInwardComponent implements OnInit {
     this.abattoirService.saveAbattoirReceived(this.abattoirReceived)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
-        this.clearForm();
+        this.clearForm(myForm);
         alert("Saved successfully.....");
       }
       else{
@@ -66,7 +66,8 @@ export class AbattoirInwardComponent implements OnInit {
     });
   }
 
-  clearForm(){
+  clearForm(myForm: NgForm){
+    myForm.resetForm();
     this.abattoirReceived = new AbattoirModels.AbattoirReceived();
     this.certificates.forEach(element => {
       element.checked = false;

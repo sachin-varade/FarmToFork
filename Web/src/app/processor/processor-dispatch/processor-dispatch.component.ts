@@ -43,14 +43,14 @@ export class ProcessorDispatchComponent implements OnInit {
     });
   }
 
-  saveProcessorDispatch(){
+  saveProcessorDispatch(myForm: NgForm){
     this.processorDispatch.updatedBy = this.currentUser.id;
     this.processorDispatch.updatedOn = new Date();
     this.processorDispatch.processorId = this.currentUser.id;
     this.processorService.saveProcessorDispatch(this.processorDispatch)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
-        this.clearForm();
+        this.clearForm(myForm);
         alert("Saved successfully.....");
       }
       else{
@@ -59,7 +59,8 @@ export class ProcessorDispatchComponent implements OnInit {
     });
   }
 
-  clearForm(){    
+  clearForm(myForm: NgForm){
+    myForm.resetForm();
     this.processorDispatch = new ProcessorModels.ProcessorDispatch();    
   }
 }

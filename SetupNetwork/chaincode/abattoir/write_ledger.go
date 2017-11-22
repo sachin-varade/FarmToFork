@@ -241,8 +241,8 @@ func updateLogisticTransactionStatus(stub  shim.ChaincodeStubInterface, args []s
 		return shim.Error("Failed to Unmarshal LogisticTransaction # " + args[0])
 	}	
 	bch.CurrentStatus = args[2]
-	if strings.ToLower(bch.CurrentStatus) == "delivered" {
-		bch.ExpectedDeliveryDateTime			= args[4]	
+	if strings.ToLower(args[2]) == "delivered" {
+		bch.ActualDeliveryDateTime			= args[4]	
 	}
 	var tx ShipmentStatusTransaction
 	tx.ShipmentStatus 	= args[2];

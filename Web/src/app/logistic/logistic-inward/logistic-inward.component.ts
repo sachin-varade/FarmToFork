@@ -31,6 +31,7 @@ export class LogisticInwardComponent implements OnInit {
     .then((results: any) => {
       this.abattoirDispatchList = <Array<AbattoirModels.AbattoirDispatch>>results.abattoirMaterialDispatch;
     });
+    this.logisticTransaction.currentStatus = "";
   }
 
   ngOnInit() {
@@ -39,7 +40,7 @@ export class LogisticInwardComponent implements OnInit {
   setRoute(){      
   }
 
-  saveLogisticTransaction(){
+  saveLogisticTransaction(myForm: NgForm){
     this.logisticTransaction.updatedBy = this.currentUser.id;
     this.logisticTransaction.updatedOn = new Date();
     this.logisticTransaction.logisticId = this.currentUser.id;
@@ -54,7 +55,7 @@ export class LogisticInwardComponent implements OnInit {
     this.abattoirService.saveLogisticTransaction(this.logisticTransaction)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
-        this.clearForm();
+        this.clearForm(myForm);
         alert("Saved successfully.....");
       }
       else{
@@ -63,10 +64,71 @@ export class LogisticInwardComponent implements OnInit {
     });
   }
 
-  clearForm(){
+  fetchConsignment(){
+    var _consignmentNumber = this.logisticTransaction.consignmentNumber;
+    if(this.logisticTransaction.consignmentNumber && this.logisticTransaction.consignmentNumber !== ''){
+      this.abattoirService.getAllLogisticTransactions('id', this.logisticTransaction.consignmentNumber)
+      .then((results: any) => {
+        if(!results || !results.logisticTransactions){
+          this.logisticTransaction = new AbattoirModels.LogisticTransaction();
+          this.logisticTransaction.currentStatus = "";
+          this.logisticTransaction.consignmentNumber = _consignmentNumber;
+        }
+        else{
+          this.logisticTransaction = <AbattoirModels.LogisticTransaction>results.logisticTransactions[0]; 
+          this.dispatchDateTime = {};
+          this.expectedDeliveryDateTime = {};
+          this.dispatchDateTime.hour = new Date(this.logisticTransaction.dispatchDateTime).getHours();
+          this.dispatchDateTime.minute = new Date(this.logisticTransaction.dispatchDateTime).getMinutes();
+          this.expectedDeliveryDateTime.hour = new Date(this.logisticTransaction.expectedDeliveryDateTime).getHours();
+          this.expectedDeliveryDateTime.minute = new Date(this.logisticTransaction.expectedDeliveryDateTime).getMinutes();
+          if (this.logisticTransaction.actualDeliveryDateTime){
+            this.actualDeliveryDateTime= {};
+            this.actualDeliveryDateTime.hour = new Date(this.logisticTransaction.actualDeliveryDateTime).getHours();
+            this.actualDeliveryDateTime.minute = new Date(this.logisticTransaction.actualDeliveryDateTime).getMinutes();
+          }  
+         }
+      });
+    }
+  }
+
+  makeIntransit(myForm: NgForm){
+    this.logisticTransaction.currentStatus = "InTransit";
+    this.updateLogisticTransactionStatus(myForm);
+  }
+
+  makeDelivered(myForm: NgForm){
+    if (this.logisticTransaction.actualDeliveryDateTime && this.actualDeliveryDateTime){
+      this.logisticTransaction.actualDeliveryDateTime.setHours(this.actualDeliveryDateTime.hour);
+      this.logisticTransaction.actualDeliveryDateTime.setMinutes(this.actualDeliveryDateTime.minute);        
+    }  
+    this.logisticTransaction.currentStatus = "Delivered";
+    this.updateLogisticTransactionStatus(myForm);
+  }
+
+  updateLogisticTransactionStatus(myForm: NgForm){
+    this.logisticTransaction.updatedBy = this.currentUser.id;
+    this.logisticTransaction.updatedOn = new Date();
+    this.logisticTransaction.logisticId = this.currentUser.id;
+    this.abattoirService.updateLogisticTransactionStatus(this.logisticTransaction)
+    .then((results: any) => {
+      if(results[0].status.indexOf('SUCCESS') > -1){
+        this.clearForm(myForm);
+        alert("Saved successfully.....");
+      }
+      else{
+        alert("Error Occured.....");
+      }
+    });
+  }
+
+  clearForm(myForm: NgForm){
+    myForm.resetForm();
     this.dispatchDateTime= null;
     this.expectedDeliveryDateTime= null;
-    this.logisticTransaction = new AbattoirModels.LogisticTransaction();    
+    this.actualDeliveryDateTime= null;
+    this.logisticTransaction = new AbattoirModels.LogisticTransaction();   
+    this.logisticTransaction.currentStatus = ""; 
   }
 }
 

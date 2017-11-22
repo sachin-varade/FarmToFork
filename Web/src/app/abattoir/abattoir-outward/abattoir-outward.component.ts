@@ -49,14 +49,14 @@ export class AbattoirOutwardComponent implements OnInit {
     });
   }
 
-  saveAbattoirDispatch(){
+  saveAbattoirDispatch(myForm: NgForm){
     this.abattoirDispatch.abattoirId = this.currentUser.id;
     this.abattoirDispatch.updatedBy = this.currentUser.id;
     this.abattoirDispatch.updatedOn = new Date();
     this.abattoirService.saveAbattoirDispatch(this.abattoirDispatch)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
-        this.clearForm();
+        this.clearForm(myForm);
         alert("Saved successfully.....");
       }
       else{
@@ -65,7 +65,8 @@ export class AbattoirOutwardComponent implements OnInit {
     });
   }
 
-  clearForm(){
+  clearForm(myForm: NgForm){
+    myForm.resetForm();
     this.abattoirDispatch = new AbattoirModels.AbattoirDispatch();    
   }
 }

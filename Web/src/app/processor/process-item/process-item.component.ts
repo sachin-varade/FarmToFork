@@ -46,7 +46,7 @@ export class ProcessItemComponent implements OnInit {
     });
   }
 
-  saveProcessingTransaction(){
+  saveProcessingTransaction(myForm: NgForm){
     this.processingTransaction.updatedBy = this.currentUser.id;
     this.processingTransaction.updatedOn = new Date();
     this.processingTransaction.processorId = this.currentUser.id;
@@ -59,7 +59,7 @@ export class ProcessItemComponent implements OnInit {
     this.processorService.saveProcessingTransaction(this.processingTransaction)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
-        this.clearForm();
+        this.clearForm(myForm);
         alert("Saved successfully.....");
       }
       else{
@@ -68,7 +68,8 @@ export class ProcessItemComponent implements OnInit {
     });
   }
 
-  clearForm(){
+  clearForm(myForm: NgForm){
+    myForm.resetForm();
     this.commonData.processingActions.forEach(element => {
       element.checked = true;      
     });

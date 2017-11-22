@@ -75,8 +75,8 @@
     </div>
 
     <div class="block-button-area">
-        <button type="reset" (click)="clearForm()" class="btn btn-border">Clear</button>
-        <button type="submit" [disabled]="!myForm.form.valid" (click)="saveProcessingTransaction();" class="btn btn-normal">Submit</button>
+        <button type="submit" (click)="clearForm(myForm)" class="btn btn-border">Clear</button>
+        <button type="submit" [disabled]="!myForm.form.valid" (click)="saveProcessingTransaction(myForm);" class="btn btn-normal">Submit</button>
     </div>
 
   </form>
