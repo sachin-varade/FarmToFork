@@ -34,7 +34,7 @@ import (
 func getAllIkeaReceived(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
 	fmt.Println("getAllIkeaReceived:Looking for All Ikea Received");
 
-	//get the AllAbattoirReceived index
+	//get the All Ikea Received index
 	allBAsBytes, err := stub.GetState("allIkeaReceivedIds")
 	if err != nil {
 		return shim.Error("Failed to get all Ikea Received")
@@ -90,3 +90,64 @@ func getAllIkeaReceived(stub  shim.ChaincodeStubInterface, option string, value 
 	return shim.Success(nil)
 }
 
+// ============================================================================================================================
+// Get All Ikea Dispatch
+// ============================================================================================================================
+func getAllIkeaDispatch(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
+	fmt.Println("getAllIkeaDispatch:Looking for All Ikea Dispatch");
+
+	//get the All Ikea Dispatch index
+	allBAsBytes, err := stub.GetState("allIkeaDispatchIds")
+	if err != nil {
+		return shim.Error("Failed to get all Ikea Dispatch")
+	}
+
+	var res AllIkeaDispatchIds
+	err = json.Unmarshal(allBAsBytes, &res)
+	//fmt.Println(allBAsBytes);
+	if err != nil {
+		fmt.Println("Printing Unmarshal error:-");
+		fmt.Println(err);
+		return shim.Error("Failed to Unmarshal all Ikea Dispatch Ids")
+	}
+
+	var allIds AllIkeaDispatchIds
+	var allDetails AllIkeaDispatchDetails
+	var sb IkeaDispatch
+	if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(value)
+		if err != nil {
+			return shim.Error("Failed to get Ikea Dispatch Number ")
+		}
+		json.Unmarshal(sbAsBytes, &sb)
+		if sb.IkeaDispatchNumber != "" {
+			allDetails.IkeaDispatch = append(allDetails.IkeaDispatch,sb);	
+		}
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+
+	for i := range res.IkeaDispatchNumbers{
+		sbAsBytes, err := stub.GetState(res.IkeaDispatchNumbers[i])
+		if err != nil {
+			return shim.Error("Failed to get Ikea Dispatch Number ")
+		}		
+		json.Unmarshal(sbAsBytes, &sb)
+
+		if strings.ToLower(option) == "ids" {
+			allIds.IkeaDispatchNumbers = append(allIds.IkeaDispatchNumbers,sb.IkeaDispatchNumber);	
+		} else if strings.ToLower(option) == "details" {
+			allDetails.IkeaDispatch = append(allDetails.IkeaDispatch,sb);	
+		}
+	}
+	
+	if strings.ToLower(option) == "ids" {
+		rabAsBytes, _ := json.Marshal(allIds)		
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "details" {
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+	
+	return shim.Success(nil)
+}

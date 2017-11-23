@@ -41,7 +41,7 @@ type SimpleChaincode struct {
 
 type IkeaReceived struct {
 	IkeaReceivedNumber					string	`json:"ikeaReceivedNumber"`
-	IkeaStoreId							string	`json:"IkeaStoreId"`
+	IkeaStoreId							string	`json:"ikeaStoreId"`
 	PurchaseOrderNumber					string	`json:"purchaseOrderNumber"`	
 	ConsignmentNumber					string	`json:"consignmentNumber"`	
 	TransportConsitionSatisfied			string	`json:"transportConsitionSatisfied"`
@@ -59,31 +59,22 @@ type IkeaReceived struct {
 	UpdatedBy							string	`json:"updatedBy"`
 }
 
+type AcceptanceCriteria struct {
+	Id						string	`json:"id"`	
+	RuleCondition			string	`json:"ruleCondition"`
+	ConditionSatisfied		string	`json:"conditionSatisfied"`
+}
 
-type ProcessorReceived struct {
-	ProcessorReceiptNumber		string	`json:"processorReceiptNumber"`
-	ProcessorId						string	`json:"processorId"`
-	PurchaseOrderNumber					string	`json:"purchaseOrderNumber"`	
-	ConsignmentNumber					string	`json:"consignmentNumber"`	
-	TransportConsitionSatisfied			string	`json:"transportConsitionSatisfied"`
+
+type IkeaDispatch struct {
+	IkeaDispatchNumber					string	`json: "ikeaDispatchNumber"`
+	IkeaStoreId							string	`json:"ikeaStoreId"`
 	GUIDNumber							string	`json:"guidNumber"`
 	MaterialName						string	`json:"materialName"`
 	MaterialGrade						string	`json:"materialGrade"`	
 	Quantity							string	`json:"quantity"`
 	QuantityUnit						string	`json:"quantityUnit"`	
-	UsedByDate							string	`json:"usedByDate"`
-	ReceivedDate						string	`json:"receivedDate"`	
-	TransitTime							string	`json:"transitTime"`
-	Storage								string	`json:"storage"`
-	AcceptanceCheckList					[]AcceptanceCriteria	`json:"acceptanceCheckList"`
-	UpdatedOn			string	`json:"updatedOn"`
-	UpdatedBy			string	`json:"updatedBy"`
-}
-
-type AcceptanceCriteria struct {
-	Id						string	`json:"id"`	
-	RuleCondition			string	`json:"ruleCondition"`
-	ConditionSatisfied		string	`json:"conditionSatisfied"`
+	DispatchDateTime					string	`json:"dispatchDateTime"`
 }
 
 
@@ -93,6 +84,14 @@ type AllIkeaReceivedIds struct{
 
 type AllIkeaReceivedDetails struct{
 	IkeaReceived []IkeaReceived	`json:"ikeaReceived"`
+}
+
+type AllIkeaDispatchIds struct{
+	IkeaDispatchNumbers []string	`json:"ikeaDispatchNumbers"`
+}
+
+type AllIkeaDispatchDetails struct{
+	IkeaDispatch []IkeaDispatch	`json:"ikeaDispatch"`
 }
 
 
@@ -133,6 +132,13 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
+	var allIkeaDispatchIds AllIkeaDispatchIds
+	jsonAsBytesAllIkeaDispatchIds, _ := json.Marshal(allIkeaDispatchIds)
+	err = stub.PutState("allIkeaDispatchIds", jsonAsBytesAllIkeaDispatchIds)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+
 	fmt.Println(" - ready for action")                        
 	return shim.Success(nil)
 }
@@ -149,10 +155,14 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	if function == "init" {                    //initialize the chaincode state, used as reset
 		return t.Init(stub)
 	} else if function == "getAllIkeaReceived" {
-		return getAllIkeaReceived(stub, args[0], args[1])	
+		return getAllIkeaReceived(stub, args[0], args[1])
 	} else if function == "saveIkeaReceived" {
 		return saveIkeaReceived(stub, args)
-	}
+	} else if function == "getAllIkeaDispatch" {
+		return getAllIkeaDispatch(stub, args[0], args[1])
+	} else if function == "saveIkeaDispatch" {
+		return saveIkeaDispatch(stub, args)
+	}	
 	
 	// error out
 	fmt.Println("Received unknown invoke function name - " + function)
