@@ -27,6 +27,7 @@ router.get("/", function(req, res) {
 });
 
 // REGISTER OUR ROUTES -------------------------------
+// ------------------------ COMMON routes --------------------
 router.post("/login", function(req, res) {    
 	var userData = userService.login(req.body);	
 	res.send(userData);
@@ -41,6 +42,8 @@ router.get("/getCommonData", function(req, res) {
 	var commonData = userService.getCommonData();	
 	res.send(commonData);
 });
+
+// ------------------------ Abattoir routes --------------------
 
 router.get("/getAllAbattoirReceived/:option/:value?", function(req, res) {    
     var promise = abattoirService.getAllAbattoirReceived(req.params.option, req.params.value?req.params.value: "");
@@ -69,6 +72,8 @@ router.post("/saveAbattoirDispatch", function(req, res) {
 		res.send(resp);
 	});			
 });
+
+// ------------------------ Logistics routes --------------------
 
 router.get("/getAllLogisticTransactions/:option/:value?", function(req, res) {    
     var promise = abattoirService.getAllLogisticTransactions(req.params.option, req.params.value?req.params.value: "");
@@ -105,6 +110,8 @@ router.post("/saveProcessorReceived", function(req, res) {
 	});			
 });
 
+// ------------------------ Processor routes --------------------
+
 router.post("/saveProcessingTransaction", function(req, res) {    
 	var promise = processorService.saveProcessingTransaction(req.body);
 	promise.then(function(resp,err){
@@ -135,6 +142,23 @@ router.get("/getAllProcessingTransactions/:option/:value?", function(req, res) {
 
 router.get("/getAllProcessorDispatch/:option/:value?", function(req, res) {    
     var promise = processorService.getAllProcessorDispatch(req.params.option, req.params.value?req.params.value: "");
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
+
+// ------------------------ IKEA routes --------------------
+
+router.post("/saveIkeaReceived", function(req, res) {    
+	var promise = ikeaService.saveIkeaReceived(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
+
+router.get("/getAllIkeaReceived/:option/:value?", function(req, res) {    
+    var promise = ikeaService.getAllIkeaReceived(req.params.option, req.params.value?req.params.value: "");
 	promise.then(function(resp,err){
 		res.send(resp);
 	});	

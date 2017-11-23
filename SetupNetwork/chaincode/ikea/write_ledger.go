@@ -101,3 +101,56 @@ func saveIkeaReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Respo
 }
 
 
+//Create Ikea Dispatch block
+func saveIkeaDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+	var err error
+	fmt.Println("Running saveIkeaDispatch..")
+
+	if len(args) != 8 {
+		fmt.Println("Incorrect number of arguments. Expecting 8")
+		return shim.Error("Incorrect number of arguments. Expecting 8")
+	}
+
+	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]);
+
+	var bt IkeaDispatch
+	bt.IkeaDispatchNumber				= args[0]
+	bt.IkeaStoreId						= args[1]
+	bt.GUIDNumber						= args[2]
+	bt.MaterialName						= args[3]
+	bt.MaterialGrade					= args[4]	
+	bt.Quantity							= args[5]
+	bt.QuantityUnit						= args[6]	
+	bt.DispatchDateTime					= args[7]
+
+
+	//Commit Inward entry to ledger
+	fmt.Println("saveIkeaDispatch - Commit Ikea Dispatch To Ledger");
+	btAsBytes, _ := json.Marshal(bt)
+	err = stub.PutState(bt.IkeaDispatchNumber, btAsBytes)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+
+	//Update All Ikea DispatchIds Array
+	allBAsBytes, err := stub.GetState("allIkeaDispatchIds")
+	if err != nil {
+		return shim.Error("Failed to get all Ikea Dispatch Ids")
+	}
+	var allb AllIkeaDispatchIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Dispatch")
+	}
+	allb.IkeaDispatchNumbers = append(allb.IkeaDispatchNumbers, bt.IkeaDispatchNumber)
+
+	allBuAsBytes, _ := json.Marshal(allb)
+	err = stub.PutState("allIkeaDispatchIds", allBuAsBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
+
+
