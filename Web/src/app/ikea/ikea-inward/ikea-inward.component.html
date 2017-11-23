@@ -1,88 +1,85 @@
-<div class="container" style="width:600px;">
-  <h1>IKEA Inward</h1>
+<div class="container">
+  <h1 class="title-main">IKEA Inward</h1>
   <form>
-    <div class="form-group">
-      <label for="guidNumber">GUID/GTIN</label>
-      <label>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
-    </div>
-    
-    <div class="form-group">
-      <label for="ikeaFoodPurchaseOrder">IKEA Food purchase order</label>
-      <input type="text" class="form-control" id="ikeaFoodPurchaseOrder"/>     
-    </div>
-
-    <div class="form-group">
-      <label for="globalProductCode">Global product Code</label>
-      <input type="text" class="form-control" id="globalProductCode"/>     
-    </div>
-
-    <div class="form-group">
-      <label for="productName">Product Name</label>
-      <input type="text" class="form-control" id="productName"/>     
-    </div>
-
-    <div class="form-group">
-      <label for="productBatchCode">Product Batch Code</label>
-      <input type="text" class="form-control" id="productBatchCode"/>     
-    </div>
-
-    <div class="form-group">
-      <label for="materialDescription">Material Description</label>
-      <textarea class="form-control" id="materialDescription"></textarea>        
-    </div>
-
-    <div class="form-group">
-      <label for="quantity" style="display: block;">Quantity</label>
-      <input type="text" class="form-control" style="display: inline-block; width:100px;" id="quantity">
-      <select class="form-control" id="quantityUnit" required  style="display: inline-block; width:100px;">
-          <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="materialGrade">Material Grade</label>
-      <select class="form-control" id="materialGrade" required>
-          <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="minTemp">Temp storage instruction (Min-Max)</label>      
-    </div>
-    <div class="form-group temp-min-max">      
-      <div class="min-max-temp-label">      
-        <label>Min</label>
+    <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
+      <div class="form-group">
+        <label for="guidNumber">GUID/GTIN</label>
+        <span class="value-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
       </div>
-      <div class="min-max-temp-field">      
-        <input type="text" class="form-control" id="minTemp">
+      
+      <div class="form-group">
+        <label for="ikeaFoodPurchaseOrder">IKEA Food purchase order</label>
+        <input type="text" class="form-control" id="ikeaFoodPurchaseOrder"/>     
       </div>
-      <div class="min-max-temp-label">      
-        <label>Max</label>
+
+      <div class="form-group">
+        <label for="globalProductCode">Global product Code</label>
+        <input type="text" class="form-control" id="globalProductCode"/>     
       </div>
-      <div class="min-max-temp-field">      
-        <input type="text" class="form-control" id="maxTemp">
+
+      <div class="form-group">
+        <label for="productName">Product Name</label>
+        <input type="text" class="form-control" id="productName"/>     
+      </div>
+
+      <div class="form-group">
+        <label for="productBatchCode">Product Batch Code</label>
+        <input type="text" class="form-control" id="productBatchCode"/>     
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="receivedDate">Received Date/Time</label>
-    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
+      <div class="form-group">
+        <label for="materialDescription">Material Description</label>
+        <textarea class="form-control" id="materialDescription"></textarea>        
+      </div>
 
-    <div class="form-group date-picker-div">
-        <input type="text" class="form-control date-picker-date" bsDatepicker/>     
-        <ngb-timepicker class="date-picker-time"></ngb-timepicker>
-    </div>
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <br>
+        <input type="text" class="form-control input-inline-small" id="quantity">
+        <select class="form-control input-inline-small" id="quantityUnit" required >
+            <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+        </select>
+      </div>
 
-    <div class="form-group">
-      <label for="processorAcceptanceChecklist">Acceptance Checklist</label>
-      <div *ngFor="let option of commonData.processorAcceptanceChecklist">
-        <input checked [value]="option" type="checkbox"/> {{option}}
+      <div class="form-group">
+        <label for="materialGrade">Material Grade</label>
+        <select class="form-control" id="materialGrade" required>
+            <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
+        </select>
+      </div>
+
+      <div class="form-group temp-min-max">  
+        <label for="minTemp">Temp storage instruction (Min-Max)</label>
+        <br>
+        <input type="text" placeholder="Min " class="form-control input-inline-small" id="minTemp">
+        <input type="text" placeholder="Max" class="form-control input-inline-small" id="maxTemp">
+      </div>
+
+      <div class="form-group date-picker-div">
+          <label for="receivedDate">Received Date/Time</label>
+          <div class="clearfix">
+            <input type="text" placeholder="Date" class="form-control date-picker-date date-input-small float-left" bsDatepicker/>
+            <ngb-timepicker class="date-picker-time float-left"></ngb-timepicker>
+          </div>
+      </div>
+
+      <div class="form-group">
+        <label for="processorAcceptanceChecklist">Acceptance Checklist</label>
+        <br>
+        <label class="checkbox-style" *ngFor="let option of commonData.processorAcceptanceChecklist">
+          <input checked [value]="option" type="checkbox"/> {{option}}
+          <span class="checkmark"></span>
+        </label>
       </div>
     </div>
     
 
-
-    <button type="submit" class="btn btn-success">Submit</button>
+    <div class="block-button-area">
+        <button type="reset" class="btn btn-border">Clear</button>
+        <button type="submit" class="btn btn-normal">Submit</button>
+      </div>
 
   </form>
 </div>

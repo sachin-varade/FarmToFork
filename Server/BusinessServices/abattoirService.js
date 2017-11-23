@@ -64,7 +64,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                 abattoirConfig.channels.abattoirchannel.chaincodeId, 
                 "getAllLogisticTransactions", 
                 [option, value]);
-        }).then((results) => {
+        }).then((results) => {            
             return results;
         }).catch((err) => {
             throw err;
@@ -176,7 +176,9 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     logisticTransaction.handlingInstruction,
                     logisticTransaction.updatedOn,
                     logisticTransaction.updatedBy.toString(),
-                    logisticTransaction.currentStatus
+                    logisticTransaction.currentStatus,
+                    logisticTransaction.inTransitDateTime,
+                    logisticTransaction.actualDeliveryDateTime
                 ]                
             );                
         }).then((results) => {
@@ -203,6 +205,32 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     logisticTransaction.currentStatus,
                     logisticTransaction.updatedOn,
                     logisticTransaction.actualDeliveryDateTime                
+                ]                
+            );                
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    abattoirService.pushIotDetailsToLogisticTransaction = function(iotData){
+        console.log("pushIotDetailsToLogisticTransaction");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);            
+            return invokeChainCode.invokeChainCode(fabric_client, 
+                channels.abattoirchannel, 
+                eventHubPeers.abattoirEventHubPeer._url, 
+                //"grpc://localhost:7053",
+                abattoirConfig.channels.abattoirchannel.chaincodeId, 
+                "pushIotDetailsToLogisticTransaction",  
+                [   
+                    iotData.consignmentNumber,                 
+                    iotData.logisticId.toString(), 
+                    iotData.temp.toString(),
+                    iotData.location,
+                    iotData.date                
                 ]                
             );                
         }).then((results) => {

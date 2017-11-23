@@ -70,10 +70,12 @@ export class ProcessItemComponent implements OnInit {
 
   clearForm(myForm: NgForm){
     myForm.resetForm();
-    this.commonData.processingActions.forEach(element => {
-      element.checked = true;      
-    });
     this.processingTransaction = new ProcessorModels.ProcessingTransaction();    
+    setTimeout(() => {
+      this.commonData.processingActions.forEach(element => {
+        element.checked = true;      
+      });      
+    }, 10);    
   }
 }
 

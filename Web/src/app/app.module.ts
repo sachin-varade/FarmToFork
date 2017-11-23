@@ -15,6 +15,8 @@ import { AbattoirOutwardComponent } from './abattoir/abattoir-outward/abattoir-o
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {HttpModule} from '@angular/http';
 
 import { LogisticInwardComponent } from './logistic/logistic-inward/logistic-inward.component';
@@ -26,6 +28,8 @@ import { ProcessItemComponent } from './processor/process-item/process-item.comp
 import { IkeaInwardComponent } from './ikea/ikea-inward/ikea-inward.component';
 import { AbattoirService } from './abattoir.service';
 import { ProcessorService } from './processor.service';
+import { TrackProductComponent } from './product/track-product/track-product.component';
+import { DialogComponent } from './dialog/dialog/dialog.component';
 const appRoutes:Routes = [
   {
     path: '',
@@ -80,12 +84,17 @@ const appRoutes:Routes = [
     path: 'ikea/inward',
     canActivate: [AuthguardGuard],
     component: IkeaInwardComponent
+  },
+  {
+    path: 'product/track',
+    canActivate: [AuthguardGuard],
+    component: TrackProductComponent
   }
 ]
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
-    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent],
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   FormsModule,
@@ -93,7 +102,8 @@ const appRoutes:Routes = [
   BsDatepickerModule.forRoot(),
   TimepickerModule.forRoot(),
   NgbModule.forRoot(),
-  HttpModule
+  HttpModule,
+  BrowserAnimationsModule
   ],
   providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService],
   bootstrap: [AppComponent]

@@ -17,6 +17,13 @@
                         {"name": "Loc4"},
                         {"name": "Loc5"}
                     ],
+"logisticsLocations": [
+                        {"id": 1, "name": "Location1"},
+                        {"id": 2, "name": "Location2"},
+                        {"id": 3, "name": "Location3"},
+                        {"id": 4, "name": "Location4"},
+                        {"id": 5, "name": "Location5"}
+                    ],
 "vehicles": [
     { "id": 1, "lpn": "TAT180", "type": "Normal Container"}, 
     { "id": 2, "lpn": "TAT181", "type": "Container with Freezer"}

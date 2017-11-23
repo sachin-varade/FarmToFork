@@ -157,9 +157,9 @@ func saveLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) p
 	var err error
 	fmt.Println("Running saveLogisticTransaction..")
 
-	if len(args) != 17 {
-		fmt.Println("Incorrect number of arguments. Expecting 17")
-		return shim.Error("Incorrect number of arguments. Expecting 17")
+	if len(args) != 19 {
+		fmt.Println("Incorrect number of arguments. Expecting 19")
+		return shim.Error("Incorrect number of arguments. Expecting 19")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]+","+args[14]);
@@ -174,6 +174,7 @@ func saveLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) p
 	bt.VehicleTypeId						= args[6]
 	bt.DispatchDateTime					= args[7]
 	bt.ExpectedDeliveryDateTime			= args[8]	
+	bt.ActualDeliveryDateTime			= args[18]	
 	bt.TemperatureStorageMin			= args[9]
 	bt.TemperatureStorageMax			= args[10]
 	bt.Quantity							= args[11]
@@ -181,11 +182,19 @@ func saveLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) p
 	bt.HandlingInstruction				= args[13]	
 	bt.UpdatedOn				= args[14]	
 	bt.UpdatedBy				= args[15]	
-	bt.CurrentStatus				= args[16]	
+	bt.CurrentStatus				= "Delivered" //args[16]	
 	
 	var st ShipmentStatusTransaction
 	st.ShipmentStatus		= args[16]		// Default shipment status should be PickedUp
-	st.ShipmentDate 		= args[14]	
+	st.ShipmentDate 		= args[7]
+	bt.ShipmentStatus = append(bt.ShipmentStatus, st)
+
+	st.ShipmentStatus		= "InTransit"
+	st.ShipmentDate 		= args[17]
+	bt.ShipmentStatus = append(bt.ShipmentStatus, st)
+
+	st.ShipmentStatus		= "Delivered"
+	st.ShipmentDate 		= args[18]
 	bt.ShipmentStatus = append(bt.ShipmentStatus, st)
 
 	//Commit Inward entry to ledger
@@ -246,7 +255,7 @@ func updateLogisticTransactionStatus(stub  shim.ChaincodeStubInterface, args []s
 	}
 	var tx ShipmentStatusTransaction
 	tx.ShipmentStatus 	= args[2];
-	tx.ShipmentDate		= args[3];
+	tx.ShipmentDate		= args[4];
 
 	bch.ShipmentStatus = append(bch.ShipmentStatus, tx)
 

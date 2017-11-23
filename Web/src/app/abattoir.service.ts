@@ -50,6 +50,16 @@ export class AbattoirService {
       alert("Error Occured.....");
     });
   }
+
+  pushIotDetailsToLogisticTransaction(iotData: any): Promise<any> {
+    this.url = `${this.BASE_URL}/pushIotDetailsToLogisticTransaction`;
+    return this.http.post(this.url, iotData).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      alert("Error Occured.....");
+    });
+  }
   
   getAllAbattoirReceived(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllAbattoirReceived`;

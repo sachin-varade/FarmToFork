@@ -91,6 +91,13 @@ router.post("/updateLogisticTransactionStatus", function(req, res) {
 	});			
 });
 
+router.post("/pushIotDetailsToLogisticTransaction", function(req, res) {    
+	var promise = abattoirService.pushIotDetailsToLogisticTransaction(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
+
 router.post("/saveProcessorReceived", function(req, res) {    
 	var promise = processorService.saveProcessorReceived(req.body);
 	promise.then(function(resp,err){

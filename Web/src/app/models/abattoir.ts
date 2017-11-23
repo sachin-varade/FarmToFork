@@ -53,6 +53,7 @@ export class LogisticTransaction {
     vehicleId: number;
     vehicleTypeId: number;
     dispatchDateTime: Date;
+    inTransitDateTime: Date;
     expectedDeliveryDateTime: Date;
     actualDeliveryDateTime: Date;
     temperatureStorageMin: string;
