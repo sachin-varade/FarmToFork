@@ -182,21 +182,33 @@ export class LogisticInwardComponent implements OnInit {
     this.pushIOT(0);    
   }
   pushIOT(ind){
-    this.iotData[ind].logisticId = this.currentUser.id;
-    this.iotData[ind].consignmentNumber = this.logisticTransaction.consignmentNumber;
-    this.iotData[ind].location = this.commonData.logisticsLocations[ind].name;
-    this.abattoirService.pushIotDetailsToLogisticTransaction(this.iotData[ind])
-    .then((results: any) => {
-      if(results[0].status.indexOf('SUCCESS') > -1){
-        if(ind< (this.iotData.length-1)){
-          this.pushIOT(ind+1);
+    if(this.iotData[ind].temp < this.iotMinTemp || this.iotData[ind].temp > this.iotMaxTemp){
+      this.iotData[ind].logisticId = this.currentUser.id;
+      this.iotData[ind].consignmentNumber = this.logisticTransaction.consignmentNumber;
+      this.iotData[ind].location = this.commonData.logisticsLocations[ind].name;
+      this.abattoirService.pushIotDetailsToLogisticTransaction(this.iotData[ind])
+      .then((results: any) => {
+        if(results[0].status.indexOf('SUCCESS') > -1){
+          if(ind< (this.iotData.length-1)){
+            this.pushIOT(ind+1);
+          }
+          else{
+            this.showDialog = !this.showDialog;
+            this.fetchConsignment(null);
+          }
         }
-        else{
-          this.showDialog = !this.showDialog;
-          this.fetchConsignment(null);
-        }
+      });
+    }
+    else{
+      if(ind< (this.iotData.length-1)){
+        this.pushIOT(ind+1);
       }
-    });
+      else{
+        this.showDialog = !this.showDialog;
+        this.fetchConsignment(null);
+      }
+    }
+    
   }
 }
 
