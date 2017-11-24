@@ -28,8 +28,12 @@ import { ProcessItemComponent } from './processor/process-item/process-item.comp
 import { IkeaInwardComponent } from './ikea/ikea-inward/ikea-inward.component';
 import { AbattoirService } from './abattoir.service';
 import { ProcessorService } from './processor.service';
+import { IkeaService } from './ikea.service';
+import { NotifyService } from './notify.service';
 import { TrackProductComponent } from './product/track-product/track-product.component';
 import { DialogComponent } from './dialog/dialog/dialog.component';
+import { IkeaOutwardComponent } from './ikea/ikea-outward/ikea-outward.component';
+
 const appRoutes:Routes = [
   {
     path: '',
@@ -86,6 +90,11 @@ const appRoutes:Routes = [
     component: IkeaInwardComponent
   },
   {
+    path: 'ikea/outward',
+    canActivate: [AuthguardGuard],
+    component: IkeaOutwardComponent
+  },
+  {
     path: 'product/track',
     canActivate: [AuthguardGuard],
     component: TrackProductComponent
@@ -94,7 +103,7 @@ const appRoutes:Routes = [
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
-    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent],
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   FormsModule,
@@ -103,9 +112,9 @@ const appRoutes:Routes = [
   TimepickerModule.forRoot(),
   NgbModule.forRoot(),
   HttpModule,
-  BrowserAnimationsModule
+  BrowserAnimationsModule  
   ],
-  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService],
+  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, IkeaService, NotifyService],
   bootstrap: [AppComponent]
 })
 

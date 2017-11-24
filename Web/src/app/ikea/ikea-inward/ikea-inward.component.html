@@ -1,85 +1,104 @@
 <div class="container">
-  <h1 class="title-main">IKEA Inward</h1>
-  <form>
+  <h1 class="title-main">IKEA Received</h1>
+  <form #myForm="ngForm">
     <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
+      
       <div class="form-group">
-        <label for="guidNumber">GUID/GTIN</label>
-        <span class="value-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
+        <label for="ikeaReceivedNumber">Ikea Received Number</label>
+        <input type="text" [(ngModel)]="ikeaReceived.ikeaReceivedNumber" class="form-control" name="ikeaReceivedNumber" required>
       </div>
       
       <div class="form-group">
-        <label for="ikeaFoodPurchaseOrder">IKEA Food purchase order</label>
-        <input type="text" class="form-control" id="ikeaFoodPurchaseOrder"/>     
+        <label for="purchaseOrderNumber">Purchase Order Number</label>
+        <input type="text" [(ngModel)]="ikeaReceived.purchaseOrderNumber" class="form-control" name="purchaseOrderNumber" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="consignmentNumber">Transport Consignment Number</label>
+        <select class="form-control" [(ngModel)]="ikeaReceived.consignmentNumber" name="consignmentNumber" required>        
+        <option *ngFor="let rec of logisticTransactionList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
+        </select>
       </div>
 
       <div class="form-group">
-        <label for="globalProductCode">Global product Code</label>
-        <input type="text" class="form-control" id="globalProductCode"/>     
+        <label for="transportConsitionSatisfied">Transport conditions satisfied</label>
+        <br>
+        <label class="checkbox-style">
+            <input type="checkbox" [(ngModel)]="ikeaReceived.transportConsitionSatisfied" name="transportConsitionSatisfied" required>
+            Yes
+            <span class="checkmark"></span>
+        </label>
       </div>
 
       <div class="form-group">
-        <label for="productName">Product Name</label>
-        <input type="text" class="form-control" id="productName"/>     
+        <label for="guidNumber">GUID/GTIN</label>
+        <select class="form-control" [(ngModel)]="ikeaReceived.guidNumber" (click)="setGuid();" name="guidNumber" required>
+            <option value="0" selected="selected"></option>
+            <option *ngFor="let guid of commonData.ikeaInwardProducts" [value]="guid.code">{{guid.code}}</option>
+        </select>
       </div>
 
       <div class="form-group">
-        <label for="productBatchCode">Product Batch Code</label>
-        <input type="text" class="form-control" id="productBatchCode"/>     
+          <label for="materialName">Material Name</label>
+          <input type="text" [(ngModel)]="ikeaReceived.materialName" class="form-control" name="materialName" required>
       </div>
+
+      <div class="form-group">
+      <label for="materialGrade">Material Grade</label>
+      <select class="form-control" [(ngModel)]="ikeaReceived.materialGrade" name="materialGrade" required>
+          <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
+      </select>
+      </div>    
+      
     </div>
 
     <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
+      
       <div class="form-group">
-        <label for="materialDescription">Material Description</label>
-        <textarea class="form-control" id="materialDescription"></textarea>        
-      </div>
-
-      <div class="form-group">
-        <label for="quantity">Quantity</label>
-        <br>
-        <input type="text" class="form-control input-inline-small" id="quantity">
-        <select class="form-control input-inline-small" id="quantityUnit" required >
-            <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
-        </select>
+        <label for="receivedDate">Received Date</label>
+        <input type="text" [(ngModel)]="ikeaReceived.receivedDate" name="receivedDate" class="form-control" bsDatepicker required/>
       </div>
 
       <div class="form-group">
-        <label for="materialGrade">Material Grade</label>
-        <select class="form-control" id="materialGrade" required>
-            <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
-        </select>
-      </div>
-
-      <div class="form-group temp-min-max">  
-        <label for="minTemp">Temp storage instruction (Min-Max)</label>
-        <br>
-        <input type="text" placeholder="Min " class="form-control input-inline-small" id="minTemp">
-        <input type="text" placeholder="Max" class="form-control input-inline-small" id="maxTemp">
-      </div>
-
-      <div class="form-group date-picker-div">
-          <label for="receivedDate">Received Date/Time</label>
-          <div class="clearfix">
-            <input type="text" placeholder="Date" class="form-control date-picker-date date-input-small float-left" bsDatepicker/>
-            <ngb-timepicker class="date-picker-time float-left"></ngb-timepicker>
-          </div>
+          <label for="usedByDate">Used By Date</label>
+          <input type="text" [(ngModel)]="ikeaReceived.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
       </div>
 
       <div class="form-group">
-        <label for="processorAcceptanceChecklist">Acceptance Checklist</label>
-        <br>
-        <label class="checkbox-style" *ngFor="let option of commonData.processorAcceptanceChecklist">
-          <input checked [value]="option" type="checkbox"/> {{option}}
-          <span class="checkmark"></span>
-        </label>
+          <label for="quantity" style="display: block;">Quantity</label>
+          <input type="text" class="form-control input-inline-small" [(ngModel)]="ikeaReceived.quantity" name="quantity" required>
+          <select class="form-control input-inline-small" [(ngModel)]="ikeaReceived.quantityUnit" name="qunatityUnit" required >
+              <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+          </select>
       </div>
+
+      <div class="form-group">
+          <label for="transitTime">Transit Time(Hrs)</label>
+          <input type="text" [(ngModel)]="ikeaReceived.transitTime" class="form-control" name="transitTime" required>
+      </div>
+
+      <div class="form-group">
+          <label for="storage">Storage</label>
+          <input type="text" [(ngModel)]="ikeaReceived.storage" class="form-control" name="storage" required>
+      </div>
+
+      <div class="form-group clearfix">
+          <label for="ikeaAcceptanceChecklist">Acceptance Checklist</label>
+          <br>
+          <label class="checkbox-style" *ngFor="let item of commonData.ikeaAcceptanceCriteria">
+              <input [(ngModel)]="item.conditionSatisfied" name="ikeaAcceptanceChecklist" 
+                  [value]="item.id" type="checkbox" required/> {{item.ruleCondition}}
+                  <span class="checkmark"></span>
+              </label>
+      </div>
+      
     </div>
     
 
     <div class="block-button-area">
-        <button type="reset" class="btn btn-border">Clear</button>
-        <button type="submit" class="btn btn-normal">Submit</button>
-      </div>
+      <button type="submit" (click)="clearForm(myForm)" class="btn btn-border">Clear</button>
+      <button type="submit" [disabled]="!myForm.form.valid" (click)="saveIkeaReceived(myForm);" class="btn btn-normal">Submit</button>
+    </div>
 
   </form>
 </div>

@@ -42,7 +42,7 @@ func saveIkeaReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Respo
 
 	var bt IkeaReceived
 	bt.IkeaReceivedNumber				= args[0]
-	bt.IkeaStoreId						= args[1]
+	bt.IkeaId						= args[1]
 	bt.PurchaseOrderNumber				= args[2]
 	bt.ConsignmentNumber				= args[3]	
 	bt.TransportConsitionSatisfied		= args[4]
@@ -106,23 +106,23 @@ func saveIkeaDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.Respo
 	var err error
 	fmt.Println("Running saveIkeaDispatch..")
 
-	if len(args) != 8 {
-		fmt.Println("Incorrect number of arguments. Expecting 8")
-		return shim.Error("Incorrect number of arguments. Expecting 8")
+	if len(args) != 9 {
+		fmt.Println("Incorrect number of arguments. Expecting 9")
+		return shim.Error("Incorrect number of arguments. Expecting 9")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]);
 
 	var bt IkeaDispatch
 	bt.IkeaDispatchNumber				= args[0]
-	bt.IkeaStoreId						= args[1]
-	bt.GUIDNumber						= args[2]
-	bt.MaterialName						= args[3]
-	bt.MaterialGrade					= args[4]	
-	bt.Quantity							= args[5]
-	bt.QuantityUnit						= args[6]	
-	bt.DispatchDateTime					= args[7]
-
+	bt.IkeaReceivedNumber						= args[1]	
+	bt.IkeaId						= args[2]
+	bt.GUIDNumber						= args[3]
+	bt.MaterialName						= args[4]
+	bt.MaterialGrade					= args[5]	
+	bt.Quantity							= args[6]
+	bt.QuantityUnit						= args[7]	
+	bt.DispatchDateTime					= args[8]
 
 	//Commit Inward entry to ledger
 	fmt.Println("saveIkeaDispatch - Commit Ikea Dispatch To Ledger");

@@ -1,6 +1,6 @@
 {
 "abattoirDispatchUnits" : ["Tonne CWE"],
-"units" : ["Kg", "Tonne"],
+"units" : ["Kg", "Tonne", "Box"],
 "materialGrades": ["A", "B", "C"],
 "routes":[
             {
@@ -75,8 +75,24 @@
                             { "id": 3, "code": "699900463", "name": "Meatballs frozen 3000g SE"},
                             { "id": 4, "code": "699900464", "name": "Meatballs frozen 4000g SE"}
                         ],
+"ikeaInwardProducts": [
+                            { "id": 1, "code": "899900461", "name": "Meatballs frozen 1000g SE"},
+                            { "id": 2, "code": "899900462", "name": "Meatballs frozen 2000g SE"},
+                            { "id": 3, "code": "899900463", "name": "Meatballs frozen 3000g SE"},
+                            { "id": 4, "code": "899900464", "name": "Meatballs frozen 4000g SE"}
+                        ],     
+"ikeaDispatchProducts": [
+                            { "id": 1, "code": "999900461", "name": "Meatballs frozen 1000g SE"},
+                            { "id": 2, "code": "999900462", "name": "Meatballs frozen 2000g SE"},
+                            { "id": 3, "code": "999900463", "name": "Meatballs frozen 3000g SE"},
+                            { "id": 4, "code": "999900464", "name": "Meatballs frozen 4000g SE"}
+                        ],                                              
 
 "processorAcceptanceCriteria": [
+                            { "id": 1, "ruleCondition": "Temperature maintained", "conditionSatisfied": false}, 
+                            { "id": 2, "ruleCondition": "Delivered On Time", "conditionSatisfied": false}
+                        ],
+"ikeaAcceptanceCriteria": [
                             { "id": 1, "ruleCondition": "Temperature maintained", "conditionSatisfied": false}, 
                             { "id": 2, "ruleCondition": "Delivered On Time", "conditionSatisfied": false}
                         ]

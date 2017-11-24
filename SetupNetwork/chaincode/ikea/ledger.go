@@ -41,7 +41,7 @@ type SimpleChaincode struct {
 
 type IkeaReceived struct {
 	IkeaReceivedNumber					string	`json:"ikeaReceivedNumber"`
-	IkeaStoreId							string	`json:"ikeaStoreId"`
+	IkeaId							string	`json:"ikeaId"`
 	PurchaseOrderNumber					string	`json:"purchaseOrderNumber"`	
 	ConsignmentNumber					string	`json:"consignmentNumber"`	
 	TransportConsitionSatisfied			string	`json:"transportConsitionSatisfied"`
@@ -68,7 +68,8 @@ type AcceptanceCriteria struct {
 
 type IkeaDispatch struct {
 	IkeaDispatchNumber					string	`json: "ikeaDispatchNumber"`
-	IkeaStoreId							string	`json:"ikeaStoreId"`
+	IkeaReceivedNumber					string	`json:"ikeaReceivedNumber"`
+	IkeaId							string	`json:"ikeaId"`
 	GUIDNumber							string	`json:"guidNumber"`
 	MaterialName						string	`json:"materialName"`
 	MaterialGrade						string	`json:"materialGrade"`	

@@ -164,4 +164,18 @@ router.get("/getAllIkeaReceived/:option/:value?", function(req, res) {
 	});	
 });
 
+router.post("/saveIkeaDispatch", function(req, res) {    
+	var promise = ikeaService.saveIkeaDispatch(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
+
+router.get("/getAllIkeaDispatch/:option/:value?", function(req, res) {    
+    var promise = ikeaService.getAllIkeaDispatch(req.params.option, req.params.value?req.params.value: "");
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
 module.exports = router;

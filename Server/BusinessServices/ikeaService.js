@@ -33,18 +33,18 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             else
                 acceptanceCriteria += ","+ element.id +"^"+ element.ruleCondition +"^"+ element.conditionSatisfied;
         });
-        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
             return invokeChainCode.invokeChainCode(fabric_client, 
                 channels.ikeachannel, 
-                eventHubPeers.processorEventHubPeer._url, 
+                eventHubPeers.ikeaEventHubPeer._url, 
                 //"grpc://localhost:7053",
                 ikeaConfig.channels.ikeachannel.chaincodeId, 
                 "saveIkeaReceived",  
                 [
                     ikeaReceived.ikeaReceivedNumber,
-                    ikeaReceived.ikeaStoreId.toString(),
+                    ikeaReceived.ikeaId.toString(),
                     ikeaReceived.purchaseOrderNumber,
                     ikeaReceived.consignmentNumber,
                     ikeaReceived.transportConsitionSatisfied.toString(),
@@ -70,10 +70,10 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
 
     ikeaService.getAllIkeaReceived = function(option, value){
         console.log("getAllIkeaReceived");
-        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);
-            return queryChainCode.queryChainCode(channels.processorchannel, 
+            return queryChainCode.queryChainCode(channels.ikeachannel, 
                 ikeaConfig.channels.ikeachannel.chaincodeId, 
                 "getAllIkeaReceived", 
                 [option, value]);
@@ -84,42 +84,51 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
-
-    ikeaService.query = function(){
-        console.log("query");
-        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
-        .then((user_from_store) => {
-            helper.checkUserEnrolled(user_from_store);
-            return queryChainCode.queryChainCode(channels.ikeachannel, 
-                ikeaConfig.channels.ikeachannel.chaincodeId, 
-                "query", 
-                ["a"]);
-        }).then((results) => {
-            return results;
-        }).catch((err) => {
-            throw err;
-        });
-    }
-
-    ikeaService.invoke = function(){
-        console.log("invoke");
+    ikeaService.saveIkeaDispatch = function(ikeaDispatch){
+        console.log("saveIkeaDispatch");
         return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
             return invokeChainCode.invokeChainCode(fabric_client, 
                 channels.ikeachannel, 
                 eventHubPeers.ikeaEventHubPeer._url, 
-                //"grpc://localhost:10053",
+                //"grpc://localhost:7053",
                 ikeaConfig.channels.ikeachannel.chaincodeId, 
-                "invoke",  
-                ["a","b","10"]);                
+                "saveIkeaDispatch",  
+                [
+                    ikeaDispatch.ikeaDispatchNumber,
+                    ikeaDispatch.ikeaReceivedNumber,
+                    ikeaDispatch.ikeaId.toString(),
+                    ikeaDispatch.guidNumber,
+                    ikeaDispatch.materialName,
+                    ikeaDispatch.materialGrade,
+                    ikeaDispatch.quantity,
+                    ikeaDispatch.quantityUnit,
+                    ikeaDispatch.dispatchDateTime
+                ]);
         }).then((results) => {
             return results;
         }).catch((err) => {
             throw err;
         });
     }
-    
+
+    ikeaService.getAllIkeaDispatch = function(option, value){
+        console.log("getAllIkeaDispatch");
+        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.ikeachannel, 
+                ikeaConfig.channels.ikeachannel.chaincodeId, 
+                "getAllIkeaDispatch", 
+                [option, value]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
 	return ikeaService;
 };
 
