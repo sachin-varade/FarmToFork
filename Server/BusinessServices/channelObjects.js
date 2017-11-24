@@ -11,7 +11,8 @@ console.log('Store path:'+store_path);
 var config = require('../config/config.js');
 
 var abattoirConfig = config.network.abattoir;
-var logisticConfig = config.network.logistic;
+var logisticA2PConfig = config.network.logisticA2P;
+var logisticP2IConfig = config.network.logisticP2I;
 var processorConfig = config.network.processor;
 var ikeaConfig = config.network.ikea;
 var abattoirchannel = fabric_client.newChannel(abattoirConfig.channels.abattoirchannel.name);
@@ -19,7 +20,7 @@ var processorchannel = fabric_client.newChannel(processorConfig.channels.process
 var ikeachannel = fabric_client.newChannel(ikeaConfig.channels.ikeachannel.name);
 
 var abattoirPeer = fabric_client.newPeer(abattoirConfig.anchorPeer);
-var logisticPeer = fabric_client.newPeer(logisticConfig.anchorPeer);
+var logisticPeer = fabric_client.newPeer(logisticA2PConfig.anchorPeer);
 var processorPeer = fabric_client.newPeer(processorConfig.anchorPeer);
 var ikeaPeer = fabric_client.newPeer(ikeaConfig.anchorPeer);
 
@@ -31,7 +32,7 @@ var peers = {
 }
 
 var abattoirEventHubPeer = fabric_client.newPeer(abattoirConfig.eventHubPeer);
-var logisticEventHubPeer = fabric_client.newPeer(logisticConfig.eventHubPeer);
+var logisticEventHubPeer = fabric_client.newPeer(logisticA2PConfig.eventHubPeer);
 var processorEventHubPeer = fabric_client.newPeer(processorConfig.eventHubPeer);
 var ikeaEventHubPeer = fabric_client.newPeer(ikeaConfig.eventHubPeer);
 
@@ -73,7 +74,8 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 
 var usersForTransaction = {
 	abattoirUser: config.network.users.filter(function(x){return x.enrollmentID == "abattoir1"})[0],
-	logisticUser: config.network.users.filter(function(x){return x.enrollmentID == "logistic1"})[0],
+	logisticA2PUser: config.network.users.filter(function(x){return x.enrollmentID == "logisticA2P1"})[0],
+	logisticP2IUser: config.network.users.filter(function(x){return x.enrollmentID == "logisticP2I1"})[0],
 	processorUser: config.network.users.filter(function(x){return x.enrollmentID == "processor1"})[0],
 	ikeaUser: config.network.users.filter(function(x){return x.enrollmentID == "ikea1"})[0]
 }

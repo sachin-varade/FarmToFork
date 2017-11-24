@@ -77,6 +77,8 @@ export class UserService {
   }
 
   getUserLoggedIn() {
-    return localStorage.getItem('loggedInUser');
+    if(localStorage.getItem('loggedInUser') !== ''){
+      return JSON.parse(localStorage.getItem('loggedInUser'));
+    }
   }
 }

@@ -220,40 +220,52 @@ func saveProcessorDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.
 }
 
 //Create LogisticTransaction block
-func createLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
+func saveLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) pb.Response {	
 	var err error
-	fmt.Println("Running createLogisticTransaction..")
+	fmt.Println("Running saveLogisticTransaction..")
 
-	if len(args) != 15 {
-		fmt.Println("Incorrect number of arguments. Expecting 15")
-		return shim.Error("Incorrect number of arguments. Expecting 15")
+	if len(args) != 19 {
+		fmt.Println("Incorrect number of arguments. Expecting 19")
+		return shim.Error("Incorrect number of arguments. Expecting 19")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]+","+args[14]);
 
 	var bt LogisticTransaction
-	bt.LogisticProviderId				= args[0]
-	bt.ConsignmentNumber				= args[1]
-	bt.RouteId							= args[2]
-	bt.AbattoirConsignmentId			= args[3]
-	bt.VehicleId						= args[4]
-	bt.VehicleType						= args[5]
-	bt.PickupDateTime					= args[6]
-	bt.ExpectedDeliveryDateTime			= args[7]
-	bt.ActualDeliveryDateTime			= args[8]
+	bt.LogisticId				= args[0]
+	bt.LogisticType				= args[1]
+	bt.ConsignmentNumber				= args[2]
+	bt.RouteId							= args[3]
+	bt.AbattoirConsignmentNumber			= args[4]
+	bt.VehicleId						= args[5]
+	bt.VehicleTypeId						= args[6]
+	bt.DispatchDateTime					= args[7]
+	bt.ExpectedDeliveryDateTime			= args[8]	
+	bt.ActualDeliveryDateTime			= args[18]	
 	bt.TemperatureStorageMin			= args[9]
 	bt.TemperatureStorageMax			= args[10]
 	bt.Quantity							= args[11]
-	bt.HandlingInstruction				= args[12]
-	
+	bt.QuantityUnit							= args[12]
+	bt.HandlingInstruction				= args[13]	
+	bt.UpdatedOn				= args[14]	
+	bt.UpdatedBy				= args[15]	
+	bt.CurrentStatus				= "Delivered" //args[16]	
 	
 	var st ShipmentStatusTransaction
-	st.ShipmentStatus		= args[13]		// Default shipment status should be PickedUp
-	st.ShipmentDate 		= args[14]	
+	st.ShipmentStatus		= args[16]		// Default shipment status should be PickedUp
+	st.ShipmentDate 		= args[7]
+	bt.ShipmentStatus = append(bt.ShipmentStatus, st)
+
+	st.ShipmentStatus		= "InTransit"
+	st.ShipmentDate 		= args[17]
+	bt.ShipmentStatus = append(bt.ShipmentStatus, st)
+
+	st.ShipmentStatus		= "Delivered"
+	st.ShipmentDate 		= args[18]
 	bt.ShipmentStatus = append(bt.ShipmentStatus, st)
 
 	//Commit Inward entry to ledger
-	fmt.Println("createLogisticTransaction - Commit LogisticTransaction To Ledger");
+	fmt.Println("saveLogisticTransaction - Commit LogisticTransaction To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
 	err = stub.PutState(bt.ConsignmentNumber, btAsBytes)
 	if err != nil {		
@@ -261,19 +273,19 @@ func createLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string)
 	}
 
 	//Update All AbattoirDispatch Array
-	allBAsBytes, err := stub.GetState("allLogisticTransactions")
+	allBAsBytes, err := stub.GetState("allLogisticTransactionIds")
 	if err != nil {
 		return shim.Error("Failed to get all Abattoir Dispatch")
 	}
-	var allb AllLogisticTransactions
+	var allb AllLogisticTransactionIds
 	err = json.Unmarshal(allBAsBytes, &allb)
 	if err != nil {
 		return shim.Error("Failed to Unmarshal all dispatch")
 	}
-	allb.LogisticTransactionList = append(allb.LogisticTransactionList,bt)
+	allb.ConsignmentNumbers = append(allb.ConsignmentNumbers, bt.ConsignmentNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
-	err = stub.PutState("allLogisticTransactions", allBuAsBytes)
+	err = stub.PutState("allLogisticTransactionIds", allBuAsBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -288,9 +300,9 @@ func updateLogisticTransactionStatus(stub  shim.ChaincodeStubInterface, args []s
 	var err error
 	fmt.Println("Running updateLogisticTransactionStatus..")
 
-	if len(args) != 4 {
-		fmt.Println("Incorrect number of arguments. Expecting 4 - ConsignmentNumber, LogisticProviderId, ShipmentStatus, ShipmentDate.")
-		return shim.Error("Incorrect number of arguments. Expecting 4")
+	if len(args) != 5 {
+		fmt.Println("Incorrect number of arguments. Expecting 5 - ConsignmentNumber, LogisticId, ShipmentStatus, ShipmentDate.")
+		return shim.Error("Incorrect number of arguments. Expecting 5")
 	}
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]);
 
@@ -303,11 +315,14 @@ func updateLogisticTransactionStatus(stub  shim.ChaincodeStubInterface, args []s
 	err = json.Unmarshal(bAsBytes, &bch)
 	if err != nil {
 		return shim.Error("Failed to Unmarshal LogisticTransaction # " + args[0])
+	}	
+	bch.CurrentStatus = args[2]
+	if strings.ToLower(args[2]) == "delivered" {
+		bch.ActualDeliveryDateTime			= args[4]	
 	}
-
 	var tx ShipmentStatusTransaction
 	tx.ShipmentStatus 	= args[2];
-	tx.ShipmentDate		= args[3];
+	tx.ShipmentDate		= args[4];
 
 	bch.ShipmentStatus = append(bch.ShipmentStatus, tx)
 
@@ -329,8 +344,8 @@ func pushIotDetailsToLogisticTransaction(stub  shim.ChaincodeStubInterface, args
 	var err error
 	fmt.Println("Running pushIotDetailsToLogisticTransaction..")
 
-	if len(args) != 4 {
-		fmt.Println("Incorrect number of arguments. Expecting 4 - ConsignmentNumber, LogisticProviderId, ShipmentStatus, ShipmentDate.")
+	if len(args) != 5 {
+		fmt.Println("Incorrect number of arguments. Expecting 4 - ConsignmentNumber, LogisticId, ShipmentStatus, ShipmentDate.")
 		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]);
@@ -349,6 +364,7 @@ func pushIotDetailsToLogisticTransaction(stub  shim.ChaincodeStubInterface, args
 	var tx IotHistory
 	tx.Temperature 	= args[2];
 	tx.Location		= args[3];
+	tx.UpdatedOn		= args[4];
 
 	bch.IotTemperatureHistory = append(bch.IotTemperatureHistory, tx)
 

@@ -4,8 +4,9 @@ import { NgModel, NgForm } from '@angular/forms';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../user.service';
-import { AbattoirService } from '../../abattoir.service';
+import { LogisticService } from '../../logistic.service';
 import * as AbattoirModels from '../../models/abattoir';
+import * as LogisticModels from '../../models/logistic';
 
 @Component({
   selector: 'app-logistic-outward',
@@ -17,18 +18,18 @@ export class LogisticOutwardComponent implements OnInit {
   currentUser: any;
   commonData: any;
   userData: any;
-  logisticTransaction: AbattoirModels.LogisticTransaction = new AbattoirModels.LogisticTransaction();
+  logisticTransaction: LogisticModels.LogisticTransaction = new LogisticModels.LogisticTransaction();
   actualDeliveryDateTime: any;
   constructor(private route: ActivatedRoute,
               private user: UserService,
-              private abattoirService: AbattoirService) {
-    this.currentUser = JSON.parse(this.user.getUserLoggedIn());
+              private logisticService: LogisticService) {
+    this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();   
     this.route.params.subscribe(params => {
-      this.abattoirService.getAllLogisticTransactions('id',  params['consignmentNumber'])
+      this.logisticService.getAllLogisticTransactions('id',  params['consignmentNumber'])
       .then((results: any) => {
-        this.logisticTransaction = <AbattoirModels.LogisticTransaction>results.logisticTransactions[0];        
+        this.logisticTransaction = <LogisticModels.LogisticTransaction>results.logisticTransactions[0];        
       });
    }); 
     
@@ -45,7 +46,7 @@ export class LogisticOutwardComponent implements OnInit {
       this.logisticTransaction.actualDeliveryDateTime.setHours(this.actualDeliveryDateTime.hour);
       this.logisticTransaction.actualDeliveryDateTime.setMinutes(this.actualDeliveryDateTime.minute);        
     }    
-    this.abattoirService.updateLogisticTransactionStatus(this.logisticTransaction)
+    this.logisticService.updateLogisticTransactionStatus(this.logisticTransaction)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm();
@@ -59,6 +60,6 @@ export class LogisticOutwardComponent implements OnInit {
 
   clearForm(){    
     this.actualDeliveryDateTime= null;
-    this.logisticTransaction = new AbattoirModels.LogisticTransaction();    
+    this.logisticTransaction = new LogisticModels.LogisticTransaction();    
   }
 }

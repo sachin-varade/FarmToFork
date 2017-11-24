@@ -10,6 +10,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthguardGuard } from './authguard.guard';
 import { UserService } from './user.service';
+import { LogisticService } from './logistic.service';
 import { AbattoirInwardComponent } from './abattoir/abattoir-inward/abattoir-inward.component';
 import { AbattoirOutwardComponent } from './abattoir/abattoir-outward/abattoir-outward.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -114,7 +115,7 @@ const appRoutes:Routes = [
   HttpModule,
   BrowserAnimationsModule  
   ],
-  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, IkeaService, NotifyService],
+  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, LogisticService, IkeaService, NotifyService],
   bootstrap: [AppComponent]
 })
 

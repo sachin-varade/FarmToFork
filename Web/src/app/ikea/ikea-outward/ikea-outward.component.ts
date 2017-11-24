@@ -19,7 +19,7 @@ export class IkeaOutwardComponent implements OnInit {
   ikeaDispatch : IkeaModels.IkeaDispatch = new IkeaModels.IkeaDispatch();
   constructor(private user: UserService,    
     private ikeaService: IkeaService) {
-    this.currentUser = JSON.parse(this.user.getUserLoggedIn());
+    this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
     this.ikeaService.getAllIkeaReceived('details')

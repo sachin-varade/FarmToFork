@@ -9,10 +9,7 @@ var queryChainCode = require('../hfcInterface/queryChainCode.js');
 var invokeChainCode = require('../hfcInterface/invokeChainCode.js');
 var config = require('../config/config.js');
 
-var abattoirConfig = config.network.abattoir;
-var logisticConfig = config.network.logistic;
 var processorConfig = config.network.processor;
-var ikeaConfig = config.network.ikea;
 var member_user;
 
 module.exports = function (fabric_client, channels, peers, eventHubPeers, orderer, users) {

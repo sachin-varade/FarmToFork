@@ -20,7 +20,7 @@ export class AbattoirInwardComponent implements OnInit {
   abattoirReceived: AbattoirModels.AbattoirReceived = new AbattoirModels.AbattoirReceived();
   constructor(private user: UserService,
               private abattoirService: AbattoirService) {
-    this.currentUser = JSON.parse(this.user.getUserLoggedIn());
+    this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();
     this.certificates = JSON.parse(JSON.stringify(this.commonData.farmersCertificates));

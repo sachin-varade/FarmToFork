@@ -3,9 +3,9 @@ import { FormsModule, NgControl } from '@angular/forms';
 import { NgModel, NgForm } from '@angular/forms';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { UserService } from '../../user.service';
-import { AbattoirService } from '../../abattoir.service';
+import { LogisticService } from '../../logistic.service';
 import { IkeaService } from '../../ikea.service';
-import * as AbattoirModels from '../../models/abattoir';
+import * as LogisticModels from '../../models/logistic';
 import * as IkeaModels from '../../models/ikea';
 
 @Component({
@@ -18,17 +18,17 @@ export class IkeaInwardComponent implements OnInit {
   currentUser: any;
   commonData: any;
   userData: any;
-  logisticTransactionList: Array<AbattoirModels.LogisticTransaction> = new Array<AbattoirModels.LogisticTransaction>();
+  logisticTransactionList: Array<LogisticModels.LogisticTransaction> = new Array<LogisticModels.LogisticTransaction>();
   ikeaReceived : IkeaModels.IkeaReceived = new IkeaModels.IkeaReceived();
   constructor(private user: UserService,
-    private abattoirService: AbattoirService,
+    private logisticService: LogisticService,
     private ikeaService: IkeaService) {
-    this.currentUser = JSON.parse(this.user.getUserLoggedIn());
+    this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
-    this.abattoirService.getAllLogisticTransactions('details')
+    this.logisticService.getAllLogisticTransactions('details')
     .then((results: any) => {
-      this.logisticTransactionList = <Array<AbattoirModels.LogisticTransaction>>results.logisticTransactions;
+      this.logisticTransactionList = <Array<LogisticModels.LogisticTransaction>>results.logisticTransactions;
     });    
   }
 

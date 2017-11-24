@@ -10,9 +10,6 @@ var invokeChainCode = require('../hfcInterface/invokeChainCode.js');
 var config = require('../config/config.js');
 
 var abattoirConfig = config.network.abattoir;
-var logisticConfig = config.network.logistic;
-var processorConfig = config.network.processor;
-var ikeaConfig = config.network.ikea;
 var member_user;
 
 module.exports = function (fabric_client, channels, peers, eventHubPeers, orderer, users) {
@@ -53,23 +50,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         }).catch((err) => {
             throw err;
         });
-    }
-
-    abattoirService.getAllLogisticTransactions = function(option, value){
-        console.log("getAllLogisticTransactions");
-        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
-        .then((user_from_store) => {
-            helper.checkUserEnrolled(user_from_store);
-            return queryChainCode.queryChainCode(channels.abattoirchannel, 
-                abattoirConfig.channels.abattoirchannel.chaincodeId, 
-                "getAllLogisticTransactions", 
-                [option, value]);
-        }).then((results) => {            
-            return results;
-        }).catch((err) => {
-            throw err;
-        });
-    }
+    }    
 
     abattoirService.saveAbattoirReceived = function(abattoirReceived){
         console.log("saveAbattoirReceived");
@@ -146,99 +127,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         }).catch((err) => {
             throw err;
         });
-    }
-
-    abattoirService.saveLogisticTransaction = function(logisticTransaction){
-        console.log("saveLogisticTransaction");
-        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
-        .then((user_from_store) => {
-            helper.checkUserEnrolled(user_from_store);            
-            return invokeChainCode.invokeChainCode(fabric_client, 
-                channels.abattoirchannel, 
-                eventHubPeers.abattoirEventHubPeer._url, 
-                //"grpc://localhost:7053",
-                abattoirConfig.channels.abattoirchannel.chaincodeId, 
-                "saveLogisticTransaction",  
-                [                    
-                    logisticTransaction.logisticId.toString(), 
-                    logisticTransaction.logisticType,
-                    logisticTransaction.consignmentNumber,
-                    logisticTransaction.routeId,
-                    logisticTransaction.abattoirConsignmentNumber,
-                    logisticTransaction.vehicleId.toString(),                    
-                    logisticTransaction.vehicleTypeId.toString(),
-                    logisticTransaction.dispatchDateTime,
-                    logisticTransaction.expectedDeliveryDateTime,                    
-                    logisticTransaction.temperatureStorageMin,
-                    logisticTransaction.temperatureStorageMax,
-                    logisticTransaction.quantity,
-                    logisticTransaction.quantityUnit,                    
-                    logisticTransaction.handlingInstruction,
-                    logisticTransaction.updatedOn,
-                    logisticTransaction.updatedBy.toString(),
-                    logisticTransaction.currentStatus,
-                    logisticTransaction.inTransitDateTime,
-                    logisticTransaction.actualDeliveryDateTime
-                ]                
-            );                
-        }).then((results) => {
-            return results;
-        }).catch((err) => {
-            throw err;
-        });
-    }
-
-    abattoirService.updateLogisticTransactionStatus = function(logisticTransaction){
-        console.log("updateLogisticTransactionStatus");
-        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
-        .then((user_from_store) => {
-            helper.checkUserEnrolled(user_from_store);            
-            return invokeChainCode.invokeChainCode(fabric_client, 
-                channels.abattoirchannel, 
-                eventHubPeers.abattoirEventHubPeer._url, 
-                //"grpc://localhost:7053",
-                abattoirConfig.channels.abattoirchannel.chaincodeId, 
-                "updateLogisticTransactionStatus",  
-                [   
-                    logisticTransaction.consignmentNumber,                 
-                    logisticTransaction.logisticId.toString(), 
-                    logisticTransaction.currentStatus,
-                    logisticTransaction.updatedOn,
-                    logisticTransaction.actualDeliveryDateTime                
-                ]                
-            );                
-        }).then((results) => {
-            return results;
-        }).catch((err) => {
-            throw err;
-        });
-    }
-
-    abattoirService.pushIotDetailsToLogisticTransaction = function(iotData){
-        console.log("pushIotDetailsToLogisticTransaction");
-        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
-        .then((user_from_store) => {
-            helper.checkUserEnrolled(user_from_store);            
-            return invokeChainCode.invokeChainCode(fabric_client, 
-                channels.abattoirchannel, 
-                eventHubPeers.abattoirEventHubPeer._url, 
-                //"grpc://localhost:7053",
-                abattoirConfig.channels.abattoirchannel.chaincodeId, 
-                "pushIotDetailsToLogisticTransaction",  
-                [   
-                    iotData.consignmentNumber,                 
-                    iotData.logisticId.toString(), 
-                    iotData.temp.toString(),
-                    iotData.location,
-                    iotData.date                
-                ]                
-            );                
-        }).then((results) => {
-            return results;
-        }).catch((err) => {
-            throw err;
-        });
-    }
+    }   
     
 	return abattoirService;
 };

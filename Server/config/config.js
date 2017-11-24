@@ -11,13 +11,20 @@ var network =
                 anchorPeer: "grpc://localhost:7051",
                 eventHubPeer: "grpc://localhost:7053"                
               },
-    logistic: {
-                name: "logistic",
+    logisticA2P: {
+                name: "logisticA2P",
                 channels: {
                     abattoirchannel: {
                         name: "abattoirchannel",
                         chaincodeId: "abattoirCC"
-                    },
+                    }
+                },
+                anchorPeer: "grpc://localhost:8051",
+                eventHubPeer: "grpc://localhost:8053"                
+              },
+    logisticP2I: {
+                name: "logisticP2I",
+                channels: {                    
                     processorchannel: {
                         name: "processorchannel",
                         chaincodeId: "processorCC"
@@ -100,7 +107,14 @@ var network =
         {
             ca: {url: "http://localhost:8054", name: "ca.org2.example.com"}, 
             admin: "logisticadmin", 
-            enrollmentID: "logistic1", 
+            enrollmentID: "logisticA2P1", 
+            affiliation: "org2.department1",
+            mspid: "Org2MSP"
+        },
+        {
+            ca: {url: "http://localhost:8054", name: "ca.org2.example.com"}, 
+            admin: "logisticadmin", 
+            enrollmentID: "logisticP2I1", 
             affiliation: "org2.department1",
             mspid: "Org2MSP"
         },

@@ -50,7 +50,7 @@
                 "password": "123456",
                 "uniqueId": "L001",
                 "GUID-GTIN": "GUID-L001",
-                "type": "Abattoir-to-Processor"
+                "type": "A2P"
             },
             {
                 "id": 2,
@@ -59,7 +59,7 @@
                 "password": "123456",
                 "uniqueId": "L002",
                 "GUID-GTIN": "GUID-L002",
-                "type": "Processor-to-Ikea"
+                "type": "P2I"
             }
         ],
 

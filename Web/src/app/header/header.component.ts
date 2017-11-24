@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
   currentUser: any;
   constructor(private router:Router, private user:UserService) {
     this.userLoggedId = this.user.isUserLoggedIn() === "true" ? true : false;
-    this.currentUser = JSON.parse(this.user.getUserLoggedIn());
+    this.currentUser = this.user.getUserLoggedIn();
   }
 
   ngOnInit() {

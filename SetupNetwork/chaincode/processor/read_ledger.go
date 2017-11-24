@@ -215,16 +215,16 @@ func getAllProcessorDispatch(stub  shim.ChaincodeStubInterface, option string, v
 // ============================================================================================================================
 // Get All Logistic Transactions
 // ============================================================================================================================
-func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, user string) pb.Response {
+func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
 	fmt.Println("getAllLogisticTransactions: Looking for All Logistic Transactions");
 
 	//get the LogisticTransactions index
-	allBAsBytes, err := stub.GetState("allLogisticTransactions")
+	allBAsBytes, err := stub.GetState("allLogisticTransactionIds")
 	if err != nil {
 		return shim.Error("Failed to get all Abattoir Received")
 	}
 
-	var res AllLogisticTransactions
+	var res AllLogisticTransactionIds
 	err = json.Unmarshal(allBAsBytes, &res)
 	//fmt.Println(allBAsBytes);
 	if err != nil {
@@ -232,23 +232,45 @@ func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, user string) 
 		fmt.Println(err);
 		return shim.Error("Failed to Unmarshal all Logistic Transactions records")
 	}
+	var sb LogisticTransaction
+	var allIds AllLogisticTransactionIds
+	var allDetails AllLogisticTransactionDetails
+	if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(value)
+		if err != nil {
+			return shim.Error("Failed to get Logistic Transaction record.")
+		}
+		json.Unmarshal(sbAsBytes, &sb)
+		if sb.ConsignmentNumber != "" {
+			allDetails.LogisticTransactions = append(allDetails.LogisticTransactions, sb);	
+		}
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+	
+	for i := range res.ConsignmentNumbers{
 
-	var rab AllLogisticTransactions
-
-	for i := range res.LogisticTransactionList{
-
-		sbAsBytes, err := stub.GetState(res.LogisticTransactionList[i].ConsignmentNumber)
+		sbAsBytes, err := stub.GetState(res.ConsignmentNumbers[i])
 		if err != nil {
 			return shim.Error("Failed to get Logistic Transaction record.")
 		}
 		var sb LogisticTransaction
 		json.Unmarshal(sbAsBytes, &sb)
 
-		// append all transactions to list
-		rab.LogisticTransactionList = append(rab.LogisticTransactionList,sb);
+		if strings.ToLower(option) == "ids" {
+			allIds.ConsignmentNumbers = append(allIds.ConsignmentNumbers, sb.ConsignmentNumber);	
+		} else if strings.ToLower(option) == "details" {
+			allDetails.LogisticTransactions = append(allDetails.LogisticTransactions, sb);	
+		}	
 	}
 
-	rabAsBytes, _ := json.Marshal(rab)
-
-	return shim.Success(rabAsBytes)
+	if strings.ToLower(option) == "ids" {
+		rabAsBytes, _ := json.Marshal(allIds)		
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "details" {
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
+	
+	return shim.Success(nil)
 }

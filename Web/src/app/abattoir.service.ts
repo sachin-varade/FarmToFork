@@ -31,36 +31,6 @@ export class AbattoirService {
     });
   }
 
-  saveLogisticTransaction(logisticTransaction: AbattoirModels.LogisticTransaction): Promise<any> {
-    this.url = `${this.BASE_URL}/saveLogisticTransaction`;
-    return this.http.post(this.url, logisticTransaction).toPromise()
-    .then((results: any) => {
-      return JSON.parse(results._body);
-    }).catch((err) => {
-      alert("Error Occured.....");
-    });
-  }
-  
-  updateLogisticTransactionStatus(logisticTransaction: AbattoirModels.LogisticTransaction): Promise<any> {
-    this.url = `${this.BASE_URL}/updateLogisticTransactionStatus`;
-    return this.http.post(this.url, logisticTransaction).toPromise()
-    .then((results: any) => {
-      return JSON.parse(results._body);
-    }).catch((err) => {
-      alert("Error Occured.....");
-    });
-  }
-
-  pushIotDetailsToLogisticTransaction(iotData: any): Promise<any> {
-    this.url = `${this.BASE_URL}/pushIotDetailsToLogisticTransaction`;
-    return this.http.post(this.url, iotData).toPromise()
-    .then((results: any) => {
-      return JSON.parse(results._body);
-    }).catch((err) => {
-      alert("Error Occured.....");
-    });
-  }
-  
   getAllAbattoirReceived(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllAbattoirReceived`;
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
@@ -73,16 +43,6 @@ export class AbattoirService {
 
   getAllAbattoirDispatch(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllAbattoirDispatch`;
-    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
-    .then((results: any) => {
-      return JSON.parse(results._body);
-    }).catch((err) => {
-      alert("Error Occured.....");
-    });
-  }
-
-  getAllLogisticTransactions(option: string, value: string = ""): Promise<any> {
-    this.url = `${this.BASE_URL}/getAllLogisticTransactions`;
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);

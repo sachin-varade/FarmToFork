@@ -3,9 +3,7 @@ import { FormsModule, NgControl } from '@angular/forms';
 import { NgModel, NgForm } from '@angular/forms';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { UserService } from '../../user.service';
-import { AbattoirService } from '../../abattoir.service';
 import { ProcessorService } from '../../processor.service';
-import * as AbattoirModels from '../../models/abattoir';
 import * as ProcessorModels from '../../models/processor';
 
 @Component({
@@ -21,12 +19,11 @@ export class ProcessItemComponent implements OnInit {
   processorReceivedList: Array<ProcessorModels.ProcessorReceived> = new Array<ProcessorModels.ProcessorReceived>();
   processingTransaction : ProcessorModels.ProcessingTransaction = new ProcessorModels.ProcessingTransaction();
   constructor(private user: UserService,
-    private abattoirService: AbattoirService,
     private processorService: ProcessorService) {
-    this.currentUser = JSON.parse(this.user.getUserLoggedIn());
+    this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
-    this.abattoirService.getAllLogisticTransactions('details')
+    this.processorService.getAllProcessorReceived('details')
     .then((results: any) => {
       this.processorReceivedList = <Array<ProcessorModels.ProcessorReceived>>results.processorReceived;
     }); 

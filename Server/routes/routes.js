@@ -74,34 +74,65 @@ router.post("/saveAbattoirDispatch", function(req, res) {
 });
 
 // ------------------------ Logistics routes --------------------
-
-router.get("/getAllLogisticTransactions/:option/:value?", function(req, res) {    
-    var promise = abattoirService.getAllLogisticTransactions(req.params.option, req.params.value?req.params.value: "");
+//A2P
+router.get("/A2P/getAllLogisticTransactions/:option/:value?", function(req, res) {    
+    var promise = logisticService.getAllLogisticA2PTransactions(req.params.option, req.params.value?req.params.value: "");
 	promise.then(function(resp,err){
 		res.send(resp);
 	});	
 });
 
-router.post("/saveLogisticTransaction", function(req, res) {    
-	var promise = abattoirService.saveLogisticTransaction(req.body);
+router.post("/A2P/saveLogisticTransaction", function(req, res) {    
+	var promise = logisticService.saveLogisticA2PTransaction(req.body);
 	promise.then(function(resp,err){
 		res.send(resp);
 	});			
 });
 
-router.post("/updateLogisticTransactionStatus", function(req, res) {    
-	var promise = abattoirService.updateLogisticTransactionStatus(req.body);
+router.post("/A2P/updateLogisticTransactionStatus", function(req, res) {    
+	var promise = logisticService.updateLogisticA2PTransactionStatus(req.body);
 	promise.then(function(resp,err){
 		res.send(resp);
 	});			
 });
 
-router.post("/pushIotDetailsToLogisticTransaction", function(req, res) {    
-	var promise = abattoirService.pushIotDetailsToLogisticTransaction(req.body);
+router.post("/A2P/pushIotDetailsToLogisticTransaction", function(req, res) {    
+	var promise = logisticService.pushIotDetailsToLogisticA2PTransaction(req.body);
 	promise.then(function(resp,err){
 		res.send(resp);
 	});			
 });
+
+//P2I
+router.get("/P2I/getAllLogisticTransactions/:option/:value?", function(req, res) {    
+    var promise = logisticService.getAllLogisticP2ITransactions(req.params.option, req.params.value?req.params.value: "");
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
+router.post("/P2I/saveLogisticTransaction", function(req, res) {    
+	var promise = logisticService.saveLogisticP2ITransaction(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
+
+router.post("/P2I/updateLogisticTransactionStatus", function(req, res) {    
+	var promise = logisticService.updateLogisticP2ITransactionStatus(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
+
+router.post("/P2I/pushIotDetailsToLogisticTransaction", function(req, res) {    
+	var promise = logisticService.pushIotDetailsToLogisticP2ITransaction(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
+
+// ------------------------ Processor routes --------------------
 
 router.post("/saveProcessorReceived", function(req, res) {    
 	var promise = processorService.saveProcessorReceived(req.body);
@@ -109,8 +140,6 @@ router.post("/saveProcessorReceived", function(req, res) {
 		res.send(resp);
 	});			
 });
-
-// ------------------------ Processor routes --------------------
 
 router.post("/saveProcessingTransaction", function(req, res) {    
 	var promise = processorService.saveProcessingTransaction(req.body);
