@@ -13,12 +13,10 @@ export class LogisticService {
   private url = '';
   constructor(private http: Http,
     private userService: UserService) {
-    this.currentUser = this.userService.getUserLoggedIn();
-    this.BASE_URL += "/"+ this.currentUser.type
   }
 
   saveLogisticTransaction(logisticTransaction: LogisticModels.LogisticTransaction): Promise<any> {
-    this.url = `${this.BASE_URL}/saveLogisticTransaction`;
+    this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/saveLogisticTransaction";
     return this.http.post(this.url, logisticTransaction).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);
@@ -28,7 +26,7 @@ export class LogisticService {
   }
   
   updateLogisticTransactionStatus(logisticTransaction: LogisticModels.LogisticTransaction): Promise<any> {
-    this.url = `${this.BASE_URL}/updateLogisticTransactionStatus`;
+    this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/updateLogisticTransactionStatus";
     return this.http.post(this.url, logisticTransaction).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);
@@ -38,7 +36,7 @@ export class LogisticService {
   }
 
   pushIotDetailsToLogisticTransaction(iotData: any): Promise<any> {
-    this.url = `${this.BASE_URL}/pushIotDetailsToLogisticTransaction`;
+    this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/pushIotDetailsToLogisticTransaction";
     return this.http.post(this.url, iotData).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);
@@ -48,7 +46,7 @@ export class LogisticService {
   }
   
   getAllLogisticTransactions(option: string, value: string = ""): Promise<any> {
-    this.url = `${this.BASE_URL}/getAllLogisticTransactions`;
+    this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/getAllLogisticTransactions";
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);

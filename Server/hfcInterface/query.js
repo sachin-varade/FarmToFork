@@ -17,8 +17,8 @@ var queryChainCode = require('./queryChainCode.js');
 var fabric_client = new Fabric_Client();
 
 // setup the fabric network
-var channel = fabric_client.newChannel('ikeachannel');
-var peer = fabric_client.newPeer('grpc://localhost:10051');
+var channel = fabric_client.newChannel('abattoirchannel');
+var peer = fabric_client.newPeer('grpc://localhost:9051');
 channel.addPeer(peer);
 
 //
@@ -40,7 +40,7 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 	fabric_client.setCryptoSuite(crypto_suite);
 
 	// get the enrolled user from persistence, this user will sign all requests
-	return fabric_client.getUserContext('ikeasadmin', true);
+	return fabric_client.getUserContext('ikeaadmin', true);
 }).then((user_from_store) => {
 	if (user_from_store && user_from_store.isEnrolled()) {
 		console.log('Successfully loaded user1 from persistence');
@@ -48,7 +48,24 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 	} else {
 		throw new Error('Failed to get user1.... run registerUser.js');
 	}
-    return queryChainCode.queryChainCode(channel, "ikeaCC", "query",["a"]);
+
+
+	return channel.queryInfo(peer, false);
+	//return channel.queryBlock(1, peer, false);
+
+//0th block data
+//query_responses.data.data[0].payload.data.last_update.payload.header.channel_header
+
+//request data
+//query_responses.data.data[0].payload.data.actions[0].payload.chaincode_proposal_payload.input.toString()
+//read-writes
+//query_responses.data.data[0].payload.data.actions[0].payload.action.proposal_response_payload.extension.results.ns_rwset[0].rwset
+//channel name, chaincode id, timestamp, txid, type(config-update/endorsor transaction)
+//query_responses.data.data[0].payload.header.channel_header
+//creator
+//query_responses.data.data[0].payload.header.signature_header.creator
+
+    //return queryChainCode.queryChainCode(channel, "ikeaCC", "query",["a"]);
 }).then((query_responses) => {
 	console.log(query_responses);
 }).catch((err) => {

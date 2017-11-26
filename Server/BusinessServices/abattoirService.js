@@ -129,6 +129,48 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }   
     
+    abattoirService.queryInfo = function(){
+        console.log("queryInfo");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryInfo(channels.abattoirchannel, 
+                peers.abattoirPeer);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    abattoirService.queryBlock = function(blockNumber){
+        console.log("queryInfo");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryBlock(channels.abattoirchannel, 
+                peers.abattoirPeer, blockNumber);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    abattoirService.queryBlockByHash = function(blockHash){
+        console.log("queryInfo");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryBlockByHash(channels.abattoirchannel, 
+                peers.abattoirPeer, blockHash);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
 	return abattoirService;
 };
 

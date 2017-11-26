@@ -26,4 +26,35 @@ var queryChainCode = function(channel, chaincodeId, functionName, args) {
 	});
 }
 
+var queryInfo = function(channel, peer) {    
+	return channel.queryInfo(peer, false)
+	.then((query_responses) => {
+	return query_responses;
+	}).catch((err) => {
+		throw err;
+	});
+}
+
+var queryBlock = function(channel, peer, blockNumber) {    
+	return channel.queryBlock(blockNumber, peer, false)
+	.then((query_responses) => {
+	return query_responses;
+	}).catch((err) => {
+		throw err;
+	});
+}
+
+var queryBlockByHash = function(channel, peer, blockHash) {    
+	return channel.queryBlockByHash(blockHash, peer, false)
+	.then((query_responses) => {
+	return query_responses;
+	}).catch((err) => {
+		throw err;
+	});
+}
+
+
 exports.queryChainCode = queryChainCode;
+exports.queryInfo = queryInfo;
+exports.queryBlock = queryBlock;
+exports.queryBlockByHash = queryBlockByHash;

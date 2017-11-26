@@ -1,13 +1,14 @@
 "use strict";
 var express = require("express");
 var channelObjects = require("../BusinessServices/channelObjects.js");
-var abattoirService, logisticService, processorService, ikeaService, userService;
+var abattoirService, logisticService, processorService, ikeaService, userService, blockService;
 setTimeout(function() {    
     abattoirService = require("../BusinessServices/abattoirService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
     logisticService = require("../BusinessServices/logisticService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
     processorService = require("../BusinessServices/processorService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
 	ikeaService = require("../BusinessServices/ikeaService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
 	userService = require("../BusinessServices/userService.js")();
+	blockService = require("../BusinessServices/blockService.js")(abattoirService, logisticService, processorService, ikeaService);
 }, 2000);
 
 // ROUTES FOR OUR API
@@ -202,6 +203,28 @@ router.post("/saveIkeaDispatch", function(req, res) {
 
 router.get("/getAllIkeaDispatch/:option/:value?", function(req, res) {    
     var promise = ikeaService.getAllIkeaDispatch(req.params.option, req.params.value?req.params.value: "");
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
+// ------------------------ BLOCK routes --------------------
+router.get("/queryInfo/:role", function(req, res) {    
+    var promise = blockService.queryInfo(req.params.role);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
+router.get("/queryBlock/:role/:blockNumber", function(req, res) {    
+    var promise = blockService.queryBlock(req.params.role, req.params.blockNumber);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
+router.get("/getRecentBlocks/:role/:blockNumber", function(req, res) {    
+    var promise = blockService.getRecentBlocks(req.params.role, req.params.blockNumber);
 	promise.then(function(resp,err){
 		res.send(resp);
 	});	
