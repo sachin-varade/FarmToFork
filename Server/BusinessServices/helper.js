@@ -6,7 +6,8 @@ var checkUserEnrolled = function(user_from_store){
 		console.log('Successfully loaded from persistence');
 		return user_from_store;
 	} else {
-		throw new Error('Failed to get user.... run registerUser.js');
+		//throw new Error('Failed to get user.... run registerUser.js');
+		return user_from_store;
 	}
 }
 
