@@ -1,7 +1,7 @@
 "use strict";
 var express = require("express");
 var channelObjects = require("../BusinessServices/channelObjects.js");
-var abattoirService, logisticService, processorService, ikeaService, userService, blockService;
+var abattoirService, logisticService, processorService, ikeaService, userService, blockService, productTrackerService;
 setTimeout(function() {    
     abattoirService = require("../BusinessServices/abattoirService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
     logisticService = require("../BusinessServices/logisticService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
@@ -9,6 +9,7 @@ setTimeout(function() {
 	ikeaService = require("../BusinessServices/ikeaService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
 	userService = require("../BusinessServices/userService.js")();
 	blockService = require("../BusinessServices/blockService.js")(abattoirService, logisticService, processorService, ikeaService);
+	productTrackerService = require("../BusinessServices/productTrackerService.js")(abattoirService, logisticService, processorService, ikeaService, userService);
 }, 2000);
 
 // ROUTES FOR OUR API
@@ -229,5 +230,15 @@ router.get("/getRecentBlocks/:role/:blockNumber", function(req, res) {
 		res.send(resp);
 	});	
 });
+
+// ----------------------- Product Tracker ----------------------
+
+router.get("/getProductTrackingDetails/:option/:value?", function(req, res) {    
+    var promise = productTrackerService.getProductTrackingDetails(req.params.option, req.params.value?req.params.value: "")
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
 
 module.exports = router;

@@ -67,6 +67,21 @@ module.exports = function () {
         return commonData;
     }
 
+    userService.getUserNameById = function(userType, userId){
+
+        if(userType === "farmers") {
+            return userData.users.farmers.filter(function(f){return f.id.toString() === userId; })[0].name;
+        } else if(userType === "abattoirs") {
+            return userData.users.abattoirs.filter(function(f){return f.id.toString() === userId; })[0].name;
+        } else if(userType === "logistics") {
+            return userData.users.logistics.filter(function(f){return f.id.toString() === userId; })[0].name;
+        } else if(userType === "processors") {
+            return userData.users.processors.filter(function(f){return f.id.toString() === userId; })[0].name;
+        } else if(userType === "ikeas") {
+            return userData.users.ikeas.filter(function(f){return f.id.toString() === userId; })[0].name;
+        }
+    }
+
 	return userService;
 };
 
