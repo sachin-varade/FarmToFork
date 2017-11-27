@@ -27,6 +27,7 @@ export class AbattoirOutwardComponent implements OnInit {
     .then((results: any) => {
       this.abattoirReceivedList = <Array<AbattoirModels.AbattoirReceived>>results.abattoirMaterialReceived;
     });
+    this.abattoirDispatch.dispatchDate = new Date();
   }
 
   ngOnInit() {
@@ -36,7 +37,7 @@ export class AbattoirOutwardComponent implements OnInit {
     this.abattoirReceivedList.forEach(element => {
       if(this.abattoirDispatch.purchaseOrderReferenceNumber == element.purchaseOrderReferenceNumber){
         this.abattoirReceived = element;
-        this.abattoirDispatch.rawMaterialBatchNumber = element.rawMaterialBatchNumber;
+        this.abattoirDispatch.receiptBatchId = element.receiptBatchId;
       }
     });
   }

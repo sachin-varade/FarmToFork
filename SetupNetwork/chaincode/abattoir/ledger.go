@@ -42,7 +42,8 @@ type SimpleChaincode struct {
 type AbattoirMaterialReceived struct {
 	AbattoirId			string	`json:"abattoirId"`
 	PurchaseOrderReferenceNumber	string	`json:"purchaseOrderReferenceNumber"`
-	RawMaterialBatchNumber	string	`json:"rawMaterialBatchNumber"`	
+	ReceiptBatchId	string	`json:"receiptBatchId"`	
+	ReceiptOn				string	`json:"receiptOn"`
 	FarmerId			string	`json:"farmerId"`	
 	GUIDNumber			string	`json:"guidNumber"`
 	MaterialName		string	`json:"materialName"`
@@ -64,10 +65,16 @@ type AbattoirDispatch struct {
 	AbattoirId				string	`json:"abattoirId"`
 	ConsignmentNumber		string	`json:"consignmentNumber"`
 	PurchaseOrderReferenceNumber		string	`json:"purchaseOrderReferenceNumber"`
-	RawMaterialBatchNumber				string	`json:"rawMaterialBatchNumber"`
+	ReceiptBatchId				string	`json:"receiptBatchId"`
+	DispatchDate				string	`json:"dispatchDate"`
+	LogisticId				string	`json:"logisticId"`
+	SalesOrder				string	`json:"salesOrder"`
+		
 	GUIDNumber				string	`json:"guidNumber"`
 	MaterialName			string	`json:"materialName"`
 	MaterialGrade			string	`json:"materialGrade"`
+	FatCoverClass			string	`json:"fatCoverClass"`
+	
 	TemperatureStorageMin	string	`json:"temperatureStorageMin"`
 	TemperatureStorageMax	string	`json:"temperatureStorageMax"`
 	ProductionDate			string	`json:"productionDate"`

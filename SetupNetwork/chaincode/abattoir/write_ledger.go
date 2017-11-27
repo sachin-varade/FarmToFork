@@ -33,7 +33,7 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	var err error
 	fmt.Println("Running saveAbattoirReceived..")
 
-	if len(args) != 13 {
+	if len(args) != 14 {
 		fmt.Println("Incorrect number of arguments. Expecting 9 - AbattoirId..")
 		return shim.Error("Incorrect number of arguments. Expecting 9")
 	}
@@ -43,21 +43,22 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	var bt AbattoirMaterialReceived
 	bt.AbattoirId				= args[0]
 	bt.PurchaseOrderReferenceNumber			= args[1]
-	bt.RawMaterialBatchNumber			= args[2]	
-	bt.FarmerId					= args[3]
-	bt.GUIDNumber					= args[4]
-	bt.MaterialName				= args[5]
-	bt.MaterialGrade			= args[6]
-	bt.UsedByDate				= args[7]
-	bt.Quantity					= args[8]
-	bt.QuantityUnit					= args[9]	
-	bt.UpdatedBy					= args[11]	
-	bt.UpdatedOn					= args[12]	
+	bt.ReceiptBatchId			= args[2]	
+	bt.ReceiptOn = args[3]
+	bt.FarmerId					= args[4]
+	bt.GUIDNumber					= args[5]
+	bt.MaterialName				= args[6]
+	bt.MaterialGrade			= args[7]
+	bt.UsedByDate				= args[8]
+	bt.Quantity					= args[9]
+	bt.QuantityUnit					= args[10]	
+	bt.UpdatedBy					= args[12]	
+	bt.UpdatedOn					= args[13]	
 
 	var cert FarmersCertificate
 	
-	if args[10] != "" {
-		p := strings.Split(args[10], ",")
+	if args[11] != "" {
+		p := strings.Split(args[11], ",")
 		for i := range p {
 			c := strings.Split(p[i], "^")
 			cert.Id = c[0]
@@ -100,9 +101,9 @@ func saveAbattoirDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	var err error
 	fmt.Println("Running saveAbattoirDispatch..")
 
-	if len(args) != 15 {
-		fmt.Println("Incorrect number of arguments. Expecting 12 - AbattoirId..")
-		return shim.Error("Incorrect number of arguments. Expecting 12")
+	if len(args) != 19 {
+		fmt.Println("Incorrect number of arguments. Expecting 19 - AbattoirId..")
+		return shim.Error("Incorrect number of arguments. Expecting 19")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]+","+args[14]);
@@ -110,19 +111,26 @@ func saveAbattoirDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	var bt AbattoirDispatch	
 	bt.AbattoirId				= args[0]
 	bt.ConsignmentNumber		= args[1]
-	bt.PurchaseOrderReferenceNumber			= args[2]
-	bt.RawMaterialBatchNumber			= args[3]
-	bt.GUIDNumber				= args[4]
-	bt.MaterialName				= args[5]
-	bt.MaterialGrade			= args[6]
-	bt.TemperatureStorageMin	= args[7]
-	bt.TemperatureStorageMax	= args[8]
-	bt.ProductionDate			= args[9]
-	bt.UsedByDate				= args[10]	
-	bt.Quantity					= args[11]
-	bt.QuantityUnit				= args[12]
-	bt.UpdatedBy					= args[13]	
-	bt.UpdatedOn					= args[14]	
+
+	bt.DispatchDate		= args[2]
+	bt.LogisticId		= args[3]
+	bt.SalesOrder		= args[4]
+
+	bt.PurchaseOrderReferenceNumber			= args[5]
+	bt.GUIDNumber				= args[6]
+	bt.MaterialName				= args[7]
+	bt.MaterialGrade			= args[8]
+	bt.FatCoverClass			= args[9]
+
+	bt.ReceiptBatchId			= args[10]
+	bt.TemperatureStorageMin	= args[11]
+	bt.TemperatureStorageMax	= args[12]
+	bt.ProductionDate			= args[13]
+	bt.UsedByDate				= args[14]	
+	bt.Quantity					= args[15]
+	bt.QuantityUnit				= args[16]
+	bt.UpdatedBy					= args[17]	
+	bt.UpdatedOn					= args[18]	
 	//Commit Inward entry to ledger
 	fmt.Println("saveAbattoirDispatch - Commit AbattoirDispatch To Ledger");
 	btAsBytes, _ := json.Marshal(bt)

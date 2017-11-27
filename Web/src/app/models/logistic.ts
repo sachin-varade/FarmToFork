@@ -5,6 +5,7 @@ export class LogisticTransaction {
     consignmentNumber: string;
     routeId: number;    
     abattoirConsignmentNumber: string;
+    processorConsignmentNumber: string;
     vehicleId: number;
     vehicleTypeId: number;
     dispatchDateTime: Date;

@@ -27,6 +27,7 @@ export class AbattoirInwardComponent implements OnInit {
     this.certificates.forEach(element => {
       element.checked = false;
     });
+    this.abattoirReceived.receiptOn = new Date();
   }
 
   ngOnInit() {

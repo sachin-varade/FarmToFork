@@ -2,8 +2,9 @@
     "users": {
         "farmers": [
             {
-                "id": 1,
+                "id": "WAAB0119",
                 "name": "farmer1",
+                "displayName": "Princess Royal Feedlot",
                 "role": "farmer",
                 "password": "123456",
                 "uniqueId": "F001",
@@ -11,8 +12,9 @@
                 "certificates": ["GFSI", "BRC", "KRAV", "IFOAM"]
             },
             {
-                "id": 2,
+                "id": "WKFL0028",
                 "name": "farmer2",
+                "displayName": " Bundarra Farm Feedlot",
                 "role": "farmer",
                 "password": "123456",
                 "uniqueId": "F002",
@@ -25,6 +27,7 @@
             {
                 "id": 1,
                 "name": "abattoir1",
+                "displayName": "abattoir1",
                 "role": "abattoir",
                 "password": "123456",
                 "uniqueId": "A001",
@@ -34,6 +37,7 @@
             {
                 "id": 2,
                 "name": "abattoir2",
+                "displayName": "abattoir2",
                 "role": "abattoir",
                 "password": "123456",
                 "uniqueId": "A002",
@@ -46,6 +50,7 @@
             {
                 "id": 1,
                 "name": "logistic1",
+                "displayName": "logistic1",
                 "role": "logistic",
                 "password": "123456",
                 "uniqueId": "L001",
@@ -55,6 +60,7 @@
             {
                 "id": 2,
                 "name": "logistic2",
+                "displayName": "logistic2",
                 "role": "logistic",
                 "password": "123456",
                 "uniqueId": "L002",
@@ -67,20 +73,24 @@
             {
                 "id": 1,
                 "name": "processor1",
+                "displayName": "processor1",
                 "role": "processor",
                 "password": "123456",
                 "uniqueId": "P001",
                 "GUID-GTIN": "GUID-P001",
-                "unit": "processor unit 1"        
+                "unit": "processor unit 1",
+                "type": "A2P"   
             },
             {
                 "id": 2,
                 "name": "processor2",
+                "displayName": "processor2",
                 "role": "processor",
                 "password": "123456",
                 "uniqueId": "P002",
                 "GUID-GTIN": "GUID-P002",
-                "unit": "processor unit 2"        
+                "unit": "processor unit 2",
+                "type": "A2P"        
             }
         ],
 
@@ -88,18 +98,22 @@
             {
                 "id": 1,
                 "name": "ikea1",
+                "displayName": "ikea1",
                 "role": "ikea",
                 "password": "123456",
                 "uniqueId": "I001",
-                "GUID-GTIN": "GUID-I001"                
+                "GUID-GTIN": "GUID-I001",
+                "type": "P2I"               
             },
             {
                 "id": 2,
                 "name": "ikea2",
+                "displayName": "ikea2",
                 "role": "ikea",
                 "password": "123456",
                 "uniqueId": "I002",
-                "GUID-GTIN": "GUID-I002"
+                "GUID-GTIN": "GUID-I002",
+                "type": "P2I"            
             }
         ]
     }

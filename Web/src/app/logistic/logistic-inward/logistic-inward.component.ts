@@ -6,8 +6,10 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { UserService } from '../../user.service';
 import { AbattoirService } from '../../abattoir.service';
 import { LogisticService } from '../../logistic.service';
+import { ProcessorService } from '../../processor.service';
 import * as AbattoirModels from '../../models/abattoir';
 import * as LogisticModels from '../../models/logistic';
+import * as ProcessorModels from '../../models/processor';
 import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
@@ -31,9 +33,11 @@ export class LogisticInwardComponent implements OnInit {
   inTransitDateTime: any;
   expectedDeliveryDateTime: any;
   actualDeliveryDateTime: any;
+  processorDispatchList: Array<ProcessorModels.ProcessorDispatch> = new Array<ProcessorModels.ProcessorDispatch>();
   constructor(private user: UserService,
               private abattoirService: AbattoirService,
-              private logisticService: LogisticService) {
+              private logisticService: LogisticService,
+            private processorService: ProcessorService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
@@ -41,7 +45,12 @@ export class LogisticInwardComponent implements OnInit {
     .then((results: any) => {
       this.abattoirDispatchList = <Array<AbattoirModels.AbattoirDispatch>>results.abattoirMaterialDispatch;
     });
-    this.logisticTransaction.currentStatus = "";    
+    this.logisticTransaction.currentStatus = "";  
+    
+    this.processorService.getAllProcessorDispatch('details')
+    .then((results: any) => {
+      this.processorDispatchList = <Array<ProcessorModels.ProcessorDispatch>>results.processorDispatch;
+    });  
   }
 
   ngOnInit() {

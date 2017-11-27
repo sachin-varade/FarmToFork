@@ -127,26 +127,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         }).catch((err) => {
             throw err;
         });
-    }
-        
-    logisticService.createVehicle = function(){
-        console.log("createVehicle");
-        return fabric_client.getUserContext(users.logisticUser.enrollmentID, true)
-        .then((user_from_store) => {
-            helper.checkUserEnrolled(user_from_store);            
-            return invokeChainCode.invokeChainCode(fabric_client, 
-                channels.processorchannel, 
-                eventHubPeers.logisticEventHubPeer._url, 
-                //"grpc://localhost:8053",
-                logisticA2PConfig.channels.processorchannel.chaincodeId, 
-                "createVehicle",  
-                ["Volvo", "V001", "V001", "Jim", "X1", "E1", "G1", "White", ""]);                
-        }).then((results) => {
-            return results;
-        }).catch((err) => {
-            throw err;
-        });
-    }
+    } 
 
     logisticService.getAllLogisticP2ITransactions = function(option, value){
         console.log("getAllLogisticP2ITransactions");
@@ -180,7 +161,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     logisticTransaction.logisticType,
                     logisticTransaction.consignmentNumber,
                     logisticTransaction.routeId,
-                    logisticTransaction.abattoirConsignmentNumber,
+                    logisticTransaction.processorConsignmentNumber,
                     logisticTransaction.vehicleId.toString(),                    
                     logisticTransaction.vehicleTypeId.toString(),
                     logisticTransaction.dispatchDateTime,

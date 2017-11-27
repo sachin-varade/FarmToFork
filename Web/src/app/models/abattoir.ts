@@ -1,6 +1,15 @@
 export class Farmer {
     id: number;
     name: string;
+    displayName: string;
+    role: string;
+    uniqueId: string;
+}
+
+export class Logistic {
+    id: number;
+    name: string;
+    displayName: string;
     role: string;
     uniqueId: string;
 }
@@ -14,7 +23,8 @@ export class AbattoirReceived {
     abattoirId: number;
     farmer: Farmer = new Farmer();
     purchaseOrderReferenceNumber: string;
-    rawMaterialBatchNumber: string;
+    receiptBatchId: string;
+    receiptOn: Date;
     guidNumber: string;
     materialName: string;
     materialGrade: string;
@@ -30,10 +40,16 @@ export class AbattoirDispatch {
     abattoirId: number;    
     consignmentNumber: string;
     purchaseOrderReferenceNumber: string;
-    rawMaterialBatchNumber: string;
+    receiptBatchId: string;
+    dispatchDate: Date;
+    logistic: Logistic = new Logistic();
+    salesOrder: string;
+
     guidNumber: string;
     materialName: string;
     materialGrade: string;
+    fatCoverClass: string;
+    
     temperatureStorageMin: string;
     temperatureStorageMax: string;
     productionDate: Date;

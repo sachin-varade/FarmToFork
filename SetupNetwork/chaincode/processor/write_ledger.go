@@ -236,7 +236,7 @@ func saveLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) p
 	bt.LogisticType				= args[1]
 	bt.ConsignmentNumber				= args[2]
 	bt.RouteId							= args[3]
-	bt.AbattoirConsignmentNumber			= args[4]
+	bt.ProcessorConsignmentNumber			= args[4]
 	bt.VehicleId						= args[5]
 	bt.VehicleTypeId						= args[6]
 	bt.DispatchDateTime					= args[7]

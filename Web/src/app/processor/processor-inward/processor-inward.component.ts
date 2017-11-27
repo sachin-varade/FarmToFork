@@ -19,6 +19,7 @@ export class ProcessorInwardComponent implements OnInit {
   commonData: any;
   userData: any;
   logisticTransactionList: Array<LogisticModels.LogisticTransaction> = new Array<LogisticModels.LogisticTransaction>();
+  logisticTransaction: LogisticModels.LogisticTransaction = new LogisticModels.LogisticTransaction();
   processorReceived : ProcessorModels.ProcessorReceived = new ProcessorModels.ProcessorReceived();
   constructor(private user: UserService,
     private logisticService: LogisticService,
@@ -71,5 +72,16 @@ export class ProcessorInwardComponent implements OnInit {
       element.conditionSatisfied = false;      
     });
     this.processorReceived = new ProcessorModels.ProcessorReceived();    
+  }
+
+  checkLogisticConsignment(){
+    var obj= this;
+    this.logisticTransaction = this.logisticTransactionList.filter(function(o){return o.consignmentNumber === obj.processorReceived.consignmentNumber})[0];
+    if(this.logisticTransaction.iotTemperatureHistory && this.logisticTransaction.iotTemperatureHistory.length > 0){
+      this.processorReceived.transportConsitionSatisfied = "false";
+    }
+    else{
+      this.processorReceived.transportConsitionSatisfied = "true";
+    }
   }
 }

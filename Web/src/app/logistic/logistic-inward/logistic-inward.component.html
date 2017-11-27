@@ -17,12 +17,18 @@
           </div>      
           
   
-          <div class="form-group">
+          <div class="form-group" *ngIf="user.getUserLoggedIn().type == 'A2P'">
               <label for="abattoirConsignmentNumber">Abattoir Consignment Number</label>      
               <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.abattoirConsignmentNumber" name="abattoirConsignmentNumber" required>        
               <option *ngFor="let rec of abattoirDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
               </select>
-          </div>    
+          </div> 
+          <div class="form-group" *ngIf="user.getUserLoggedIn().type == 'P2I'">
+                <label for="processorConsignmentNumber">Processor Consignment Number</label>      
+                <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.processorConsignmentNumber" name="processorConsignmentNumber" required>        
+                <option *ngFor="let rec of processorDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
+                </select>
+            </div>    
   
           <div class="form-group">
               <label for="vehicleId">Vehicle Id</label>        

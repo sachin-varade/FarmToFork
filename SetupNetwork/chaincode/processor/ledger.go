@@ -116,6 +116,7 @@ type LogisticTransaction struct {
 	ConsignmentNumber				string	`json:"consignmentNumber"`		
 	RouteId							string	`json:"routeId"`
 	AbattoirConsignmentNumber			string	`json:"abattoirConsignmentNumber"`	
+	ProcessorConsignmentNumber			string	`json:"processorConsignmentNumber"`	
 	VehicleId						string	`json:"vehicleId"`
 	VehicleTypeId						string	`json:"vehicleTypeId"`
 	DispatchDateTime					string	`json:"dispatchDateTime"`

@@ -16,19 +16,39 @@
       
       <div class="form-group">
         <label for="consignmentNumber">Transport Consignment Number</label>
-        <select class="form-control" [(ngModel)]="ikeaReceived.consignmentNumber" name="consignmentNumber" required>        
+        <select class="form-control" [(ngModel)]="ikeaReceived.consignmentNumber" (change)="checkLogisticConsignment();" name="consignmentNumber" required>        
         <option *ngFor="let rec of logisticTransactionList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="transportConsitionSatisfied">Transport conditions satisfied</label>
-        <br>
-        <label class="checkbox-style">
-            <input type="checkbox" [(ngModel)]="ikeaReceived.transportConsitionSatisfied" name="transportConsitionSatisfied" required>
-            Yes
-            <span class="checkmark"></span>
-        </label>
+          <label for="transportConsitionSatisfied">Transport conditions satisfied?</label>
+          <br>
+          <label *ngIf="logisticTransaction.iotTemperatureHistory && logisticTransaction.iotTemperatureHistory.length > 0" class="checkbox-style">
+              <input checked disabled type="checkbox" name="transportConsitionSatisfied" required>
+              No
+              <span class="checkmark"></span>
+          </label>
+          <label *ngIf="!logisticTransaction.iotTemperatureHistory || logisticTransaction.iotTemperatureHistory.length == 0" class="checkbox-style">
+                  <input checked disabled type="checkbox" [(ngModel)]="ikeaReceived.transportConsitionSatisfied" name="transportConsitionSatisfied" required>
+                  Yes
+                  <span class="checkmark"></span>
+          </label>
+          <table *ngIf="logisticTransaction.iotTemperatureHistory && logisticTransaction.iotTemperatureHistory.length > 0" class="table table-striped">
+                  <tr>
+                      <th colspan="10">Discrepancies in Temperature</th>
+                  </tr>
+                  <tr>
+                      <th>Temp</th>
+                      <th>Location</th>
+                      <th>Date/Time</th>
+                  </tr>
+                  <tr *ngFor="let item of logisticTransaction.iotTemperatureHistory; let i = index" [attr.data-index]="i">
+                      <td>{{item.temperature}}</td>
+                      <td>{{item.location}}</td>
+                      <td>{{item.updatedOn | date : "short"}}</td>
+                  </tr>               
+          </table>
       </div>
 
       <div class="form-group">

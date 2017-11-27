@@ -19,6 +19,7 @@ export class IkeaInwardComponent implements OnInit {
   commonData: any;
   userData: any;
   logisticTransactionList: Array<LogisticModels.LogisticTransaction> = new Array<LogisticModels.LogisticTransaction>();
+  logisticTransaction: LogisticModels.LogisticTransaction = new LogisticModels.LogisticTransaction();
   ikeaReceived : IkeaModels.IkeaReceived = new IkeaModels.IkeaReceived();
   constructor(private user: UserService,
     private logisticService: LogisticService,
@@ -71,5 +72,16 @@ export class IkeaInwardComponent implements OnInit {
       element.conditionSatisfied = false;      
     });
     this.ikeaReceived = new IkeaModels.IkeaReceived();    
+  }
+
+  checkLogisticConsignment(){
+    var obj= this;
+    this.logisticTransaction = this.logisticTransactionList.filter(function(o){return o.consignmentNumber === obj.ikeaReceived.consignmentNumber})[0];
+    if(this.logisticTransaction.iotTemperatureHistory && this.logisticTransaction.iotTemperatureHistory.length > 0){
+      this.ikeaReceived.transportConsitionSatisfied = "false";
+    }
+    else{
+      this.ikeaReceived.transportConsitionSatisfied = "true";
+    }
   }
 }
