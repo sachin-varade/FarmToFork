@@ -46,7 +46,7 @@
             {
                 "id": 1,
                 "name": "logistic1",
-                "role": "logiscic",
+                "role": "logistic",
                 "password": "123456",
                 "uniqueId": "L001",
                 "GUID-GTIN": "GUID-L001",
@@ -55,7 +55,7 @@
             {
                 "id": 2,
                 "name": "logistic2",
-                "role": "logiscic",
+                "role": "logistic",
                 "password": "123456",
                 "uniqueId": "L002",
                 "GUID-GTIN": "GUID-L002",

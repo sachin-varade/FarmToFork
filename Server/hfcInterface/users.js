@@ -41,7 +41,7 @@ function registerAllUsers(id){
         users[id].affiliation,
         users[id].mspid)
         .then((user) => {
-            if(id<3){
+            if(id<4){
                 registerAllUsers(id+1);
             }
             else{

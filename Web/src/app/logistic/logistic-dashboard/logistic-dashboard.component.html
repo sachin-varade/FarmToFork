@@ -1,40 +1,42 @@
-<div class="container min-height-container">
-  <h1 class="title-main">Logistic Dashboard</h1> 
-  <table class="table table-striped table-bordered">
-  <tr class="form-group">
-    <th>Consignment Number</th>
-    <th>Abattoir Consignment Number</th>
-    <th>PickedUp</th>
-    <th>InTransit</th>
-    <th>Delivered</th>
-  </tr>
-  <tr *ngFor="let consignment of logisticTransactionList">
-    <td>
-        <a [routerLink]="['/logistic/outward', consignment.consignmentNumber]">{{consignment.consignmentNumber}}</a>
-    </td>
-    <td>{{consignment.abattoirConsignmentNumber}}</td>
-    <td>
-      <div *ngIf="consignment.shipmentStatus && consignment.shipmentStatus[0]">
-          <div class="completed"> 
-            {{consignment.shipmentStatus[0].shipmentDate | date : "short"}}
-          </div>
-      </div>    
-    </td>
-    <td>
-      <div *ngIf="consignment.shipmentStatus && consignment.shipmentStatus[1]">
-          <div class="completed"> 
-            {{consignment.shipmentStatus[1].shipmentDate | date : "short"}}
-          </div>
-      </div>    
-    </td>  
-    <td>
-      <div *ngIf="consignment.shipmentStatus && consignment.shipmentStatus[2]">
-          <div class="completed"> 
-            {{consignment.shipmentStatus[2].shipmentDate | date : "short"}}
-          </div>
-      </div>    
-    </td>
-  </tr>
-  </table>
-  
+<div class="page-container">
+  <div class="container">
+    <h1 class="title-main">Logistic Dashboard</h1> 
+    <table class="table table-striped table-bordered">
+    <tr class="form-group">
+      <th>Consignment Number</th>
+      <th>Abattoir Consignment Number</th>
+      <th>PickedUp</th>
+      <th>InTransit</th>
+      <th>Delivered</th>
+    </tr>
+    <tr *ngFor="let consignment of logisticTransactionList">
+      <td>
+          <a [routerLink]="['/logistic/outward', consignment.consignmentNumber]">{{consignment.consignmentNumber}}</a>
+      </td>
+      <td>{{consignment.abattoirConsignmentNumber}}</td>
+      <td>
+        <div *ngIf="consignment.shipmentStatus && consignment.shipmentStatus[0]">
+            <div class="completed"> 
+              {{consignment.shipmentStatus[0].shipmentDate | date : "short"}}
+            </div>
+        </div>    
+      </td>
+      <td>
+        <div *ngIf="consignment.shipmentStatus && consignment.shipmentStatus[1]">
+            <div class="completed"> 
+              {{consignment.shipmentStatus[1].shipmentDate | date : "short"}}
+            </div>
+        </div>    
+      </td>  
+      <td>
+        <div *ngIf="consignment.shipmentStatus && consignment.shipmentStatus[2]">
+            <div class="completed"> 
+              {{consignment.shipmentStatus[2].shipmentDate | date : "short"}}
+            </div>
+        </div>    
+      </td>
+    </tr>
+    </table>
+    
   </div>
+</div>

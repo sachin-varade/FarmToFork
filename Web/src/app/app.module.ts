@@ -34,6 +34,7 @@ import { NotifyService } from './notify.service';
 import { TrackProductComponent } from './product/track-product/track-product.component';
 import { DialogComponent } from './dialog/dialog/dialog.component';
 import { IkeaOutwardComponent } from './ikea/ikea-outward/ikea-outward.component';
+import { MenuComponent } from './menu/menu.component';
 
 const appRoutes:Routes = [
   {
@@ -104,7 +105,7 @@ const appRoutes:Routes = [
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
-    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent],
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   FormsModule,

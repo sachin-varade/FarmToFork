@@ -1,9 +1,9 @@
-<div id="header">
+<div id="header" *ngIf="router.url!='/'">
     <div class="header-inner clearfix">
       <div class="container">
         <img id="companyLogoImg" src="assets/images/ikea-logo.png">
   
-        <div *ngIf="router.url!='/'" class="user-control">
+        <div class="user-control">
           <div class="user-name">
             <img src="assets/images/user.png">
             <span>{{user.loggedInUser.name}}</span>
@@ -14,17 +14,24 @@
         </div>
       </div>
     </div>
-    <nav *ngIf="router.url!='/'" class="navbar navbar-dark bg-inverse menu-nav">
-      <div class="container">        
-          <ul class="nav navbar-nav" routerLinkActive="active">
+    <nav class="navbar navbar-dark bg-inverse menu-nav">
+      
+      <div class="container">  
+          <link id="theme" rel="stylesheet" href=""/> 
+          <ul *ngIf="getUser().role == 'abattoir'" class="nav navbar-nav" routerLinkActive="active">
               <li class="nav-item"><a class="nav-link" routerLink="abattoir/inward">Abattoir Inward</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="abattoir/outward">Abattoir Outward</a></li>            
+          </ul>
+          <ul *ngIf="getUser().role == 'logistic'" class="nav navbar-nav" routerLinkActive="active">
               <li class="nav-item"><a class="nav-link" routerLink="logistic/dashboard">Logistic Dashboard</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="logistic/inward">Logistic Inward</a></li>
-              <!-- <li class="nav-item"><a class="nav-link" routerLink="logistic/outward">Logistic Outward</a></li>             -->
+          </ul>
+          <ul *ngIf="getUser().role == 'processor'" class="nav navbar-nav" routerLinkActive="active">
               <li class="nav-item"><a class="nav-link" routerLink="processor/inward">Processor Inward</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="processor/process">Process Item</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="processor/dispatch">Processor Dispatch</a></li>
+          </ul>
+          <ul *ngIf="getUser().role == 'ikea'" class="nav navbar-nav" routerLinkActive="active">
               <li class="nav-item"><a class="nav-link" routerLink="ikea/inward">Ikea Inward</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="ikea/outward">Ikea Dispatch</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="product/track">Track Product</a></li>

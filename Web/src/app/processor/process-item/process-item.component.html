@@ -1,83 +1,85 @@
-<div class="container">
-  <h1 class="title-main">Process Item</h1>
-  <form #myForm="ngForm">
-    <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
-      <div class="form-group">
-        <label for="processorReceiptNumber">Processor Receipt Number</label>
-        <select class="form-control" [(ngModel)]="processingTransaction.processorReceiptNumber" name="processorReceiptNumber" required>        
-        <option *ngFor="let rec of processorReceivedList" [value]="rec.processorReceiptNumber">{{rec.processorReceiptNumber}}</option>
-        </select>
-      </div>
-        
-      <div class="form-group">
-        <label for="processorBatchCode">Processor Batch Code</label>
-        <input type="text" class="form-control" [(ngModel)]="processingTransaction.processorBatchCode" name="processorBatchCode" required>
-      </div>
-
-      <div class="form-group">
-        <label for="productCode">product Code</label>
-        <input type="text" class="form-control" [(ngModel)]="processingTransaction.productCode" name="productCode" required>
-      </div>
-
-      <div class="form-group">
-        <label for="guidNumber">GUID/GTIN</label>
-        <select class="form-control" [(ngModel)]="processingTransaction.guidNumber" (click)="setGuid();" name="guidNumber" required>
-            <option value="0" selected="selected"></option>
-            <option *ngFor="let guid of commonData.processingTransactionProducts" [value]="guid.code">{{guid.code}}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-          <label for="materialName">Material Name</label>
-          <input type="text" [(ngModel)]="processingTransaction.materialName" class="form-control" name="materialName" required>
-      </div>
-
-      <div class="form-group">
-        <label for="materialGrade">Material Grade</label>
-        <select class="form-control" [(ngModel)]="processingTransaction.materialGrade" name="materialGrade" required>
-            <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
-      <div class="form-group">
-        <label for="usedByDate">Used By Date</label>
-        <input type="text" [(ngModel)]="processingTransaction.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
-      </div>
-
-      <div class="form-group">
-          <label for="quantity" style="display: block;">Quantity</label>
-          <input type="text" class="form-control input-inline-small" [(ngModel)]="processingTransaction.quantity" name="quantity" required>
-          <select class="form-control input-inline-small" [(ngModel)]="processingTransaction.quantityUnit" name="qunatityUnit" required >
-              <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+<div class="page-container">
+  <div class="container">
+    <h1 class="title-main">Process Item</h1>
+    <form #myForm="ngForm">
+      <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
+        <div class="form-group">
+          <label for="processorReceiptNumber">Processor Receipt Number</label>
+          <select class="form-control" [(ngModel)]="processingTransaction.processorReceiptNumber" name="processorReceiptNumber" required>        
+          <option *ngFor="let rec of processorReceivedList" [value]="rec.processorReceiptNumber">{{rec.processorReceiptNumber}}</option>
           </select>
+        </div>
+          
+        <div class="form-group">
+          <label for="processorBatchCode">Processor Batch Code</label>
+          <input type="text" class="form-control" [(ngModel)]="processingTransaction.processorBatchCode" name="processorBatchCode" required>
+        </div>
+
+        <div class="form-group">
+          <label for="productCode">product Code</label>
+          <input type="text" class="form-control" [(ngModel)]="processingTransaction.productCode" name="productCode" required>
+        </div>
+
+        <div class="form-group">
+          <label for="guidNumber">GUID/GTIN</label>
+          <select class="form-control" [(ngModel)]="processingTransaction.guidNumber" (click)="setGuid();" name="guidNumber" required>
+              <option value="0" selected="selected"></option>
+              <option *ngFor="let guid of commonData.processingTransactionProducts" [value]="guid.code">{{guid.code}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+            <label for="materialName">Material Name</label>
+            <input type="text" [(ngModel)]="processingTransaction.materialName" class="form-control" name="materialName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="materialGrade">Material Grade</label>
+          <select class="form-control" [(ngModel)]="processingTransaction.materialGrade" name="materialGrade" required>
+              <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
+          </select>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="qualityControlDocument">Quality Control Document</label>
-        <textarea [(ngModel)]="processingTransaction.qualityControlDocument" class="form-control" name="qualityControlDocument" required></textarea>
+      <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
+        <div class="form-group">
+          <label for="usedByDate">Used By Date</label>
+          <input type="text" [(ngModel)]="processingTransaction.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity" style="display: block;">Quantity</label>
+            <input type="text" class="form-control input-inline-small" [(ngModel)]="processingTransaction.quantity" name="quantity" required>
+            <select class="form-control input-inline-small" [(ngModel)]="processingTransaction.quantityUnit" name="qunatityUnit" required >
+                <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+          <label for="qualityControlDocument">Quality Control Document</label>
+          <textarea [(ngModel)]="processingTransaction.qualityControlDocument" class="form-control" name="qualityControlDocument" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="storage">Storage</label>
+          <input type="text" [(ngModel)]="processingTransaction.storage" class="form-control" name="storage" required>
+        </div>
+
+        <div class="form-group">
+          <label for="processingActions">Processing Actions</label>
+          <br>
+          <label class="checkbox-style" *ngFor="let item of commonData.processingActions">
+            <input disabled [(ngModel)]="item.checked" name="processingAction" [value]="item.id" type="checkbox" /> {{item.action}}
+            <span class="checkmark"></span>
+          </label>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="storage">Storage</label>
-        <input type="text" [(ngModel)]="processingTransaction.storage" class="form-control" name="storage" required>
+      <div class="block-button-area">
+          <button type="submit" (click)="clearForm(myForm)" class="btn btn-border">Clear</button>
+          <button type="submit" [disabled]="!myForm.form.valid" (click)="saveProcessingTransaction(myForm);" class="btn btn-normal">Submit</button>
       </div>
 
-      <div class="form-group">
-        <label for="processingActions">Processing Actions</label>
-        <br>
-        <label class="checkbox-style" *ngFor="let item of commonData.processingActions">
-          <input disabled [(ngModel)]="item.checked" name="processingAction" [value]="item.id" type="checkbox" /> {{item.action}}
-          <span class="checkmark"></span>
-        </label>
-      </div>
-    </div>
-
-    <div class="block-button-area">
-        <button type="submit" (click)="clearForm(myForm)" class="btn btn-border">Clear</button>
-        <button type="submit" [disabled]="!myForm.form.valid" (click)="saveProcessingTransaction(myForm);" class="btn btn-normal">Submit</button>
-    </div>
-
-  </form>
+    </form>
+  </div>
 </div>

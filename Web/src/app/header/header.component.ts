@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import {UserService} from '../user.service';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,9 @@ export class HeaderComponent implements OnInit {
   userLoggedId: boolean = false;
   companyLogoImagePath: string;
   currentUser: any;
-  constructor(private router:Router, private user:UserService) {
+  theme: string = "";
+  constructor(private router:Router, private user:UserService,
+    @Inject(DOCUMENT) private document) {
     this.userLoggedId = this.user.isUserLoggedIn() === "true" ? true : false;
     this.currentUser = this.user.getUserLoggedIn();
   }
@@ -25,4 +28,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  getUser(){
+    this.currentUser = this.user.getUserLoggedIn();
+    this.theme = "../../assets/themes/theme-"+ this.currentUser.role +".css";
+    this.document.getElementById('theme').setAttribute('href', this.theme);
+    return this.currentUser;
+  }
 }

@@ -57,24 +57,21 @@
 }
 
 .menu-nav{
-    background: #232f84;
-    color: #fff;
     border-radius: 0;
     height: 40px;
     min-height: 40px;
     line-height: 40px;
     border:none;
+    margin-bottom: 0;
 }
 
 
 
 .menu-nav ul li a{
-    padding: 0 15px;
+    padding: 0 14px;
+    font-size: 13px;
     line-height: 40px;
-    color: #b7bef4;
 }
 
 .menu-nav ul li a:hover, .menu-nav ul li a:focus{
-    background: #3e4bad;
-    color: #fff;
 }

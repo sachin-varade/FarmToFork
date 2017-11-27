@@ -30,6 +30,7 @@ border-left: 1px solid #ccc; /* red */
 }
 
 /* You can add global styles to this file, and also import other style files */
+
 body{
     background: #f5f5f5;
 }
@@ -40,7 +41,6 @@ body{
     padding-bottom: 7px;
     margin-bottom: 30px;
     border-bottom: solid 1px #ccc;
-    color: #6d7be0;
 }
 
 .form-control{
@@ -152,27 +152,6 @@ option{
     color: #888;
 }
 
-.btn-normal{
-    color:#fff;
-    background-color: #232f84;
-    border-color: #232f84;
-}
-
-.btn-normal:hover{
-    background-color: #3e4bad;
-    color:#fff;
-}
-
-.btn-border{
-    color:#232f84;
-    background-color: #fff;
-    border-color: #232f84;
-}
-.btn-border:hover{
-    color:#fff;
-    background-color: #232f84;
-    border-color: #232f84;
-}
 
 .btn{
     margin: 0 5px;
@@ -366,6 +345,7 @@ ul, li{
     position: relative;
     width: 100%;
     display: table;
+    margin-top: 20px;
 }
 
 .tracker-page-wrapper .bg-wrap{
@@ -497,6 +477,10 @@ ul, li{
     font-size: 11px;
     color: #999;
     padding-left: 1px;
+}
+
+.page-container{
+    padding-bottom: 64px;
 }
 
 
