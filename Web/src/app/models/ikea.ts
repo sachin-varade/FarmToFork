@@ -36,8 +36,18 @@ export class IkeaDispatch{
     dispatchDateTime: Date;
 }
 
+export class IkeaBill{
+    billNumber: string;
+    billDateTime: Date;
+    ikeaFamily: string;
+    guidUniqueNumber: string;
+    materialName: string;
+    quantity: string;
+    ikeaDispatchNumber: string;
+}
+
 export class ProductTracking{
-    
+    BillNumber: string;
     IkeaDispatchNumber: string;
     IkeaReceivedNumber: string;
     IkeaStoreName: string;

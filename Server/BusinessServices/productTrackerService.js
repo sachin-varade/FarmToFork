@@ -16,14 +16,21 @@ module.exports = function (abattoirService, logisticService, processorService, i
 
         //ToDo: Get Ikea Dispatch Number based on Bill Number
 
+        return ikeaService.getIkeaBillDetails(option, value)
+        .then((result) => {
+        
+            return ikeaService.getAllIkeaDispatch("details", value)
+            .then((result) => {
+            var latestIkeaDispatchNumber = result.ikeaDispatch[0].IkeaDispatchNumber;
+
         // Ikea Dispatch
-        return ikeaService.getAllIkeaDispatch(option, value)
+        return ikeaService.getAllIkeaDispatch(option, latestIkeaDispatchNumber)
         .then((result) => {
             if(result.ikeaDispatch != undefined && result.ikeaDispatch.length > 0) {
-                console.log("IkeaDispatchNumber: ", result.ikeaDispatch[0].ikeaDispatchNumber);
+                console.log("IkeaDispatchNumber: ", result.ikeaDispatch[0].IkeaDispatchNumber);
                 
                 productTrackingEntity.IkeaReceivedNumber = result.ikeaDispatch[0].ikeaReceivedNumber;
-                productTrackingEntity.IkeaDispatchNumber = result.ikeaDispatch[0].ikeaDispatchNumber;
+                productTrackingEntity.IkeaDispatchNumber = result.ikeaDispatch[0].IkeaDispatchNumber;
                 productTrackingEntity.MeatBallPreparedDate = result.ikeaDispatch[0].dispatchDateTime;                
             }
 
@@ -89,7 +96,6 @@ module.exports = function (abattoirService, logisticService, processorService, i
                                             productTrackingEntity.AbattoirConsignmentNumber = result.logisticTransactions[0].abattoirConsignmentNumber;
                                         }
 
-                                        productTrackingEntity.AbattoirConsignmentNumber="ACN001";
                                         // Abattoir Dispatch
                                         return abattoirService.getAllAbattoirDispatch(option, productTrackingEntity.AbattoirConsignmentNumber)
                                         .then((result) => {
@@ -122,6 +128,8 @@ module.exports = function (abattoirService, logisticService, processorService, i
                         })
                     });
                 });
+            });
+        });
             return productTrackingEntity;
         }).catch((err) => {
             console.error("Error while getting P2I logistics details")

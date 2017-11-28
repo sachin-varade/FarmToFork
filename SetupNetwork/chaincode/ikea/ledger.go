@@ -108,6 +108,9 @@ type AllIkeaBillNumbers struct{
 	IkeaBillNumbers []string	`json:"ikeaBillNumbers"`
 }
 
+type AllIkeaBillNumberDetails struct{
+	IkeaBillNumbers []IkeaBill	`json:"ikeaBillNumbers"`
+}
 
 
 // ============================================================================================================================
@@ -186,7 +189,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	} else if function == "saveIkeaBill" {
 		return saveIkeaBill(stub, args)
 	} else if function == "getIkeaBillDetails" {
-		return getIkeaBillDetails(stub, args[0])
+		return getIkeaBillDetails(stub, args[0], args[1])
 	}
 	
 	// error out

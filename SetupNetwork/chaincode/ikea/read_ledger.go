@@ -156,7 +156,7 @@ func getAllIkeaDispatch(stub  shim.ChaincodeStubInterface, option string, value 
 // ============================================================================================================================
 // Get Ikea Bill Details
 // ============================================================================================================================
-func getIkeaBillDetails(stub  shim.ChaincodeStubInterface, billNumber string) pb.Response {
+func getIkeaBillDetails(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
 	fmt.Println("getIkeaBillDetails: Looking for Ikea Bill Details");
 
 	//get the All Ikea Received index
@@ -174,21 +174,63 @@ func getIkeaBillDetails(stub  shim.ChaincodeStubInterface, billNumber string) pb
 		return shim.Error("Failed to Unmarshal all Ikea Bill Numbers")
 	}
 
+	var allIds AllIkeaBillNumbers
+	var allDetails AllIkeaBillNumberDetails
 	var sb IkeaBill
-	var output IkeaBill
-
-	//if strings.ToLower(option) == "id" && value != "" {
-		sbAsBytes, err := stub.GetState(billNumber)
+	if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(value)
 		if err != nil {
-			return shim.Error("Failed to get Ikea Bill Number ")
+			return shim.Error("Failed to get Ikea bill Number ")
 		}
 		json.Unmarshal(sbAsBytes, &sb)
 		if sb.BillNumber != "" {
-			output = sb;	
+			allDetails.IkeaBillNumbers = append(allDetails.IkeaBillNumbers,sb);	
 		}
-		rabAsBytes, _ := json.Marshal(output)
+		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
-	//}
+	}
+
+	for i := range res.IkeaBillNumbers{
+		sbAsBytes, err := stub.GetState(res.IkeaBillNumbers[i])
+		if err != nil {
+			return shim.Error("Failed to get Ikea bill Number ")
+		}		
+		json.Unmarshal(sbAsBytes, &sb)
+
+		if strings.ToLower(option) == "ids" {
+			allIds.IkeaBillNumbers = append(allIds.IkeaBillNumbers,sb.BillNumber);	
+		} else if strings.ToLower(option) == "details" {
+			allDetails.IkeaBillNumbers = append(allDetails.IkeaBillNumbers,sb);	
+		}
+	}
+	
+	if strings.ToLower(option) == "ids" {
+		rabAsBytes, _ := json.Marshal(allIds)		
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "details" {
+		rabAsBytes, _ := json.Marshal(allDetails)
+		return shim.Success(rabAsBytes)	
+	}
 	
 	return shim.Success(nil)
+
+
+
+	// var sb IkeaBill
+	// var output IkeaBill
+
+	// //if strings.ToLower(option) == "id" && value != "" {
+	// 	sbAsBytes, err := stub.GetState(billNumber)
+	// 	if err != nil {
+	// 		return shim.Error("Failed to get Ikea Bill Number ")
+	// 	}
+	// 	json.Unmarshal(sbAsBytes, &sb)
+	// 	if sb.BillNumber != "" {
+	// 		output = sb;	
+	// 	}
+	// 	rabAsBytes, _ := json.Marshal(output)
+	// 	return shim.Success(rabAsBytes)	
+	// //}
+	
+	// return shim.Success(nil)
 }

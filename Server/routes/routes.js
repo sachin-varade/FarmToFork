@@ -241,15 +241,15 @@ router.get("/getProductTrackingDetails/:option/:value?", function(req, res) {
 });
 
 // IKEA Bill
-router.get("/getProductTrackingDetails/:billNumber?", function(req, res) {    
-    var promise = ikeaService.getIkeaBillDetails(req.params.billNumber)
+router.get("/getIkeaBillDetails/:option/:value?", function(req, res) {    
+    var promise = ikeaService.getIkeaBillDetails(req.params.option, req.params.value?req.params.value: "")
 	promise.then(function(resp,err){
 		res.send(resp);
 	});	
 });
 
 router.post("/saveIkeaBill", function(req, res) {    
-	var promise = ikeaService.saveIkeaBill(req.body);
+	var promise = ikeaService.saveIkeaBill(req.body)
 	promise.then(function(resp,err){
 		res.send(resp);
 	});			

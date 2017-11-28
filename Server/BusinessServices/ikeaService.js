@@ -128,7 +128,6 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
     // ------------------ IKEA Bill -----------
     ikeaService.saveIkeaBill = function(ikeaBill){
         console.log("saveIkeaBill");
-        
         return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
@@ -140,12 +139,12 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                 "saveIkeaBill",  
                 [
                     ikeaBill.billNumber,
-                    ikeaReceived.billDateTime,
-                    ikeaReceived.ikeaFamily,
-                    ikeaReceived.guidUniqueNumber,
-                    ikeaReceived.materialName,
-                    ikeaReceived.quantity,
-                    ikeaReceived.ikeaDispatchNumber,
+                    ikeaBill.billDateTime,
+                    ikeaBill.ikeaFamily.toString(),
+                    ikeaBill.guidUniqueNumber,
+                    ikeaBill.materialName,
+                    ikeaBill.quantity,
+                    ikeaBill.ikeaDispatchNumber ? ikeaBill.ikeaDispatchNumber : "",
                 ]);
         }).then((results) => {
             return results;
@@ -154,7 +153,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
-    ikeaService.getIkeaBillDetails = function(billNumber){
+    ikeaService.getIkeaBillDetails = function(option, value){
         console.log("getIkeaBillDetails");
         return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
         .then((user_from_store) => {
@@ -162,7 +161,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             return queryChainCode.queryChainCode(channels.ikeachannel, 
                 ikeaConfig.channels.ikeachannel.chaincodeId, 
                 "getIkeaBillDetails", 
-                [billNumber]);
+                [option, value]);
         }).then((results) => {
             return results;
         }).catch((err) => {

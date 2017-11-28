@@ -31,6 +31,16 @@ export class IkeaService {
     });
   }
 
+  saveIkeaBill(ikeaBill: IkeaModels.IkeaBill): Promise<any> {
+    this.url = `${this.BASE_URL}/saveIkeaBill`;
+    return this.http.post(this.url, ikeaBill).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      alert("Error Occured.....");
+    });
+  }
+  
   getAllIkeaReceived(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllIkeaReceived`;
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
@@ -61,6 +71,15 @@ export class IkeaService {
     });
   } 
   
+  getIkeaBill(billNumber: string): Promise<any> {
+    this.url = `${this.BASE_URL}/getIkeaBill`;
+    return this.http.get(this.url+"/"+ billNumber).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      alert("Error Occured.....");
+    });
+  } 
 }
 
 

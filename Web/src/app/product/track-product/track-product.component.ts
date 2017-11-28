@@ -28,10 +28,12 @@ export class TrackProductComponent implements OnInit {
   }
 
   getProductTrackingDetails(){
-    this.ikeaService.getProductTrackingDetails('id', 'IDN001')
-    .then((results: any) => {
-      this.productTracking = results;
-    });
+    if(this.productTracking.BillNumber !== ''){
+      this.ikeaService.getProductTrackingDetails('id', this.productTracking.BillNumber)
+      .then((results: any) => {
+        this.productTracking = results;
+      });
+    }
   }
 
 }
