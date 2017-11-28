@@ -78,6 +78,15 @@ type IkeaDispatch struct {
 	DispatchDateTime					string	`json:"dispatchDateTime"`
 }
 
+type IkeaBill struct {
+	BillNumber							string	`json:"billNumber"`	
+	BillDateTime						string	`json:"billDateTime"`		
+	IkeaFamily							string	`json:"ikeaFamily"`
+	GUIDUniqueNumber					string	`json:"guidUniqueNumber"`
+	MaterialName						string	`json:"materialName"`
+	Quantity							string	`json:"quantity"`
+	IkeaDispatchNumber					string	`json:"ikeaDispatchNumber"`
+}
 
 type AllIkeaReceivedIds struct{
 	IkeaReceivedNumbers []string	`json:"ikeaReceivedNumbers"`
@@ -93,6 +102,10 @@ type AllIkeaDispatchIds struct{
 
 type AllIkeaDispatchDetails struct{
 	IkeaDispatch []IkeaDispatch	`json:"ikeaDispatch"`
+}
+
+type AllIkeaBillNumbers struct{
+	IkeaBillNumbers []string	`json:"ikeaBillNumbers"`
 }
 
 
@@ -140,6 +153,13 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
+	var allIkeaBillNumbers AllIkeaBillNumbers
+	jsonAsBytesAllIkeaBillNumbers, _ := json.Marshal(allIkeaBillNumbers)
+	err = stub.PutState("allIkeaBillNumbers", jsonAsBytesAllIkeaBillNumbers)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+
 	fmt.Println(" - ready for action")                        
 	return shim.Success(nil)
 }
@@ -163,7 +183,11 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return getAllIkeaDispatch(stub, args[0], args[1])
 	} else if function == "saveIkeaDispatch" {
 		return saveIkeaDispatch(stub, args)
-	}	
+	} else if function == "saveIkeaBill" {
+		return saveIkeaBill(stub, args)
+	} else if function == "getIkeaBillDetails" {
+		return getIkeaBillDetails(stub, args[0])
+	}
 	
 	// error out
 	fmt.Println("Received unknown invoke function name - " + function)
