@@ -31,10 +31,12 @@ import { AbattoirService } from './abattoir.service';
 import { ProcessorService } from './processor.service';
 import { IkeaService } from './ikea.service';
 import { NotifyService } from './notify.service';
+import { BlockService } from './block.service';
 import { TrackProductComponent } from './product/track-product/track-product.component';
 import { DialogComponent } from './dialog/dialog/dialog.component';
 import { IkeaOutwardComponent } from './ikea/ikea-outward/ikea-outward.component';
 import { MenuComponent } from './menu/menu.component';
+import { BlockComponent } from './block/block.component';
 
 const appRoutes:Routes = [
   {
@@ -100,12 +102,17 @@ const appRoutes:Routes = [
     path: 'product/track',
     canActivate: [AuthguardGuard],
     component: TrackProductComponent
+  },
+  {
+    path: 'block/recent',
+    canActivate: [AuthguardGuard],
+    component: BlockComponent
   }
 ]
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
-    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent],
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent, BlockComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   FormsModule,
@@ -116,7 +123,7 @@ const appRoutes:Routes = [
   HttpModule,
   BrowserAnimationsModule  
   ],
-  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, LogisticService, IkeaService, NotifyService],
+  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, LogisticService, IkeaService, BlockService, NotifyService],
   bootstrap: [AppComponent]
 })
 

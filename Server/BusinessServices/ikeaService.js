@@ -125,6 +125,47 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
+    ikeaService.queryInfo = function(){
+        console.log("queryInfo");
+        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryInfo(channels.ikeachannel, 
+                peers.ikeaPeer);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    ikeaService.queryBlock = function(blockNumber){
+        console.log("queryInfo");
+        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryBlock(channels.ikeachannel, 
+                peers.ikeaPeer, blockNumber);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    ikeaService.queryBlockByHash = function(blockHash){
+        console.log("queryInfo");
+        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryBlockByHash(channels.ikeachannel, 
+                peers.ikeaPeer, blockHash);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
 	return ikeaService;
 };
 

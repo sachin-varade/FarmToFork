@@ -12,7 +12,7 @@ module.exports = function (abattoirService, logisticService, processorService, i
                 throw err;
             });
         }
-        else if(role.toUpperCase() === 'PROSESSOR'){
+        else if(role.toUpperCase() === 'PROCESSOR'){
             return processorService.queryInfo()
             .then((results) => {
                 return results;
@@ -40,7 +40,7 @@ module.exports = function (abattoirService, logisticService, processorService, i
                 throw err;
             });
         }
-        else if(role.toUpperCase() === 'PROSESSOR'){
+        else if(role.toUpperCase() === 'PROCESSOR'){
             return processorService.queryBlock(blockNumber)
             .then((results) => {
                 return results;
@@ -86,6 +86,7 @@ module.exports = function (abattoirService, logisticService, processorService, i
             else{
                 response.channelHeader = query_responses.data.data[0].payload.data.last_update.payload.header.channel_header;
             }
+            response.channelHeader.extension = response.channelHeader.extension.toString();
             response.header = query_responses.header;
             blockList.push(response);
             if(blockNumber > 0 && count > 0){

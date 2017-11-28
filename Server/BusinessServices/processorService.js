@@ -190,6 +190,47 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
+    processorService.queryInfo = function(){
+        console.log("queryInfo");
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryInfo(channels.processorchannel, 
+                peers.processorPeer);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    processorService.queryBlock = function(blockNumber){
+        console.log("queryInfo");
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryBlock(channels.processorchannel, 
+                peers.processorPeer, blockNumber);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    processorService.queryBlockByHash = function(blockHash){
+        console.log("queryInfo");
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryBlockByHash(channels.processorchannel, 
+                peers.processorPeer, blockHash);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
 	return processorService;
 };
 
