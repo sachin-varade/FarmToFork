@@ -125,6 +125,51 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
+    // ------------------ IKEA Bill -----------
+    ikeaService.saveIkeaBill = function(ikeaBill){
+        console.log("saveIkeaBill");
+        
+        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);            
+            return invokeChainCode.invokeChainCode(fabric_client, 
+                channels.ikeachannel, 
+                eventHubPeers.ikeaEventHubPeer._url, 
+                //"grpc://localhost:7053",
+                ikeaConfig.channels.ikeachannel.chaincodeId, 
+                "saveIkeaBill",  
+                [
+                    ikeaBill.billNumber,
+                    ikeaReceived.billDateTime,
+                    ikeaReceived.ikeaFamily,
+                    ikeaReceived.guidUniqueNumber,
+                    ikeaReceived.materialName,
+                    ikeaReceived.quantity,
+                    ikeaReceived.ikeaDispatchNumber,
+                ]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    ikeaService.getIkeaBillDetails = function(billNumber){
+        console.log("getIkeaBillDetails");
+        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.ikeachannel, 
+                ikeaConfig.channels.ikeachannel.chaincodeId, 
+                "getIkeaBillDetails", 
+                [billNumber]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
     ikeaService.queryInfo = function(){
         console.log("queryInfo");
         return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)

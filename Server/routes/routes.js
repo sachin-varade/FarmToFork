@@ -240,5 +240,19 @@ router.get("/getProductTrackingDetails/:option/:value?", function(req, res) {
 	});	
 });
 
+// IKEA Bill
+router.get("/getProductTrackingDetails/:billNumber?", function(req, res) {    
+    var promise = ikeaService.getIkeaBillDetails(req.params.billNumber)
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
+router.post("/saveIkeaBill", function(req, res) {    
+	var promise = ikeaService.saveIkeaBill(req.body);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});			
+});
 
 module.exports = router;

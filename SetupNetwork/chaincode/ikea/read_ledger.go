@@ -151,3 +151,44 @@ func getAllIkeaDispatch(stub  shim.ChaincodeStubInterface, option string, value 
 	
 	return shim.Success(nil)
 }
+
+
+// ============================================================================================================================
+// Get Ikea Bill Details
+// ============================================================================================================================
+func getIkeaBillDetails(stub  shim.ChaincodeStubInterface, billNumber string) pb.Response {
+	fmt.Println("getIkeaBillDetails: Looking for Ikea Bill Details");
+
+	//get the All Ikea Received index
+	allBAsBytes, err := stub.GetState("allIkeaBillNumbers")
+	if err != nil {
+		return shim.Error("Failed to get all Ikea Bill Numbers")
+	}
+
+	var res AllIkeaBillNumbers
+	err = json.Unmarshal(allBAsBytes, &res)
+	//fmt.Println(allBAsBytes);
+	if err != nil {
+		fmt.Println("Printing Unmarshal error:-");
+		fmt.Println(err);
+		return shim.Error("Failed to Unmarshal all Ikea Bill Numbers")
+	}
+
+	var sb IkeaBill
+	var output IkeaBill
+
+	//if strings.ToLower(option) == "id" && value != "" {
+		sbAsBytes, err := stub.GetState(billNumber)
+		if err != nil {
+			return shim.Error("Failed to get Ikea Bill Number ")
+		}
+		json.Unmarshal(sbAsBytes, &sb)
+		if sb.BillNumber != "" {
+			output = sb;	
+		}
+		rabAsBytes, _ := json.Marshal(output)
+		return shim.Success(rabAsBytes)	
+	//}
+	
+	return shim.Success(nil)
+}
