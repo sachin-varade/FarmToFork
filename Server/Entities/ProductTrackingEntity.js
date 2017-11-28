@@ -17,7 +17,8 @@ var ProductTrackingEntity={
     ProcessorToIkeaPickUpDate: "",
     ProcessorToIkeaDeliveryDate: "",
     ProcessorToIkeaTempDuringTransit: "",
-    
+    ProcessorConsignmentNumber: "",
+
     ProcessorCompanyName: "",
     ProcessingDate: "",
     ProcessorBatchCode: "",
@@ -35,6 +36,7 @@ var ProductTrackingEntity={
     
     AbattoirName: "",
     AbattoirRawMaterialBatchNumber: "",
+    AbbattoirPurchaseOrderReferenceNumber: "",
     AbattoirProcessDate: "",
     AbattoirUseByDate: "",
     AbattoirBatchCode: "",
@@ -42,7 +44,8 @@ var ProductTrackingEntity={
     AbattoirDispatchMaterialClass: "",
 
     FarmerName: "",
-    FarmerMaterialClass: ""
+    FarmerMaterialClass: "",
+    ReceiptBatchId: ""
 };
 
 

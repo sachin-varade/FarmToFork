@@ -1,222 +1,230 @@
 <div class="page-container">
-<div class="container">
-    <h1 class="title-main">Logistic Inward</h1>
-    <form #myForm="ngForm">
-        <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
-          
-        <div class="form-group">
-            <label for="consignmentNumber">Consignment Number</label>
-            <input type="text" [(ngModel)]="logisticTransaction.consignmentNumber" (blur)="fetchConsignment(myForm);" class="form-control" name="consignmentNumber" required>
-        </div>
-
-         <div class="form-group">
-          <label for="selectRoute">Route</label>
-          <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.routeId" name="selectRoute" required>  
-              <option *ngFor="let route of commonData.routes" [value]="route.id">{{route.name}}</option>      
-          </select>
-          </div>      
-          
-  
-          <div class="form-group" *ngIf="user.getUserLoggedIn().type == 'A2P'">
-              <label for="abattoirConsignmentNumber">Abattoir Consignment Number</label>      
-              <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.abattoirConsignmentNumber" name="abattoirConsignmentNumber" required>        
-              <option *ngFor="let rec of abattoirDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
-              </select>
-          </div> 
-          <div class="form-group" *ngIf="user.getUserLoggedIn().type == 'P2I'">
-                <label for="processorConsignmentNumber">Processor Consignment Number</label>      
-                <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.processorConsignmentNumber" name="processorConsignmentNumber" required>        
-                <option *ngFor="let rec of processorDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
-                </select>
-            </div>    
-  
-          <div class="form-group">
-              <label for="vehicleId">Vehicle Id</label>        
-              <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.vehicleId" name="vehicleId" required>        
-                  <option *ngFor="let rec of commonData.vehicles" [value]="rec.id">{{rec.lpn}}</option>
-              </select>
-          </div>
-          
-          <div class="form-group">
-              <label for="vehicleType">Vehicle Type</label>
-              <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.vehicleTypeId" name="vehicleType" required>
-                  <option *ngFor="let type of commonData.vehicleTypes" [value]="type.id">{{type.type}}</option>
-              </select>
-          </div>
-
-          <div class="form-group temp-min-max"> 
-            <label for="minTemp">Temp storage instruction (Min-Max)</label>     
-            <div class="min-max-temp-field">
-                <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Min" class="form-control input-inline-small" [(ngModel)]="logisticTransaction.temperatureStorageMin" name="temperatureStorageMin" required>     
-                <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Max" class="form-control input-inline-small" [(ngModel)]="logisticTransaction.temperatureStorageMax" name="temperatureStorageMax" required>
-            </div>
-            
-        </div>
-
-        <div class="form-group">
-            <label for="quantity" style="display: block;">Quantity</label>
-            <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" class="form-control input-inline-small" [(ngModel)]="logisticTransaction.quantity" name="quantity" required>
-            <select [disabled]="(logisticTransaction.currentStatus != '')" class="form-control input-inline-small" [(ngModel)]="logisticTransaction.quantityUnit" name="quantityUnit" required >
-                <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="handlingInstruction">Handling Instructions</label>
-            <textarea [disabled]="(logisticTransaction.currentStatus != '')" class="form-control" [(ngModel)]="logisticTransaction.handlingInstruction" name="handlingInstruction" required></textarea>        
-        </div>         
-
-      </div>
-  
-      <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
-        
-        
-        <fieldset class="delivery-fieldset">
-                  <legend class="delivery-legend">Pickup:</legend>
-        <div class="form-group date-picker-div">
-            <label for="dispatchDate">Pickup Date/Time</label>
-            <div class="clearfix">
-                <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.dispatchDateTime" name="dispatchDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
-                <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="dispatchDateTime" name="dispatchDateTime" class="date-picker-time float-left" required></ngb-timepicker>
-            </div>
-        </div>
-        </fieldset>
-
-        
-            <fieldset class="delivery-fieldset">
-                  <legend class="delivery-legend">In Transit:</legend>                  
-            <div class="form-group date-picker-div">
-                <label for="inTransitDateTime">In Transit Date/Time</label>
-                <div class="clearfix">
-                    <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.inTransitDateTime" name="inTransitDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
-                    <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="inTransitDateTime" name="inTransitDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+        <div class="container">
+            <h1 class="title-main">Logistic Inward</h1>
+            <form #myForm="ngForm">
+                <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
+                  
+                <div class="form-group">
+                    <label for="consignmentNumber">Consignment Number</label>
+                    <input type="text" [(ngModel)]="logisticTransaction.consignmentNumber" (blur)="fetchConsignment(myForm);" class="form-control" name="consignmentNumber" required>
                 </div>
-            </div>
-
-            <button type="submit" [disabled]="" (click)="showDialog = !showDialog" class="btn btn-normal"> IOT Data </button>
-            
-            <table *ngIf="logisticTransaction.iotTemperatureHistory && logisticTransaction.iotTemperatureHistory.length > 0" class="table table-striped">
-                <tr>
-                    <th colspan="10">Discrepancies in Temperature</th>
-                </tr>
-                <tr>
-                    <th>Temp</th>
-                    <th>Location</th>
-                    <th>Date/Time</th>
-                </tr>
-                <tr *ngFor="let item of logisticTransaction.iotTemperatureHistory; let i = index" [attr.data-index]="i">
-                    <td>{{item.temperature}}</td>
-                    <td>{{item.location}}</td>
-                    <td>{{item.updatedOn | date : "short"}}</td>
-                </tr>               
-            </table>
-            <app-dialog [(visible)]="showDialog">
-            <div class="form-group">
-              <label for="">Consignment Number: </label> {{logisticTransaction.consignmentNumber}}              
-            </div>
-            <div class="form-group">
-                <label for="">Storage Temperature: </label> 
-                <input type="text" placeholder="Min" class="form-control input-inline-small" [(ngModel)]="iotMinTemp" name="iotMinTemp" required>     
-                <input type="text" placeholder="Max" class="form-control input-inline-small" [(ngModel)]="iotMaxTemp" name="iotMaxTemp" required>                      
-                <button type="submit" (click)="populateIOTData();" class="btn btn-normal"> Generate Data </button>
-            </div>
-              <table *ngIf="iotData.length > 0" class="table table-striped">
-                  <tr>
-                      <th>Temp</th>
-                      <th>Location</th>
-                      <th>Date/Time</th>
-                  </tr>
-                  <tr *ngFor="let item of iotData; let i = index" [attr.data-index]="i">
-                      <td>{{item.temp}}</td>
-                      <td>{{commonData.logisticsLocations[i].name}}</td>
-                      <td>{{item.date | date : "short"}}</td>
-                  </tr>
-                  <tr colspan="3">
-                        <button type="submit" (click)="pushIOTData(myForm)" class="btn btn-normal"> Push </button>
-                  </tr>
-              </table>
-
-              
-            </app-dialog>
-
-
-            </fieldset>
-            
-
+        
+                 <div class="form-group">
+                  <label for="selectRoute">Route</label>
+                  <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.routeId" name="selectRoute" required>  
+                      <option *ngFor="let route of commonData.routes" [value]="route.id">{{route.name}}</option>      
+                  </select>
+                  </div>      
+                  
           
-          <fieldset class="delivery-fieldset">
-                <legend class="delivery-legend">Delivery:</legend>
-
+                  <div class="form-group" *ngIf="user.getUserLoggedIn().type == 'A2P'">
+                        <label for="abattoirConsignmentNumber">Abattoir Consignment Number</label>      
+                        <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.abattoirConsignmentNumber" name="abattoirConsignmentNumber" required>        
+                        <option *ngFor="let rec of abattoirDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
+                        </select>
+                </div> 
+                <div class="form-group" *ngIf="user.getUserLoggedIn().type == 'P2I'">
+                        <label for="processorConsignmentNumber">Processor Consignment Number</label>      
+                        <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.processorConsignmentNumber" name="processorConsignmentNumber" required>        
+                        <option *ngFor="let rec of processorDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
+                        </select>
+                </div>     
+          
+                  <div class="form-group">
+                      <label for="vehicleId">Vehicle Id</label>        
+                      <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.vehicleId" name="vehicleId" required>        
+                          <option *ngFor="let rec of commonData.vehicles" [value]="rec.id">{{rec.lpn}}</option>
+                      </select>
+                  </div>
+                  
+                  <div class="form-group">
+                      <label for="vehicleType">Vehicle Type</label>
+                      <select class="form-control" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.vehicleTypeId" name="vehicleType" required>
+                          <option *ngFor="let type of commonData.vehicleTypes" [value]="type.id">{{type.type}}</option>
+                      </select>
+                  </div>
+        
+                  <div class="form-group temp-min-max"> 
+                    <label for="minTemp">Temp storage instruction (Min-Max)</label>     
+                    <div class="min-max-temp-field">
+                        <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Min" class="form-control input-inline-small" [(ngModel)]="logisticTransaction.temperatureStorageMin" name="temperatureStorageMin" required>     
+                        <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Max" class="form-control input-inline-small" [(ngModel)]="logisticTransaction.temperatureStorageMax" name="temperatureStorageMax" required>
+                    </div>
+                    
+                </div>
+        
+                <div class="form-group">
+                    <label for="quantity" style="display: block;">Quantity</label>
+                    <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" class="form-control input-inline-small" [(ngModel)]="logisticTransaction.quantity" name="quantity" required>
+                    <select [disabled]="(logisticTransaction.currentStatus != '')" class="form-control input-inline-small" [(ngModel)]="logisticTransaction.quantityUnit" name="quantityUnit" required >
+                        <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+                    </select>
+                </div>
+        
+                <div class="form-group">
+                    <label for="handlingInstruction">Handling Instructions</label>
+                    <textarea [disabled]="(logisticTransaction.currentStatus != '')" class="form-control" [(ngModel)]="logisticTransaction.handlingInstruction" name="handlingInstruction" required></textarea>        
+                </div>         
+        
+              </div>
+          
+              <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
+                
+                
+                <fieldset class="delivery-fieldset">
+                          <legend class="delivery-legend">Pickup:</legend>
                 <div class="form-group date-picker-div">
-                    <label for="expectedDate">Expected Delivery Date/Time</label>
+                    <label for="dispatchDate">Pickup Date/Time</label>
                     <div class="clearfix">
-                        <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.expectedDeliveryDateTime" name="expectedDeliveryDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
-                        <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="expectedDeliveryDateTime" name="expectedDeliveryDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+                        <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.dispatchDateTime" name="dispatchDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                        <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="dispatchDateTime" name="dispatchDateTime" class="date-picker-time float-left" required></ngb-timepicker>
                     </div>
                 </div>
-
+                </fieldset>
+        
                 
-                <div class="form-group date-picker-div">                    
-                        <label for="actualDate">Actual Delivery Date/Time</label>
+                    <fieldset class="delivery-fieldset">
+                          <legend class="delivery-legend">In Transit:</legend>                  
+                    <div class="form-group date-picker-div">
+                        <label for="inTransitDateTime">In Transit Date/Time</label>
                         <div class="clearfix">
-                            <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.actualDeliveryDateTime" name="actualDeliveryDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
-                            <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="actualDeliveryDateTime" name="actualDeliveryDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+                            <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.inTransitDateTime" name="inTransitDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                            <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="inTransitDateTime" name="inTransitDateTime" class="date-picker-time float-left" required></ngb-timepicker>
                         </div>
-                </div>
-
-
-                <!-- <form #frmDelivery="ngForm">
-                <div class="form-group date-picker-div">
-                        <label for="actualDate">Actual Delivery Date/Time</label>
-                        <div class="clearfix">
-                            <input type="text" [disabled]="(logisticTransaction.currentStatus.toUpperCase() != 'INTRANSIT')" [(ngModel)]="logisticTransaction.actualDeliveryDateTime" name="actualDeliveryDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
-                            <ngb-timepicker [disabled]="(logisticTransaction.currentStatus.toUpperCase() != 'INTRANSIT')" [(ngModel)]="actualDeliveryDateTime" name="actualDeliveryDateTime" class="date-picker-time float-left" required></ngb-timepicker>
-                        </div>
-                  </div>
-
-                  <button type="submit" [disabled]="(!frmDelivery.form.valid) || (logisticTransaction.currentStatus.toUpperCase() != 'INTRANSIT')" (click)="makeDelivered(myForm)" class="btn btn-normal"> Move to Delivered </button>
-                </form> -->
-          </fieldset>
-          
-            
-            <!-- <div class="form-group date-picker-div">
-                    <table class="table-striped logistic-status">
-                    <tr>
-                        <td>
-                            <div *ngIf="logisticTransaction.shipmentStatus && logisticTransaction.shipmentStatus[0]">
-                                <div class="completed"> 
-                                    <div>Pickedup at</div>    
-                                    <div>{{logisticTransaction.shipmentStatus[0].shipmentDate | date : "short"}}</div>
-                                </div>
-                            </div>  
-                        </td>
-                        <td>
-                            <div *ngIf="logisticTransaction.shipmentStatus && logisticTransaction.shipmentStatus[1]">
-                                <div class="completed"> 
-                                    <div>In Transit at</div>    
-                                    <div>{{logisticTransaction.shipmentStatus[1].shipmentDate | date : "short"}}</div>
-                                </div>
-                            </div>  
-                        </td>
-                        <td>
-                            <div *ngIf="logisticTransaction.shipmentStatus && logisticTransaction.shipmentStatus[2]">
-                                <div class="completed"> 
-                                    <div>Delivered at</div>    
-                                    <div>{{logisticTransaction.shipmentStatus[2].shipmentDate | date : "short"}}</div>
-                                </div>
-                            </div>  
-                        </td>
-                    </tr>
+                    </div>
+        
+                    <button type="submit" [disabled]="(logisticTransaction.currentStatus == '')" (click)="showDialog = !showDialog" class="btn btn-normal"> IOT Data </button>
+                    
+                    <table *ngIf="logisticTransaction.iotTemperatureHistory && logisticTransaction.iotTemperatureHistory.length > 0" class="table table-striped table-bordered mrg-top-10">
+                        <tr>
+                            <th colspan="10">Discrepancies in Temperature</th>
+                        </tr>
+                        <tr>
+                            <th>Temp</th>
+                            <th>Location</th>
+                            <th>Date/Time</th>
+                        </tr>
+                        <tr *ngFor="let item of logisticTransaction.iotTemperatureHistory; let i = index" [attr.data-index]="i">
+                            <td>{{item.temperature}}</td>
+                            <td>{{item.location}}</td>
+                            <td>{{item.updatedOn | date : "short"}}</td>
+                        </tr>               
                     </table>
-            </div> -->
-
-      </div>
-      <div class="block-button-area">
-          <button type="submit" (click)="clearForm(myForm)" class="btn btn-border">Clear</button>
-          <button type="submit" [disabled]="!myForm.form.valid || (logisticTransaction.currentStatus != '')" (click)="saveLogisticTransaction(myForm)" class="btn btn-normal"> Save </button>
-          <!-- <button type="submit" [disabled]="(logisticTransaction.currentStatus == '' || logisticTransaction.currentStatus.toUpperCase() != 'PICKEDUP')" (click)="makeIntransit(myForm)" class="btn btn-normal"> Move to In Transit </button> -->
-      </div>
-      
-    </form>
-  </div>
-</div>
+                    <app-dialog [(visible)]="showDialog">
+                    <h3 class="popup-title">IOT Data</h3>
+                    <div class="form-group">
+                      <label for="">Consignment Number: </label> 
+                      <span class="value-text">{{logisticTransaction.consignmentNumber}}</span>            
+                    </div>
+                    <div class="form-group">
+                        <label for="">Storage Temperature: </label>
+                        <div class="clearfix">
+                            <input type="text" placeholder="Min" class="form-control input-inline-small float-left" [(ngModel)]="iotMinTemp" name="iotMinTemp" required>     
+                            <input type="text" placeholder="Max" class="form-control input-inline-small float-left" [(ngModel)]="iotMaxTemp" name="iotMaxTemp" required>
+                        </div>                   
+                    </div>
+        
+                    <button type="submit" (click)="populateIOTData();" class="btn btn-normal"> Generate Data </button>
+        
+                      <table *ngIf="iotData.length > 0" class="table table-striped table-bordered mrg-top-10">
+                          <tr>
+                              <th>Temp</th>
+                              <th>Location</th>
+                              <th>Date/Time</th>
+                          </tr>
+                          <tr *ngFor="let item of iotData; let i = index" [attr.data-index]="i">
+                              <td>{{item.temp}}</td>
+                              <td>{{commonData.logisticsLocations[i].name}}</td>
+                              <td>{{item.date | date : "short"}}</td>
+                          </tr>
+                          <tr>
+                              <td colspan="3">
+                                <button type="submit" (click)="pushIOTData(myForm)" class="btn btn-normal float-right"> Push </button>
+                              </td>
+                            </tr>
+                      </table>
+        
+                      
+                    </app-dialog>
+        
+        
+                    </fieldset>
+                    
+        
+                  
+                  <fieldset class="delivery-fieldset">
+                        <legend class="delivery-legend">Delivery:</legend>
+        
+                        <div class="form-group date-picker-div">
+                            <label for="expectedDate">Expected Delivery Date/Time</label>
+                            <div class="clearfix">
+                                <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.expectedDeliveryDateTime" name="expectedDeliveryDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                                <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="expectedDeliveryDateTime" name="expectedDeliveryDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+                            </div>
+                        </div>
+        
+                        
+                        <div class="form-group date-picker-div">                    
+                                <label for="actualDate">Actual Delivery Date/Time</label>
+                                <div class="clearfix">
+                                    <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.actualDeliveryDateTime" name="actualDeliveryDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                                    <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="actualDeliveryDateTime" name="actualDeliveryDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+                                </div>
+                        </div>
+        
+        
+                        <!-- <form #frmDelivery="ngForm">
+                        <div class="form-group date-picker-div">
+                                <label for="actualDate">Actual Delivery Date/Time</label>
+                                <div class="clearfix">
+                                    <input type="text" [disabled]="(logisticTransaction.currentStatus.toUpperCase() != 'INTRANSIT')" [(ngModel)]="logisticTransaction.actualDeliveryDateTime" name="actualDeliveryDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                                    <ngb-timepicker [disabled]="(logisticTransaction.currentStatus.toUpperCase() != 'INTRANSIT')" [(ngModel)]="actualDeliveryDateTime" name="actualDeliveryDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+                                </div>
+                          </div>
+        
+                          <button type="submit" [disabled]="(!frmDelivery.form.valid) || (logisticTransaction.currentStatus.toUpperCase() != 'INTRANSIT')" (click)="makeDelivered(myForm)" class="btn btn-normal"> Move to Delivered </button>
+                        </form> -->
+                  </fieldset>
+                  
+                    
+                    <!-- <div class="form-group date-picker-div">
+                            <table class="table-striped logistic-status">
+                            <tr>
+                                <td>
+                                    <div *ngIf="logisticTransaction.shipmentStatus && logisticTransaction.shipmentStatus[0]">
+                                        <div class="completed"> 
+                                            <div>Pickedup at</div>    
+                                            <div>{{logisticTransaction.shipmentStatus[0].shipmentDate | date : "short"}}</div>
+                                        </div>
+                                    </div>  
+                                </td>
+                                <td>
+                                    <div *ngIf="logisticTransaction.shipmentStatus && logisticTransaction.shipmentStatus[1]">
+                                        <div class="completed"> 
+                                            <div>In Transit at</div>    
+                                            <div>{{logisticTransaction.shipmentStatus[1].shipmentDate | date : "short"}}</div>
+                                        </div>
+                                    </div>  
+                                </td>
+                                <td>
+                                    <div *ngIf="logisticTransaction.shipmentStatus && logisticTransaction.shipmentStatus[2]">
+                                        <div class="completed"> 
+                                            <div>Delivered at</div>    
+                                            <div>{{logisticTransaction.shipmentStatus[2].shipmentDate | date : "short"}}</div>
+                                        </div>
+                                    </div>  
+                                </td>
+                            </tr>
+                            </table>
+                    </div> -->
+        
+              </div>
+              <div class="block-button-area">
+                  <button type="submit" (click)="clearForm(myForm)" class="btn btn-border">Clear</button>
+                  <button type="submit" [disabled]="!myForm.form.valid || (logisticTransaction.currentStatus != '')" (click)="saveLogisticTransaction(myForm)" class="btn btn-normal"> Save </button>
+                  <!-- <button type="submit" [disabled]="(logisticTransaction.currentStatus == '' || logisticTransaction.currentStatus.toUpperCase() != 'PICKEDUP')" (click)="makeIntransit(myForm)" class="btn btn-normal"> Move to In Transit </button> -->
+              </div>
+              
+            </form>
+          </div>
+        </div>

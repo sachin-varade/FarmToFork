@@ -49,8 +49,18 @@ export class IkeaService {
     }).catch((err) => {
       alert("Error Occured.....");
     });
-  }  
-
+  } 
+  
+  getProductTrackingDetails(option: string, value: string = ""): Promise<any> {
+    this.url = `${this.BASE_URL}/getProductTrackingDetails`;
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      alert("Error Occured.....");
+    });
+  } 
+  
 }
 
 

@@ -35,3 +35,50 @@ export class IkeaDispatch{
     quantityUnit: string;
     dispatchDateTime: Date;
 }
+
+export class ProductTracking{
+    
+    IkeaDispatchNumber: string;
+    IkeaReceivedNumber: string;
+    IkeaStoreName: string;
+    MeatBallPreparedDate: Date;
+    MeatBallReceivedDate: Date;
+    BatchCode: string;
+
+    IkeaPurchaseOrderNumber: string;
+    IkeaReceivedDate: Date;
+    IkeaReceivedConsignmentNumber: string;
+    
+    ProcessorToIkeaTransportConsitionSatisfied: string;
+    ProcessorToIkeaTransporterName: string;
+    ProcessorToIkeaPickUpDate: Date;
+    ProcessorToIkeaDeliveryDate: Date;
+    ProcessorToIkeaTempDuringTransit: string;
+    ProcessorConsignmentNumber: string;
+
+    ProcessorCompanyName: string;
+    ProcessingDate: Date;
+    ProcessorBatchCode: string;
+    ProcessorUseByDate: Date;
+    ProcessorReceiptNumber: string;
+    ProcessorPurchaseOrderNumber: string;
+    AbattoirConsignmentNumber: string;
+    
+    AbattoirToProcessorTransportConsitionSatisfied: string;
+    AbattoirToProcessorTransportConsignemntNumber: string;
+    AbattoirToProcessorTransporterName: string;
+    AbattoirToProcessorPickUpDate: Date;
+    AbattoirToProcessorDeliveryDate: Date;
+    AbattoirToProcessorTempDuringTransit: string;
+    
+    AbattoirName: string;
+    AbattoirRawMaterialBatchNumber: string;
+    AbattoirProcessDate: Date;
+    AbattoirUseByDate: Date;
+    AbattoirBatchCode: string;
+    AbattoirDispatchMaterialClass: string;
+
+    FarmerName: string;
+    FarmerMaterialClass:string;
+    ReceiptBatchId: string;
+}

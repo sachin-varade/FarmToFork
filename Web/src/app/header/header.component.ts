@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
     this.currentUser = this.user.getUserLoggedIn();
     this.theme = "../../assets/themes/theme-"+ this.currentUser.role +".css";
     this.document.getElementById('theme').setAttribute('href', this.theme);
+    this.document.getElementById('companyLogoImg').setAttribute('src', "../../assets/images/"+ this.currentUser.role +"-logo.png");
     return this.currentUser;
   }
 }

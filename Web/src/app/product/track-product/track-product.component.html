@@ -7,8 +7,17 @@
         <h1>Meatball<span>Journey Tracker</span></h1>
       </div>
       <div class="tracker-wrap">
-        <div class="timeline-wrapper">
+          <div class="">
+              <div class="">
+                <h5>Bill Number</h5>
+              </div>
+             
+              <div class="">
+                  <input type="text" style="width:100px;" [(ngModel)]="productTracking.billNumber" (change)="getProductTrackingDetails();" class="form-control" name="billNumber" required>
+              </div>
+            </div>
 
+        <div class="timeline-wrapper">
           <div class="timeline-block">
             <div class="title-pane">
               <h5>IKEA Restaurant</h5>
@@ -17,22 +26,22 @@
               <img src="assets/images/tracker-ikea-icon.png">
             </div>
             <div class="info-pane">
-              <ul>
-                <li>
-                  <span class="label-text">Name:</span>
-                  <span class="value">IKEA Goteberg</span>
-                </li>
+              <ul>                
                 <li>
                   <span class="label-text">Item Prepared:</span>
-                  <span class="value">21-Nov-2017</span>
+                  <span class="value">{{productTracking.MeatBallPreparedDate | date : "short"}}</span>
                 </li>
                 <li>
-                  <span class="label-text">Meat Ball Received:</span>
-                  <span class="value">20-Nov-2017</span>
+                    <span class="label-text">Sold At:</span>
+                    <span class="value">{{productTracking.IkeaStoreName}}</span>
+                  </li>
+                <li>
+                  <span class="label-text">Bill Number:</span>
+                  <span class="value">{{productTracking.BillNumber}}</span>
                 </li>
                 <li>
                   <span class="label-text">Batch Code:</span>
-                  <span class="value">777888980</span>
+                  <span class="value">{{productTracking.BillDate | date : "short"}}</span>
                 </li>
               </ul>
             </div>
@@ -48,20 +57,20 @@
             <div class="info-pane">
               <ul>
                 <li>
-                  <span class="label-text">Transporter:</span>
-                  <span class="value">Bing Transport</span>
+                    <span class="label-text">Handling Violations:</span>
+                    <span class="value">{{productTracking.ProcessorToIkeaTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span>
                 </li>
                 <li>
                   <span class="label-text">Pick-up:</span>
-                  <span class="value">19-Nov-2017</span>
+                  <span class="value">{{productTracking.ProcessorToIkeaPickUpDate | date : "short"}}</span>
                 </li>
                 <li>
                   <span class="label-text">Delivery:</span>
-                  <span class="value">20-Nov-2017</span>
+                  <span class="value">{{productTracking.ProcessorToIkeaDeliveryDate | date : "short"}}</span>
                 </li>
                 <li>
-                  <span class="label-text">Temp During Transit:</span>
-                  <span class="value">2-4 C</span>
+                    <span class="label-text">Transporter:</span>
+                    <span class="value">{{productTracking.ProcessorToIkeaTransporterName}}</span>
                 </li>
               </ul>
             </div>
@@ -77,20 +86,16 @@
             <div class="info-pane">
               <ul>
                 <li>
-                  <span class="label-text">Processor:</span>
-                  <span class="value">Processing Company Name</span>
-                </li>
-                <li>
-                  <span class="label-text">Processed:</span>
-                  <span class="value">17-Nov-2017</span>
+                  <span class="label-text">Manufactured:</span>
+                  <span class="value">{{productTracking.ProcessingDate | date : "short"}}</span>
                 </li>
                 <li>
                   <span class="label-text">Use by:</span>
-                  <span class="value">31-Dec-2017</span>
+                  <span class="value">{{productTracking.ProcessorUseByDate | date : "short"}}</span>
                 </li>
                 <li>
-                  <span class="label-text">Batch Code:</span>
-                  <span class="value">1214545745</span>
+                    <span class="label-text">Processor:</span>
+                    <span class="value">{{productTracking.ProcessorCompanyName}}</span>
                 </li>
               </ul>
             </div>
@@ -106,20 +111,20 @@
             <div class="info-pane">
               <ul>
                 <li>
-                  <span class="label-text">Transporter:</span>
-                  <span class="value">Bing Transport</span>
+                    <span class="label-text">Handling Violations:</span>
+                    <span class="value">{{productTracking.AbattoirToProcessorTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span>
                 </li>
                 <li>
                   <span class="label-text">Pick-up:</span>
-                  <span class="value">16-Nov-2017</span>
+                  <span class="value">{{productTracking.AbattoirToProcessorPickUpDate | date : "short"}}</span>
                 </li>
                 <li>
                   <span class="label-text">Delivery:</span>
-                  <span class="value">17-Nov-2017</span>
+                  <span class="value">{{productTracking.AbattoirToProcessorDeliveryDate | date : "short"}}</span>
                 </li>
                 <li>
-                  <span class="label-text">Temp During Transit:</span>
-                  <span class="value">2-4 C</span>
+                    <span class="label-text">Transporter:</span>
+                    <span class="value">{{productTracking.AbattoirToProcessorTransporterName}}</span>
                 </li>
               </ul>
             </div>
@@ -135,24 +140,49 @@
             <div class="info-pane">
               <ul>
                 <li>
+                    <span class="label-text">Class:</span>
+                    <span class="value">{{productTracking.AbattoirDispatchMaterialClass}}</span>
+                </li>
+                <li>
+                    <span class="label-text">Fat Cover Class:</span>
+                    <span class="value">{{productTracking.AbattoirDispatchMaterialClass}}</span>
+                </li>
+                <li>
                   <span class="label-text">Abattoir:</span>
-                  <span class="value">Abattoir Name</span>
+                  <span class="value">{{productTracking.AbattoirName}}</span>
                 </li>
                 <li>
-                  <span class="label-text">Processed:</span>
-                  <span class="value">14-Nov-2017</span>
-                </li>
-                <li>
-                  <span class="label-text">Use by:</span>
-                  <span class="value">25-Nov-2017</span>
-                </li>
-                <li>
-                  <span class="label-text">Batch Code:</span>
-                  <span class="value">777888765</span>
+                  <span class="label-text">Processed On:</span>
+                  <span class="value">{{productTracking.AbattoirProcessDate | date : "short"}}</span>
                 </li>
               </ul>
             </div>
           </div>
+
+          <div class="timeline-block">
+              <div class="title-pane">
+                <h5>Angus</h5>
+              </div>
+              <div class="icon">
+                <img src="assets/images/tracker-abattoir-icon.png">
+              </div>
+              <div class="info-pane">
+                <ul>
+                  <li>
+                      <span class="label-text">Class:</span>
+                      <span class="value">{{productTracking.FarmerMaterialClass}}</span>
+                  </li>
+                  <li>
+                    <span class="label-text">From:</span>
+                    <span class="value">{{productTracking.FarmerName}}</span>
+                  </li>
+                  <li>
+                    <span class="label-text">Traceability Batch Id:</span>
+                    <span class="value">{{productTracking.ReceiptBatchId}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
 
         </div>
       </div>

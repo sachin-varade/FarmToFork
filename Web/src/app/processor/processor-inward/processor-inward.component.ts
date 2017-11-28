@@ -72,6 +72,7 @@ export class ProcessorInwardComponent implements OnInit {
       element.conditionSatisfied = false;      
     });
     this.processorReceived = new ProcessorModels.ProcessorReceived();    
+    this.logisticTransaction = new LogisticModels.LogisticTransaction();
   }
 
   checkLogisticConsignment(){

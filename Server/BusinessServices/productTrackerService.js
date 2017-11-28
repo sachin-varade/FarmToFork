@@ -1,18 +1,6 @@
 'use strict';
-
-var channelObjects = require("../BusinessServices/channelObjects.js");
 var entity = require('../Entities/ProductTrackingEntity.js');
 var userData;
-
-//var abattoirService, logisticService, processorService, ikeaService, userService;
-setTimeout(function() {    
-    // abattoirService = require("../BusinessServices/abattoirService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
-    // logisticService = require("../BusinessServices/logisticService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
-    // processorService = require("../BusinessServices/processorService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
-	// ikeaService = require("../BusinessServices/ikeaService.js")(channelObjects.fabric_client, channelObjects.channels, channelObjects.peers, channelObjects.eventHubPeers, channelObjects.orderer, channelObjects.usersForTransaction);
-	// userService = require("../BusinessServices/userService.js")();
-}, 2000);
-
 
 module.exports = function (abattoirService, logisticService, processorService, ikeaService, userService) {
     var productTrackerService = {};
@@ -56,17 +44,18 @@ module.exports = function (abattoirService, logisticService, processorService, i
                     // Logistics - Processor to Ikea
                     return logisticService.getAllLogisticP2ITransactions(option, productTrackingEntity.IkeaReceivedConsignmentNumber)
                     .then((result) => {
-                        if (result && result.processorDispatch &&  result.logisticTransactions.length >0){
+                        if (result && result.logisticTransactions &&  result.logisticTransactions.length >0){
                             productTrackingEntity.ProcessorToIkeaTransporterName = userService.getUserNameById("logistics", result.logisticTransactions[0].logisticId);
                             productTrackingEntity.ProcessorToIkeaPickUpDate = result.logisticTransactions[0].dispatchDateTime;
                             productTrackingEntity.ProcessorToIkeaDeliveryDate = result.logisticTransactions[0].actualDeliveryDateTime;
+                            productTrackingEntity.ProcessorConsignmentNumber = result.logisticTransactions[0].processorConsignmentNumber;                            
                         }
 
                         // Processor Dispatch
-                        return processorService.getAllProcessorDispatch(option, productTrackingEntity.IkeaPurchaseOrderNumber)
+                        return processorService.getAllProcessorDispatch(option, productTrackingEntity.ProcessorConsignmentNumber)
                         .then((result) => {
                             if (result && result.processorDispatch &&  result.processorDispatch.length >0){
-                                productTrackingEntity.ProcessorUseByDate = result.processorDispatch[0].UsedByDate;
+                                productTrackingEntity.ProcessorUseByDate = result.processorDispatch[0].usedByDate;
                                 productTrackingEntity.ProcessorBatchCode = result.processorDispatch[0].processorBatchCode;
                             }
 
@@ -85,7 +74,7 @@ module.exports = function (abattoirService, logisticService, processorService, i
                                         productTrackingEntity.ProcessorCompanyName = userService.getUserNameById("processors", result.processorReceived[0].processorId);
                                         productTrackingEntity.AbattoirToProcessorTransportConsignemntNumber = result.processorReceived[0].consignmentNumber;
                                         productTrackingEntity.ProcessorPurchaseOrderNumber = result.processorReceived[0].purchaseOrderNumber;
-                                        productTrackingEntity.AbattoirToProcessorTransportConsitionSatisfied =  result.processorReceived[0].TransportConsitionSatisfied;
+                                        productTrackingEntity.AbattoirToProcessorTransportConsitionSatisfied =  result.processorReceived[0].transportConsitionSatisfied;
                                     }
 
                                     // Logistics Abattoir to Processor
@@ -100,26 +89,29 @@ module.exports = function (abattoirService, logisticService, processorService, i
                                             productTrackingEntity.AbattoirConsignmentNumber = result.logisticTransactions[0].abattoirConsignmentNumber;
                                         }
 
+                                        productTrackingEntity.AbattoirConsignmentNumber="ACN001";
                                         // Abattoir Dispatch
                                         return abattoirService.getAllAbattoirDispatch(option, productTrackingEntity.AbattoirConsignmentNumber)
                                         .then((result) => {
-                                            if (result && result.AbattoirMaterialDispatch &&  result.AbattoirMaterialDispatch.length >0){
-                                                productTrackingEntity.AbattoirBatchCode = result.AbattoirMaterialDispatch[0].consignmentNumber;
-                                                productTrackingEntity.AbattoirUseByDate = result.AbattoirMaterialDispatch[0].usedByDate;
-                                                productTrackingEntity.AbattoirProcessDate = result.AbattoirMaterialDispatch[0].updatedOn;
-                                                productTrackingEntity.AbattoirRawMaterialBatchNumber = result.AbattoirMaterialDispatch[0].rawMaterialBatchNumber;
-                                                productTrackingEntity.AbattoirDispatchMaterialClass = result.AbattoirMaterialDispatch[0].materialGrade;
+                                            if (result && result.abattoirMaterialDispatch &&  result.abattoirMaterialDispatch.length >0){
+                                                productTrackingEntity.AbattoirBatchCode = result.abattoirMaterialDispatch[0].consignmentNumber;
+                                                productTrackingEntity.AbattoirUseByDate = result.abattoirMaterialDispatch[0].usedByDate;
+                                                productTrackingEntity.AbattoirProcessDate = result.abattoirMaterialDispatch[0].updatedOn;
+                                                productTrackingEntity.AbattoirRawMaterialBatchNumber = result.abattoirMaterialDispatch[0].rawMaterialBatchNumber;
+                                                productTrackingEntity.AbattoirDispatchMaterialClass = result.abattoirMaterialDispatch[0].materialGrade;
+                                                productTrackingEntity.AbbattoirPurchaseOrderReferenceNumber = result.abattoirMaterialDispatch[0].purchaseOrderReferenceNumber;
                                             }
 
                                             // Abattoir Received
-                                            return abattoirService.getAllAbattoirReceived(option, productTrackingEntity.AbattoirRawMaterialBatchNumber)
+                                            return abattoirService.getAllAbattoirReceived(option, productTrackingEntity.AbbattoirPurchaseOrderReferenceNumber)
                                             .then((result) => {
-                                                if (result && result.AbattoirMaterialReceived &&  result.AbattoirMaterialReceived.length >0){
-                                                    productTrackingEntity.AbattoirName = userService.getUserNameById("abattoirs", result.AbattoirMaterialReceived[0].abattoirId);
+                                                if (result && result.abattoirMaterialReceived &&  result.abattoirMaterialReceived.length >0){
+                                                    productTrackingEntity.AbattoirName = userService.getUserNameById("abattoirs", result.abattoirMaterialReceived[0].abattoirId);
                                                     
-                                                    productTrackingEntity.FarmerName = userService.getUserNameById("farmers", result.AbattoirMaterialReceived[0].farmerId);
-                                                    productTrackingEntity.AbattoirRawMaterialBatchNumber = result.AbattoirMaterialReceived[0].rawMaterialBatchNumber;
-                                                    productTrackingEntity.FarmerMaterialClass = result.AbattoirMaterialReceived[0].materialGrade;
+                                                    productTrackingEntity.FarmerName = userService.getUserNameById("farmers", result.abattoirMaterialReceived[0].farmerId);
+                                                    productTrackingEntity.AbattoirRawMaterialBatchNumber = result.abattoirMaterialReceived[0].rawMaterialBatchNumber;
+                                                    productTrackingEntity.FarmerMaterialClass = result.abattoirMaterialReceived[0].materialGrade;
+                                                    productTrackingEntity.ReceiptBatchId = result.abattoirMaterialReceived[0].receiptBatchId;
                                                 }
                                                 return productTrackingEntity;
                                             });                                            

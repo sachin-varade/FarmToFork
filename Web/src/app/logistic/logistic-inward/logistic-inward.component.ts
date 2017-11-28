@@ -194,7 +194,7 @@ export class LogisticInwardComponent implements OnInit {
     this.pushIOT(0);    
   }
   pushIOT(ind){
-    if(this.iotData[ind].temp < this.iotMinTemp || this.iotData[ind].temp > this.iotMaxTemp){
+    if(this.iotData[ind].temp < this.logisticTransaction.temperatureStorageMin || this.iotData[ind].temp > this.logisticTransaction.temperatureStorageMax){
       this.iotData[ind].logisticId = this.currentUser.id;
       this.iotData[ind].consignmentNumber = this.logisticTransaction.consignmentNumber;
       this.iotData[ind].location = this.commonData.logisticsLocations[ind].name;

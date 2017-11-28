@@ -37,6 +37,7 @@ import { DialogComponent } from './dialog/dialog/dialog.component';
 import { IkeaOutwardComponent } from './ikea/ikea-outward/ikea-outward.component';
 import { MenuComponent } from './menu/menu.component';
 import { BlockComponent } from './block/block.component';
+import { PosComponent } from './ikea/pos/pos.component';
 
 const appRoutes:Routes = [
   {
@@ -107,12 +108,17 @@ const appRoutes:Routes = [
     path: 'block/recent',
     canActivate: [AuthguardGuard],
     component: BlockComponent
+  },
+  {
+    path: 'ikea/pos',
+    canActivate: [AuthguardGuard],
+    component: PosComponent
   }
 ]
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
-    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent, BlockComponent],
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent, BlockComponent, PosComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   FormsModule,

@@ -1,490 +1,512 @@
-.ng-valid[required], .ng-valid.required  {
-border-left: 5px solid #42A948; /* green */
-}
-
-.ng-invalid:not(form)  {
-border-left: 5px solid #a94442; /* red */
-}
-
-.ng-untouched:not(form)  {
-border-left: 1px solid #ccc; /* red */
-}
-.delivery-fieldset {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 15px;
-}
- 
-.delivery-legend {
-    display: block;
-    padding-left: 2px;
-    padding-right: 2px;
-    border: 1px solid #ccc;
-    width: 115px;
-    color:#888;
-}
-.logistic-status{
-    margin-top: 20px;
-    width: 100%;
-    max-width: 100%;
-}
-
 /* You can add global styles to this file, and also import other style files */
-
-body{
-    background: #f5f5f5;
-}
-.title-main{
-    font-family: 'sans-serif', 'roboto','helvetica';
-    font-weight: 100;
-    font-size: 28px;
-    padding-bottom: 7px;
-    margin-bottom: 30px;
-    border-bottom: solid 1px #ccc;
-}
-
-.form-control{
-    background: #fff;
-    border-radius: 0;
-    box-shadow: none;
-}
-
-.form-control:focus{
-    box-shadow: none;
-}
-
-.form-control optgroup{
-    border: none !important;
-    outline: none !important;
-}
-
-option{
-    border: none;
-    outline: none;
-    padding: 10px !important;
-    line-height: 19px !important;
-}
-.align-center{
-    text-align: center;
-}
-
-.checkbox-style{
-    display: inline-block;
-    padding: 9px 12px;
-    border-radius: 4px;
-    border: solid 1px #ccc;
-    background: #fff;
-    line-height: 16px;
-    font-size: 14px;
-    font-weight: normal;
-    margin-right: 5px;
-    position: relative;
-    min-width: 70px;
-    text-align: center;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.checkbox-style.selected{
-    border-color: #6d7be0;
-}
-
-.checkbox-style input[type=checkbox]{
-    width: 16px;
-    height: 16px;
-    margin-top: -3px;
-    opacity: 0;
-}
-
-.checkmark {
-    position: absolute;
-    top: 8px;
-    left: 7px;
-    height: 18px;
-    width: 18px;
-    background-color: #eee;
-    border: solid 1px #ccc;
-}
-
-.checkbox-style:hover input ~ .checkmark {
-    background-color: #ccc;
-}
-
-.checkbox-style input:checked ~ .checkmark {
-    background-color: #2196F3;
-    border-color: #2196F3;
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+    }
     
-}
-
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-
-.checkbox-style input:checked ~ .checkmark:after {
-    display: block;
-}
-
-.checkbox-style .checkmark:after {
-    left: 6px;
-    top: 3px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-.block-button-area{
-    text-align: center;
-    float: left;
-    width: 100%;
-    margin-top: 15px;
-}
-
-.form-group label{
-    color: #888;
-}
-
-
-.btn{
-    margin: 0 5px;
-    padding: 7px 16px;
-}
-
-.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
-    background-color: #dedede;
-}
-
-.min-height-container{
-    min-height: 437px;
-}
-
-.completed{
-    padding-left: 23px;
-    background: url('assets/images/success.png') left no-repeat;
-}
-
-.btn-link[_ngcontent-c4]{
-    position: absolute;
-}
-
-.chevron[_ngcontent-c4]::before{
-    border-width: 0.1em 0.1em 0 0 !important;
-    height: 9px !important;
-    left: 23px !important;
-    top: -3px !important;
-    width: 9px !important;
-    color: #aaa;
-}
-
-.chevron.bottom[_ngcontent-c4]:before{
-    top: 2px !important;
-}
-
-input[_ngcontent-c4]{
-    text-align: left !important;
-}
-
-.date-input-small{
-    width: 180px;
-    margin-right: 10px;
-}
-
-.min-max-temp-field input{
-    width: 100px;
-    display: inline;
-}
-
-.float-left{
-    float: left;
-}
-
-.float-right{
-    float: right;
-}
-
-.value-text{
-    font-size: 21px;
-    font-weight: 100;
-    display: block;
-    color: #000;
-    line-height: 27px;
-}
-
-.value-text span{
-    font-size: 14px;
-    padding-right: 7px;
-}
-
-.min-max-temp-label{
-    margin-right: 30px;
-}
-
-.input-inline-small{
-    display: inline-block;
-    width: 100px;
-    margin-right: 10px;
-}
-
-.left-pane{
-    padding: 0;
-    padding-right: 37px;
-}
-
-.right-pane{
-    padding: 0;
-    padding-left: 37px;
-}
-
-.login-wrapper{
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    background: #000;
-}
-
-.login-wrapper .bg-wrap{
-    width: 100%;
-    height: 100%;
-    background: url('assets/images/ikea-login-bg.jpg') no-repeat center;
-    -webkit-background-size:cover;
-    -moz-background-size:cover;
-    background-size:cover;
-    opacity: .25;
-    position: relative;
-}
-
-.login-wrapper .form-wrap{
-    position: absolute;
-    padding: 18px 30px;
-    box-sizing: content-box;
-    left: 50%;
-    top: 50%;
-    width: 400px;
-    height: 250px;
-    background: rgba(0, 0, 0, .25);
-    margin-left: -230px;
-    margin-top: -143px;
-    border-radius:14px;
-    color: #fff;
-}
-
-.login-wrapper .form-wrap input{
-    display: block;
-    padding: 5px;
-    border: none;
-    border-bottom: solid 1px #3a3a3a;
-    width: 100%;
-    background: transparent !important;
-    outline: none;
-    color: #777;
-    font-size: 18px;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
-    -webkit-text-fill-color: #777 !important;
-}
-
-#loginMainTable, #logintable{
-    width: 100% !important;
-}
-
-#logintable label{
-    color: #aaa;
-    margin-bottom: 0 !important;
-}
-
-#logintable tr td{
-    padding-bottom: 14px !important;
-}
-
-#logintable h4{
-    text-align: center;
-    margin: 0;
-    margin-bottom: 7px;
-    font-size: 23px;
-}
-
-.login-wrapper .logo{
-    position: absolute;
-    left: 30px;
-    top: 30px;
-}
-
-.login-wrapper .form-wrap input.circle-btn{
-    width: 40px;
-    height: 40px !important;
-    border-radius: 50%;
-    border: none;
-    outline: none;
-    margin: 0 auto;
-    padding: 0;
-    line-height: 40px;
-    position: relative;
-    background: url('assets/images/arrow.png') no-repeat center #232f84 !important;
-}
-
-ul, li{
-    margin: 0;
-    padding: 0;
-}
-
-.tracker-page-wrapper{
-    background: #000;
-    position: relative;
-    width: 100%;
-    display: table;
-    margin-top: 20px;
-}
-
-.tracker-page-wrapper .bg-wrap{
-    height: 100%;
-    width: 50%;
-    display: table-cell;
-    background: url('assets/images/ikea-tracker-bg.jpg') no-repeat center;
-    -webkit-background-size:cover;
-    -moz-background-size:cover;
-    background-size:cover;
-    opacity: .5;
-}
-
-.tracker-page-wrapper .tracker-wrap{
-    height: 100%;
-    width: 50%;
-    display: table-cell;
-    background: #fff;
-    padding: 50px 20px 0 20px;
-    box-sizing: border-box;
-}
-
-.tracker-page-wrapper .title-wrap{
-    height: 100%;
-    width: 50%;
-    position: relative;
-    position: absolute;
-    left: 0;
-    top: 0;
-    text-align: center;
-}
-
-.tracker-page-wrapper .title-wrap h1{
-    position: absolute;
-    top: 50%;
-    margin: 0;
-    margin-top: -36px;
-    text-align: center;
-    color: #fff;
-    font-weight: bolder;
-    font-size: 39px;
-    line-height: 36px;
-    width: 100%;
-}
-
-.tracker-page-wrapper .title-wrap h1 span{
-    font-weight: 100;
-    display: block;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper{
-    position: relative;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper::after{
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 50%;
-    width: 2px;
-    height: 100%;
-    background: #ffcd08;
-    z-index: 1;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block{
-    margin-bottom: 30px;
-    display: table;
-    position: relative;
-    width: 100%;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .icon{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 60px;
-    height: 60px;
-    margin-left: -30px;
-    margin-top: -30px;
-    line-height: 60px;
-    border: solid 2px #ffcd08;
-    border-radius: 50%;
-    text-align: center;
-    background: #fff;
-    z-index: 2;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .icon img{
-    width: 100%;
-    height: 100%;
-    vertical-align: inherit;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .title-pane{
-    display: table-cell;
-    vertical-align: middle;
-    padding-right: 41px;
-    text-align: right;
-    width: 50%;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .title-pane h5{
-    font-size: 15px;
-    font-weight: bold;
-    color: #000;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane{
-    display: table-cell;
-    vertical-align: middle;
-    padding-left: 41px;
-    text-align: left;
-    width: 50%;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li{
-    padding: 0;
-    list-style: none;
-    margin: 0;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li .label-text{
-    font-size: 11px;
-    color: #000;
-}
-
-.tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li .value{
-    font-size: 11px;
-    color: #999;
-    padding-left: 1px;
-}
-
-.page-container{
-    padding-bottom: 64px;
-}
-
-
-
-
-
-
+    .ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+    }
+    
+    .ng-untouched:not(form)  {
+    border-left: 1px solid #ccc; /* red */
+    }
+    .delivery-fieldset {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+     
+    .delivery-legend {
+        display: block;
+        padding-left: 2px;
+        padding-right: 2px;
+        border: 1px solid #ccc;
+        width: 115px;
+        color:#888;
+    }
+    .logistic-status{
+        margin-top: 20px;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    /* You can add global styles to this file, and also import other style files */
+    
+    body{
+        background: #f5f5f5;
+    }
+    .title-main{
+        font-family: 'sans-serif', 'roboto','helvetica';
+        font-weight: 100;
+        font-size: 28px;
+        padding-bottom: 7px;
+        margin-bottom: 30px;
+        border-bottom: solid 1px #ccc;
+    }
+    
+    .form-control{
+        background: #fff;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    
+    .form-control:focus{
+        box-shadow: none;
+    }
+    
+    .form-control optgroup{
+        border: none !important;
+        outline: none !important;
+    }
+    
+    option{
+        border: none;
+        outline: none;
+        padding: 10px !important;
+        line-height: 19px !important;
+    }
+    .align-center{
+        text-align: center;
+    }
+    
+    .checkbox-style{
+        display: inline-block;
+        padding: 9px 12px;
+        border-radius: 4px;
+        border: solid 1px #ccc;
+        background: #fff;
+        line-height: 16px;
+        font-size: 14px;
+        font-weight: normal;
+        margin-right: 5px;
+        position: relative;
+        min-width: 70px;
+        text-align: center;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    .checkbox-style.selected{
+        border-color: #6d7be0;
+    }
+    
+    .checkbox-style input[type=checkbox]{
+        width: 16px;
+        height: 16px;
+        margin-top: -3px;
+        opacity: 0;
+    }
+    
+    .checkmark {
+        position: absolute;
+        top: 8px;
+        left: 7px;
+        height: 18px;
+        width: 18px;
+        background-color: #eee;
+        border: solid 1px #ccc;
+    }
+    
+    .checkbox-style:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+    
+    .checkbox-style input:checked ~ .checkmark {
+        background-color: #2196F3;
+        border-color: #2196F3;
+        
+    }
+    
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+    
+    .checkbox-style input:checked ~ .checkmark:after {
+        display: block;
+    }
+    
+    .checkbox-style .checkmark:after {
+        left: 6px;
+        top: 3px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    
+    .block-button-area{
+        text-align: center;
+        float: left;
+        width: 100%;
+        margin-top: 15px;
+    }
+    
+    .form-group label{
+        color: #888;
+    }
+    
+    
+    .btn{
+        margin: 0 5px;
+        padding: 7px 16px;
+    }
+    
+    .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
+        background-color: #dedede;
+    }
+    
+    .min-height-container{
+        min-height: 437px;
+    }
+    
+    .completed{
+        padding-left: 23px;
+        background: url('assets/images/success.png') left no-repeat;
+    }
+    
+    .btn-link{
+        position: absolute;
+    }
+    
+    .chevron::before{
+        border-width: 0.1em 0.1em 0 0 !important;
+        height: 9px !important;
+        left: 23px !important;
+        top: -3px !important;
+        width: 9px !important;
+        color: #aaa;
+    }
+    
+    .chevron.bottom:before{
+        top: 2px !important;
+    }
+    
+    input{
+        text-align: left !important;
+    }
+    
+    .date-input-small{
+        width: 180px;
+        margin-right: 10px;
+    }
+    
+    .min-max-temp-field input{
+        width: 100px;
+        display: inline;
+    }
+    
+    .float-left{
+        float: left;
+    }
+    
+    .float-right{
+        float: right;
+    }
+    
+    .value-text{
+        font-size: 21px;
+        font-weight: 100;
+        display: block;
+        color: #000;
+        line-height: 27px;
+    }
+    
+    .value-text span{
+        font-size: 14px;
+        padding-right: 7px;
+    }
+    
+    .min-max-temp-label{
+        margin-right: 30px;
+    }
+    
+    .input-inline-small{
+        display: inline-block;
+        width: 100px;
+        margin-right: 10px;
+    }
+    
+    .left-pane{
+        padding: 0;
+        padding-right: 37px;
+    }
+    
+    .right-pane{
+        padding: 0;
+        padding-left: 37px;
+    }
+    
+    .login-wrapper{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: #000;
+    }
+    
+    .login-wrapper .bg-wrap{
+        width: 100%;
+        height: 100%;
+        background: url('assets/images/ikea-login-bg.jpg') no-repeat center;
+        -webkit-background-size:cover;
+        -moz-background-size:cover;
+        background-size:cover;
+        opacity: .25;
+        position: relative;
+    }
+    
+    .login-wrapper .form-wrap{
+        position: absolute;
+        padding: 18px 30px;
+        box-sizing: content-box;
+        left: 50%;
+        top: 50%;
+        width: 400px;
+        height: 250px;
+        background: rgba(0, 0, 0, .25);
+        margin-left: -230px;
+        margin-top: -143px;
+        border-radius:14px;
+        color: #fff;
+    }
+    
+    .login-wrapper .form-wrap input{
+        display: block;
+        padding: 5px;
+        border: none;
+        border-bottom: solid 1px #3a3a3a;
+        width: 100%;
+        background: transparent !important;
+        outline: none;
+        color: #777;
+        font-size: 18px;
+    }
+    
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+        -webkit-text-fill-color: #777 !important;
+    }
+    
+    #loginMainTable, #logintable{
+        width: 100% !important;
+    }
+    
+    #logintable label{
+        color: #aaa;
+        margin-bottom: 0 !important;
+    }
+    
+    #logintable tr td{
+        padding-bottom: 14px !important;
+    }
+    
+    #logintable h4{
+        text-align: center;
+        margin: 0;
+        margin-bottom: 7px;
+        font-size: 23px;
+    }
+    
+    .login-wrapper .logo{
+        position: absolute;
+        left: 30px;
+        top: 30px;
+    }
+    
+    .login-wrapper .form-wrap input.circle-btn{
+        width: 40px;
+        height: 40px !important;
+        border-radius: 50%;
+        border: none;
+        outline: none;
+        margin: 0 auto;
+        padding: 0;
+        line-height: 40px;
+        position: relative;
+        background: url('assets/images/arrow.png') no-repeat center #232f84 !important;
+    }
+    
+    ul, li{
+        margin: 0;
+        padding: 0;
+    }
+    
+    .tracker-page-wrapper{
+        background: #000;
+        position: relative;
+        width: 100%;
+        display: table;
+        margin-top: 20px;
+    }
+    
+    .tracker-page-wrapper .bg-wrap{
+        height: 100%;
+        width: 50%;
+        display: table-cell;
+        background: url('assets/images/ikea-tracker-bg.jpg') no-repeat center;
+        -webkit-background-size:cover;
+        -moz-background-size:cover;
+        background-size:cover;
+        opacity: .5;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap{
+        height: 100%;
+        width: 50%;
+        display: table-cell;
+        background: #fff;
+        padding: 50px 20px 0 20px;
+        box-sizing: border-box;
+    }
+    
+    .tracker-page-wrapper .title-wrap{
+        height: 100%;
+        width: 50%;
+        position: relative;
+        position: absolute;
+        left: 0;
+        top: 0;
+        text-align: center;
+    }
+    
+    .tracker-page-wrapper .title-wrap h1{
+        position: absolute;
+        top: 50%;
+        margin: 0;
+        margin-top: -36px;
+        text-align: center;
+        color: #fff;
+        font-weight: bolder;
+        font-size: 39px;
+        line-height: 36px;
+        width: 100%;
+    }
+    
+    .tracker-page-wrapper .title-wrap h1 span{
+        font-weight: 100;
+        display: block;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper{
+        position: relative;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper::after{
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 50%;
+        width: 2px;
+        height: 100%;
+        background: #ffcd08;
+        z-index: 1;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block{
+        margin-bottom: 30px;
+        display: table;
+        position: relative;
+        width: 100%;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .icon{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 60px;
+        height: 60px;
+        margin-left: -30px;
+        margin-top: -30px;
+        line-height: 60px;
+        border: solid 2px #ffcd08;
+        border-radius: 50%;
+        text-align: center;
+        background: #fff;
+        z-index: 2;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .icon img{
+        width: 100%;
+        height: 100%;
+        vertical-align: inherit;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .title-pane{
+        display: table-cell;
+        vertical-align: middle;
+        padding-right: 41px;
+        text-align: right;
+        width: 50%;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .title-pane h5{
+        font-size: 15px;
+        font-weight: bold;
+        color: #000;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane{
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 41px;
+        text-align: left;
+        width: 50%;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li{
+        padding: 0;
+        list-style: none;
+        margin: 0;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li .label-text{
+        font-size: 11px;
+        color: #000;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li .value{
+        font-size: 11px;
+        color: #999;
+        padding-left: 1px;
+    }
+    
+    .page-container{
+        padding-bottom: 64px;
+    }
+    
+    .mrg-top-10{
+        margin-top: 10px;
+    }
+    .mrg-btm-10{
+        margin-bottom: 10px;
+    }
+    
+    .popup-title{
+        font-size: 21px;
+        padding-bottom: 5px;
+        border-bottom: solid 1px #ccc;
+        margin-bottom: 15px;
+    }
+    
+    .dialog{
+        padding: 18px !important;
+    }
+    
+    .btn-normal {
+        color: #fff !important;
+    }
+    
+    
+    
+    
+    

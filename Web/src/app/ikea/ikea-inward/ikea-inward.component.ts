@@ -71,7 +71,8 @@ export class IkeaInwardComponent implements OnInit {
     this.commonData.ikeaAcceptanceCriteria.forEach(element => {
       element.conditionSatisfied = false;      
     });
-    this.ikeaReceived = new IkeaModels.IkeaReceived();    
+    this.ikeaReceived = new IkeaModels.IkeaReceived(); 
+    this.logisticTransaction = new LogisticModels.LogisticTransaction();   
   }
 
   checkLogisticConsignment(){
