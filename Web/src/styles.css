@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 .ng-valid[required], .ng-valid.required  {
     border-left: 5px solid #42A948; /* green */
     }
@@ -34,6 +33,13 @@
     
     body{
         background: #f5f5f5;
+    }
+    
+    
+    ul, li{
+        list-style: none;
+        margin: 0;
+        padding: 0;
     }
     .title-main{
         font-family: 'sans-serif', 'roboto','helvetica';
@@ -401,6 +407,17 @@
         position: relative;
     }
     
+    .tracker-page-wrapper .tracker-wrap .bill-number{
+        text-align: center;
+        margin-top: -20px;
+        margin-bottom: 20px;
+    }
+    
+    .tracker-page-wrapper .tracker-wrap .bill-number input{
+        width: 150px;
+        display: inline-block;
+    }
+    
     .tracker-page-wrapper .tracker-wrap .timeline-wrapper::after{
         content: '';
         position: absolute;
@@ -506,7 +523,371 @@
         color: #fff !important;
     }
     
+    .pos-container{
+        clear: both;
+        height: 640px;
+        margin-top: 10px;
+        background: #a9d7f2;
+        border-radius: 12px;
+    }
+    
+    .pos-container .display-frame{
+        float: left;
+        width: 35%;
+        height: 100%;
+        border-right: solid 1px #eff7fc;
+    }
+    
+    .pos-container .display-frame .receipt-wrap{
+        height: 70%;
+        padding: 10px 20px;
+        border-bottom: solid 1px #579ac1;
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt-title{
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt-number{
+        text-align: center;
+        font-weight: normal;
+        color: #777;
+        margin: 5px 0 10px 0;
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt{
+        height: 70%;
+        padding: 10px 40px 10px 15px;
+        border: dashed 2px #666;
+        background: #fff;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14px;
+        position: relative;
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt .top-heading{
+        border-bottom: dotted 1px #999;
+        text-align: center;
+        padding-bottom: 4px;
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt .info-text{
+        padding: 7px 0;
+        text-align: center;
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt .square-btn-small{
+        right: 5px;
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt .square-btn-small.up-end{
+        top: 15px;
+        background-image: url('assets/images/up-end-arrow.png');
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt .square-btn-small.up{
+        top: 50px;
+        background-image: url('assets/images/up-arrow.png');
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt .square-btn-small.down-end{
+        bottom: 15px;
+        background-image: url('assets/images/down-end-arrow.png');
+    }
+    
+    .pos-container .display-frame .receipt-wrap .receipt .square-btn-small.down{
+        bottom: 50px;
+        background-image: url('assets/images/down-arrow.png');
+    }
+    
+    .pos-container .display-frame .receipt-wrap .total-bar{
+        margin-top: 10px;
+        clear: both;
+    }
+    
+    .pos-container .display-frame .receipt-wrap .total-bar span{
+        float: right;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 40px;
+        display: inline-block;
+        padding-right: 7px;
+    }
+    
+    .pos-container .display-frame .receipt-wrap .total-bar input{
+        float: right;
+        font-size: 19px;
+        color: #b90101;
+        font-weight: bold;
+        padding: 5px 10px;
+        background: #fff;
+        border: solid 1px #ccc;
+        text-align: right !important;
+        width: 160px;
+    }
+
+    .final-amount{
+        float: right;
+        font-size: 19px;
+        color: #b90101;
+        font-weight: bold;
+        padding: 0px 10px;
+        background: #fff;
+        border: solid 1px #ccc;
+        text-align: right !important;
+        width: 160px;
+    }
+    
+    .pos-container .display-frame .btn-area{
+        height: 30%;
+        padding: 10px;
+        border-top: solid 1px #eff7fc;
+    }
+    
+    .pos-container .display-frame .btn-area .btn{
+        width: 100%;
+        display: block;
+        margin-bottom: 10px;
+        font-size: 16px;
+        white-space: normal;
+    }
+    
+    .pos-container .display-frame .btn-area .btn.btn-large{
+        padding: 10px 16px;
+        font-size: 21px;
+    }
+    
+    .half-width{
+        width: 50%;
+    }
+    
+    .btn-special{
+        border: none;
+        color: #fff !important;
+    }
+    
+    .btn-special.green{
+        background: #4b814b;
+    }
+    .btn-special.green:hover{
+        background: #639c63;
+    }
+    
+    .btn-special.orange{
+        background: #cc9811;
+    }
+    .btn-special.orange:hover{
+        background: #eaaf15;
+    }
+    
+    .btn-special.blue{
+        background: #232f84;
+    }
+    .btn-special.blue:hover{
+        background: #3a47a6;
+    }
     
     
+    
+    
+    .pos-container .display-frame .qr-code{
+        height: 100px;
+        width: 100px;
+        margin-top: 20px;
+    }
+    
+    .pos-container .display-frame .qr-code img{
+        height: 100%;
+        width: 100%;
+    }
+    
+    
+    .pos-container .display-frame .btn-area .checkbox-style{
+        padding: 14px 12px;
+        font-size: 19px;
+        background: #ff6724;
+        border-color: #ff6724;
+        color: #fff;
+        font-weight: bold;
+    }
+    
+    .pos-container .display-frame .btn-area .checkmark{
+        top: 11px;
+        left: 9px;
+        border: none;
+        border-radius: 50%;
+        width:21px;
+        height: 21px;
+        background-color: #fff;
+    }
+    
+    .pos-container .display-frame .btn-area .checkmark:after{
+        width:7px;
+        height: 12px;
+        border-color: #ff6724;
+    }
+    
+    .pos-container .display-frame .btn-area .checkbox-style input[type=checkbox]{
+        width: 19px;
+    }
+    
+    .pos-container .control-frame{
+        float: left;
+        width: 65%;
+        height: 100%;
+        border-left: solid 1px #579ac1;
+    }
+    
+    .pos-container .control-frame .menu-list-wrap{
+        float: left;
+        width: 90%;
+        height: 100%;
+    }
+    
+    .pos-container .control-frame .menu-list-wrap .menu-list{
+        padding: 20px;
+    }
+    
+    
+    .pos-container .control-frame .menu-list-wrap .menu-list ul li{
+        width: 33.333%;
+        float: left;
+        height: 100px;
+        padding: 1px;
+    }
+    
+    .pos-container .control-frame .menu-list-wrap .menu-list ul li .menu-item{
+        height: 100%;
+        background-color: #e1ecf9;
+        color: #fff;
+        display: table;
+        width: 100%;
+        cursor: pointer;
+    }
+    
+    .menu-list ul li .menu-item .item-pic{
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        width: 35%;
+    }
+    
+    .menu-list ul li .menu-item .item-pic img{
+        width: 50px;
+        height: 50px;
+    }
+    
+    .menu-list ul li .menu-item .item-name{
+        display: table-cell;
+        vertical-align: middle;
+        text-align: left;
+        width: 65%;
+        font-size: 17px;
+    }
+    
+    .menu-list ul li .menu-item.red{
+        background-color: #ca071d !important;
+    }
+    .menu-list ul li .menu-item.red:hover{
+        background-color: #ba0a1e !important;
+    }
+    
+    
+    .menu-list ul li .menu-item.orange{
+        background-color: #fbbd1d !important;
+    }
+    .menu-list ul li .menu-item.orange:hover{
+        background-color: #e3aa18 !important;
+    }
+    
+    .menu-list ul li .menu-item.green{
+        background-color: #639c63 !important;
+    }
+    .menu-list ul li .menu-item.green:hover{
+        background-color: #548954 !important;
+    }
+    
+    .menu-list ul li .menu-item.blue{
+        background-color: #5b8dbf !important;
+    }
+    
+    .menu-list ul li .menu-item.blue:hover{
+        background-color: #4978a7 !important;
+    }
+    
+    .menu-list ul li .menu-item.grey{
+        background-color: #9d9d9e !important;
+    }
+    .menu-list ul li .menu-item.grey:hover{
+        background-color: #888 !important;
+    }
+    
+    
+    .pos-container .control-frame .tab-wrap{
+        float: left;
+        width: 10%;
+        height: 100%;
+    }
+    
+    .pos-container .control-frame .tab-wrap ul{
+        height: 100%;
+    }
+    
+    .pos-container .control-frame .tab-wrap ul li{
+        height: 10%;
+        border-bottom: solid 1px #2671a0;
+        border-left: solid 1px #2671a0;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        background-color: #579ac1;
+        cursor: pointer;
+    }
+    
+    .pos-container .control-frame .tab-wrap ul li a{
+        position: relative;
+        display: inline-block;
+        top: 50%;
+        color: #fff;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        text-decoration: none;
+    }
+    
+    
+    
+    .pos-container .control-frame .tab-wrap ul li.first-tab{
+        border-left: none;
+        border-top-right-radius: 12px;
+    }
+    
+    .pos-container .control-frame .tab-wrap ul li.selected{
+        background-color: transparent;
+        color: #2671a0;
+    }
+    
+    .pos-container .control-frame .tab-wrap ul li.selected a{
+        color: #2671a0;
+        font-weight: bold;
+    }
+    
+    
+    .pos-container .control-frame .tab-wrap ul li.last-tab{
+        border-bottom: none;
+        border-bottom-right-radius: 12px;
+    }
+    
+    .square-btn-small{
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+        background: #ccc no-repeat center;
+        border-radius: 3px;
+    }
     
     

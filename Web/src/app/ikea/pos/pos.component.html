@@ -1,39 +1,171 @@
-<form #myForm="ngForm">
-    <div class="form-group">
-        <label for="billNumber">Bill Number</label>
-        {{ikeaBill.billNumber}}
+<div class="page-container">
+    <div class="container">
+      <div class="pos-wrapper">
+        <div class="pos-container">
+          <div class="display-frame">
+            <div class="receipt-wrap">
+              <h4 class="receipt-title">Receipt</h4>
+              <h6 class="receipt-number">Bill No: {{ikeaBill.billNumber}}</h6>
+              <div class="receipt">
+                <div class="top-heading">
+                  Welcome to IKEA POS Upgrade !<br>
+                  Ronnovsgatan 1, 252 25 Helsingborg
+                </div>
+                <div class="info-text">
+                  Open all week 10-20<br>
+                  BISTRO
+                </div>
+                <table class="table table-striped">
+                  <tr *ngIf="ikeaBill.quantity > 0">
+                    <td>{{ikeaBill.materialName}}</td>
+                    <td>{{ikeaBill.quantity}}</td>
+                    <td>{{ikeaBill.amount | number : '1.2-2'}}</td>
+                  </tr>                  
+                </table>
+                <div class="square-btn-small up-end"></div>
+                <div class="square-btn-small up"></div>
+                <div class="square-btn-small down"></div>
+                <div class="square-btn-small down-end"></div>
+              </div>
+              <div class="total-bar clearfix">
+                <!-- <input type="text" value="10.58 USD"/> -->
+                
+                <span class="form-control final-amount">{{ikeaBill.amount | number : '1.2-2'}} USD</span>
+                <span>Total</span>                
+              </div>
+            </div>
+            <div class="btn-area">
+              <div class="float-left half-width">
+                <label class="checkbox-style">
+                  <input name="ikea-family" [(ngModel)]="ikeaBill.ikeaFamily" type="checkbox"/> IKEA FAMILY
+                      <span class="checkmark"></span>
+                </label>
+                <div class="qr-code">                  
+                  <ngx-qrcode [qrc-element-type]="img" [qrc-value] = "ikeaBill.billNumber"></ngx-qrcode>
+                </div>
+              </div>
+              <div class="float-left half-width">
+                <button class="btn btn-special green">Total</button>
+                <button class="btn btn-special orange">Remove all Customer Types</button>
+                <button [disabled]="ikeaBill.quantity == 0" (click)="saveIkeaBill()" class="btn btn-special blue btn-large">Print Bill</button>
+              </div>
+  
+            </div>
+          </div>
+          <div class="control-frame">
+            <div class="menu-list-wrap">
+              <div class="menu-list">
+                <ul>
+                  <li>
+                    <div (click)="addProduct();" class="menu-item red">
+                      <span class="item-pic"><img src="assets/images/meatball-plate-icon.png"></span>
+                      <span class="item-name">Meatball Plate</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item green">
+                      <span class="item-pic"><img src="assets/images/princess-cake-icon.png"></span>
+                      <span class="item-name">Princess Cake</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item orange">
+                      <span class="item-pic"><img src="assets/images/small-salad-icon.png"></span>
+                      <span class="item-name">Small Salad</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item orange">
+                      <span class="item-pic"><img src="assets/images/graved-lax-icon.png"></span>
+                      <span class="item-name">Gravad Lax</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item blue">
+                      <span class="item-pic"><img src="assets/images/prawn-sandwich-icon.png"></span>
+                      <span class="item-name">Prawn Sandwich</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item grey">
+                      <span class="item-pic"><img src="assets/images/swedish-apple-cake-icon.png"></span>
+                      <span class="item-name">Swedish Apple Cake</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item green">
+                      <span class="item-pic"><img src="assets/images/pastaalgar-icon'.png"></span>
+                      <span class="item-name">Pastaalgar</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item green">
+                      <span class="item-pic"><img src="assets/images/hallakaka-bread-icon.png"></span>
+                      <span class="item-name">Hallakaka Soft Bread</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item red">
+                      <span class="item-pic"><img src="assets/images/grundtal-icon.png"></span>
+                      <span class="item-name">Grundtal wll</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item">
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item">
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item">
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item">
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item">
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item">
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item">
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item">
+                    </div>
+                  </li>
+                  <li>
+                    <div class="menu-item">
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="tab-wrap">
+              <ul>
+                <li class="first-tab selected"><a>Rest</a></li>
+                <li><a>Bist</a></li>
+                <li><a>SFM CIR</a></li>
+                <li><a>4</a></li>
+                <li><a>5</a></li>
+                <li><a>6</a></li>
+                <li><a>7</a></li>
+                <li><a>8</a></li>
+                <li><a>9</a></li>
+                <li class="last-tab"><a>10</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-        <label for="billDate">Bill Date</label>
-        {{ikeaBill.billDateTime | date : "short"}}
-    </div>
-    
-    <div class="form-group">
-    <label class="checkbox-style">
-        <input type="checkbox" [(ngModel)]="ikeaBill.ikeaFamily" name="ikeaFamily" required>
-        Yes
-        <span class="checkmark"></span>
-      </label>
-    </div>
- 
-    <div class="form-group">
-        <label for="guidUniqueNumber">GUID Number</label>
-        <input type="text" [(ngModel)]="ikeaBill.guidUniqueNumber" class="form-control" name="guidUniqueNumber" required>
-    </div>
-
-    <div class="form-group">
-        <label for="materialName">Material Name</label>
-        <input type="text" [(ngModel)]="ikeaBill.materialName" class="form-control" name="materialName" required>
-    </div>
-
-    <div class="form-group">
-        <label for="quantity">quantity</label>
-        <input type="text" [(ngModel)]="ikeaBill.quantity" class="form-control" name="quantity" required>
-    </div>
-
-<div class="block-button-area">
-    <button type="submit" (click)="clearForm(myForm)" class="btn btn-border">Clear</button>
-    <button type="submit" [disabled]="!myForm.form.valid" (click)="saveIkeaBill(myForm);" class="btn btn-normal">Submit</button>
-</div>
-
-</form>
+  </div>
+  

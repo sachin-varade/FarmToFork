@@ -21,7 +21,8 @@ export class TrackProductComponent implements OnInit {
     private ikeaService: IkeaService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
-    this.commonData = this.user.getCommonData();    
+    this.commonData = this.user.getCommonData();   
+    
   }
 
   ngOnInit() {
@@ -31,7 +32,12 @@ export class TrackProductComponent implements OnInit {
     if(this.productTracking.BillNumber !== ''){
       this.ikeaService.getProductTrackingDetails('id', this.productTracking.BillNumber)
       .then((results: any) => {
-        this.productTracking = results;
+        if(results){
+          this.productTracking = results;
+        }
+        else{
+          this.productTracking = new IkeaModels.ProductTracking();
+        }
       });
     }
   }

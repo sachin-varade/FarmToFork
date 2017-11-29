@@ -38,6 +38,7 @@ import { IkeaOutwardComponent } from './ikea/ikea-outward/ikea-outward.component
 import { MenuComponent } from './menu/menu.component';
 import { BlockComponent } from './block/block.component';
 import { PosComponent } from './ikea/pos/pos.component';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 const appRoutes:Routes = [
   {
@@ -127,7 +128,8 @@ const appRoutes:Routes = [
   TimepickerModule.forRoot(),
   NgbModule.forRoot(),
   HttpModule,
-  BrowserAnimationsModule  
+  BrowserAnimationsModule,
+  NgxQRCodeModule  
   ],
   providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, LogisticService, IkeaService, BlockService, NotifyService],
   bootstrap: [AppComponent]

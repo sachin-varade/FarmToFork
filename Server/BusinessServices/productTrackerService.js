@@ -133,7 +133,7 @@ module.exports = function (abattoirService, logisticService, processorService, i
             return productTrackingEntity;
         }).catch((err) => {
             console.error("Error while getting P2I logistics details")
-            throw err;
+            //throw err;
         });
 
         

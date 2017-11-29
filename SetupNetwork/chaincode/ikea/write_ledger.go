@@ -159,9 +159,9 @@ func saveIkeaBill(stub  shim.ChaincodeStubInterface, args []string) pb.Response 
 	var err error
 	fmt.Println("Running saveIkeaBill..")
 
-	if len(args) != 7 {
-		fmt.Println("Incorrect number of arguments. Expecting 7")
-		return shim.Error("Incorrect number of arguments. Expecting 7")
+	if len(args) != 8 {
+		fmt.Println("Incorrect number of arguments. Expecting 8")
+		return shim.Error("Incorrect number of arguments. Expecting 8")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]);
@@ -174,6 +174,7 @@ func saveIkeaBill(stub  shim.ChaincodeStubInterface, args []string) pb.Response 
 	bt.MaterialName				= args[4]
 	bt.Quantity					= args[5]
 	bt.IkeaDispatchNumber		= args[6]
+	bt.Amount		= args[7]
 
 	//Commit Inward entry to ledger
 	fmt.Println("saveIkeaBill - Commit Ikea Bill To Ledger");

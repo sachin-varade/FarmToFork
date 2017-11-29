@@ -39,15 +39,16 @@ export class IkeaDispatch{
 export class IkeaBill{
     billNumber: string;
     billDateTime: Date;
-    ikeaFamily: string;
+    ikeaFamily: boolean = false;
     guidUniqueNumber: string;
     materialName: string;
-    quantity: string;
+    quantity: number = 0;
+    amount: number = 0;
     ikeaDispatchNumber: string;
 }
 
 export class ProductTracking{
-    BillNumber: string;
+    BillNumber: string = '';
     IkeaDispatchNumber: string;
     IkeaReceivedNumber: string;
     IkeaStoreName: string;

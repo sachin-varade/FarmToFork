@@ -9,9 +9,11 @@ import {UserService} from '../user.service';
 })
 export class LoginComponent implements OnInit {
   errorMessage: string = "";
+  currentUser: any;
   constructor(private router:Router, private user:UserService) { 
+    this.currentUser = this.user.getUserLoggedIn();
     if(this.user.isUserLoggedIn() === "true"){
-      this.router.navigate(['dashboard']);
+      this.router.navigate([this.getDefaultRoute()]);
     }
   }
 
@@ -32,12 +34,24 @@ export class LoginComponent implements OnInit {
       else {
         this.errorMessage = '';
         this.user.setUserLoggedIn();
-        this.router.navigate(['dashboard']);
-        this.user.getUserData();
-        this.user.getCommonData();
+        this.user.getUserData()
+        .then((results: any) => {
+          this.user.getCommonData()
+          .then((results: any) => {
+            this.router.navigate([this.getDefaultRoute()]);
+          });
+        });
       }
     }).catch((err) => {
         throw err;
     });
+  }
+
+  getDefaultRoute(){
+    this.currentUser = this.user.getUserLoggedIn();
+    if(this.currentUser && this.currentUser.role)
+      return this.currentUser.role +"/inward";
+    else 
+      return "dashboard";
   }
 }

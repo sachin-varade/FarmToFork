@@ -26,8 +26,8 @@ export class AbattoirInwardComponent implements OnInit {
     this.certificates = JSON.parse(JSON.stringify(this.commonData.farmersCertificates));
     this.certificates.forEach(element => {
       element.checked = false;
-    });
-    this.abattoirReceived.receiptOn = new Date();
+    });    
+    this.setDefaultValues();
   }
 
   ngOnInit() {
@@ -73,5 +73,14 @@ export class AbattoirInwardComponent implements OnInit {
     this.certificates.forEach(element => {
       element.checked = false;
     });
+  }
+
+  setDefaultValues(){
+    this.abattoirReceived.receiptOn = new Date();
+    this.abattoirReceived.farmer = this.userData.users.farmers[0];
+    this.abattoirReceived.guidNumber = this.commonData.farmersProducts[0].code;
+    this.abattoirReceived.materialGrade = this.commonData.materialGrades[0];
+    this.abattoirReceived.quantityUnit = this.commonData.units[0];
+    this.abattoirReceived.quantity = 10;
   }
 }

@@ -86,6 +86,7 @@ type IkeaBill struct {
 	MaterialName						string	`json:"materialName"`
 	Quantity							string	`json:"quantity"`
 	IkeaDispatchNumber					string	`json:"ikeaDispatchNumber"`
+	Amount							string	`json:"amount"`
 }
 
 type AllIkeaReceivedIds struct{

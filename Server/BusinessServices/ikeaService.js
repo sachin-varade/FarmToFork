@@ -141,10 +141,11 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     ikeaBill.billNumber,
                     ikeaBill.billDateTime,
                     ikeaBill.ikeaFamily.toString(),
-                    ikeaBill.guidUniqueNumber,
+                    ikeaBill.guidUniqueNumber ? ikeaBill.guidUniqueNumber : "",
                     ikeaBill.materialName,
-                    ikeaBill.quantity,
+                    ikeaBill.quantity.toString(),
                     ikeaBill.ikeaDispatchNumber ? ikeaBill.ikeaDispatchNumber : "",
+                    ikeaBill.amount.toString()
                 ]);
         }).then((results) => {
             return results;

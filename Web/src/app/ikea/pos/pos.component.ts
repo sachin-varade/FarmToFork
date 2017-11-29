@@ -23,7 +23,7 @@ export class PosComponent implements OnInit {
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
     
-    this.ikeaBill.billNumber = Date.parse(new Date().toString()).toString();
+    this.ikeaBill.billNumber =  Date.parse(new Date().toString()).toString(10);
     this.ikeaBill.billDateTime = new Date();
   }
 
@@ -43,8 +43,13 @@ export class PosComponent implements OnInit {
     });
   }
 
-  clearForm(myForm: NgForm){
-    myForm.resetForm();
+  addProduct(){
+    this.ikeaBill.materialName = "Meatball Plate";
+    this.ikeaBill.quantity++;
+    this.ikeaBill.amount = (this.ikeaBill.quantity * 4.99);
+  }
+
+  clearForm(myForm: NgForm){    
     this.ikeaBill = new IkeaModels.IkeaBill(); 
   }
 }

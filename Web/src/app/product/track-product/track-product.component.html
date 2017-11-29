@@ -6,15 +6,11 @@
       <div class="title-wrap">
         <h1>Meatball<span>Journey Tracker</span></h1>
       </div>
-      <div class="tracker-wrap">
-          <div class="">
-              <div class="">
-                <h5>Bill Number</h5>
-              </div>
-             
-              <div class="">
-                  <input type="text" style="width:100px;" [(ngModel)]="productTracking.BillNumber" (blur)="getProductTrackingDetails();" class="form-control" name="billNumber">
-              </div>
+      <div class="tracker-wrap">         
+
+            <div class="bill-number">
+              <input class="form-control" type="text" [(ngModel)]="productTracking.BillNumber" placeholder="Enter Bill Number" name="BillNumber">
+              <button type="submit" [disabled]="productTracking.BillNumber.length == 0" (click)="getProductTrackingDetails();" class="btn btn-normal">Track</button>
             </div>
 
         <div class="timeline-wrapper">
@@ -164,7 +160,7 @@
                 <h5>Angus</h5>
               </div>
               <div class="icon">
-                <img src="assets/images/tracker-abattoir-icon.png">
+                <img src="assets/images/angus-cow-icon.png">
               </div>
               <div class="info-pane">
                 <ul>
