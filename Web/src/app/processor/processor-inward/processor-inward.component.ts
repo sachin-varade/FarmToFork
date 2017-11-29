@@ -30,6 +30,7 @@ export class ProcessorInwardComponent implements OnInit {
     this.logisticService.getAllLogisticTransactions('details')
     .then((results: any) => {
       this.logisticTransactionList = <Array<LogisticModels.LogisticTransaction>>results.logisticTransactions;
+      this.setDefaultValues();
     });    
   }
 
@@ -84,5 +85,21 @@ export class ProcessorInwardComponent implements OnInit {
     else{
       this.processorReceived.transportConsitionSatisfied = "true";
     }
+    this.processorReceived.quantityUnit = this.logisticTransaction.quantityUnit;
+    this.processorReceived.quantity = this.logisticTransaction.quantity;
+    var diff= new Date(new Date(this.logisticTransaction.actualDeliveryDateTime).getTime() - new Date(this.logisticTransaction.shipmentStatus[1].shipmentDate).getTime());
+    this.processorReceived.transitTime = ( ((diff.getUTCDate()-1)*24) + diff.getUTCHours()).toString() +"."+ diff.getUTCMinutes().toString();
+    this.processorReceived.receivedDate = this.logisticTransaction.actualDeliveryDateTime;
+    this.processorReceived.usedByDate =new Date();
+    this.processorReceived.usedByDate.setDate(new Date().getDate()+10);  
+  }
+
+  setDefaultValues(){
+    this.processorReceived.consignmentNumber = this.logisticTransactionList[0].consignmentNumber;
+    this.checkLogisticConsignment();
+    this.processorReceived.guidNumber = this.commonData.processorInwardProducts[0].code;
+    this.setGuid();
+    this.processorReceived.materialGrade = this.commonData.materialGrades[0];
+    
   }
 }

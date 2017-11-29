@@ -4,6 +4,7 @@ import { NgModel, NgForm } from '@angular/forms';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { UserService } from '../../user.service';
 import { ProcessorService } from '../../processor.service';
+import { LogisticService } from '../../logistic.service';
 import * as ProcessorModels from '../../models/processor';
 
 @Component({
@@ -19,6 +20,7 @@ export class ProcessorDispatchComponent implements OnInit {
   processingTransactionList: Array<ProcessorModels.ProcessingTransaction> = new Array<ProcessorModels.ProcessingTransaction>();
   processorDispatch : ProcessorModels.ProcessorDispatch = new ProcessorModels.ProcessorDispatch();
   constructor(private user: UserService,
+    private logisticService: LogisticService,
     private processorService: ProcessorService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
@@ -26,10 +28,24 @@ export class ProcessorDispatchComponent implements OnInit {
     this.processorService.getAllProcessingTransactions('details')
     .then((results: any) => {
       this.processingTransactionList = <Array<ProcessorModels.ProcessingTransaction>>results.processingTransaction;
+      this.setDefaultValues();
     });     
   }
 
   ngOnInit() {
+  }
+
+  getProductDetails(){
+    var self = this;
+    this.processorService.getAllProcessorReceived('id', this.processingTransactionList.filter(function(o){return o.processorBatchCode === self.processorDispatch.processorBatchCode})[0].processorReceiptNumber )
+    .then((results: any) => {
+      this.logisticService.getAllLogisticTransactions('id', results.processorReceived[0].consignmentNumber)
+      .then((results: any) => {
+        console.log(results);
+        this.processorDispatch.temperatureStorageMin = results.logisticTransactions[0].temperatureStorageMin;
+        this.processorDispatch.temperatureStorageMax = results.logisticTransactions[0].temperatureStorageMax;
+      }); 
+    });
   }
 
   setGuid() {
@@ -59,5 +75,19 @@ export class ProcessorDispatchComponent implements OnInit {
   clearForm(myForm: NgForm){
     myForm.resetForm();
     this.processorDispatch = new ProcessorModels.ProcessorDispatch();    
+  }
+
+  setDefaultValues(){
+    this.processorDispatch.processorBatchCode = this.processingTransactionList[0].processorBatchCode;
+    this.getProductDetails();
+    this.processorDispatch.guidNumber = this.commonData.processorDispatchProducts[0].code;
+    this.setGuid();
+    this.processorDispatch.materialGrade = this.commonData.materialGrades[0];
+    this.processorDispatch.packagingDate = new Date();
+    this.processorDispatch.usedByDate = new Date();
+    this.processorDispatch.usedByDate.setDate(new Date().getDate()+10);  
+    this.processorDispatch.quantity = 10;
+    this.processorDispatch.quantityUnit = this.commonData.units[0];
+    this.processorDispatch.qualityControlDocument = "testing...";
   }
 }

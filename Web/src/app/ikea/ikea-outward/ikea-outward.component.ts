@@ -25,6 +25,7 @@ export class IkeaOutwardComponent implements OnInit {
     this.ikeaService.getAllIkeaReceived('details')
     .then((results: any) => {
       this.ikeaReceivedList = <Array<IkeaModels.IkeaReceived>>results.ikeaReceived;
+      this.setDefaultValues();
     });    
   }
 
@@ -59,5 +60,15 @@ export class IkeaOutwardComponent implements OnInit {
       element.conditionSatisfied = false;      
     });
     this.ikeaDispatch = new IkeaModels.IkeaDispatch();    
+  }
+
+  setDefaultValues(){
+    this.ikeaDispatch.ikeaReceivedNumber = this.ikeaReceivedList[0].ikeaReceivedNumber;
+    this.ikeaDispatch.guidNumber = this.commonData.ikeaDispatchProducts[0].code;
+    this.setGuid();
+    this.ikeaDispatch.materialGrade = this.commonData.materialGrades[0];
+    this.ikeaDispatch.dispatchDateTime = new Date();
+    this.ikeaDispatch.quantity = 10;
+    this.ikeaDispatch.quantityUnit = this.commonData.units[0];
   }
 }

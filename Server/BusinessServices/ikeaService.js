@@ -98,7 +98,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     ikeaDispatch.guidNumber,
                     ikeaDispatch.materialName,
                     ikeaDispatch.materialGrade,
-                    ikeaDispatch.quantity,
+                    ikeaDispatch.quantity.toString(),
                     ikeaDispatch.quantityUnit,
                     ikeaDispatch.dispatchDateTime
                 ]);

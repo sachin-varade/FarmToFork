@@ -43,14 +43,14 @@ export class LogisticInwardComponent implements OnInit {
     this.commonData = this.user.getCommonData();    
     this.abattoirService.getAllAbattoirDispatch('details')
     .then((results: any) => {
-      this.abattoirDispatchList = <Array<AbattoirModels.AbattoirDispatch>>results.abattoirMaterialDispatch;
+      this.abattoirDispatchList = <Array<AbattoirModels.AbattoirDispatch>>results.abattoirMaterialDispatch;      
     });
     this.logisticTransaction.currentStatus = "";  
     
     this.processorService.getAllProcessorDispatch('details')
     .then((results: any) => {
       this.processorDispatchList = <Array<ProcessorModels.ProcessorDispatch>>results.processorDispatch;
-    });  
+    });      
   }
 
   ngOnInit() {
@@ -98,6 +98,7 @@ export class LogisticInwardComponent implements OnInit {
           this.logisticTransaction = new LogisticModels.LogisticTransaction();
           this.logisticTransaction.currentStatus = "";
           this.logisticTransaction.consignmentNumber = _consignmentNumber;
+          this.setDefaultValues();
         }
         else{
           this.dispatchDateTime = {};
@@ -169,7 +170,7 @@ export class LogisticInwardComponent implements OnInit {
     this.actualDeliveryDateTime= {};
     this.logisticTransaction = new LogisticModels.LogisticTransaction();   
     this.logisticTransaction.currentStatus = ""; 
-    this.logisticTransaction.consignmentNumber = "";
+    this.logisticTransaction.consignmentNumber = "";    
   }
 
   populateIOTData(){
@@ -220,7 +221,34 @@ export class LogisticInwardComponent implements OnInit {
         this.fetchConsignment(null);
       }
     }
-    
+  }
+
+  setTemp(){
+    var obj: any = this.currentUser.type === 'A2P' ? this.abattoirDispatchList[0] : this.processorDispatchList[0];
+    this.logisticTransaction.temperatureStorageMin = obj.temperatureStorageMin;
+    this.logisticTransaction.temperatureStorageMax = obj.temperatureStorageMax;
+    this.logisticTransaction.quantityUnit = obj.quantityUnit;
+    this.logisticTransaction.quantity = obj.quantity;
+  }
+
+  setDefaultValues(){
+    this.logisticTransaction.routeId = this.commonData.routes[0].id;
+    this.logisticTransaction.abattoirConsignmentNumber =  this.abattoirDispatchList && this.abattoirDispatchList[0] ? this.abattoirDispatchList[0].consignmentNumber : "";
+    this.logisticTransaction.processorConsignmentNumber = this.processorDispatchList && this.processorDispatchList[0] ? this.processorDispatchList[0].consignmentNumber : "";
+    this.logisticTransaction.vehicleId = this.commonData.vehicles[0].id;
+    this.logisticTransaction.vehicleTypeId = this.commonData.vehicleTypes[0].id;
+    this.setTemp();
+    this.logisticTransaction.handlingInstruction = "testing data...";
+    this.logisticTransaction.dispatchDateTime = new Date();
+    this.dispatchDateTime = {hour:1, minute: 10};
+    this.logisticTransaction.inTransitDateTime = new Date();
+    this.inTransitDateTime = {hour:3, minute: 10};
+    this.logisticTransaction.expectedDeliveryDateTime = new Date();
+    this.logisticTransaction.expectedDeliveryDateTime.setDate(new Date().getDate()+1);
+    this.expectedDeliveryDateTime = {hour:1, minute: 10};
+    this.logisticTransaction.actualDeliveryDateTime = new Date();
+    this.logisticTransaction.actualDeliveryDateTime.setDate(new Date().getDate()+1);
+    this.actualDeliveryDateTime = {hour:1, minute: 0};    
   }
 }
 

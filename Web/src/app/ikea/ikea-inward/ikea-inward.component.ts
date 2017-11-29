@@ -30,6 +30,7 @@ export class IkeaInwardComponent implements OnInit {
     this.logisticService.getAllLogisticTransactions('details')
     .then((results: any) => {
       this.logisticTransactionList = <Array<LogisticModels.LogisticTransaction>>results.logisticTransactions;
+      this.setDefaultValues();
     });    
   }
 
@@ -84,5 +85,20 @@ export class IkeaInwardComponent implements OnInit {
     else{
       this.ikeaReceived.transportConsitionSatisfied = "true";
     }
+    this.ikeaReceived.quantityUnit = this.logisticTransaction.quantityUnit;
+    this.ikeaReceived.quantity = this.logisticTransaction.quantity;
+    var diff= new Date(new Date(this.logisticTransaction.actualDeliveryDateTime).getTime() - new Date(this.logisticTransaction.shipmentStatus[1].shipmentDate).getTime());
+    this.ikeaReceived.transitTime = ( ((diff.getUTCDate()-1)*24) + diff.getUTCHours()).toString() +"."+ diff.getUTCMinutes().toString();
+    this.ikeaReceived.receivedDate = this.logisticTransaction.actualDeliveryDateTime;
+    this.ikeaReceived.usedByDate =new Date();
+    this.ikeaReceived.usedByDate.setDate(new Date().getDate()+10);  
+  }
+
+  setDefaultValues(){
+    this.ikeaReceived.consignmentNumber = this.logisticTransactionList[0].consignmentNumber;
+    this.checkLogisticConsignment();
+    this.ikeaReceived.guidNumber = this.commonData.ikeaInwardProducts[0].code;
+    this.setGuid();
+    this.ikeaReceived.materialGrade = this.commonData.materialGrades[0];
   }
 }

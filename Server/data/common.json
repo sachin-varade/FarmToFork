@@ -1,6 +1,6 @@
 {
 "abattoirDispatchUnits" : ["Tonne CWE"],
-"units" : ["Units", "Kg", "Tonne", "Box"],
+"units" : ["Units", "Kg", "Tonne", "Box", "Tonne CWE"],
 "materialGrades": ["HQB Grain-fed", "HQB Grass-fed"],
 "abattoirItemClasses": ["Superior","Excellent","Very Good","Good","Fair","Poor"],
 "fatCoverClasses": ["Low","Slight","Average","High","Very High"],

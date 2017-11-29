@@ -26,6 +26,7 @@ export class ProcessItemComponent implements OnInit {
     this.processorService.getAllProcessorReceived('details')
     .then((results: any) => {
       this.processorReceivedList = <Array<ProcessorModels.ProcessorReceived>>results.processorReceived;
+      this.setDefaultValues();
     }); 
     this.commonData.processingActions.forEach(element => {
       element.checked = true;
@@ -73,6 +74,19 @@ export class ProcessItemComponent implements OnInit {
         element.checked = true;      
       });      
     }, 10);    
+  }
+
+  setDefaultValues(){
+    this.processingTransaction.processorReceiptNumber = this.processorReceivedList[0].processorReceiptNumber;
+    this.processingTransaction.guidNumber = this.commonData.processingTransactionProducts[0].code;
+    this.setGuid();
+    this.processingTransaction.materialGrade = this.commonData.materialGrades[0];
+    this.processingTransaction.usedByDate = new Date();
+    this.processingTransaction.usedByDate.setDate(new Date().getDate()+10);  
+    this.processingTransaction.quantity = 10;
+    this.processingTransaction.quantityUnit = this.commonData.units[0];
+    this.processingTransaction.qualityControlDocument = "testing...";
+
   }
 }
 

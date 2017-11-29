@@ -26,8 +26,10 @@ export class AbattoirOutwardComponent implements OnInit {
     this.abattoirService.getAllAbattoirReceived('details')
     .then((results: any) => {
       this.abattoirReceivedList = <Array<AbattoirModels.AbattoirReceived>>results.abattoirMaterialReceived;
+      this.setDefaultValues();
     });
     this.abattoirDispatch.dispatchDate = new Date();
+    this.userData.users.logistics = this.userData.users.logistics.filter(function(o){return o.type === 'A2P'});
   }
 
   ngOnInit() {
@@ -69,5 +71,20 @@ export class AbattoirOutwardComponent implements OnInit {
   clearForm(myForm: NgForm){
     myForm.resetForm();
     this.abattoirDispatch = new AbattoirModels.AbattoirDispatch();    
+  }
+
+  setDefaultValues(){
+    this.abattoirDispatch.logistic.id = this.userData.users.logistics[0].id;
+    this.abattoirDispatch.purchaseOrderReferenceNumber = this.abattoirReceivedList[0] ? this.abattoirReceivedList[0].purchaseOrderReferenceNumber : "";
+    this.abattoirDispatch.guidNumber = this.commonData.abattoirsProducts[0].code;
+    this.abattoirDispatch.materialGrade = this.commonData.abattoirItemClasses[0];
+    this.abattoirDispatch.fatCoverClass = this.commonData.fatCoverClasses[0];
+    this.abattoirDispatch.quantityUnit = this.commonData.abattoirDispatchUnits[0];
+    this.abattoirDispatch.quantity = 10;
+    this.abattoirDispatch.temperatureStorageMin = "1";
+    this.abattoirDispatch.temperatureStorageMax = "10";
+    this.abattoirDispatch.productionDate = new Date();
+    this.setGuid();
+    this.getProductDetails();
   }
 }

@@ -36,6 +36,8 @@ export class PosComponent implements OnInit {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
         alert("Saved successfully.....");
+        this.ikeaBill.billNumber =  Date.parse(new Date().toString()).toString(10);
+        this.ikeaBill.billDateTime = new Date();
       }
       else{
         alert("Error Occured.....");
