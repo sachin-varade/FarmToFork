@@ -33,9 +33,9 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	var err error
 	fmt.Println("Running saveAbattoirReceived..")
 
-	if len(args) != 14 {
-		fmt.Println("Incorrect number of arguments. Expecting 9 - AbattoirId..")
-		return shim.Error("Incorrect number of arguments. Expecting 9")
+	if len(args) != 15 {
+		fmt.Println("Incorrect number of arguments. Expecting 15 - AbattoirId..")
+		return shim.Error("Incorrect number of arguments. Expecting 15")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
@@ -44,21 +44,22 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	bt.AbattoirId				= args[0]
 	bt.PurchaseOrderReferenceNumber			= args[1]
 	bt.ReceiptBatchId			= args[2]	
-	bt.ReceiptOn = args[3]
-	bt.FarmerId					= args[4]
-	bt.GUIDNumber					= args[5]
-	bt.MaterialName				= args[6]
-	bt.MaterialGrade			= args[7]
-	bt.UsedByDate				= args[8]
-	bt.Quantity					= args[9]
-	bt.QuantityUnit					= args[10]	
-	bt.UpdatedBy					= args[12]	
-	bt.UpdatedOn					= args[13]	
+	bt.LivestockBatchId			= args[3]		
+	bt.ReceiptOn = args[4]
+	bt.FarmerId					= args[5]
+	bt.GUIDNumber					= args[6]
+	bt.MaterialName				= args[7]
+	bt.MaterialGrade			= args[8]
+	bt.UsedByDate				= args[9]
+	bt.Quantity					= args[10]
+	bt.QuantityUnit					= args[11]	
+	bt.UpdatedBy					= args[13]	
+	bt.UpdatedOn					= args[14]	
 
 	var cert FarmersCertificate
 	
-	if args[11] != "" {
-		p := strings.Split(args[11], ",")
+	if args[12] != "" {
+		p := strings.Split(args[12], ",")
 		for i := range p {
 			c := strings.Split(p[i], "^")
 			cert.Id = c[0]
@@ -70,7 +71,7 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	//Commit Inward entry to ledger
 	fmt.Println("saveAbattoirReceived - Commit AbattoirInward To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
-	err = stub.PutState(bt.PurchaseOrderReferenceNumber, btAsBytes)
+	err = stub.PutState(bt.ReceiptBatchId, btAsBytes)
 	if err != nil {		
 		return shim.Error(err.Error())
 	}
@@ -85,7 +86,7 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	if err != nil {
 		return shim.Error("Failed to Unmarshal all Received")
 	}
-	allb.PurchaseOrderReferenceNumbers = append(allb.PurchaseOrderReferenceNumbers, bt.PurchaseOrderReferenceNumber)
+	allb.ReceiptBatchIds = append(allb.ReceiptBatchIds, bt.ReceiptBatchId)
 
 	allBuAsBytes, _ := json.Marshal(allb)
 	err = stub.PutState("allAbattoirReceivedIds", allBuAsBytes)

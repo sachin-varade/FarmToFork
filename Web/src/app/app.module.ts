@@ -39,6 +39,8 @@ import { MenuComponent } from './menu/menu.component';
 import { BlockComponent } from './block/block.component';
 import { PosComponent } from './ikea/pos/pos.component';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { AlertComponent } from './alert/alert.component';
+import { AlertService } from './alert.service';
 
 const appRoutes:Routes = [
   {
@@ -119,7 +121,7 @@ const appRoutes:Routes = [
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
-    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent, BlockComponent, PosComponent],
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent, BlockComponent, PosComponent, AlertComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   FormsModule,
@@ -132,7 +134,7 @@ const appRoutes:Routes = [
   NgxQRCodeModule
   
   ],
-  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, LogisticService, IkeaService, BlockService, NotifyService],
+  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, LogisticService, IkeaService, BlockService, AlertService, NotifyService],
   bootstrap: [AppComponent]
 })
 

@@ -5,6 +5,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { UserService } from '../../user.service';
 import { IkeaService } from '../../ikea.service';
 import * as IkeaModels from '../../models/ikea';
+import { AlertService } from '../../alert.service';
 
 @Component({
   selector: 'app-ikea-outward',
@@ -18,7 +19,8 @@ export class IkeaOutwardComponent implements OnInit {
   ikeaReceivedList: Array<IkeaModels.IkeaReceived> = new Array<IkeaModels.IkeaReceived>();
   ikeaDispatch : IkeaModels.IkeaDispatch = new IkeaModels.IkeaDispatch();
   constructor(private user: UserService,    
-    private ikeaService: IkeaService) {
+    private ikeaService: IkeaService,
+  private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
@@ -46,10 +48,10 @@ export class IkeaOutwardComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        alert("Saved successfully.....");
+        this.alertService.success("Ikea dispatch saved.");
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }
@@ -63,7 +65,10 @@ export class IkeaOutwardComponent implements OnInit {
   }
 
   setDefaultValues(){
-    this.ikeaDispatch.ikeaReceivedNumber = this.ikeaReceivedList[0].ikeaReceivedNumber;
+    if(this.ikeaReceivedList.length>0){
+      this.ikeaDispatch.ikeaReceivedNumber = this.ikeaReceivedList[this.ikeaReceivedList.length-1].ikeaReceivedNumber;
+    }
+    
     this.ikeaDispatch.guidNumber = this.commonData.ikeaDispatchProducts[0].code;
     this.setGuid();
     this.ikeaDispatch.materialGrade = this.commonData.materialGrades[0];

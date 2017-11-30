@@ -24,6 +24,7 @@ export class AbattoirReceived {
     farmer: Farmer = new Farmer();
     purchaseOrderReferenceNumber: string;
     receiptBatchId: string;
+    livestockBatchId: string;
     receiptOn: Date;
     guidNumber: string;
     materialName: string;
@@ -41,6 +42,7 @@ export class AbattoirDispatch {
     consignmentNumber: string;
     purchaseOrderReferenceNumber: string;
     receiptBatchId: string;
+    livestockBatchId: string;
     dispatchDate: Date;
     logistic: Logistic = new Logistic();
     salesOrder: string;

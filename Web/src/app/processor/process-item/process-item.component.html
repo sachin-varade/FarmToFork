@@ -4,19 +4,19 @@
     <form #myForm="ngForm">
       <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
         <div class="form-group">
-          <label for="processorReceiptNumber">Processor Receipt Number</label>
+          <label for="processorReceiptNumber">Meatball Manufacturer Receipt Number</label>
           <select class="form-control" [(ngModel)]="processingTransaction.processorReceiptNumber" name="processorReceiptNumber" required>        
           <option *ngFor="let rec of processorReceivedList" [value]="rec.processorReceiptNumber">{{rec.processorReceiptNumber}}</option>
           </select>
         </div>
           
         <div class="form-group">
-          <label for="processorBatchCode">Processor Batch Code</label>
+          <label for="processorBatchCode">Meatball Manufacturer Batch Code</label>
           <input type="text" class="form-control" [(ngModel)]="processingTransaction.processorBatchCode" name="processorBatchCode" required>
         </div>
 
         <div class="form-group">
-          <label for="productCode">product Code</label>
+          <label for="productCode">Product Code</label>
           <input type="text" class="form-control" [(ngModel)]="processingTransaction.productCode" name="productCode" required>
         </div>
 

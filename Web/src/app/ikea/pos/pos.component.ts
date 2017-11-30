@@ -5,6 +5,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { UserService } from '../../user.service';
 import { IkeaService } from '../../ikea.service';
 import * as IkeaModels from '../../models/ikea';
+import { AlertService } from '../../alert.service';
 
 @Component({
   selector: 'app-pos',
@@ -18,7 +19,8 @@ export class PosComponent implements OnInit {
   userData: any;
   ikeaBill : IkeaModels.IkeaBill = new IkeaModels.IkeaBill();
   constructor(private user: UserService,
-    private ikeaService: IkeaService) {
+    private ikeaService: IkeaService,
+  private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
@@ -35,12 +37,12 @@ export class PosComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        alert("Saved successfully.....");
+        this.alertService.success("Bill saved.");
         this.ikeaBill.billNumber =  Date.parse(new Date().toString()).toString(10);
         this.ikeaBill.billDateTime = new Date();
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }

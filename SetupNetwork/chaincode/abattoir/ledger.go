@@ -39,10 +39,12 @@ func main() {
 type SimpleChaincode struct {
 }
 
+//ReceiptBatchId is unique
 type AbattoirMaterialReceived struct {
 	AbattoirId			string	`json:"abattoirId"`
 	PurchaseOrderReferenceNumber	string	`json:"purchaseOrderReferenceNumber"`
 	ReceiptBatchId	string	`json:"receiptBatchId"`	
+	LivestockBatchId 	string	`json:"livestockBatchId"`		
 	ReceiptOn				string	`json:"receiptOn"`
 	FarmerId			string	`json:"farmerId"`	
 	GUIDNumber			string	`json:"guidNumber"`
@@ -120,7 +122,7 @@ type IotHistory struct {
 }
 
 type AllAbattoirReceivedIds struct{
-	PurchaseOrderReferenceNumbers []string `json:"purchaseOrderReferenceNumbers"`
+	ReceiptBatchIds []string `json:"receiptBatchIds"`
 }
 type AllAbattoirReceivedDetails struct{
 	AbattoirMaterialReceived []AbattoirMaterialReceived `json:"abattoirMaterialReceived"`

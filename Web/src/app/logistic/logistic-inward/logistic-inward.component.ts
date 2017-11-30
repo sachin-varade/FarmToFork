@@ -11,6 +11,7 @@ import * as AbattoirModels from '../../models/abattoir';
 import * as LogisticModels from '../../models/logistic';
 import * as ProcessorModels from '../../models/processor';
 import { forEach } from '@angular/router/src/utils/collection';
+import { AlertService } from '../../alert.service';
 
 @Component({
   selector: 'app-logistic-inward',
@@ -37,7 +38,8 @@ export class LogisticInwardComponent implements OnInit {
   constructor(private user: UserService,
               private abattoirService: AbattoirService,
               private logisticService: LogisticService,
-            private processorService: ProcessorService) {
+            private processorService: ProcessorService,
+          private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
@@ -75,12 +77,12 @@ export class LogisticInwardComponent implements OnInit {
     this.logisticTransaction.currentStatus = "PickedUp";
     this.logisticService.saveLogisticTransaction(this.logisticTransaction)
     .then((results: any) => {
-      if(results[0].status.indexOf('SUCCESS') > -1){
-        this.clearForm(myForm);
-        alert("Saved successfully.....");
+      if(results[0].status.indexOf('SUCCESS') > -1){        
+        //this.clearForm(myForm);
+        this.alertService.success("Consignment saved.");        
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }
@@ -94,7 +96,7 @@ export class LogisticInwardComponent implements OnInit {
         this.expectedDeliveryDateTime = null;
         this.inTransitDateTime = null;
         this.actualDeliveryDateTime= null;
-        if(!results || !results.logisticTransactions){
+        if(!results || !results.logisticTransactions || (results.logisticTransactions[0] && results.logisticTransactions[0].currentStatus === '')){
           this.logisticTransaction = new LogisticModels.LogisticTransaction();
           this.logisticTransaction.currentStatus = "";
           this.logisticTransaction.consignmentNumber = _consignmentNumber;
@@ -154,10 +156,10 @@ export class LogisticInwardComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        alert("Saved successfully.....");
+        this.alertService.success("Consignment updated.");
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }
@@ -173,10 +175,10 @@ export class LogisticInwardComponent implements OnInit {
     this.logisticTransaction.consignmentNumber = "";    
   }
 
-  populateIOTData(){
+  populateIOTData(){    
     this.iotData = new Array<any>();
     for(var i=0; i<5; i++){
-      var temp = Math.floor((Math.random() * Number(this.iotMaxTemp)) + Number(this.iotMinTemp));
+      var temp = Math.floor((Math.random() * Number(this.iotMaxTemp+10)) + Number(this.iotMinTemp-5));
       var date = this.randomDate(this.logisticTransaction.inTransitDateTime, this.logisticTransaction.actualDeliveryDateTime);      
       this.iotData.push({temp: temp, date: date});
     }
@@ -206,6 +208,7 @@ export class LogisticInwardComponent implements OnInit {
             this.pushIOT(ind+1);
           }
           else{
+            this.alertService.success("Discrepancies in Temperature pushed.");
             this.showDialog = !this.showDialog;
             this.fetchConsignment(null);
           }
@@ -217,6 +220,7 @@ export class LogisticInwardComponent implements OnInit {
         this.pushIOT(ind+1);
       }
       else{
+        this.alertService.success("Discrepancies in Temperature pushed.");
         this.showDialog = !this.showDialog;
         this.fetchConsignment(null);
       }
@@ -233,12 +237,18 @@ export class LogisticInwardComponent implements OnInit {
 
   setDefaultValues(){
     this.logisticTransaction.routeId = this.commonData.routes[0].id;
-    this.logisticTransaction.abattoirConsignmentNumber =  this.abattoirDispatchList && this.abattoirDispatchList[0] ? this.abattoirDispatchList[0].consignmentNumber : "";
-    this.logisticTransaction.processorConsignmentNumber = this.processorDispatchList && this.processorDispatchList[0] ? this.processorDispatchList[0].consignmentNumber : "";
+    if(this.abattoirDispatchList && this.abattoirDispatchList.length){
+      this.logisticTransaction.abattoirConsignmentNumber =  this.abattoirDispatchList[this.abattoirDispatchList.length-1].consignmentNumber;
+    }
+    
+    if(this.processorDispatchList && this.processorDispatchList.length){
+      this.logisticTransaction.processorConsignmentNumber = this.processorDispatchList[this.processorDispatchList.length-1].consignmentNumber;
+    }
+    
     this.logisticTransaction.vehicleId = this.commonData.vehicles[0].id;
     this.logisticTransaction.vehicleTypeId = this.commonData.vehicleTypes[0].id;
     this.setTemp();
-    this.logisticTransaction.handlingInstruction = "testing data...";
+    this.logisticTransaction.handlingInstruction = "Temperature should be maintained";
     this.logisticTransaction.dispatchDateTime = new Date();
     this.dispatchDateTime = {hour:1, minute: 10};
     this.logisticTransaction.inTransitDateTime = new Date();

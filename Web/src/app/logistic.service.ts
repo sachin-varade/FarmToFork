@@ -4,6 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import * as LogisticModels from './models/logistic';
 import * as Constants from './constants';
 import { UserService } from './user.service';
+import { AlertService } from './alert.service';
 
 @Injectable()
 export class LogisticService {
@@ -12,7 +13,8 @@ export class LogisticService {
   private headers: Headers = new Headers({'Content-Type': 'application/json'});
   private url = '';
   constructor(private http: Http,
-    private userService: UserService) {
+    private userService: UserService,
+    private alertService: AlertService) {
   }
 
   saveLogisticTransaction(logisticTransaction: LogisticModels.LogisticTransaction): Promise<any> {
@@ -21,7 +23,7 @@ export class LogisticService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
   
@@ -31,7 +33,7 @@ export class LogisticService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -41,7 +43,7 @@ export class LogisticService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
   
@@ -51,7 +53,7 @@ export class LogisticService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 }

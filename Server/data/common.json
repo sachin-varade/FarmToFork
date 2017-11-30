@@ -30,9 +30,9 @@
     { "id": 1, "lpn": "TAT180", "type": "Normal Container"}, 
     { "id": 2, "lpn": "TAT181", "type": "Container with Freezer"}
 ],
-"vehicleTypes": [
-                    { "id": 1, "type": "Normal Container"}, 
-                    { "id": 2, "type": "Container with Freezer"}
+"vehicleTypes": [                    
+                    { "id": 2, "type": "Container with Freezer"},
+                    { "id": 1, "type": "Normal Container"}
                 ],
 "shipmentStatus": ["PickedUp", "InTransit", "Delivered"],
 "processorAcceptanceChecklist": ["Condition1", "Condition2", "Condition3"],

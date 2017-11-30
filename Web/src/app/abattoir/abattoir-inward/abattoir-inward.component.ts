@@ -4,6 +4,7 @@ import { NgModel, NgForm } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { AbattoirService } from '../../abattoir.service';
 import * as AbattoirModels from '../../models/abattoir';
+import { AlertService } from '../../alert.service';
 
 @Component({
   selector: 'app-abattoir-inward',
@@ -19,7 +20,8 @@ export class AbattoirInwardComponent implements OnInit {
   certificates: any;
   abattoirReceived: AbattoirModels.AbattoirReceived = new AbattoirModels.AbattoirReceived();
   constructor(private user: UserService,
-              private abattoirService: AbattoirService) {
+              private abattoirService: AbattoirService,
+              private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();
@@ -59,10 +61,10 @@ export class AbattoirInwardComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        alert("Saved successfully.....");
+        this.alertService.success("Abattoir receipt saved.");
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }

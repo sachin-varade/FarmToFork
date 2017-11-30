@@ -7,6 +7,7 @@ import { UserService } from '../../user.service';
 import { LogisticService } from '../../logistic.service';
 import * as AbattoirModels from '../../models/abattoir';
 import * as LogisticModels from '../../models/logistic';
+import { AlertService } from '../../alert.service';
 
 @Component({
   selector: 'app-logistic-outward',
@@ -22,7 +23,8 @@ export class LogisticOutwardComponent implements OnInit {
   actualDeliveryDateTime: any;
   constructor(private route: ActivatedRoute,
               private user: UserService,
-              private logisticService: LogisticService) {
+              private logisticService: LogisticService,
+            private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();   
@@ -50,10 +52,10 @@ export class LogisticOutwardComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm();
-        alert("Saved successfully.....");
+        this.alertService.success("Logistic dispatch saved.");
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }

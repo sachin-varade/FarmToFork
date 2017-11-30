@@ -4,13 +4,15 @@ import 'rxjs/add/operator/toPromise';
 import * as AbattoirModels from './models/abattoir';
 import * as ProcessorModels from './models/processor';
 import * as Constants from './constants';
+import { AlertService } from './alert.service';
 
 @Injectable()
 export class ProcessorService {
   private BASE_URL = Constants.API_URL;
   private headers: Headers = new Headers({'Content-Type': 'application/json'});
   private url = '';
-  constructor(private http: Http) { }
+  constructor(private http: Http,
+    private alertService: AlertService) { }
 
   saveProcessorReceived(processorReceived: ProcessorModels.ProcessorReceived): Promise<any> {
     this.url = `${this.BASE_URL}/saveProcessorReceived`;
@@ -18,7 +20,7 @@ export class ProcessorService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -28,7 +30,7 @@ export class ProcessorService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -38,7 +40,7 @@ export class ProcessorService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -48,7 +50,7 @@ export class ProcessorService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -58,7 +60,7 @@ export class ProcessorService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -68,7 +70,7 @@ export class ProcessorService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }  
 }

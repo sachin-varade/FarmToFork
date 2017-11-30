@@ -50,7 +50,7 @@
             {
                 "id": 1,
                 "name": "logistic1",
-                "displayName": "logistic1",
+                "displayName": "Logistics Serv. Provider 1",
                 "role": "logistic",
                 "password": "123456",
                 "uniqueId": "L001",
@@ -60,7 +60,7 @@
             {
                 "id": 2,
                 "name": "logistic2",
-                "displayName": "logistic2",
+                "displayName": "Logistics Serv. Provider 2",
                 "role": "logistic",
                 "password": "123456",
                 "uniqueId": "L002",
@@ -73,7 +73,7 @@
             {
                 "id": 1,
                 "name": "processor1",
-                "displayName": "processor1",
+                "displayName": "Meatball Manufacturer 1",
                 "role": "processor",
                 "password": "123456",
                 "uniqueId": "P001",
@@ -84,7 +84,7 @@
             {
                 "id": 2,
                 "name": "processor2",
-                "displayName": "processor2",
+                "displayName": "Meatball Manufacturer 2",
                 "role": "processor",
                 "password": "123456",
                 "uniqueId": "P002",

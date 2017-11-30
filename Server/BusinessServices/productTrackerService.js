@@ -18,11 +18,19 @@ module.exports = function (abattoirService, logisticService, processorService, i
 
         return ikeaService.getIkeaBillDetails(option, value)
         .then((result) => {
-        
-            return ikeaService.getAllIkeaDispatch("details", value)
+            if(!result || (result && !result.ikeaBillNumbers) || (result && result.ikeaBillNumbers.length == 0 )){
+                return;
+            }
+            return ikeaService.getAllIkeaDispatch("details","")
             .then((result) => {
-            var latestIkeaDispatchNumber = result.ikeaDispatch[0].IkeaDispatchNumber;
-
+                var latestIkeaDispatchNumber = "";
+                if(result.ikeaDispatch.length>0){
+                    latestIkeaDispatchNumber = result.ikeaDispatch[result.ikeaDispatch.length-1].IkeaDispatchNumber;
+                }
+                else{
+                    return;
+                }
+            
         // Ikea Dispatch
         return ikeaService.getAllIkeaDispatch(option, latestIkeaDispatchNumber)
         .then((result) => {
@@ -32,6 +40,9 @@ module.exports = function (abattoirService, logisticService, processorService, i
                 productTrackingEntity.IkeaReceivedNumber = result.ikeaDispatch[0].ikeaReceivedNumber;
                 productTrackingEntity.IkeaDispatchNumber = result.ikeaDispatch[0].IkeaDispatchNumber;
                 productTrackingEntity.MeatBallPreparedDate = result.ikeaDispatch[0].dispatchDateTime;                
+            }
+            else{
+                return;
             }
 
             //Ikea Received
@@ -47,7 +58,9 @@ module.exports = function (abattoirService, logisticService, processorService, i
                         productTrackingEntity.IkeaPurchaseOrderNumber = result.ikeaReceived[0].purchaseOrderNumber;                        
                         productTrackingEntity.ProcessorToIkeaTransportConsitionSatisfied = result.ikeaReceived[0].transportConsitionSatisfied;                        
                     }       
-                    
+                    else{
+                        return;
+                    }
                     // Logistics - Processor to Ikea
                     return logisticService.getAllLogisticP2ITransactions(option, productTrackingEntity.IkeaReceivedConsignmentNumber)
                     .then((result) => {
@@ -57,7 +70,9 @@ module.exports = function (abattoirService, logisticService, processorService, i
                             productTrackingEntity.ProcessorToIkeaDeliveryDate = result.logisticTransactions[0].actualDeliveryDateTime;
                             productTrackingEntity.ProcessorConsignmentNumber = result.logisticTransactions[0].processorConsignmentNumber;                            
                         }
-
+                        else{
+                            return;
+                        }
                         // Processor Dispatch
                         return processorService.getAllProcessorDispatch(option, productTrackingEntity.ProcessorConsignmentNumber)
                         .then((result) => {
@@ -65,7 +80,9 @@ module.exports = function (abattoirService, logisticService, processorService, i
                                 productTrackingEntity.ProcessorUseByDate = result.processorDispatch[0].usedByDate;
                                 productTrackingEntity.ProcessorBatchCode = result.processorDispatch[0].processorBatchCode;
                             }
-
+                            else{
+                                return;
+                            }
                             //Processor Transaction
                             return processorService.getAllProcessingTransactions(option, productTrackingEntity.ProcessorBatchCode)
                             .then((result) => {
@@ -73,7 +90,9 @@ module.exports = function (abattoirService, logisticService, processorService, i
                                     productTrackingEntity.ProcessingDate = result.processingTransaction[0].updatedOn;
                                     productTrackingEntity.ProcessorReceiptNumber = result.processingTransaction[0].processorReceiptNumber;
                                 }
-
+                                else{
+                                    return;
+                                }
                                 // Processor Received
                                 return processorService.getAllProcessorReceived(option, productTrackingEntity.ProcessorReceiptNumber)
                                 .then((result) => {
@@ -83,7 +102,9 @@ module.exports = function (abattoirService, logisticService, processorService, i
                                         productTrackingEntity.ProcessorPurchaseOrderNumber = result.processorReceived[0].purchaseOrderNumber;
                                         productTrackingEntity.AbattoirToProcessorTransportConsitionSatisfied =  result.processorReceived[0].transportConsitionSatisfied;
                                     }
-
+                                    else{
+                                        return;
+                                    }
                                     // Logistics Abattoir to Processor
                                     return logisticService.getAllLogisticA2PTransactions(option, productTrackingEntity.AbattoirToProcessorTransportConsignemntNumber)
                                     .then((result) => {
@@ -95,7 +116,9 @@ module.exports = function (abattoirService, logisticService, processorService, i
                                             productTrackingEntity.AbattoirToProcessorDeliveryDate = result.logisticTransactions[0].actualDeliveryDateTime;
                                             productTrackingEntity.AbattoirConsignmentNumber = result.logisticTransactions[0].abattoirConsignmentNumber;
                                         }
-
+                                        else{
+                                            return;
+                                        }
                                         // Abattoir Dispatch
                                         return abattoirService.getAllAbattoirDispatch(option, productTrackingEntity.AbattoirConsignmentNumber)
                                         .then((result) => {
@@ -106,10 +129,13 @@ module.exports = function (abattoirService, logisticService, processorService, i
                                                 productTrackingEntity.AbattoirRawMaterialBatchNumber = result.abattoirMaterialDispatch[0].rawMaterialBatchNumber;
                                                 productTrackingEntity.AbattoirDispatchMaterialClass = result.abattoirMaterialDispatch[0].materialGrade;
                                                 productTrackingEntity.AbbattoirPurchaseOrderReferenceNumber = result.abattoirMaterialDispatch[0].purchaseOrderReferenceNumber;
+                                                productTrackingEntity.ReceiptBatchId = result.abattoirMaterialDispatch[0].receiptBatchId;
                                             }
-
+                                            else{
+                                                return;
+                                            }
                                             // Abattoir Received
-                                            return abattoirService.getAllAbattoirReceived(option, productTrackingEntity.AbbattoirPurchaseOrderReferenceNumber)
+                                            return abattoirService.getAllAbattoirReceived(option, productTrackingEntity.ReceiptBatchId)
                                             .then((result) => {
                                                 if (result && result.abattoirMaterialReceived &&  result.abattoirMaterialReceived.length >0){
                                                     productTrackingEntity.AbattoirName = userService.getUserNameById("abattoirs", result.abattoirMaterialReceived[0].abattoirId);

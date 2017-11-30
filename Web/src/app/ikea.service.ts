@@ -3,13 +3,15 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as IkeaModels from './models/ikea';
 import * as Constants from './constants';
+import { AlertService } from './alert.service';
 
 @Injectable()
 export class IkeaService {
   private BASE_URL = Constants.API_URL;
   private headers: Headers = new Headers({'Content-Type': 'application/json'});
   private url = '';
-  constructor(private http: Http) { }
+  constructor(private http: Http,
+    private alertService: AlertService) { }
 
   saveIkeaReceived(ikeaReceived: IkeaModels.IkeaReceived): Promise<any> {
     this.url = `${this.BASE_URL}/saveIkeaReceived`;
@@ -17,7 +19,7 @@ export class IkeaService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -27,7 +29,7 @@ export class IkeaService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -37,7 +39,7 @@ export class IkeaService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
   
@@ -47,7 +49,7 @@ export class IkeaService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -57,7 +59,7 @@ export class IkeaService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   } 
   
@@ -67,7 +69,7 @@ export class IkeaService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("No bill found for bill number: "+ value);
     });
   } 
   
@@ -77,7 +79,7 @@ export class IkeaService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   } 
 }

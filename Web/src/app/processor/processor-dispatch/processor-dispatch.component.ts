@@ -6,6 +6,7 @@ import { UserService } from '../../user.service';
 import { ProcessorService } from '../../processor.service';
 import { LogisticService } from '../../logistic.service';
 import * as ProcessorModels from '../../models/processor';
+import { AlertService } from '../../alert.service';
 
 @Component({
   selector: 'app-processor-dispatch',
@@ -21,7 +22,8 @@ export class ProcessorDispatchComponent implements OnInit {
   processorDispatch : ProcessorModels.ProcessorDispatch = new ProcessorModels.ProcessorDispatch();
   constructor(private user: UserService,
     private logisticService: LogisticService,
-    private processorService: ProcessorService) {
+    private processorService: ProcessorService,
+  private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
@@ -64,10 +66,10 @@ export class ProcessorDispatchComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        alert("Saved successfully.....");
+        this.alertService.success("Meatball Manufacturer dispatch saved.");
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }
@@ -78,7 +80,10 @@ export class ProcessorDispatchComponent implements OnInit {
   }
 
   setDefaultValues(){
-    this.processorDispatch.processorBatchCode = this.processingTransactionList[0].processorBatchCode;
+    if(this.processingTransactionList.length > 0){
+      this.processorDispatch.processorBatchCode = this.processingTransactionList[this.processingTransactionList.length-1].processorBatchCode;
+    }
+    
     this.getProductDetails();
     this.processorDispatch.guidNumber = this.commonData.processorDispatchProducts[0].code;
     this.setGuid();
@@ -88,6 +93,6 @@ export class ProcessorDispatchComponent implements OnInit {
     this.processorDispatch.usedByDate.setDate(new Date().getDate()+10);  
     this.processorDispatch.quantity = 10;
     this.processorDispatch.quantityUnit = this.commonData.units[0];
-    this.processorDispatch.qualityControlDocument = "testing...";
+    this.processorDispatch.qualityControlDocument = "Quality control documents verified";
   }
 }

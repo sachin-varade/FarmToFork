@@ -1,24 +1,29 @@
 <div class="page-container">
     <div class="container">
-        <h1 class="title-main">Abattoir Received</h1>
+        <h1 class="title-main">Abattoir Receipt</h1>
         <form #myForm="ngForm" class="clearfix">
             <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
             
             <div class="form-group">
-            <label for="receiptBatchId">Receipt Batch Id</label>
+            <label for="receiptBatchId">Abattoir Receipt No</label>
             <input type="text" [(ngModel)]="abattoirReceived.receiptBatchId"  class="form-control" name="receiptBatchId" required>
+            </div>
+
+            <div class="form-group">
+                <label for="materialInwardNumber">Purchase Order Ref.</label>
+                <input type="text" [(ngModel)]="abattoirReceived.purchaseOrderReferenceNumber"  class="form-control" name="purchaseOrderReferenceNumber" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="materialInwardNumber">Livestock Batch ID Ref.</label>
+                <input type="text" [(ngModel)]="abattoirReceived.livestockBatchId"  class="form-control" name="purchaseOrderReferenceNumber" required>
             </div>
 
             <div class="form-group">
                 <label for="receiptOn">Receipt On</label>
                 <input type="text" [(ngModel)]="abattoirReceived.receiptOn" name="receiptOn" class="form-control" bsDatepicker required/>
             </div>
-        
-            <div class="form-group">
-            <label for="materialInwardNumber">Purchase Order Ref.</label>
-            <input type="text" [(ngModel)]="abattoirReceived.purchaseOrderReferenceNumber"  class="form-control" name="purchaseOrderReferenceNumber" required>
-            </div>
-    
+
             <div class="form-group">
                 <label>Supplier</label>
                 <select class="form-control selectpicker" [(ngModel)]="abattoirReceived.farmer.id" (change)="setFarmer()" name="selectFarmer" id="selectFarmer" required>  
@@ -44,9 +49,9 @@
             <div class="form-group">
                 <label for="quantity" style="display: block;">Quantity</label>
                 <input type="text" class="form-control input-inline-small" [(ngModel)]="abattoirReceived.quantity" name="quantity" required>
-                <select class="form-control" [(ngModel)]="abattoirReceived.quantityUnit" name="quantityUnit" required  style="display: inline-block; width:100px;">
+                <!-- <select class="form-control" [(ngModel)]="abattoirReceived.quantityUnit" name="quantityUnit" required  style="display: inline-block; width:100px;">
                     <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
-                </select>
+                </select> -->
             </div>
     
             <div class="form-group clearfix">

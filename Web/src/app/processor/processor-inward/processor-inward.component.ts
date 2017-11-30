@@ -7,6 +7,7 @@ import { LogisticService } from '../../logistic.service';
 import { ProcessorService } from '../../processor.service';
 import * as LogisticModels from '../../models/logistic';
 import * as ProcessorModels from '../../models/processor';
+import { AlertService } from '../../alert.service';
 
 @Component({
   selector: 'app-processor-inward',
@@ -23,7 +24,8 @@ export class ProcessorInwardComponent implements OnInit {
   processorReceived : ProcessorModels.ProcessorReceived = new ProcessorModels.ProcessorReceived();
   constructor(private user: UserService,
     private logisticService: LogisticService,
-    private processorService: ProcessorService) {
+    private processorService: ProcessorService,
+  private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
@@ -59,10 +61,10 @@ export class ProcessorInwardComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        alert("Saved successfully.....");
+        this.alertService.success("Meatball Manufacturer receipt saved.");
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }
@@ -95,7 +97,10 @@ export class ProcessorInwardComponent implements OnInit {
   }
 
   setDefaultValues(){
-    this.processorReceived.consignmentNumber = this.logisticTransactionList[0].consignmentNumber;
+    if(this.logisticTransactionList.length > 0){
+      this.processorReceived.consignmentNumber = this.logisticTransactionList[this.logisticTransactionList.length-1].consignmentNumber;
+    }
+    
     this.checkLogisticConsignment();
     this.processorReceived.guidNumber = this.commonData.processorInwardProducts[0].code;
     this.setGuid();

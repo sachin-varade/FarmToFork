@@ -3,6 +3,7 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as Constants from './constants';
 import { UserService } from './user.service';
+import { AlertService } from './alert.service';
 
 @Injectable()
 export class BlockService {
@@ -10,7 +11,8 @@ export class BlockService {
   private headers: Headers = new Headers({'Content-Type': 'application/json'});
   private url = '';
   constructor(private http: Http,
-    private userService: UserService) { }
+    private userService: UserService,
+  private alertService: AlertService) { }
   
     getRecentBlocks(blockNumber): Promise<any> {
     this.url = this.BASE_URL +"/getRecentBlocks" +"/"+ this.userService.getUserLoggedIn().role;
@@ -18,7 +20,7 @@ export class BlockService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 

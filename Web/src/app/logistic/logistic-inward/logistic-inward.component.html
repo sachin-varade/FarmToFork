@@ -1,6 +1,6 @@
 <div class="page-container">
         <div class="container">
-            <h1 class="title-main">Logistic Received</h1>
+            <h1 class="title-main">Logistics Serv. Provider Receipt</h1>
             <form #myForm="ngForm">
                 <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
                   
@@ -24,7 +24,7 @@
                         </select>
                 </div> 
                 <div class="form-group" *ngIf="user.getUserLoggedIn().type == 'P2I'">
-                        <label for="processorConsignmentNumber">Processor Consignment Number</label>      
+                        <label for="processorConsignmentNumber">Meatball Manufacturer Consignment Number</label>      
                         <select class="form-control" (change)="setTemp()" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.processorConsignmentNumber" name="processorConsignmentNumber" required>        
                         <option *ngFor="let rec of processorDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
                         </select>
@@ -113,8 +113,8 @@
                     <app-dialog [(visible)]="showDialog">
                     <h3 class="popup-title">IOT Data</h3>
                     <div class="form-group">
-                      <label for="">Consignment Number: </label> 
-                      <span class="value-text">{{logisticTransaction.consignmentNumber}}</span>            
+                      <label for="">Consignment Number: {{logisticTransaction.consignmentNumber}}
+                      </label> 
                     </div>
                     <div class="form-group">
                         <label for="">Storage Temperature: </label>
@@ -132,7 +132,7 @@
                               <th>Location</th>
                               <th>Date/Time</th>
                           </tr>
-                          <tr *ngFor="let item of iotData; let i = index" [attr.data-index]="i">
+                          <tr *ngFor="let item of iotData; let i = index" [attr.data-index]="i" [class.neg-temp]="this.logisticTransaction.temperatureStorageMax < item.temp || this.logisticTransaction.temperatureStorageMin > item.temp">
                               <td>{{item.temp}}</td>
                               <td>{{commonData.logisticsLocations[i].name}}</td>
                               <td>{{item.date | date : "short"}}</td>

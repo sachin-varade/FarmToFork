@@ -59,22 +59,22 @@ func getAllAbattoirReceived(stub  shim.ChaincodeStubInterface, option string, va
 		}
 		
 		json.Unmarshal(sbAsBytes, &sb)
-		if sb.PurchaseOrderReferenceNumber != "" {
+		if sb.ReceiptBatchId != "" {
 			allDetails.AbattoirMaterialReceived = append(allDetails.AbattoirMaterialReceived,sb);	
 		}		
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}
 
-	for i := range res.PurchaseOrderReferenceNumbers{
+	for i := range res.ReceiptBatchIds{
 
-		sbAsBytes, err := stub.GetState(res.PurchaseOrderReferenceNumbers[i])
+		sbAsBytes, err := stub.GetState(res.ReceiptBatchIds[i])
 		if err != nil {
 			return shim.Error("Failed to get Abattoir Received Id ")
 		}
 		json.Unmarshal(sbAsBytes, &sb)
 		if strings.ToLower(option) == "ids" {
-			allIds.PurchaseOrderReferenceNumbers = append(allIds.PurchaseOrderReferenceNumbers,sb.PurchaseOrderReferenceNumber);	
+			allIds.ReceiptBatchIds = append(allIds.ReceiptBatchIds,sb.ReceiptBatchId);	
 		} else if strings.ToLower(option) == "details" {
 			allDetails.AbattoirMaterialReceived = append(allDetails.AbattoirMaterialReceived,sb);	
 		}		

@@ -74,6 +74,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     abattoirReceived.abattoirId.toString(), 
                     abattoirReceived.purchaseOrderReferenceNumber,
                     abattoirReceived.receiptBatchId,
+                    abattoirReceived.livestockBatchId,
                     abattoirReceived.receiptOn,
                     abattoirReceived.farmer.id.toString(),
                     abattoirReceived.guidNumber,

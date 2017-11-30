@@ -3,6 +3,7 @@ import { NgModel, NgForm } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { AbattoirService } from '../../abattoir.service';
 import * as AbattoirModels from '../../models/abattoir';
+import { AlertService } from '../../alert.service';
 
 @Component({
   selector: 'app-abattoir-outward',
@@ -18,7 +19,8 @@ export class AbattoirOutwardComponent implements OnInit {
   abattoirDispatch: AbattoirModels.AbattoirDispatch = new AbattoirModels.AbattoirDispatch();
   abattoirReceivedList: Array<AbattoirModels.AbattoirReceived> = new Array<AbattoirModels.AbattoirReceived>();
   constructor(private user: UserService,
-    private abattoirService: AbattoirService) {
+    private abattoirService: AbattoirService,
+  private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();
@@ -36,10 +38,14 @@ export class AbattoirOutwardComponent implements OnInit {
   }
 
   getProductDetails(){
+    if(!this.abattoirReceivedList){
+      return;
+    }
     this.abattoirReceivedList.forEach(element => {
-      if(this.abattoirDispatch.purchaseOrderReferenceNumber == element.purchaseOrderReferenceNumber){
+      if(this.abattoirDispatch.receiptBatchId == element.receiptBatchId){
         this.abattoirReceived = element;
-        this.abattoirDispatch.receiptBatchId = element.receiptBatchId;
+        this.abattoirDispatch.purchaseOrderReferenceNumber = element.purchaseOrderReferenceNumber;
+        this.abattoirDispatch.livestockBatchId = element.livestockBatchId;
       }
     });
   }
@@ -60,10 +66,10 @@ export class AbattoirOutwardComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        alert("Saved successfully.....");
+        this.alertService.success("Abattoir dispatch saved.");
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }
@@ -75,7 +81,9 @@ export class AbattoirOutwardComponent implements OnInit {
 
   setDefaultValues(){
     this.abattoirDispatch.logistic.id = this.userData.users.logistics[0].id;
-    this.abattoirDispatch.purchaseOrderReferenceNumber = this.abattoirReceivedList[0] ? this.abattoirReceivedList[0].purchaseOrderReferenceNumber : "";
+    if(this.abattoirReceivedList && this.abattoirReceivedList.length > 0){
+      this.abattoirDispatch.receiptBatchId = this.abattoirReceivedList[this.abattoirReceivedList.length-1].receiptBatchId;
+    }
     this.abattoirDispatch.guidNumber = this.commonData.abattoirsProducts[0].code;
     this.abattoirDispatch.materialGrade = this.commonData.abattoirItemClasses[0];
     this.abattoirDispatch.fatCoverClass = this.commonData.fatCoverClasses[0];

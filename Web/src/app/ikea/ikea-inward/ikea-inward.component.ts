@@ -7,6 +7,7 @@ import { LogisticService } from '../../logistic.service';
 import { IkeaService } from '../../ikea.service';
 import * as LogisticModels from '../../models/logistic';
 import * as IkeaModels from '../../models/ikea';
+import { AlertService } from '../../alert.service';
 
 @Component({
   selector: 'app-ikea-inward',
@@ -23,7 +24,8 @@ export class IkeaInwardComponent implements OnInit {
   ikeaReceived : IkeaModels.IkeaReceived = new IkeaModels.IkeaReceived();
   constructor(private user: UserService,
     private logisticService: LogisticService,
-    private ikeaService: IkeaService) {
+    private ikeaService: IkeaService,
+  private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
@@ -59,10 +61,10 @@ export class IkeaInwardComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        alert("Saved successfully.....");
+        this.alertService.success("Ikea receipt saved.");
       }
       else{
-        alert("Error Occured.....");
+        this.alertService.error("Error occured...");
       }
     });
   }
@@ -95,7 +97,10 @@ export class IkeaInwardComponent implements OnInit {
   }
 
   setDefaultValues(){
-    this.ikeaReceived.consignmentNumber = this.logisticTransactionList[0].consignmentNumber;
+    if(this.logisticTransactionList.length>0){
+      this.ikeaReceived.consignmentNumber = this.logisticTransactionList[this.logisticTransactionList.length-1].consignmentNumber;
+    }
+    
     this.checkLogisticConsignment();
     this.ikeaReceived.guidNumber = this.commonData.ikeaInwardProducts[0].code;
     this.setGuid();

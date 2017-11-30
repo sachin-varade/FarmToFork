@@ -1,6 +1,6 @@
 <div class="page-container">
   <div class="container">
-    <div class="tracker-page-wrapper clearfix">
+     <div class="tracker-page-wrapper clearfix">
         <img class="logo" src="assets/images/ikea-logo.png">
       <div class="bg-wrap">
       </div>
@@ -10,6 +10,9 @@
       <div class="tracker-wrap">         
 
             <div class="bill-number">
+                <p><span class="label-text">Welcome to IKEA’s Farm-to-Fork tracer!</span></p>
+                <p><span class="label-text">Check the origin and learn more on what goes into bringing the delicious meatballs to you!
+                Please enter you bill id OR date & time of purchase, to view the details.</span></p>
               <input class="form-control" type="text" [(ngModel)]="productTracking.BillNumber" placeholder="Enter Bill Number" name="BillNumber">
               <button type="submit" [disabled]="productTracking.BillNumber.length == 0" (click)="getProductTrackingDetails();" class="btn btn-normal">Track</button>
             </div>
@@ -38,7 +41,7 @@
                 </li>
                 <li>
                   <span class="label-text">Batch Code:</span>
-                  <span class="value">{{productTracking.BillDate | date : "short"}}</span>
+                  <span class="value">{{productTracking.IkeaReceivedNumber}}</span>
                 </li>
               </ul>
             </div>
@@ -75,7 +78,7 @@
 
           <div class="timeline-block">
             <div class="title-pane">
-              <h5>Processor</h5>
+              <h5>Meatball Manufacturer</h5>
             </div>
             <div class="icon">
               <img src="assets/images/tracker-process-icon.png">
@@ -91,7 +94,7 @@
                   <span class="value">{{productTracking.ProcessorUseByDate | date : "short"}}</span>
                 </li>
                 <li>
-                    <span class="label-text">Processor:</span>
+                    <span class="label-text">Meatball Manufacturer:</span>
                     <span class="value">{{productTracking.ProcessorCompanyName}}</span>
                 </li>
               </ul>

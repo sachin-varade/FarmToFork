@@ -1,10 +1,10 @@
 <div class="page-container">
   <div class="container">
-    <h1 class="title-main">Processor Dispatch</h1>
+    <h1 class="title-main">Meatball Manufacturer Dispatch</h1>
     <form #myForm="ngForm">
       <div class="col-lg-6 col-md-6 col-sm-12 left-pane"> 
         <div class="form-group">
-          <label for="processorBatchCode">Processor Batch Code</label>
+          <label for="processorBatchCode">Meatball Manufacturer Batch Code</label>
           <select class="form-control" (change)="getProductDetails();" [(ngModel)]="processorDispatch.processorBatchCode" name="processorBatchCode" required>        
             <option *ngFor="let rec of processingTransactionList" [value]="rec.processorBatchCode">{{rec.processorBatchCode}}</option>
           </select>
@@ -65,7 +65,7 @@
         <div class="form-group">
           <label for="quantity" style="display: block;">Quantity</label>
           <input type="text" class="form-control input-inline-small" [(ngModel)]="processorDispatch.quantity" style="display: inline-block; width:100px;" name="quantity" required>
-          <select class="form-control" [(ngModel)]="processorDispatch.quantityUnit" name="qunatityUnit" required  style="display: inline-block; width:100px;">
+          <select class="form-control  input-inline-small" [(ngModel)]="processorDispatch.quantityUnit" name="qunatityUnit" required>
               <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
           </select>
         </div>

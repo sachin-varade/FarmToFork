@@ -3,13 +3,15 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as AbattoirModels from './models/abattoir';
 import * as Constants from './constants';
+import { AlertService } from './alert.service';
 
 @Injectable()
 export class AbattoirService {
   private BASE_URL = Constants.API_URL;
   private headers: Headers = new Headers({'Content-Type': 'application/json'});
   private url = '';
-  constructor(private http: Http) { }
+  constructor(private http: Http,
+  private alertService: AlertService) { }
 
   saveAbattoirReceived(abattoirReceived: AbattoirModels.AbattoirReceived): Promise<any> {
     this.url = `${this.BASE_URL}/saveAbattoirReceived`;
@@ -17,7 +19,7 @@ export class AbattoirService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -25,9 +27,9 @@ export class AbattoirService {
     this.url = `${this.BASE_URL}/saveAbattoirDispatch`;
     return this.http.post(this.url, abattoirDispatch).toPromise()
     .then((results: any) => {
-      return JSON.parse(results._body);
+      return JSON.parse(results._body);      
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -37,7 +39,7 @@ export class AbattoirService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 
@@ -47,7 +49,7 @@ export class AbattoirService {
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
-      alert("Error Occured.....");
+      this.alertService.error("Error occured...");
     });
   }
 }

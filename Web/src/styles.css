@@ -236,7 +236,7 @@
     
     .input-inline-small{
         display: inline-block;
-        width: 100px;
+        width: 125px;
         margin-right: 10px;
     }
     
@@ -906,4 +906,14 @@
         }
     }
     
-    
+    .alert-outer{
+        right: 5px !important;
+        position: absolute;
+        top: 105px;
+        z-index: 100;
+        min-width: 300px;
+    }
+
+    .neg-temp{
+        color: red !important;
+    }
