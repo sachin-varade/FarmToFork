@@ -39,6 +39,7 @@ import { MenuComponent } from './menu/menu.component';
 import { BlockComponent } from './block/block.component';
 import { PosComponent } from './ikea/pos/pos.component';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { NotificationBarModule } from 'ngx-notification-bar/release'
 
 const appRoutes:Routes = [
   {
@@ -129,7 +130,8 @@ const appRoutes:Routes = [
   NgbModule.forRoot(),
   HttpModule,
   BrowserAnimationsModule,
-  NgxQRCodeModule  
+  NgxQRCodeModule,
+  NotificationBarModule
   ],
   providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, LogisticService, IkeaService, BlockService, NotifyService],
   bootstrap: [AppComponent]

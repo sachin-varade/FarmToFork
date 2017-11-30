@@ -264,7 +264,6 @@
         -webkit-background-size:cover;
         -moz-background-size:cover;
         background-size:cover;
-        opacity: .25;
         position: relative;
     }
     
@@ -276,23 +275,24 @@
         top: 50%;
         width: 400px;
         height: 250px;
-        background: rgba(0, 0, 0, .25);
+        background: rgba(255,255, 255, .73);
         margin-left: -230px;
         margin-top: -143px;
         border-radius:14px;
-        color: #fff;
+        color: #000;
+        box-shadow: 0px 0px 37px rgba(0,0, 0, .3);
     }
     
     .login-wrapper .form-wrap input{
         display: block;
         padding: 5px;
         border: none;
-        border-bottom: solid 1px #3a3a3a;
+        border-bottom: solid 1px #8a8a8a;
         width: 100%;
         background: transparent !important;
         outline: none;
-        color: #777;
-        font-size: 18px;
+        color: #555;
+        font-size: 19px;
     }
     
     input:-webkit-autofill,
@@ -300,7 +300,7 @@
     input:-webkit-autofill:focus,
     input:-webkit-autofill:active {
         transition: background-color 5000s ease-in-out 0s;
-        -webkit-text-fill-color: #777 !important;
+        -webkit-text-fill-color: #555 !important;
     }
     
     #loginMainTable, #logintable{
@@ -308,7 +308,7 @@
     }
     
     #logintable label{
-        color: #aaa;
+        color: #000;
         margin-bottom: 0 !important;
     }
     
@@ -353,6 +353,15 @@
         width: 100%;
         display: table;
         margin-top: 20px;
+    }
+    
+    .tracker-page-wrapper .logo{
+        position: absolute;
+        right: 50%;
+        margin-right: 20px;
+        bottom: 20px;
+        width: 90px;
+        z-index: 1;
     }
     
     .tracker-page-wrapper .bg-wrap{
@@ -626,7 +635,7 @@
         text-align: right !important;
         width: 160px;
     }
-
+    
     .final-amount{
         float: right;
         font-size: 19px;
@@ -695,6 +704,7 @@
         height: 100px;
         width: 100px;
         margin-top: 20px;
+        background: #fff;
     }
     
     .pos-container .display-frame .qr-code img{
@@ -888,6 +898,12 @@
         cursor: pointer;
         background: #ccc no-repeat center;
         border-radius: 3px;
+    }
+    
+    @media screen and (min-width: 1600px){
+        .container {
+            width: 1570px;
+        }
     }
     
     

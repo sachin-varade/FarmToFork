@@ -53,7 +53,7 @@ function registerUsers() {
 	node ../Server/hfcInterface/users.js
 }
 
-
+starttime=$(date +%s)
 restartNetwork
 registerUsers
-
+printf "\nTotal execution time : $(($(date +%s) - starttime)) secs ...\n\n"

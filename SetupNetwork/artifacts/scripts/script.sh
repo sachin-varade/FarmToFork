@@ -14,6 +14,7 @@ COUNTER=1
 MAX_RETRY=5
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 TIMEOUT=60
+DELAY=1
 # verify the result of the end-to-end test
 verifyResult () {
 	if [ $1 -ne 0 ] ; then
@@ -300,26 +301,26 @@ CHANNEL_NAME="ikeachannel"
 instantiateChaincode 3 "ikeaCC" "1.0" '{"Args":["init","a","100","b","200"]}'
 
 #Query on chaincode on Peer0/Org1
-echo "Querying chaincode"
-CHANNEL_NAME="abattoirchannel"
-chaincodeQuery 0 100 "abattoirCC" '{"Args":["getAllParts","a"]}'
-chaincodeQuery 1 100 "abattoirCC" '{"Args":["getAllParts","a"]}'
-CHANNEL_NAME="processorchannel"
-chaincodeQuery 1 100 "processorCC" '{"Args":["getAllVehicles","a"]}'
-chaincodeQuery 2 100 "processorCC" '{"Args":["getAllVehicles","a"]}'
-CHANNEL_NAME="ikeachannel"
-chaincodeQuery 3 100 "ikeaCC" '{"Args":["query","a"]}'
+# echo "Querying chaincode"
+# CHANNEL_NAME="abattoirchannel"
+# chaincodeQuery 0 100 "abattoirCC" '{"Args":["getAllParts","a"]}'
+# chaincodeQuery 1 100 "abattoirCC" '{"Args":["getAllParts","a"]}'
+# CHANNEL_NAME="processorchannel"
+# chaincodeQuery 1 100 "processorCC" '{"Args":["getAllVehicles","a"]}'
+# chaincodeQuery 2 100 "processorCC" '{"Args":["getAllVehicles","a"]}'
+# CHANNEL_NAME="ikeachannel"
+# chaincodeQuery 3 100 "ikeaCC" '{"Args":["query","a"]}'
 
 #Invoke on chaincode on Peer0/Org1
-echo "Sending invoke transaction on org1/peer0..."
+#echo "Sending invoke transaction on org1/peer0..."
 #chaincodeInvoke 0
 
 ## Install chaincode on Peer3/Org2
-echo "Installing chaincode on org2/peer3..."
+#echo "Installing chaincode on org2/peer3..."
 #installChaincode 3
 
 #Query on chaincode on Peer3/Org2, check if the result is 90
-echo "Querying chaincode on org2/peer3..."
+#echo "Querying chaincode on org2/peer3..."
 #chaincodeQuery 3 90
 
 echo
@@ -333,6 +334,4 @@ echo "|  _|   |  \| | | | | | "
 echo "| |___  | |\  | | |_| | "
 echo "|_____| |_| \_| |____/  "
 echo
-
 exit 0
-sleep 3000
