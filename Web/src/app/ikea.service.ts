@@ -43,6 +43,16 @@ export class IkeaService {
     });
   }
   
+  getUniqueId(option: string, value: string = ""): Promise<any> {
+    this.url = `${this.BASE_URL}/ikea/getUniqueId`;
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
+    .then((results: any) => {
+      return results._body;
+    }).catch((err) => {
+      this.alertService.error("Error occured...");
+    });
+  }
+
   getAllIkeaReceived(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllIkeaReceived`;
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()

@@ -64,6 +64,22 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
+    ikeaService.getUniqueId = function(option, value){
+        console.log("getUniqueId");
+        return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.ikeachannel, 
+                ikeaConfig.channels.ikeachannel.chaincodeId, 
+                "getUniqueId", 
+                [option, value]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
     ikeaService.getAllIkeaReceived = function(option, value){
         console.log("getAllIkeaReceived");
         return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)

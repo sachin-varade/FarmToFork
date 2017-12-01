@@ -22,6 +22,6 @@ app.use(function (req, res, next) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/api', router);
-var port = process.env.PORT || 8080;       
+var port = process.env.PORT || 8081;       
 app.listen(port);
 console.log('Running on port ' + port);

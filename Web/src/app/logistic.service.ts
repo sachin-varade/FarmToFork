@@ -56,4 +56,14 @@ export class LogisticService {
       this.alertService.error("Error occured...");
     });
   }
+
+  getUniqueId(option: string, value: string = ""): Promise<any> {
+    this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/getUniqueId";
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
+    .then((results: any) => {
+      return results._body;
+    }).catch((err) => {
+      this.alertService.error("Error occured...");
+    });
+  }
 }

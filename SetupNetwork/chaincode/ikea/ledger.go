@@ -191,6 +191,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return saveIkeaBill(stub, args)
 	} else if function == "getIkeaBillDetails" {
 		return getIkeaBillDetails(stub, args[0], args[1])
+	} else if function == "getUniqueId" {
+		return getUniqueId(stub, args[0], args[1])
 	}
 	
 	// error out

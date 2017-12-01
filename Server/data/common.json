@@ -4,6 +4,7 @@
 "materialGrades": ["HQB Grain-fed", "HQB Grass-fed"],
 "abattoirItemClasses": ["Superior","Excellent","Very Good","Good","Fair","Poor"],
 "fatCoverClasses": ["Low","Slight","Average","High","Very High"],
+"storage": ["Pallet-R1C1","Pallet-R1C2","Pallet-R1C3","Pallet-R1C4","Pallet-R1C5"],
 "routes":[
             {
                 "id": 1, "name": "Vikhroli-Jogeshwari-Borivali"

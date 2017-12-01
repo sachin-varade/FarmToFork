@@ -28,7 +28,11 @@ export class IkeaOutwardComponent implements OnInit {
     .then((results: any) => {
       this.ikeaReceivedList = <Array<IkeaModels.IkeaReceived>>results.ikeaReceived;
       this.setDefaultValues();
-    });    
+    }); 
+    this.ikeaService.getUniqueId('received')
+    .then((results: any) => {
+      this.ikeaDispatch.ikeaDispatchNumber = results;
+    });     
   }
 
   ngOnInit() {
@@ -65,7 +69,7 @@ export class IkeaOutwardComponent implements OnInit {
   }
 
   setDefaultValues(){
-    if(this.ikeaReceivedList.length>0){
+    if(this.ikeaReceivedList && this.ikeaReceivedList.length>0){
       this.ikeaDispatch.ikeaReceivedNumber = this.ikeaReceivedList[this.ikeaReceivedList.length-1].ikeaReceivedNumber;
     }
     

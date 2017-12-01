@@ -23,6 +23,7 @@ import (
 	"encoding/json"
 	"fmt"	
 	"strings"
+	"strconv"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -214,5 +215,106 @@ func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, option string
 		return shim.Success(rabAsBytes)	
 	}
 	
+	return shim.Success(nil)
+}
+
+// ============================================================================================================================
+// Get unique number
+// ============================================================================================================================
+func getUniqueId(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
+	prefix := ""	
+	if strings.ToLower(option) == "received" {
+		prefix = "ARID-"
+		allBAsBytes, err := stub.GetState("allAbattoirReceivedIds")
+		if err != nil {
+			return shim.Error("Failed to get all Abattoir Received")
+		}
+		var res AllAbattoirReceivedIds
+		err = json.Unmarshal(allBAsBytes, &res)
+		//fmt.Println(allBAsBytes);
+		if err != nil {
+			fmt.Println("Printing Unmarshal error:-");
+			fmt.Println(err);
+			return shim.Error("Failed to Unmarshal all Abattoir Received")
+		}
+		uniqueId := ""
+		if len(res.ReceiptBatchIds) != 0 {
+			uniqueId = res.ReceiptBatchIds[len(res.ReceiptBatchIds) - 1]
+			p := strings.Split(uniqueId, "-")
+			
+			input, e := strconv.Atoi(p[1])
+			if e != nil {
+				fmt.Println(e)
+			}
+			output := (input + 1)
+			uniqueId = prefix + strconv.Itoa(output)
+			
+		} else {
+			uniqueId = prefix +"1000"
+		}
+		rabAsBytes, _ := json.Marshal(uniqueId)
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "dispatch" {
+		prefix = "ADID-"
+		allBAsBytes, err := stub.GetState("allAbattoirDispatchIds")
+		if err != nil {
+			return shim.Error("Failed to get all Abattoir dispatch")
+		}
+		var res AllAbattoirDispatchIds
+		err = json.Unmarshal(allBAsBytes, &res)
+		if err != nil {
+			fmt.Println("Printing Unmarshal error:-");
+			fmt.Println(err);
+			return shim.Error("Failed to Unmarshal all Abattoir Dispatch records")
+		}
+		uniqueId := ""
+		if len(res.ConsignmentNumbers) != 0 {
+			uniqueId = res.ConsignmentNumbers[len(res.ConsignmentNumbers) - 1]
+			p := strings.Split(uniqueId, "-")
+			
+			input, e := strconv.Atoi(p[1])
+			if e != nil {
+				fmt.Println(e)
+			}
+			output := (input + 1)
+			uniqueId = prefix + strconv.Itoa(output)
+			
+		} else {
+			uniqueId = prefix +"1000"
+		}
+		rabAsBytes, _ := json.Marshal(uniqueId)
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "logistic" {
+		prefix = "A2PLID-"
+		allBAsBytes, err := stub.GetState("allLogisticTransactionIds")
+		if err != nil {
+			return shim.Error("Failed to get all Abattoir Received")
+		}
+		var res AllLogisticTransactionIds
+		err = json.Unmarshal(allBAsBytes, &res)
+		if err != nil {
+			fmt.Println("Printing Unmarshal error:-");
+			fmt.Println(err);
+			return shim.Error("Failed to Unmarshal all Logistic Transactions records")
+		}
+		uniqueId := ""
+		if len(res.ConsignmentNumbers) != 0 {
+			uniqueId = res.ConsignmentNumbers[len(res.ConsignmentNumbers) - 1]
+			p := strings.Split(uniqueId, "-")
+			
+			input, e := strconv.Atoi(p[1])
+			if e != nil {
+				fmt.Println(e)
+			}
+			output := (input + 1)
+			uniqueId = prefix + strconv.Itoa(output)
+			
+		} else {
+			uniqueId = prefix +"1000"
+		}
+		rabAsBytes, _ := json.Marshal(uniqueId)
+		return shim.Success(rabAsBytes)	
+	}
+
 	return shim.Success(nil)
 }

@@ -29,6 +29,10 @@ export class ProcessorInwardComponent implements OnInit {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
+    this.processorService.getUniqueId('received')
+    .then((results: any) => {
+      this.processorReceived.processorReceiptNumber = results;
+    });
     this.logisticService.getAllLogisticTransactions('details')
     .then((results: any) => {
       this.logisticTransactionList = <Array<LogisticModels.LogisticTransaction>>results.logisticTransactions;
@@ -79,6 +83,9 @@ export class ProcessorInwardComponent implements OnInit {
   }
 
   checkLogisticConsignment(){
+    if(!this.logisticTransactionList){
+      return;
+    }
     var obj= this;
     this.logisticTransaction = this.logisticTransactionList.filter(function(o){return o.consignmentNumber === obj.processorReceived.consignmentNumber})[0];
     if(this.logisticTransaction.iotTemperatureHistory && this.logisticTransaction.iotTemperatureHistory.length > 0){
@@ -97,7 +104,7 @@ export class ProcessorInwardComponent implements OnInit {
   }
 
   setDefaultValues(){
-    if(this.logisticTransactionList.length > 0){
+    if(this.logisticTransactionList && this.logisticTransactionList.length > 0){
       this.processorReceived.consignmentNumber = this.logisticTransactionList[this.logisticTransactionList.length-1].consignmentNumber;
     }
     
@@ -105,6 +112,6 @@ export class ProcessorInwardComponent implements OnInit {
     this.processorReceived.guidNumber = this.commonData.processorInwardProducts[0].code;
     this.setGuid();
     this.processorReceived.materialGrade = this.commonData.materialGrades[0];
-    
+    this.processorReceived.storage = this.commonData.storage[0];
   }
 }

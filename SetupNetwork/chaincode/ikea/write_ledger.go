@@ -40,6 +40,20 @@ func saveIkeaReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Respo
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]);
 
+	//check duplicate 	
+	allBAsBytes, err := stub.GetState("allIkeaReceivedIds")
+	if err != nil {
+		return shim.Error("Failed to get all Ikea Received Ids")
+	}
+	var allb AllIkeaReceivedIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Received")
+	}
+	if checkDuplicateId(allb.IkeaReceivedNumbers, args[0]) == 0{
+		return shim.Error("Duplicate IkeaReceivedNumber - "+ args[0])
+	}
+
 	var bt IkeaReceived
 	bt.IkeaReceivedNumber				= args[0]
 	bt.IkeaId						= args[1]
@@ -79,16 +93,6 @@ func saveIkeaReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Respo
 		return shim.Error(err.Error())
 	}
 
-	//Update All Ikea ReceivedIds Array
-	allBAsBytes, err := stub.GetState("allIkeaReceivedIds")
-	if err != nil {
-		return shim.Error("Failed to get all Ikea Received Ids")
-	}
-	var allb AllIkeaReceivedIds
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all Received")
-	}
 	allb.IkeaReceivedNumbers = append(allb.IkeaReceivedNumbers, bt.IkeaReceivedNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
@@ -113,6 +117,19 @@ func saveIkeaDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.Respo
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]);
 
+	allBAsBytes, err := stub.GetState("allIkeaDispatchIds")
+	if err != nil {
+		return shim.Error("Failed to get all Ikea Dispatch Ids")
+	}
+	var allb AllIkeaDispatchIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Dispatch")
+	}
+	if checkDuplicateId(allb.IkeaDispatchNumbers, args[0]) == 0{
+		return shim.Error("Duplicate IkeaDispatchNumber - "+ args[0])
+	}
+
 	var bt IkeaDispatch
 	bt.IkeaDispatchNumber				= args[0]
 	bt.IkeaReceivedNumber						= args[1]	
@@ -132,16 +149,7 @@ func saveIkeaDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.Respo
 		return shim.Error(err.Error())
 	}
 
-	//Update All Ikea DispatchIds Array
-	allBAsBytes, err := stub.GetState("allIkeaDispatchIds")
-	if err != nil {
-		return shim.Error("Failed to get all Ikea Dispatch Ids")
-	}
-	var allb AllIkeaDispatchIds
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all Dispatch")
-	}
+	//Update All Ikea DispatchIds Array	
 	allb.IkeaDispatchNumbers = append(allb.IkeaDispatchNumbers, bt.IkeaDispatchNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
@@ -165,6 +173,18 @@ func saveIkeaBill(stub  shim.ChaincodeStubInterface, args []string) pb.Response 
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]);
+	allBAsBytes, err := stub.GetState("allIkeaBillNumbers")
+	if err != nil {
+		return shim.Error("Failed to get all Ikea Bill Numbers")
+	}
+	var allb AllIkeaBillNumbers
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Bills")
+	}
+	if checkDuplicateId(allb.IkeaBillNumbers, args[0]) == 0{
+		return shim.Error("Duplicate BillNumber - "+ args[0])
+	}
 
 	var bt IkeaBill
 	bt.BillNumber				= args[0]
@@ -184,16 +204,7 @@ func saveIkeaBill(stub  shim.ChaincodeStubInterface, args []string) pb.Response 
 		return shim.Error(err.Error())
 	}
 
-	//Update All Ikea DispatchIds Array
-	allBAsBytes, err := stub.GetState("allIkeaBillNumbers")
-	if err != nil {
-		return shim.Error("Failed to get all Ikea Bill Numbers")
-	}
-	var allb AllIkeaBillNumbers
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all Bills")
-	}
+	//Update All Ikea DispatchIds Array	
 	allb.IkeaBillNumbers = append(allb.IkeaBillNumbers, bt.BillNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)

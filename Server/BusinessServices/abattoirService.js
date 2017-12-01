@@ -20,6 +20,22 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
     eventHubPeers = eventHubPeers;
     orderer = orderer;
 
+    abattoirService.getUniqueId = function(option, value){
+        console.log("getUniqueId");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.abattoirchannel, 
+                abattoirConfig.channels.abattoirchannel.chaincodeId, 
+                "getUniqueId", 
+                [option, value]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
     abattoirService.getAllAbattoirReceived = function(option, value){
         console.log("getAllAbattoirReceived");
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)

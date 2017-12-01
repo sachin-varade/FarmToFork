@@ -269,6 +269,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return updateLogisticTransactionStatus(stub, args)
 	} else if function == "pushIotDetailsToLogisticTransaction" {
 		return pushIotDetailsToLogisticTransaction(stub, args)
+	} else if function == "getUniqueId" {
+		return getUniqueId(stub, args[0], args[1])
 	}
 	
 	// error out

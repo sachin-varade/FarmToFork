@@ -51,3 +51,13 @@ func NewUniqueId() string{
     s = fmt.Sprintf("%X", b)
 	return s    
 }
+
+
+func checkDuplicateId(obj []string, value string) int{
+	for i := range obj{
+		if obj[i] == value {
+			return 0
+		} 
+	}
+	return 1
+}

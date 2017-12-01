@@ -12,7 +12,7 @@
             
             <div class="form-group">
             <label for="processorReceiptNumber">Meatball Manufacturer Receipt Number</label>
-            <input type="text" class="form-control" [(ngModel)]="processorReceived.processorReceiptNumber" name="processorReceiptNumber" required>
+            <input type="text" disabled class="form-control" [(ngModel)]="processorReceived.processorReceiptNumber" name="processorReceiptNumber" required>
             </div>
     
             <div class="form-group">
@@ -24,14 +24,16 @@
                 <label for="transportConsitionSatisfied">Transport conditions satisfied?</label>
                 <br>
                 <label *ngIf="logisticTransaction.iotTemperatureHistory && logisticTransaction.iotTemperatureHistory.length > 0" class="checkbox-style">
-                    <input checked disabled type="checkbox" name="transportConsitionSatisfied" required>
+                    <img class="footer-logo" src="assets/images/check-no.png">
+                    <input *ngIf="false" type="checkbox" name="transportConsitionSatisfied" required>
                     No
-                    <span class="checkmark"></span>
+                    <!-- <span class="checkmark"></span> -->
                 </label>
                 <label *ngIf="!logisticTransaction.iotTemperatureHistory || logisticTransaction.iotTemperatureHistory.length == 0" class="checkbox-style">
-                        <input checked disabled type="checkbox" [(ngModel)]="processorReceived.transportConsitionSatisfied" name="transportConsitionSatisfied" required>
+                    <img class="footer-logo" src="assets/images/check-yes.png">    
+                    <input *ngIf="false" type="checkbox" [(ngModel)]="processorReceived.transportConsitionSatisfied" name="transportConsitionSatisfied" required>
                         Yes
-                        <span class="checkmark"></span>
+                        <!-- <span class="checkmark"></span> -->
                 </label>
                 <table *ngIf="logisticTransaction.iotTemperatureHistory && logisticTransaction.iotTemperatureHistory.length > 0" class="table table-striped">
                         <tr>
@@ -96,7 +98,9 @@
     
             <div class="form-group">
                 <label for="storage">Storage</label>
-                <input type="text" [(ngModel)]="processorReceived.storage" class="form-control" name="storage" required>
+                <select class="form-control" [(ngModel)]="processorReceived.storage" name="storage" required >
+                    <option *ngFor="let item of commonData.storage" [value]="item">{{item}}</option>
+                  </select>
             </div>
     
             <div class="form-group clearfix">

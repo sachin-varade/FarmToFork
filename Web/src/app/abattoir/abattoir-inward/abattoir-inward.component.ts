@@ -30,6 +30,10 @@ export class AbattoirInwardComponent implements OnInit {
       element.checked = false;
     });    
     this.setDefaultValues();
+    this.abattoirService.getUniqueId('received')
+    .then((results: any) => {
+      this.abattoirReceived.receiptBatchId = results;
+    });
   }
 
   ngOnInit() {

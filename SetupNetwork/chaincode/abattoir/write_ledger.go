@@ -39,6 +39,18 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
+	allBAsBytes, err := stub.GetState("allAbattoirReceivedIds")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Inward Ids")
+	}
+	var allb AllAbattoirReceivedIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Received")
+	}
+	if checkDuplicateId(allb.ReceiptBatchIds, args[2]) == 0{
+		return shim.Error("Duplicate ReceiptBatchId - "+ args[2])
+	}
 
 	var bt AbattoirMaterialReceived
 	bt.AbattoirId				= args[0]
@@ -76,16 +88,7 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 		return shim.Error(err.Error())
 	}
 
-	//Update All Abattoirs Array
-	allBAsBytes, err := stub.GetState("allAbattoirReceivedIds")
-	if err != nil {
-		return shim.Error("Failed to get all Abattoir Inward Ids")
-	}
-	var allb AllAbattoirReceivedIds
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all Received")
-	}
+	//Update All Abattoirs Array	
 	allb.ReceiptBatchIds = append(allb.ReceiptBatchIds, bt.ReceiptBatchId)
 
 	allBuAsBytes, _ := json.Marshal(allb)
@@ -108,6 +111,18 @@ func saveAbattoirDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]+","+args[14]);
+	allBAsBytes, err := stub.GetState("allAbattoirDispatchIds")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Dispatch")
+	}
+	var allb AllAbattoirDispatchIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all dispatch")
+	}
+	if checkDuplicateId(allb.ConsignmentNumbers, args[1]) == 0{
+		return shim.Error("Duplicate ConsignmentNumber - "+ args[1])
+	}
 
 	var bt AbattoirDispatch	
 	bt.AbattoirId				= args[0]
@@ -140,16 +155,7 @@ func saveAbattoirDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.R
 		return shim.Error(err.Error())
 	}
 
-	//Update All AbattoirDispatch Array
-	allBAsBytes, err := stub.GetState("allAbattoirDispatchIds")
-	if err != nil {
-		return shim.Error("Failed to get all Abattoir Dispatch")
-	}
-	var allb AllAbattoirDispatchIds
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all dispatch")
-	}
+	//Update All AbattoirDispatch Array	
 	allb.ConsignmentNumbers = append(allb.ConsignmentNumbers,bt.ConsignmentNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
@@ -172,6 +178,18 @@ func saveLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) p
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]+","+args[14]);
+	allBAsBytes, err := stub.GetState("allLogisticTransactionIds")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Dispatch")
+	}
+	var allb AllLogisticTransactionIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all dispatch")
+	}
+	if checkDuplicateId(allb.ConsignmentNumbers, args[2]) == 0{
+		return shim.Error("Duplicate ConsignmentNumber - "+ args[2])
+	}
 
 	var bt LogisticTransaction
 	bt.LogisticId				= args[0]
@@ -214,16 +232,7 @@ func saveLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) p
 		return shim.Error(err.Error())
 	}
 
-	//Update All AbattoirDispatch Array
-	allBAsBytes, err := stub.GetState("allLogisticTransactionIds")
-	if err != nil {
-		return shim.Error("Failed to get all Abattoir Dispatch")
-	}
-	var allb AllLogisticTransactionIds
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all dispatch")
-	}
+	//Update All AbattoirDispatch Array	
 	allb.ConsignmentNumbers = append(allb.ConsignmentNumbers, bt.ConsignmentNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)

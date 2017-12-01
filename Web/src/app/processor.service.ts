@@ -44,6 +44,16 @@ export class ProcessorService {
     });
   }
 
+  getUniqueId(option: string, value: string = ""): Promise<any> {
+    this.url = `${this.BASE_URL}/processor/getUniqueId`;
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
+    .then((results: any) => {
+      return results._body;
+    }).catch((err) => {
+      this.alertService.error("Error occured...");
+    });
+  }
+
   getAllProcessorReceived(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllProcessorReceived`;
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()

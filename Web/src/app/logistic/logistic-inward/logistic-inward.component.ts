@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { FormsModule, NgControl } from '@angular/forms';
 import { NgModel, NgForm } from '@angular/forms';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-
+import { DOCUMENT } from '@angular/platform-browser';
 import { UserService } from '../../user.service';
 import { AbattoirService } from '../../abattoir.service';
 import { LogisticService } from '../../logistic.service';
@@ -39,20 +39,25 @@ export class LogisticInwardComponent implements OnInit {
               private abattoirService: AbattoirService,
               private logisticService: LogisticService,
             private processorService: ProcessorService,
-          private alertService: AlertService) {
+          private alertService: AlertService,
+          @Inject(DOCUMENT) private document) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
     this.abattoirService.getAllAbattoirDispatch('details')
     .then((results: any) => {
       this.abattoirDispatchList = <Array<AbattoirModels.AbattoirDispatch>>results.abattoirMaterialDispatch;      
+      this.processorService.getAllProcessorDispatch('details')
+      .then((results: any) => {
+        this.processorDispatchList = <Array<ProcessorModels.ProcessorDispatch>>results.processorDispatch;
+        this.logisticService.getUniqueId('logistic')
+        .then((results: any) => {
+          this.logisticTransaction.consignmentNumber = results;
+          this.fetchConsignment(this.document.getElementById('myForm'));
+        });   
+      });
     });
     this.logisticTransaction.currentStatus = "";  
-    
-    this.processorService.getAllProcessorDispatch('details')
-    .then((results: any) => {
-      this.processorDispatchList = <Array<ProcessorModels.ProcessorDispatch>>results.processorDispatch;
-    });      
   }
 
   ngOnInit() {

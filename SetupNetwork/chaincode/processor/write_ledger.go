@@ -39,6 +39,18 @@ func saveProcessorReceived(stub  shim.ChaincodeStubInterface, args []string) pb.
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]);
+	allBAsBytes, err := stub.GetState("allProcessorReceivedIds")
+	if err != nil {
+		return shim.Error("Failed to get all Processing Company Received Ids")
+	}
+	var allb AllProcessorReceivedIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Received")
+	}
+	if checkDuplicateId(allb.ProcessorReceiptNumbers, args[0]) == 0{
+		return shim.Error("Duplicate ProcessorReceiptNumber - "+ args[0])
+	}
 
 	var bt ProcessorReceived
 	bt.ProcessorReceiptNumber	= args[0]
@@ -78,16 +90,7 @@ func saveProcessorReceived(stub  shim.ChaincodeStubInterface, args []string) pb.
 		return shim.Error(err.Error())
 	}
 
-	//Update All Processing Company ReceivedIds Array
-	allBAsBytes, err := stub.GetState("allProcessorReceivedIds")
-	if err != nil {
-		return shim.Error("Failed to get all Processing Company Received Ids")
-	}
-	var allb AllProcessorReceivedIds
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all Received")
-	}
+	//Update All Processing Company ReceivedIds Array	
 	allb.ProcessorReceiptNumbers = append(allb.ProcessorReceiptNumbers, bt.ProcessorReceiptNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
@@ -110,6 +113,18 @@ func saveProcessingTransaction(stub  shim.ChaincodeStubInterface, args []string)
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
+	allBAsBytes, err := stub.GetState("allProcessingTransactionIds")
+	if err != nil {
+		return shim.Error("Failed to get all Processing Company BatchCodes")
+	}
+	var allb AllProcessingTransactionIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Processing Batch Codes")
+	}
+	if checkDuplicateId(allb.ProcessorBatchCodes, args[0]) == 0{
+		return shim.Error("Duplicate ProcessorBatchCode - "+ args[0])
+	}
 
 	var bt ProcessingTransaction	
 	bt.ProcessorBatchCode				= args[0]
@@ -138,16 +153,7 @@ func saveProcessingTransaction(stub  shim.ChaincodeStubInterface, args []string)
 		return shim.Error(err.Error())
 	}
 
-	//Update All Processing Company Transaction Array
-	allBAsBytes, err := stub.GetState("allProcessingTransactionIds")
-	if err != nil {
-		return shim.Error("Failed to get all Processing Company BatchCodes")
-	}
-	var allb AllProcessingTransactionIds
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all Processing Batch Codes")
-	}
+	//Update All Processing Company Transaction Array	
 	allb.ProcessorBatchCodes = append(allb.ProcessorBatchCodes,bt.ProcessorBatchCode)
 
 	allBuAsBytes, _ := json.Marshal(allb)
@@ -171,6 +177,18 @@ func saveProcessorDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
+	allBAsBytes, err := stub.GetState("allProcessorDispatchIds")
+	if err != nil {
+		return shim.Error("Failed to get all Processing Company Dispatch Consignment Numbers")
+	}
+	var allb AllProcessorDispatchIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all Processing dispatch consignment numbers")
+	}
+	if checkDuplicateId(allb.ConsignmentNumbers, args[0]) == 0{
+		return shim.Error("Duplicate ConsignmentNumber - "+ args[0])
+	}
 
 	var bt ProcessorDispatch	
 	bt.ConsignmentNumber				= args[0]
@@ -198,16 +216,7 @@ func saveProcessorDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.
 		return shim.Error(err.Error())
 	}
 
-	//Update All Processing Company Dispatch Array
-	allBAsBytes, err := stub.GetState("allProcessorDispatchIds")
-	if err != nil {
-		return shim.Error("Failed to get all Processing Company Dispatch Consignment Numbers")
-	}
-	var allb AllProcessorDispatchIds
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all Processing dispatch consignment numbers")
-	}
+	//Update All Processing Company Dispatch Array	
 	allb.ConsignmentNumbers = append(allb.ConsignmentNumbers,bt.ConsignmentNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)
@@ -230,6 +239,18 @@ func saveLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) p
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]+","+args[14]);
+	allBAsBytes, err := stub.GetState("allLogisticTransactionIds")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Dispatch")
+	}
+	var allb AllLogisticTransactionIds
+	err = json.Unmarshal(allBAsBytes, &allb)
+	if err != nil {
+		return shim.Error("Failed to Unmarshal all dispatch")
+	}
+	if checkDuplicateId(allb.ConsignmentNumbers, args[2]) == 0{
+		return shim.Error("Duplicate ConsignmentNumber - "+ args[2])
+	}
 
 	var bt LogisticTransaction
 	bt.LogisticId				= args[0]
@@ -272,16 +293,7 @@ func saveLogisticTransaction(stub  shim.ChaincodeStubInterface, args []string) p
 		return shim.Error(err.Error())
 	}
 
-	//Update All AbattoirDispatch Array
-	allBAsBytes, err := stub.GetState("allLogisticTransactionIds")
-	if err != nil {
-		return shim.Error("Failed to get all Abattoir Dispatch")
-	}
-	var allb AllLogisticTransactionIds
-	err = json.Unmarshal(allBAsBytes, &allb)
-	if err != nil {
-		return shim.Error("Failed to Unmarshal all dispatch")
-	}
+	//Update All AbattoirDispatch Array	
 	allb.ConsignmentNumbers = append(allb.ConsignmentNumbers, bt.ConsignmentNumber)
 
 	allBuAsBytes, _ := json.Marshal(allb)

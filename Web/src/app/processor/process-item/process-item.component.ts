@@ -32,7 +32,11 @@ export class ProcessItemComponent implements OnInit {
     }); 
     this.commonData.processingActions.forEach(element => {
       element.checked = true;
-    });   
+    });  
+    this.processorService.getUniqueId('process')
+    .then((results: any) => {
+      this.processingTransaction.processorBatchCode = results;
+    }); 
   }
 
   ngOnInit() {
@@ -79,7 +83,7 @@ export class ProcessItemComponent implements OnInit {
   }
 
   setDefaultValues(){
-    if(this.processorReceivedList.length){
+    if(this.processorReceivedList && this.processorReceivedList.length){
       this.processingTransaction.processorReceiptNumber = this.processorReceivedList[this.processorReceivedList.length-1].processorReceiptNumber;
     }
     
@@ -91,7 +95,7 @@ export class ProcessItemComponent implements OnInit {
     this.processingTransaction.quantity = 10;
     this.processingTransaction.quantityUnit = this.commonData.units[0];
     this.processingTransaction.qualityControlDocument = "testing...";
-
+    this.processingTransaction.storage = this.commonData.storage[0];
   }
 }
 

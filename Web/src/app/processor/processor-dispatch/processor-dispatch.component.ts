@@ -31,7 +31,11 @@ export class ProcessorDispatchComponent implements OnInit {
     .then((results: any) => {
       this.processingTransactionList = <Array<ProcessorModels.ProcessingTransaction>>results.processingTransaction;
       this.setDefaultValues();
-    });     
+    });   
+    this.processorService.getUniqueId('dispatch')
+    .then((results: any) => {
+      this.processorDispatch.consignmentNumber = results;
+    });  
   }
 
   ngOnInit() {
@@ -39,6 +43,9 @@ export class ProcessorDispatchComponent implements OnInit {
 
   getProductDetails(){
     var self = this;
+    if(!this.processingTransactionList){
+      return;
+    }
     this.processorService.getAllProcessorReceived('id', this.processingTransactionList.filter(function(o){return o.processorBatchCode === self.processorDispatch.processorBatchCode})[0].processorReceiptNumber )
     .then((results: any) => {
       this.logisticService.getAllLogisticTransactions('id', results.processorReceived[0].consignmentNumber)
@@ -80,7 +87,7 @@ export class ProcessorDispatchComponent implements OnInit {
   }
 
   setDefaultValues(){
-    if(this.processingTransactionList.length > 0){
+    if(this.processingTransactionList && this.processingTransactionList.length > 0){
       this.processorDispatch.processorBatchCode = this.processingTransactionList[this.processingTransactionList.length-1].processorBatchCode;
     }
     
@@ -94,5 +101,6 @@ export class ProcessorDispatchComponent implements OnInit {
     this.processorDispatch.quantity = 10;
     this.processorDispatch.quantityUnit = this.commonData.units[0];
     this.processorDispatch.qualityControlDocument = "Quality control documents verified";
+    this.processorDispatch.storage = this.commonData.storage[0];
   }
 }

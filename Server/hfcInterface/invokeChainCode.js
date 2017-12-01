@@ -87,8 +87,12 @@ var invokeChainCode = function(fabric_client, channel, peerAddress, chaincodeId,
 
 		return Promise.all(promises);
 	} else {
-		console.error('Failed to send Proposal or receive valid response. Response null or status is not 200. exiting...');
-		throw new Error('Failed to send Proposal or receive valid response. Response null or status is not 200. exiting...');
+		if(proposalResponses[0] && proposalResponses[0].message !=""){
+			throw new Error(proposalResponses[0].message);
+		}	
+		else{
+			throw new Error('Failed to send Proposal or receive valid response. Response null or status is not 200. exiting...');	
+		}					
 	}
 }).then((results) => {
 	console.log('Send transaction promise and event listener promise have completed');

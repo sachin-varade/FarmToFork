@@ -32,6 +32,10 @@ export class AbattoirOutwardComponent implements OnInit {
     });
     this.abattoirDispatch.dispatchDate = new Date();
     this.userData.users.logistics = this.userData.users.logistics.filter(function(o){return o.type === 'A2P'});
+    this.abattoirService.getUniqueId('dispatch')
+    .then((results: any) => {
+      this.abattoirDispatch.consignmentNumber = results;
+    });
   }
 
   ngOnInit() {

@@ -5,7 +5,7 @@
       <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
         <div class="form-group">
           <label for="consignmentNumber">Consignment Number</label>
-          <input type="text" [(ngModel)]="abattoirDispatch.consignmentNumber" class="form-control" name="consignmentNumber" required>
+          <input type="text" disabled [(ngModel)]="abattoirDispatch.consignmentNumber" class="form-control" name="consignmentNumber" required>
       </div>
 
       <div class="form-group">
@@ -42,23 +42,25 @@
             <input type="text" [(ngModel)]="abattoirDispatch.livestockBatchId" class="form-control" name="livestockBatchId" required>
           </div>
 
-      <div class="form-group">
-          <label for="guidNumber">GUID/GTIN</label>
-          <select class="form-control" [(ngModel)]="abattoirDispatch.guidNumber" (change)="setGuid()" name="guidNumber" required>
-              <option value="0" selected="selected"></option>
-              <option *ngFor="let guid of commonData.abattoirsProducts" [value]="guid.code">{{guid.code}}</option>
-          </select>
-      </div>
-
-      <div class="form-group">
-          <label for="materialName">Item Name</label>
-          <input type="text" [(ngModel)]="abattoirDispatch.materialName" class="form-control" name="materialName" required>
-      </div>
+      
 
      
       
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
+        
+        <div class="form-group">
+            <label for="guidNumber">GUID/GTIN</label>
+            <select class="form-control" [(ngModel)]="abattoirDispatch.guidNumber" (change)="setGuid()" name="guidNumber" required>
+                <option value="0" selected="selected"></option>
+                <option *ngFor="let guid of commonData.abattoirsProducts" [value]="guid.code">{{guid.code}}</option>
+            </select>
+        </div>
+  
+        <div class="form-group">
+            <label for="materialName">Item Name</label>
+            <input type="text" [(ngModel)]="abattoirDispatch.materialName" class="form-control" name="materialName" required>
+        </div>
         
           <div class="form-group">
               <label for="materialGrade">Item Class</label>

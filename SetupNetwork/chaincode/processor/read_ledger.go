@@ -23,7 +23,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-
+	"strconv"
+	
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
@@ -272,5 +273,137 @@ func getAllLogisticTransactions(stub  shim.ChaincodeStubInterface, option string
 		return shim.Success(rabAsBytes)	
 	}
 	
+	return shim.Success(nil)
+}
+
+// ============================================================================================================================
+// Get unique number
+// ============================================================================================================================
+func getUniqueId(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
+	prefix := ""	
+	if strings.ToLower(option) == "received" {
+		prefix = "PRID-"
+		allBAsBytes, err := stub.GetState("allProcessorReceivedIds")
+		if err != nil {
+			return shim.Error("Failed to get all Abattoir Received")
+		}
+		var res AllProcessorReceivedIds
+		err = json.Unmarshal(allBAsBytes, &res)
+		if err != nil {
+			fmt.Println("Printing Unmarshal error:-");
+			fmt.Println(err);
+			return shim.Error("Failed to Unmarshal all Processing Company Received Ids")
+		}
+		uniqueId := ""
+		if len(res.ProcessorReceiptNumbers) != 0 {
+			uniqueId = res.ProcessorReceiptNumbers[len(res.ProcessorReceiptNumbers) - 1]
+			p := strings.Split(uniqueId, "-")
+			
+			input, e := strconv.Atoi(p[1])
+			if e != nil {
+				fmt.Println(e)
+			}
+			output := (input + 1)
+			uniqueId = prefix + strconv.Itoa(output)
+			
+		} else {
+			uniqueId = prefix +"1000"
+		}
+		rabAsBytes, _ := json.Marshal(uniqueId)
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "process" {
+		prefix = "PIID-"
+		allBAsBytes, err := stub.GetState("allProcessingTransactionIds")
+		if err != nil {
+			return shim.Error("Failed to get all Processing company Batch Codes")
+		}
+		var res AllProcessingTransactionIds
+		err = json.Unmarshal(allBAsBytes, &res)
+		if err != nil {
+			fmt.Println("Printing Unmarshal error:-");
+			fmt.Println(err);
+			return shim.Error("Failed to Unmarshal all Processing company Batch Codes records")
+		}
+		uniqueId := ""
+		if len(res.ProcessorBatchCodes) != 0 {
+			uniqueId = res.ProcessorBatchCodes[len(res.ProcessorBatchCodes) - 1]
+			p := strings.Split(uniqueId, "-")
+			
+			input, e := strconv.Atoi(p[1])
+			if e != nil {
+				fmt.Println(e)
+			}
+			output := (input + 1)
+			uniqueId = prefix + strconv.Itoa(output)
+			
+		} else {
+			uniqueId = prefix +"1000"
+		}
+		rabAsBytes, _ := json.Marshal(uniqueId)
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "dispatch" {
+		prefix = "PDID-"
+		allBAsBytes, err := stub.GetState("allProcessorDispatchIds")
+		if err != nil {
+			return shim.Error("Failed to get all Processing company dispatch consignment numbers")
+		}
+	
+		var res AllProcessorDispatchIds
+		err = json.Unmarshal(allBAsBytes, &res)
+		//fmt.Println(allBAsBytes);
+		if err != nil {
+			fmt.Println("Printing Unmarshal error:-");
+			fmt.Println(err);
+			return shim.Error("Failed to Unmarshal all Processing company dispatch records")
+		}
+		uniqueId := ""
+		if len(res.ConsignmentNumbers) != 0 {
+			uniqueId = res.ConsignmentNumbers[len(res.ConsignmentNumbers) - 1]
+			p := strings.Split(uniqueId, "-")
+			
+			input, e := strconv.Atoi(p[1])
+			if e != nil {
+				fmt.Println(e)
+			}
+			output := (input + 1)
+			uniqueId = prefix + strconv.Itoa(output)
+			
+		} else {
+			uniqueId = prefix +"1000"
+		}
+		rabAsBytes, _ := json.Marshal(uniqueId)
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "logistic" {
+		prefix = "P2ILID-"
+		allBAsBytes, err := stub.GetState("allLogisticTransactionIds")
+		if err != nil {
+			return shim.Error("Failed to get all Abattoir Received")
+		}
+		var res AllLogisticTransactionIds
+		err = json.Unmarshal(allBAsBytes, &res)
+		if err != nil {
+			fmt.Println("Printing Unmarshal error:-");
+			fmt.Println(err);
+			return shim.Error("Failed to Unmarshal all Logistic Transactions records")
+		}
+		uniqueId := ""
+		if len(res.ConsignmentNumbers) != 0 {
+			uniqueId = res.ConsignmentNumbers[len(res.ConsignmentNumbers) - 1]
+			p := strings.Split(uniqueId, "-")
+			
+			input, e := strconv.Atoi(p[1])
+			if e != nil {
+				fmt.Println(e)
+			}
+			output := (input + 1)
+			uniqueId = prefix + strconv.Itoa(output)
+			
+		} else {
+			uniqueId = prefix +"1000"
+		}
+		rabAsBytes, _ := json.Marshal(uniqueId)
+		return shim.Success(rabAsBytes)	
+	}
+
 	return shim.Success(nil)
 }

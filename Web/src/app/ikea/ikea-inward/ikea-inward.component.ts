@@ -33,7 +33,11 @@ export class IkeaInwardComponent implements OnInit {
     .then((results: any) => {
       this.logisticTransactionList = <Array<LogisticModels.LogisticTransaction>>results.logisticTransactions;
       this.setDefaultValues();
-    });    
+    });  
+    this.ikeaService.getUniqueId('received')
+    .then((results: any) => {
+      this.ikeaReceived.ikeaReceivedNumber = results;
+    });   
   }
 
   ngOnInit() {
@@ -80,6 +84,9 @@ export class IkeaInwardComponent implements OnInit {
 
   checkLogisticConsignment(){
     var obj= this;
+    if(!this.logisticTransactionList){
+      return;
+    }
     this.logisticTransaction = this.logisticTransactionList.filter(function(o){return o.consignmentNumber === obj.ikeaReceived.consignmentNumber})[0];
     if(this.logisticTransaction.iotTemperatureHistory && this.logisticTransaction.iotTemperatureHistory.length > 0){
       this.ikeaReceived.transportConsitionSatisfied = "false";
@@ -97,7 +104,7 @@ export class IkeaInwardComponent implements OnInit {
   }
 
   setDefaultValues(){
-    if(this.logisticTransactionList.length>0){
+    if(this.logisticTransactionList && this.logisticTransactionList.length>0){
       this.ikeaReceived.consignmentNumber = this.logisticTransactionList[this.logisticTransactionList.length-1].consignmentNumber;
     }
     
@@ -105,5 +112,6 @@ export class IkeaInwardComponent implements OnInit {
     this.ikeaReceived.guidNumber = this.commonData.ikeaInwardProducts[0].code;
     this.setGuid();
     this.ikeaReceived.materialGrade = this.commonData.materialGrades[0];
+    this.ikeaReceived.storage = this.commonData.storage[0];
   }
 }

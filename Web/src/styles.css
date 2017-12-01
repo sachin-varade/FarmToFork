@@ -647,6 +647,18 @@
         text-align: right !important;
         width: 160px;
     }
+
+    .final-amount{
+        float: right;
+        font-size: 19px;
+        color: #b90101;
+        font-weight: bold;
+        padding: 0px 10px;
+        background: #fff;
+        border: solid 1px #ccc;
+        text-align: right !important;
+        width: 160px;
+    }
     
     .pos-container .display-frame .btn-area{
         height: 30%;
@@ -906,6 +918,20 @@
         }
     }
     
+    .alert-outer{
+        right: 5px !important;
+        position: absolute;
+        top: 105px;
+        z-index: 100;
+        min-width: 300px;
+    }
+
+    .neg-temp{
+        color: red !important;
+    }
+
+    
+	
     .alert-outer{
         right: 5px !important;
         position: absolute;

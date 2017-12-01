@@ -21,6 +21,22 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
     eventHubPeers = eventHubPeers;
     orderer = orderer;
 
+    logisticService.getA2PUniqueId = function(option, value){
+        console.log("getUniqueId");
+        return fabric_client.getUserContext(users.logisticA2PUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.abattoirchannel, 
+                logisticA2PConfig.channels.abattoirchannel.chaincodeId, 
+                "getUniqueId", 
+                [option, value]);
+        }).then((results) => {            
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
     logisticService.getAllLogisticA2PTransactions = function(option, value){
         console.log("getAllLogisticTransactions");
         return fabric_client.getUserContext(users.logisticA2PUser.enrollmentID, true)
@@ -128,6 +144,22 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             throw err;
         });
     } 
+
+    logisticService.getP2IUniqueId = function(option, value){
+        console.log("getUniqueId");
+        return fabric_client.getUserContext(users.logisticP2IUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.processorchannel, 
+                logisticP2IConfig.channels.processorchannel.chaincodeId, 
+                "getUniqueId", 
+                [option, value]);
+        }).then((results) => {            
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
 
     logisticService.getAllLogisticP2ITransactions = function(option, value){
         console.log("getAllLogisticP2ITransactions");

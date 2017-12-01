@@ -25,8 +25,16 @@ export class PosComponent implements OnInit {
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
     
-    this.ikeaBill.billNumber =  Date.parse(new Date().toString()).toString(10);
+    //this.ikeaBill.billNumber =  Date.parse(new Date().toString()).toString(10);
     this.ikeaBill.billDateTime = new Date();
+    this.fetchBillNumber();
+  }
+
+  fetchBillNumber(){
+    this.ikeaService.getUniqueId('bill')
+    .then((results: any) => {
+      this.ikeaBill.billNumber = results;
+    });
   }
 
   ngOnInit() {
@@ -36,9 +44,9 @@ export class PosComponent implements OnInit {
     this.ikeaService.saveIkeaBill(this.ikeaBill)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
-        this.clearForm(myForm);
-        this.alertService.success("Bill saved.");
-        this.ikeaBill.billNumber =  Date.parse(new Date().toString()).toString(10);
+        this.alertService.success("Bill saved for bill number- "+ this.ikeaBill.billNumber);
+        this.clearForm(myForm);        
+        this.fetchBillNumber();
         this.ikeaBill.billDateTime = new Date();
       }
       else{

@@ -142,6 +142,22 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
     
+    processorService.getUniqueId = function(option, value){
+        console.log("getUniqueId");
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.processorchannel, 
+                processorConfig.channels.processorchannel.chaincodeId, 
+                "getUniqueId", 
+                [option, value]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
     processorService.getAllProcessorReceived = function(option, value){
         console.log("getAllProcessorReceived");
         return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
