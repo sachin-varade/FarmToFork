@@ -8,6 +8,10 @@ var helper = require('./helper.js');
 var queryChainCode = require('../hfcInterface/queryChainCode.js');
 var invokeChainCode = require('../hfcInterface/invokeChainCode.js');
 var config = require('../config/config.js');
+const save = require('save-file');
+var crypto = require('crypto');
+var fs = require('fs');
+var commonData = require('../data/common.json');
 
 var abattoirConfig = config.network.abattoir;
 var member_user;
@@ -72,10 +76,21 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         console.log("saveAbattoirReceived");
         var certString = "";        
         abattoirReceived.certificates.forEach(element => {
+            var algo = 'md5';
+            var shasum = crypto.createHash(algo);
+            
+            var file = '../certificates/'+ element.fileName;
+            var s = fs.ReadStream(file);
+            s.on('data', function(d) { shasum.update(d); });
+            s.on('end', function() {
+                var d = shasum.digest('hex');
+                console.log(d);
+            });
+
             if(certString == "")
-                certString = element.id +"^"+ element.name;
+                certString = element.id +"^"+ element.name +"^"+ element.fileName;
             else
-                certString += ","+ element.id +"^"+ element.name;
+                certString += ","+ element.id +"^"+ element.name +"^"+ element.fileName;
         });
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
         .then((user_from_store) => {
@@ -191,6 +206,35 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         }).catch((err) => {
             throw err;
         });
+    }
+
+    abattoirService.uploadCertificate = function(files){
+        var file;
+        var fileName='';
+        var ext = 'png';
+        var fileNameList = [];
+        
+        commonData.farmersCertificates.forEach(element => {
+            file = element.name == "GFSI" ? files.GFSI : (element.name == "BRC" ? files.BRC : (element.name == "KRAV" ? files.KRAV : (element.name == "IFOAM" ? files.IFOAM : "")));
+            if(file){
+                if(file.name){
+                    ext = file.name.split('.');
+                    ext = ext[ext.length-1];
+                }
+                
+                fileName = 'certificate-'+ element.name +'-'+ crypto.randomBytes(16).toString('hex')	+'.'+ ext;
+                fileNameList.push({id: element.id, name: element.name, fileName: fileName, fileData: file.data});
+            }
+        });
+
+        fileNameList.forEach(element => {
+            save(element.fileData, "../certificates/"+ element.fileName, (err, data) => {
+                if (err) throw err;
+            });
+            element.fileData = null;
+        });
+
+        return fileNameList;
     }
 
 	return abattoirService;

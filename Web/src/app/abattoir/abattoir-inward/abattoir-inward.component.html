@@ -3,7 +3,7 @@
         <h1 class="title-main">Abattoir Receipt</h1>
         <form #myForm="ngForm" class="clearfix">
             <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
-            
+
             <div class="form-group">
             <label for="receiptBatchId">Abattoir Receipt No</label>
             <input type="text" disabled [(ngModel)]="abattoirReceived.receiptBatchId"  class="form-control" name="receiptBatchId" required>
@@ -13,7 +13,7 @@
                 <label for="materialInwardNumber">Purchase Order Ref.</label>
                 <input type="text" [(ngModel)]="abattoirReceived.purchaseOrderReferenceNumber"  class="form-control" name="purchaseOrderReferenceNumber" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="materialInwardNumber">Livestock Batch ID Ref.</label>
                 <input type="text" [(ngModel)]="abattoirReceived.livestockBatchId"  class="form-control" name="purchaseOrderReferenceNumber" required>
@@ -26,26 +26,26 @@
 
             <div class="form-group">
                 <label>Supplier</label>
-                <select class="form-control selectpicker" [(ngModel)]="abattoirReceived.farmer.id" (change)="setFarmer()" name="selectFarmer" id="selectFarmer" required>  
-                    <option *ngFor="let farmer of userData.users.farmers" [value]="farmer.id">{{farmer.displayName +" (Supplier Id-"+ farmer.id +")"}}</option>      
+                <select class="form-control selectpicker" [(ngModel)]="abattoirReceived.farmer.id" (change)="setFarmer()" name="selectFarmer" id="selectFarmer" required>
+                    <option *ngFor="let farmer of userData.users.farmers" [value]="farmer.id">{{farmer.displayName +" (Supplier Id-"+ farmer.id +")"}}</option>
                 </select>
-            </div>              
-            
+            </div>
+
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
             <div class="form-group">
                     <label for="guidNumber">Cattle</label>
-                    <select class="form-control" [(ngModel)]="abattoirReceived.guidNumber" (change)="setGuid()" name="guidNumber" required>                        
+                    <select class="form-control" [(ngModel)]="abattoirReceived.guidNumber" (change)="setGuid()" name="guidNumber" required>
                         <option *ngFor="let guid of commonData.farmersProducts" [value]="guid.code">{{guid.code}}</option>
                     </select>
-            </div>  
+            </div>
             <div class="form-group">
                 <label for="materialGrade">Cattle Grade</label>
                 <select class="form-control" [(ngModel)]="abattoirReceived.materialGrade" name="materialGrade" required>
                     <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label for="quantity" style="display: block;">Quantity</label>
                 <input type="text" class="form-control input-inline-small" [(ngModel)]="abattoirReceived.quantity" name="quantity" required>
@@ -53,24 +53,32 @@
                     <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
                 </select> -->
             </div>
-    
+
             <div class="form-group clearfix">
                 <label for="alterEgo">Certificates/Documents</label>
                 <br>
                 <label class="checkbox-style" *ngFor="let cert of certificates">
-                    <input [(ngModel)]="cert.checked" name="certificates" 
+                    <input [(ngModel)]="cert.checked" name="certificates"
                         [value]="cert.id" type="checkbox"/> {{cert.name}}
                         <span class="checkmark"></span>
+                        <input type="file" style="display:none;" *ngIf="cert.checked" class="form-control" accept=".pdf,.png,.jpeg" [id]="'file_' + cert.name">
                     </label>
             </div>
+
+            <!-- <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx"> -->
+
+            <!-- <input type="file" (change)="onChange($event)" required class="form-control" accept=".pdf,.png,.jpeg" name="attach_file" id="attach_file"> -->
+            
+
+
             </div>
-    
+
         <div class="block-button-area">
             <button type="submit" (click)="clearForm(myForm)" class="btn btn-border">Clear</button>
             <button type="submit" [disabled]="!myForm.form.valid" (click)="saveAbattoirReceived(myForm);" class="btn btn-normal">Submit</button>
         </div>
-    
+
         </form>
-    
+
     </div>
 </div>

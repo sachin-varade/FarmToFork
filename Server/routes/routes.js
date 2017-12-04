@@ -292,4 +292,24 @@ router.get("/P2I/getUniqueId/:option/:value?", function(req, res) {
 	});	
 });
 
+router.post("/uploadCertificate", function(req, res) {    
+	var promise = abattoirService.uploadCertificate(req.files);
+	res.send(promise);
+	
+/*
+var algo = 'md5';
+var shasum = crypto.createHash(algo);
+
+var file = './Server/routes/example1.png';
+var s = fs.ReadStream(file);
+s.on('data', function(d) { shasum.update(d); });
+s.on('end', function() {
+    var d = shasum.digest('hex');
+    console.log(d);
+});
+	*/
+});
+
+
+
 module.exports = router;

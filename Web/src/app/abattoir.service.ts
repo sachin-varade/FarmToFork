@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers, Http, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as AbattoirModels from './models/abattoir';
 import * as Constants from './constants';
 import { AlertService } from './alert.service';
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class AbattoirService {
@@ -56,6 +57,19 @@ export class AbattoirService {
   getAllAbattoirDispatch(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllAbattoirDispatch`;
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      this.alertService.error("Error occured...");
+    });
+  }
+
+  uploadCertificate(formData: any): Promise<any> {
+    let headers = new Headers();
+    headers.append('Accept', 'application/json');    
+    let options = new RequestOptions({ headers: headers });
+    this.url = `${this.BASE_URL}/uploadCertificate`;
+    return this.http.post(this.url, formData, options).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);
     }).catch((err) => {
