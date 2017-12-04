@@ -213,27 +213,27 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         var fileName='';
         var ext = 'png';
         var fileNameList = [];
-        
-        commonData.farmersCertificates.forEach(element => {
-            file = element.name == "GFSI" ? files.GFSI : (element.name == "BRC" ? files.BRC : (element.name == "KRAV" ? files.KRAV : (element.name == "IFOAM" ? files.IFOAM : "")));
-            if(file){
-                if(file.name){
-                    ext = file.name.split('.');
-                    ext = ext[ext.length-1];
+        if(files){
+            commonData.farmersCertificates.forEach(element => {
+                file = element.name == "GFSI" ? files.GFSI : (element.name == "BRC" ? files.BRC : (element.name == "KRAV" ? files.KRAV : (element.name == "IFOAM" ? files.IFOAM : "")));
+                if(file){
+                    if(file.name){
+                        ext = file.name.split('.');
+                        ext = ext[ext.length-1];
+                    }
+                    
+                    fileName = 'certificate-'+ element.name +'-'+ crypto.randomBytes(16).toString('hex')	+'.'+ ext;
+                    fileNameList.push({id: element.id, name: element.name, fileName: fileName, fileData: file.data});
                 }
-                
-                fileName = 'certificate-'+ element.name +'-'+ crypto.randomBytes(16).toString('hex')	+'.'+ ext;
-                fileNameList.push({id: element.id, name: element.name, fileName: fileName, fileData: file.data});
-            }
-        });
-
-        fileNameList.forEach(element => {
-            save(element.fileData, "../certificates/"+ element.fileName, (err, data) => {
-                if (err) throw err;
             });
-            element.fileData = null;
-        });
 
+            fileNameList.forEach(element => {
+                save(element.fileData, "../certificates/"+ element.fileName, (err, data) => {
+                    if (err) throw err;
+                });
+                element.fileData = null;
+            });
+        }
         return fileNameList;
     }
 
