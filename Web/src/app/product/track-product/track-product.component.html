@@ -26,7 +26,7 @@
               <img src="assets/images/tracker-ikea-icon.png">
             </div>
             <div class="info-pane">
-              <ul>                
+              <ul *ngIf="productTracking && productTracking.billDetails && productTracking.ikeaReceived && productTracking.ikeaDispatch">                
                 <li>
                   <span class="label-text">Item Prepared:</span>
                   <span class="value">{{productTracking.MeatBallPreparedDate | date : "short"}}</span>
@@ -43,6 +43,21 @@
                   <span class="label-text">Batch Code:</span>
                   <span class="value">{{productTracking.IkeaReceivedNumber}}</span>
                 </li>
+                <li *ngIf="currentUser && currentUser.name != ''">
+                  <span class="label-text">PO Number:</span>
+                  <span class="value">{{productTracking.ikeaReceived.purchaseOrderNumber}}</span>
+                </li>
+                <li *ngIf="currentUser && currentUser.name != ''">
+                  <span class="label-text">Receipt:</span>
+                  <span class="value">{{productTracking.ikeaReceived.receivedDate  | date : "short"}}</span>
+                </li>
+                <li *ngIf="currentUser && currentUser.name != ''">
+                  <span class="label-text">Acceptance:</span>
+                  <span class="value" *ngFor="let item of productTracking.ikeaReceived.acceptanceCheckList; let i = index" [attr.data-index]="i">
+                    <span *ngIf="i == 0">{{item.ruleCondition}}</span>
+                    <span *ngIf="i != 0">, {{item.ruleCondition}}</span>
+                  </span>
+                </li>
               </ul>
             </div>
           </div>
@@ -55,7 +70,7 @@
               <img src="assets/images/tracker-transport-icon.png">
             </div>
             <div class="info-pane">
-              <ul>
+              <ul *ngIf="productTracking && productTracking.logisticP2ITransactions">
                 <li>
                     <span class="label-text">Handling Violations:</span>
                     <span class="value">{{productTracking.ProcessorToIkeaTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span>
@@ -72,6 +87,14 @@
                     <span class="label-text">Transporter:</span>
                     <span class="value">{{productTracking.ProcessorToIkeaTransporterName}}</span>
                 </li>
+                <li *ngIf="currentUser && currentUser.name != ''">
+                  <span class="label-text">Transporter Id:</span>
+                  <span class="value">{{productTracking.logisticP2ITransactions.logisticId}}</span>
+              </li>
+              <li *ngIf="currentUser && currentUser.name != ''">
+                <span class="label-text">Consignment Nbr. Ref:</span>
+                <span class="value">{{productTracking.logisticP2ITransactions.consignmentNumber}}</span>
+            </li>
               </ul>
             </div>
           </div>
@@ -84,7 +107,7 @@
               <img src="assets/images/tracker-process-icon.png">
             </div>
             <div class="info-pane">
-              <ul>
+              <ul *ngIf="productTracking && productTracking.processorDispatch">
                 <li>
                   <span class="label-text">Manufactured:</span>
                   <span class="value">{{productTracking.ProcessingDate | date : "short"}}</span>
@@ -93,6 +116,10 @@
                   <span class="label-text">Use by:</span>
                   <span class="value">{{productTracking.ProcessorUseByDate | date : "short"}}</span>
                 </li>
+                <li *ngIf="currentUser && currentUser.name != ''">
+                  <span class="label-text">Batch ID:</span>
+                  <span class="value">{{productTracking.processorDispatch.processorBatchCode}}</span>
+              </li>
                 <li>
                     <span class="label-text">Meatball Manufacturer:</span>
                     <span class="value">{{productTracking.ProcessorCompanyName}}</span>
@@ -109,7 +136,7 @@
               <img src="assets/images/tracker-transport-icon.png">
             </div>
             <div class="info-pane">
-              <ul>
+              <ul *ngIf="productTracking && productTracking.logisticA2PTransactions">
                 <li>
                     <span class="label-text">Handling Violations:</span>
                     <span class="value">{{productTracking.AbattoirToProcessorTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span>
@@ -126,6 +153,14 @@
                     <span class="label-text">Transporter:</span>
                     <span class="value">{{productTracking.AbattoirToProcessorTransporterName}}</span>
                 </li>
+                <li *ngIf="currentUser && currentUser.name != ''">
+                  <span class="label-text">Transporter Id:</span>
+                  <span class="value">{{productTracking.logisticA2PTransactions.logisticId}}</span>
+              </li>
+              <li *ngIf="currentUser && currentUser.name != ''">
+                <span class="label-text">Consignment Nbr. Ref:</span>
+                <span class="value">{{productTracking.logisticA2PTransactions.consignmentNumber}}</span>
+            </li>
               </ul>
             </div>
           </div>
@@ -138,22 +173,34 @@
               <img src="assets/images/tracker-abattoir-icon.png">
             </div>
             <div class="info-pane">
-              <ul>
+              <ul *ngIf="productTracking && productTracking.abattoirMaterialReceived && productTracking.abattoirMaterialDispatch">
+                  <li *ngIf="currentUser && currentUser.name != ''">
+                      <span class="label-text">Product GTIN:</span>
+                      <span class="value">{{productTracking.abattoirMaterialDispatch.guidNumber}}</span>
+                  </li>
+                  <li *ngIf="currentUser && currentUser.name != ''">
+                      <span class="label-text">Product Batch ID:</span>
+                      <span class="value">{{productTracking.abattoirMaterialDispatch.consignmentNumber}}</span>
+                  </li>
+                  <li *ngIf="currentUser && currentUser.name != ''">
+                      <span class="label-text">Processed On:</span>
+                      <span class="value">{{productTracking.abattoirMaterialDispatch.productionDate | date : "short"}}</span>
+                  </li>
                 <li>
                     <span class="label-text">Class:</span>
-                    <span class="value">{{productTracking.AbattoirDispatchMaterialClass}}</span>
+                    <span class="value">{{productTracking.abattoirMaterialDispatch.materialGrade}}</span>
                 </li>
                 <li>
                     <span class="label-text">Fat Cover Class:</span>
-                    <span class="value">{{productTracking.AbattoirDispatchMaterialClass}}</span>
+                    <span class="value">{{productTracking.abattoirMaterialDispatch.fatCoverClass}}</span>
                 </li>
                 <li>
                   <span class="label-text">Abattoir:</span>
                   <span class="value">{{productTracking.AbattoirName}}</span>
                 </li>
                 <li>
-                  <span class="label-text">Processed On:</span>
-                  <span class="value">{{productTracking.AbattoirProcessDate | date : "short"}}</span>
+                  <span class="label-text">Livestock Batch ID Ref.:</span>
+                  <span class="value">{{productTracking.abattoirMaterialReceived.livestockBatchId}}</span>
                 </li>
               </ul>
             </div>
@@ -167,7 +214,7 @@
                 <img src="assets/images/angus-cow-icon.png">
               </div>
               <div class="info-pane">
-                <ul>
+                <ul *ngIf="productTracking && productTracking.abattoirMaterialReceived">
                   <li>
                       <span class="label-text">Class:</span>
                       <span class="value">{{productTracking.FarmerMaterialClass}}</span>

@@ -58,17 +58,28 @@ export class AbattoirInwardComponent implements OnInit {
     this.abattoirReceived.updatedBy = this.currentUser.id;
     this.abattoirReceived.updatedOn = new Date();
     this.abattoirReceived.certificates = new Array<AbattoirModels.FarmersCertificate>();
+    var certificateError = "";
     this.certificates.forEach(element => {
-      if (element.checked === true){
-        this.abattoirReceived.certificates.push(element);
+      if (element.checked === true && this.document.getElementById('file_'+ element.name).files.length > 0){
         let fileList: FileList = this.document.getElementById('file_'+ element.name).files;
-        if(fileList.length > 0) {
-            let file: File = fileList[0];        
-            formData.append(element.name, file);
-            console.log(formData.get(element.name));            
-        }
+        this.abattoirReceived.certificates.push(element);
+        let file: File = fileList[0];        
+        formData.append(element.name, file);
+        //console.log(formData.get(element.name));            
       }
-    });    
+      else if (element.checked === true){
+        if(certificateError === ''){
+          certificateError = "Please select certificate for "+ element.name;
+        }
+        else{
+          certificateError += ", "+ element.name;        
+        }        
+      }
+    }); 
+    if(certificateError.length > 0){
+      this.alertService.error(certificateError);        
+      return false;
+    }   
     this.abattoirReceived.abattoirId = this.currentUser.id;
     this.abattoirService.uploadCertificate(formData)
     .then((results: any) => {

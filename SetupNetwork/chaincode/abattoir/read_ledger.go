@@ -77,7 +77,18 @@ func getAllAbattoirReceived(stub  shim.ChaincodeStubInterface, option string, va
 		if strings.ToLower(option) == "ids" {
 			allIds.ReceiptBatchIds = append(allIds.ReceiptBatchIds,sb.ReceiptBatchId);	
 		} else if strings.ToLower(option) == "details" {
-			allDetails.AbattoirMaterialReceived = append(allDetails.AbattoirMaterialReceived,sb);	
+			// fmt.Println("certificate name-"+ sb.Certificates[0].FileName);
+			// fmt.Println("certificate name-"+ sb.Certificates[1].FileName);
+			// var certs [] FarmersCertificate
+			// for i := range sb.Certificates{				
+			// 	certs = append(certs, sb.Certificates[i])
+			// }
+			// fmt.Println("certificate name-"+ certs[0].FileName);
+			// fmt.Println("certificate name-"+ certs[1].FileName);
+			// sb.Certificates = certs
+			if sb.ReceiptBatchId != "" {
+				allDetails.AbattoirMaterialReceived = append(allDetails.AbattoirMaterialReceived,sb);	
+			}
 		}		
 	}
 	

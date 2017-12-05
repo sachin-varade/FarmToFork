@@ -57,12 +57,16 @@
             <div class="form-group clearfix">
                 <label for="alterEgo">Certificates/Documents</label>
                 <br>
-                <label class="checkbox-style" *ngFor="let cert of certificates">
-                    <input [(ngModel)]="cert.checked" name="certificates"
-                        [value]="cert.id" type="checkbox"/> {{cert.name}}
-                        <span class="checkmark"></span>
-                        <input type="file" *ngIf="cert.checked" class="form-control" accept=".pdf,.png,.jpeg" [id]="'file_' + cert.name">
+                <div *ngFor="let cert of certificates">
+                    <label class="checkbox-style">
+                        <input [(ngModel)]="cert.checked" name="certificates"
+                            [value]="cert.id" type="checkbox"/> {{cert.name}}
+                            <span class="checkmark"></span>                        
                     </label>
+                    <label class="checkbox-style-file">
+                    <input type="file" *ngIf="cert.checked" class="form-control" accept=".pdf,.png,.jpeg" [id]="'file_' + cert.name">
+                    </label>
+                </div>
             </div>
 
             <!-- <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx"> -->

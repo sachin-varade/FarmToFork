@@ -104,7 +104,7 @@ const appRoutes:Routes = [
   },
   {
     path: 'product/track',
-    canActivate: [AuthguardGuard],
+    //canActivate: [AuthguardGuard],
     component: TrackProductComponent
   },
   {

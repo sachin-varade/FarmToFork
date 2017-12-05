@@ -86,7 +86,7 @@
         font-weight: normal;
         margin-right: 5px;
         position: relative;
-        min-width: 70px;
+        min-width: 95px;
         text-align: center;
         cursor: pointer;
         -webkit-user-select: none;
@@ -94,7 +94,26 @@
         -ms-user-select: none;
         user-select: none;
     }
-    
+    .checkbox-style-file
+    {
+        display: inline-block;
+        border-radius: 4px;
+        background: #fff;
+        line-height: 16px;
+        font-size: 14px;
+        font-weight: normal;
+        margin-right: 5px;
+        position: relative;
+        text-align: center;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0px;
+        border: 0px;
+        min-width: 0px;
+    }
     .checkbox-style.selected{
         border-color: #6d7be0;
     }

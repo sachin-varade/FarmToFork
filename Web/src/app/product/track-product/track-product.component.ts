@@ -20,9 +20,10 @@ export class TrackProductComponent implements OnInit {
   constructor(private user: UserService,    
     private ikeaService: IkeaService) {
     this.currentUser = this.user.getUserLoggedIn();
-    this.userData = this.user.getUserData();
-    this.commonData = this.user.getCommonData();   
-    
+    if(this.currentUser){
+      this.userData = this.user.getUserData();
+      this.commonData = this.user.getCommonData();   
+    }   
   }
 
   ngOnInit() {

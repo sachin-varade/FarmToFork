@@ -3,7 +3,7 @@
       <div class="container">
         <img id="companyLogoImg" src="assets/images/ikea-logo.png">
   
-        <div class="user-control">
+        <div class="user-control" *ngIf="user.loggedInUser">
           <div class="user-name">
             <img src="assets/images/user.png">
             <span>{{user.loggedInUser.displayName}}</span>
@@ -14,11 +14,12 @@
           </div>
         </div>
       </div>
-    </div>
-    <nav class="navbar navbar-dark bg-inverse menu-nav">
+    </div>    
+    <link id="theme" rel="stylesheet" href=""/> 
+    <nav class="navbar navbar-dark bg-inverse menu-nav" *ngIf="user.loggedInUser">
       
       <div class="container">  
-          <link id="theme" rel="stylesheet" href=""/> 
+          
           <ul *ngIf="getUser().role == 'abattoir'" class="nav navbar-nav" routerLinkActive="active">
               <li class="nav-item"><a class="nav-link" routerLink="abattoir/inward">Abattoir Receipt</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="abattoir/outward">Abattoir Dispatch</a></li>            

@@ -11,6 +11,7 @@ var config = require('../config/config.js');
 const save = require('save-file');
 var crypto = require('crypto');
 var fs = require('fs');
+var uuid = require('node-uuid');
 var commonData = require('../data/common.json');
 
 var abattoirConfig = config.network.abattoir;
@@ -211,7 +212,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                         ext = ext[ext.length-1];
                     }
                     
-                    fileName = 'certificate-'+ element.name +'-'+ crypto.randomBytes(16).toString('hex')	+'.'+ ext;
+                    fileName = 'certificate-'+ element.name +'-'+ uuid.v4() +'.'+ ext;
                     fileNameList.push({id: element.id, name: element.name, fileName: fileName, fileData: file.data});
                 }
             });

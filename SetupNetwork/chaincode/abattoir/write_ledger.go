@@ -81,7 +81,7 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 			bt.Certificates = append(bt.Certificates, cert)
 		}
 	}
-
+	
 	//Commit Inward entry to ledger
 	fmt.Println("saveAbattoirReceived - Commit AbattoirInward To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
