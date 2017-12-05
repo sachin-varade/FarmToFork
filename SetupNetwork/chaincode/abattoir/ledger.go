@@ -61,6 +61,8 @@ type AbattoirMaterialReceived struct {
 type FarmersCertificate struct {
 	Id			string	`json:"id"`	
 	Name			string	`json:"name"`
+	FileName			string	`json:"fileName"`
+	Hash			string	`json:"hash"`
 }
 
 type AbattoirDispatch struct {

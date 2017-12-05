@@ -76,21 +76,10 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         console.log("saveAbattoirReceived");
         var certString = "";        
         abattoirReceived.certificates.forEach(element => {
-            var algo = 'md5';
-            var shasum = crypto.createHash(algo);
-            
-            var file = '../certificates/'+ element.fileName;
-            var s = fs.ReadStream(file);
-            s.on('data', function(d) { shasum.update(d); });
-            s.on('end', function() {
-                var d = shasum.digest('hex');
-                console.log(d);
-            });
-
             if(certString == "")
-                certString = element.id +"^"+ element.name +"^"+ element.fileName;
+                certString = element.id +"^"+ element.name +"^"+ element.fileName +"^"+ element.hash;
             else
-                certString += ","+ element.id +"^"+ element.name +"^"+ element.fileName;
+                certString += ","+ element.id +"^"+ element.name +"^"+ element.fileName +"^"+ element.hash;
         });
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
         .then((user_from_store) => {
@@ -226,15 +215,54 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     fileNameList.push({id: element.id, name: element.name, fileName: fileName, fileData: file.data});
                 }
             });
-
+            var promises = [];
             fileNameList.forEach(element => {
+                promises.push(
                 save(element.fileData, "../certificates/"+ element.fileName, (err, data) => {
-                    if (err) throw err;
-                });
-                element.fileData = null;
+                    if (err) throw err;                    
+                })
+                );              
             });
-        }
-        return fileNameList;
+
+            return Promise.all(promises)
+            .then((results) => {
+                var hashPromises = [];
+                var count= 0;
+                fileNameList.forEach(element => {
+                    hashPromises.push(
+                        gen_hash(element)
+                        .then((hash) => {
+                            element.hash = hash;        
+                            element.fileData = null;
+                        })
+                    );
+                });
+                
+                return Promise.all(hashPromises)
+                .then((results) => {
+                    return fileNameList;
+                }).catch((err) => {
+                    throw err;
+                });
+            }).catch((err) => {
+                throw err;
+            });
+        }        
+    }
+
+    function gen_hash (element) {
+        return new Promise((resolve, reject) => {
+            var algo = 'md5';
+            var shasum = crypto.createHash(algo);
+            var file = 'Server/certificates/'+ element.fileName;
+            var s = fs.ReadStream(file);
+            s.on('end', function() {
+                var d = shasum.digest('hex');
+                resolve(d);
+            });
+            s.on('error', reject);
+            s.on('data', function(d) { shasum.update(d); });
+        });
     }
 
 	return abattoirService;

@@ -61,7 +61,7 @@
                     <input [(ngModel)]="cert.checked" name="certificates"
                         [value]="cert.id" type="checkbox"/> {{cert.name}}
                         <span class="checkmark"></span>
-                        <input type="file" style="display:none;" *ngIf="cert.checked" class="form-control" accept=".pdf,.png,.jpeg" [id]="'file_' + cert.name">
+                        <input type="file" *ngIf="cert.checked" class="form-control" accept=".pdf,.png,.jpeg" [id]="'file_' + cert.name">
                     </label>
             </div>
 

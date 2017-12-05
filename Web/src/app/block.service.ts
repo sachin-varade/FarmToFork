@@ -15,7 +15,14 @@ export class BlockService {
   private alertService: AlertService) { }
   
     getRecentBlocks(blockNumber): Promise<any> {
-    this.url = this.BASE_URL +"/getRecentBlocks" +"/"+ this.userService.getUserLoggedIn().role;
+    var role = this.userService.getUserLoggedIn().role;
+    if(role == 'logistic' && this.userService.getUserLoggedIn().type == 'A2P'){
+      role = 'abattoir';
+    }
+    else if(role == 'logistic' && this.userService.getUserLoggedIn().type == 'P2I'){
+      role = 'processor';
+    }
+    this.url = this.BASE_URL +"/getRecentBlocks" +"/"+ role;
     return this.http.get(this.url+"/"+ blockNumber).toPromise()
     .then((results: any) => {
       return JSON.parse(results._body);

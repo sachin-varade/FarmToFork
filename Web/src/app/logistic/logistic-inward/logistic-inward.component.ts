@@ -84,7 +84,9 @@ export class LogisticInwardComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){        
         //this.clearForm(myForm);
-        this.alertService.success("Consignment saved.");        
+        this.alertService.success("Consignment saved.");
+        this.iotMinTemp = Number(this.logisticTransaction.temperatureStorageMin);
+        this.iotMaxTemp = Number(this.logisticTransaction.temperatureStorageMax);        
       }
       else{
         this.alertService.error("Error occured...");

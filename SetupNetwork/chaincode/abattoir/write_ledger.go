@@ -76,6 +76,8 @@ func saveAbattoirReceived(stub  shim.ChaincodeStubInterface, args []string) pb.R
 			c := strings.Split(p[i], "^")
 			cert.Id = c[0]
 			cert.Name = c[1]
+			cert.FileName = c[2]
+			cert.Hash = c[3]
 			bt.Certificates = append(bt.Certificates, cert)
 		}
 	}

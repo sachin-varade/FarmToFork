@@ -294,7 +294,9 @@ router.get("/P2I/getUniqueId/:option/:value?", function(req, res) {
 
 router.post("/uploadCertificate", function(req, res) {    
 	var promise = abattoirService.uploadCertificate(req.files);
-	res.send(promise);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
 	
 /*
 var algo = 'md5';
