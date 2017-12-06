@@ -525,6 +525,16 @@
         padding-left: 1px;
     }
     
+    .tracker-dispatch-numbers{
+        width: 20% !important;
+        padding-top: 5px !important;
+    }
+
+    .tracker-dispatch-numbers-details{
+        width: 80% !important;
+        padding-top: 5px !important;
+    }
+
     .page-container{
         padding-bottom: 64px;
     }

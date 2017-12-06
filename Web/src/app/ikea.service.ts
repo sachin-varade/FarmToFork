@@ -82,6 +82,16 @@ export class IkeaService {
       this.alertService.error("No bill found for bill number: "+ value);
     });
   } 
+
+  getIkeaProductTrackingDetails(option: string, value: string = ""): Promise<any> {
+    this.url = `${this.BASE_URL}/getIkeaProductTrackingDetails`;
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      this.alertService.error("No bill found for bill number: "+ value);
+    });
+  } 
   
   getIkeaBill(billNumber: string): Promise<any> {
     this.url = `${this.BASE_URL}/getIkeaBill`;

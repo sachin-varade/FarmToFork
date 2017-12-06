@@ -76,12 +76,14 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
     abattoirService.saveAbattoirReceived = function(abattoirReceived){
         console.log("saveAbattoirReceived");
         var certString = "";        
+        if(abattoirReceived.certificates){
         abattoirReceived.certificates.forEach(element => {
             if(certString == "")
                 certString = element.id +"^"+ element.name +"^"+ element.fileName +"^"+ element.hash;
             else
                 certString += ","+ element.id +"^"+ element.name +"^"+ element.fileName +"^"+ element.hash;
         });
+        }
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
@@ -248,7 +250,10 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             }).catch((err) => {
                 throw err;
             });
-        }        
+        } 
+        else{
+            return fileNameList;
+        }       
     }
 
     function gen_hash (element) {

@@ -240,6 +240,13 @@ router.get("/getProductTrackingDetails/:option/:value?", function(req, res) {
 	});	
 });
 
+router.get("/getIkeaProductTrackingDetails/:option/:value?", function(req, res) {    
+    var promise = productTrackerService.getIkeaProductTrackingDetails(req.params.option, req.params.value?req.params.value: "")
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
 // IKEA Bill
 router.get("/getIkeaBillDetails/:option/:value?", function(req, res) {    
     var promise = ikeaService.getIkeaBillDetails(req.params.option, req.params.value?req.params.value: "")

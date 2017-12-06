@@ -53,7 +53,27 @@ function registerUsers() {
 	node ../Server/hfcInterface/users.js
 }
 
+
+function startAPI() {		
+	echo $PWD
+	cd ../
+	cd Server
+	npm start	
+}
+
+
+function startWEB() {		
+	echo $PWD
+	cd ../
+	cd Web
+	netstat -ano | findstr :4200
+	taskkill /PID 3296 /F
+	#npm start
+}
+
 starttime=$(date +%s)
 restartNetwork
 registerUsers
+#startAPI
+#startWEB
 printf "\nTotal execution time : $(($(date +%s) - starttime)) secs ...\n\n"

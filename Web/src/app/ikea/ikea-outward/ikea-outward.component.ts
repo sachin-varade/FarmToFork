@@ -29,7 +29,7 @@ export class IkeaOutwardComponent implements OnInit {
       this.ikeaReceivedList = <Array<IkeaModels.IkeaReceived>>results.ikeaReceived;
       this.setDefaultValues();
     }); 
-    this.ikeaService.getUniqueId('received')
+    this.ikeaService.getUniqueId('dispatch')
     .then((results: any) => {
       this.ikeaDispatch.ikeaDispatchNumber = results;
     });     

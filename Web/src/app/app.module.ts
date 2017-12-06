@@ -41,6 +41,7 @@ import { PosComponent } from './ikea/pos/pos.component';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { AlertComponent } from './alert/alert.component';
 import { AlertService } from './alert.service';
+import { TrackComponent } from './ikea/track/track.component';
 
 const appRoutes:Routes = [
   {
@@ -103,6 +104,11 @@ const appRoutes:Routes = [
     component: IkeaOutwardComponent
   },
   {
+    path: 'ikea/track',
+    canActivate: [AuthguardGuard],
+    component: TrackComponent
+  },
+  {
     path: 'product/track',
     //canActivate: [AuthguardGuard],
     component: TrackProductComponent
@@ -121,7 +127,7 @@ const appRoutes:Routes = [
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
-    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent, BlockComponent, PosComponent, AlertComponent],
+    DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent, BlockComponent, PosComponent, AlertComponent, TrackComponent],
   imports: [
   RouterModule.forRoot(appRoutes),
   FormsModule,

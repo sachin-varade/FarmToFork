@@ -83,7 +83,6 @@ export class AbattoirInwardComponent implements OnInit {
     this.abattoirReceived.abattoirId = this.currentUser.id;
     this.abattoirService.uploadCertificate(formData)
     .then((results: any) => {
-      if(results){
         this.abattoirReceived.certificates = results;
         this.abattoirService.saveAbattoirReceived(this.abattoirReceived)
         .then((results: any) => {
@@ -96,7 +95,6 @@ export class AbattoirInwardComponent implements OnInit {
             this.alertService.error("Error occured...");
           }
         });
-      }
     });
     
   }
