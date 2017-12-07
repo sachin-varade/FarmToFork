@@ -4,7 +4,7 @@
     <form #myForm="ngForm">
       <div class="col-lg-6 col-md-6 col-sm-12 left-pane"> 
         <div class="form-group">
-          <label for="processorBatchCode">Meatball Manufacturer Batch Code</label>
+          <label for="processorBatchCode">Meatball Batch ID</label>
           <select class="form-control" (change)="getProductDetails();" [(ngModel)]="processorDispatch.processorBatchCode" name="processorBatchCode" required>        
             <option *ngFor="let rec of processingTransactionList" [value]="rec.processorBatchCode">{{rec.processorBatchCode}}</option>
           </select>
@@ -22,40 +22,45 @@
         </div>
 
         <div class="form-group">
-          <label for="guidNumber">GUID/GTIN</label>
-          <select class="form-control" [(ngModel)]="processorDispatch.guidNumber" (click)="setGuid();" name="guidNumber" required>
+          <label for="guidNumber">Product Code (GUID/GTIN)</label>
+          <select disabled class="form-control" [(ngModel)]="processorDispatch.guidNumber" (click)="setGuid();" name="guidNumber" required>
               <option value="0" selected="selected"></option>
-              <option *ngFor="let guid of commonData.processorDispatchProducts" [value]="guid.code">{{guid.code}}</option>
+              <option *ngFor="let guid of commonData.processingTransactionProducts" [value]="guid.code">{{guid.code}}</option>
           </select>
         </div>
 
         <div class="form-group">
-            <label for="materialName">Material Name</label>
-            <input type="text" [(ngModel)]="processorDispatch.materialName" class="form-control" name="materialName" required>
+            <label for="materialName">Product</label>
+            <input type="text" disabled [(ngModel)]="processorDispatch.materialName" class="form-control" name="materialName" required>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="materialGrade">Material Grade</label>
           <select class="form-control" [(ngModel)]="processorDispatch.materialGrade" name="materialGrade" required>
               <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
           </select>
-        </div>
+        </div> -->
       </div>
 
       <div class="col-lg-6 col-md-6 col-sm-12 right-pane">     
 
         <div class="form-group">
           <label for="packagingDate">Packaging Date</label>
-          <input type="text" [(ngModel)]="processorDispatch.packagingDate" name="packagingDate" class="form-control" bsDatepicker required/>
+          <input type="text" disabled [(ngModel)]="processorDispatch.packagingDate" name="packagingDate" class="form-control" bsDatepicker required/>
         </div>
 
         <div class="form-group">
           <label for="usedByDate">Used By Date</label>
           <input type="text" [(ngModel)]="processorDispatch.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
-        </div>      
+        </div>  
+        
+        <div class="form-group">
+            <label for="usedByDate">Date of Disptach</label>
+            <input type="text" [(ngModel)]="processorDispatch.dispatchDate" name="dispatchDate" class="form-control" bsDatepicker required/>
+          </div>  
       
         <div class="form-group temp-min-max">
-          <label for="minTemp">Temp storage instruction (Min-Max)</label>      
+          <label for="minTemp">Storage Temperature (min-max °C)</label>      
           <div class="min-max-temp-field">      
             <input type="text" placeholder="Min" class="form-control input-inline-small" [(ngModel)]="processorDispatch.temperatureStorageMin" name="temperatureStorageMin" required>
             <input type="text" placeholder="Max" class="form-control input-inline-small" [(ngModel)]="processorDispatch.temperatureStorageMax" name="temperatureStorageMax" required>
@@ -66,22 +71,35 @@
           <label for="quantity" style="display: block;">Quantity</label>
           <input type="text" class="form-control input-inline-small" [(ngModel)]="processorDispatch.quantity" style="display: inline-block; width:100px;" name="quantity" required>
           <select class="form-control  input-inline-small" [(ngModel)]="processorDispatch.quantityUnit" name="qunatityUnit" required>
-              <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+              <option *ngFor="let unit of commonData.processingTransactionUnits" [value]="unit">{{unit}}</option>
           </select>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="qualityControlDocument">Quality Control Document</label>
           <textarea [(ngModel)]="processorDispatch.qualityControlDocument" class="form-control" name="qualityControlDocument" required></textarea>
-        </div>
+        </div> -->
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="storage">Storage</label>
           <select class="form-control" [(ngModel)]="processorDispatch.storage" name="storage" required >
             <option *ngFor="let item of commonData.storage" [value]="item">{{item}}</option>
           </select>
+        </div> -->
+        <div class="form-group clearfix">
+            <label for="alterEgo">Quality Control Document</label>
+            <br>
+            <div *ngFor="let item of qualityControlDocuments">
+                <label class="checkbox-style">                  
+                    <input [(ngModel)]="item.checked" [name]="'cb_' + item.name.replace(' ','')"
+                        [value]="item.id" type="checkbox" required/> {{item.name}}
+                        <span class="checkmark" ></span>                        
+                </label>
+                <label class="checkbox-style-file">
+                <input type="file" *ngIf="item.checked" class="form-control" accept=".pdf,.png,.jpeg" [id]="'file_' + item.name.replace(' ','')">
+                </label>
+            </div>
         </div>
-        
       </div>
 
       <div class="block-button-area">

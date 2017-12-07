@@ -319,6 +319,13 @@ s.on('end', function() {
 	*/
 });
 
+router.post("/uploadQualityControlDocument", function(req, res) {    
+	var promise = processorService.uploadQualityControlDocument(req.files);
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
 
 
 module.exports = router;

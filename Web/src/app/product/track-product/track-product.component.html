@@ -27,13 +27,13 @@
             </div>
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.billDetails && productTracking.ikeaReceived && productTracking.ikeaDispatch">                
-                <li>
-                  <span class="label-text">Item Prepared:</span>
-                  <span class="value">{{productTracking.MeatBallPreparedDate | date : "short"}}</span>
-                </li>
+                  <li>
+                      <span class="label-text">Item Prepared On:</span>
+                      <span class="value">{{productTracking.ikeaDispatch.preparedOn | date : "short"}}</span>
+                    </li>
                 <li>
                     <span class="label-text">Sold At:</span>
-                    <span class="value">{{productTracking.IkeaStoreName}}</span>
+                    <span class="value">{{productTracking.ikeaDispatch.soldAt}}</span>
                   </li>
                 <li>
                   <span class="label-text">Bill Number:</span>

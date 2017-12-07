@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="title-main">IKEA Dispatch</h1>
+  <h1 class="title-main">IKEA Checkout</h1>
   <form #myForm="ngForm">
     <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
       
@@ -17,7 +17,7 @@
       
       
       <div class="form-group">
-        <label for="guidNumber">GUID/GTIN</label>
+        <label for="guidNumber">Product Code (GUID/GTIN)</label>
         <select class="form-control" [(ngModel)]="ikeaDispatch.guidNumber" (click)="setGuid();" name="guidNumber" required>
             <option value="0" selected="selected"></option>
             <option *ngFor="let guid of commonData.ikeaDispatchProducts" [value]="guid.code">{{guid.code}}</option>
@@ -25,33 +25,60 @@
       </div>
 
       <div class="form-group">
-          <label for="materialName">Material Name</label>
+          <label for="materialName">Product</label>
           <input type="text" [(ngModel)]="ikeaDispatch.materialName" class="form-control" name="materialName" required>
       </div>
 
-        
+      <div class="form-group">
+          <label for="preparedBy">Prepared By</label>
+          <select class="form-control" [(ngModel)]="ikeaDispatch.preparedBy" name="preparedBy" required>              
+              <option *ngFor="let item of commonData.dishPreparedBy" [value]="item">{{item}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+            <label for="preparedOn">Prepared On</label>
+            <input type="text" [(ngModel)]="ikeaDispatch.preparedOn" name="preparedOn" class="form-control" bsDatepicker required/>
+          </div>
       
     </div>
 
     <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
       
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="materialGrade">Material Grade</label>
         <select class="form-control" [(ngModel)]="ikeaDispatch.materialGrade" name="materialGrade" required>
             <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
         </select>
-      </div>  
-
+      </div>   -->
+      
       <div class="form-group">
         <label for="dispatchDateTime">Dispatch Date</label>
         <input type="text" [(ngModel)]="ikeaDispatch.dispatchDateTime" name="dispatchDateTime" class="form-control" bsDatepicker required/>
       </div>
 
       <div class="form-group">
+          <label for="preparedBy">Sold At</label>
+          <select class="form-control" [(ngModel)]="ikeaDispatch.soldAt" name="soldAt" required>              
+              <option *ngFor="let item of commonData.ikeaStoreList" [value]="item">{{item}}</option>
+          </select>
+        </div>
+
+      <div class="form-group">
+          <label for="soldFromDate">Sold From</label>
+          <input type="text" [(ngModel)]="ikeaDispatch.soldFromDate" name="soldFromDate" class="form-control" bsDatepicker required/>
+        </div>
+
+        <div class="form-group">
+            <label for="soldUntillDate">Sold Untill</label>
+            <input type="text" [(ngModel)]="ikeaDispatch.soldUntillDate" name="soldUntillDate" class="form-control" bsDatepicker required/>
+          </div>
+
+      <div class="form-group">
           <label for="quantity" style="display: block;">Quantity</label>
           <input type="text" class="form-control input-inline-small" [(ngModel)]="ikeaDispatch.quantity" name="quantity" required>
           <select class="form-control input-inline-small" [(ngModel)]="ikeaDispatch.quantityUnit" name="qunatityUnit" required >
-              <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+              <option *ngFor="let unit of commonData.processingTransactionUnits" [value]="unit">{{unit}}</option>
           </select>
       </div>
       

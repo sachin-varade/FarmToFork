@@ -4,6 +4,7 @@ import { NgModel, NgForm } from '@angular/forms';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { UserService } from '../../user.service';
 import { LogisticService } from '../../logistic.service';
+import { ProcessorService } from '../../processor.service';
 import { IkeaService } from '../../ikea.service';
 import * as LogisticModels from '../../models/logistic';
 import * as IkeaModels from '../../models/ikea';
@@ -25,6 +26,7 @@ export class IkeaInwardComponent implements OnInit {
   constructor(private user: UserService,
     private logisticService: LogisticService,
     private ikeaService: IkeaService,
+    private processorService: ProcessorService,
   private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
@@ -44,7 +46,7 @@ export class IkeaInwardComponent implements OnInit {
   }
 
   setGuid() {
-    this.commonData.ikeaInwardProducts.forEach(element => {
+    this.commonData.processingTransactionProducts.forEach(element => {
       if(element.code == this.ikeaReceived.guidNumber){
         this.ikeaReceived.materialName = element.name;
       }
@@ -101,17 +103,21 @@ export class IkeaInwardComponent implements OnInit {
     this.ikeaReceived.receivedDate = this.logisticTransaction.actualDeliveryDateTime;
     this.ikeaReceived.usedByDate =new Date();
     this.ikeaReceived.usedByDate.setDate(new Date().getDate()+10);  
+    this.processorService.getAllProcessorDispatch('id', this.logisticTransaction.processorConsignmentNumber)
+    .then((results: any) => {      
+      this.ikeaReceived.guidNumber = results.processorDispatch[0].guidNumber;
+      this.setGuid();
+      this.ikeaReceived.materialGrade = results.processorDispatch[0].materialGrade;
+      this.ikeaReceived.usedByDate =results.processorDispatch[0].usedByDate;
+    });
+    
   }
 
   setDefaultValues(){
     if(this.logisticTransactionList && this.logisticTransactionList.length>0){
       this.ikeaReceived.consignmentNumber = this.logisticTransactionList[this.logisticTransactionList.length-1].consignmentNumber;
-    }
-    
-    this.checkLogisticConsignment();
-    this.ikeaReceived.guidNumber = this.commonData.ikeaInwardProducts[0].code;
-    this.setGuid();
-    this.ikeaReceived.materialGrade = this.commonData.materialGrades[0];
+    }    
+    this.checkLogisticConsignment();    
     this.ikeaReceived.storage = this.commonData.storage[0];
   }
 }

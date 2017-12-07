@@ -15,7 +15,7 @@
       </div>
       
       <div class="form-group">
-        <label for="consignmentNumber">Transport Consignment Number</label>
+        <label for="consignmentNumber">Consignment Number</label>
         <select class="form-control" [(ngModel)]="ikeaReceived.consignmentNumber" (change)="checkLogisticConsignment();" name="consignmentNumber" required>        
         <option *ngFor="let rec of logisticTransactionList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
         </select>
@@ -54,24 +54,24 @@
       </div>
 
       <div class="form-group">
-        <label for="guidNumber">GUID/GTIN</label>
-        <select class="form-control" [(ngModel)]="ikeaReceived.guidNumber" (click)="setGuid();" name="guidNumber" required>
+        <label for="guidNumber">Product Code (GUID/GTIN)</label>
+        <select disabled class="form-control" [(ngModel)]="ikeaReceived.guidNumber" (click)="setGuid();" name="guidNumber" required>
             <option value="0" selected="selected"></option>
-            <option *ngFor="let guid of commonData.ikeaInwardProducts" [value]="guid.code">{{guid.code}}</option>
+            <option *ngFor="let guid of commonData.processingTransactionProducts" [value]="guid.code">{{guid.code}}</option>
         </select>
       </div>
 
       <div class="form-group">
-          <label for="materialName">Material Name</label>
-          <input type="text" [(ngModel)]="ikeaReceived.materialName" class="form-control" name="materialName" required>
+          <label for="materialName">Product</label>
+          <input disabled type="text" [(ngModel)]="ikeaReceived.materialName" class="form-control" name="materialName" required>
       </div>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
       <label for="materialGrade">Material Grade</label>
-      <select class="form-control" [(ngModel)]="ikeaReceived.materialGrade" name="materialGrade" required>
+      <select disabled class="form-control" [(ngModel)]="ikeaReceived.materialGrade" name="materialGrade" required>
           <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
       </select>
-      </div>    
+      </div>     -->
       
     </div>
 
@@ -84,14 +84,14 @@
 
       <div class="form-group">
           <label for="usedByDate">Used By Date</label>
-          <input type="text" [(ngModel)]="ikeaReceived.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
+          <input disabled type="text" [(ngModel)]="ikeaReceived.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
       </div>
 
       <div class="form-group">
           <label for="quantity" style="display: block;">Quantity</label>
-          <input type="text" class="form-control input-inline-small" [(ngModel)]="ikeaReceived.quantity" name="quantity" required>
-          <select class="form-control input-inline-small" [(ngModel)]="ikeaReceived.quantityUnit" name="qunatityUnit" required >
-              <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+          <input disabled type="text" class="form-control input-inline-small" [(ngModel)]="ikeaReceived.quantity" name="quantity" required>
+          <select disabled class="form-control input-inline-small" [(ngModel)]="ikeaReceived.quantityUnit" name="qunatityUnit" required >
+              <option *ngFor="let unit of commonData.processingTransactionUnits" [value]="unit">{{unit}}</option>
           </select>
       </div>
 

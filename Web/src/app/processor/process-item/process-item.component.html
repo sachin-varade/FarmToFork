@@ -3,25 +3,28 @@
     <h1 class="title-main">Process Item</h1>
     <form #myForm="ngForm">
       <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
+        
         <div class="form-group">
-          <label for="processorReceiptNumber">Meatball Manufacturer Receipt Number</label>
+          <label for="processorBatchCode">Meatball Batch ID</label>
+          <input type="text" class="form-control" disabled [(ngModel)]="processingTransaction.processorBatchCode" name="processorBatchCode" required>
+        </div>
+
+
+        <div class="form-group">
+          <label for="processorReceiptNumber">Meat Batch ID</label>
           <select class="form-control" [(ngModel)]="processingTransaction.processorReceiptNumber" name="processorReceiptNumber" required>        
           <option *ngFor="let rec of processorReceivedList" [value]="rec.processorReceiptNumber">{{rec.processorReceiptNumber}}</option>
           </select>
         </div>
           
-        <div class="form-group">
-          <label for="processorBatchCode">Meatball Manufacturer Batch Code</label>
-          <input type="text" class="form-control" disabled [(ngModel)]="processingTransaction.processorBatchCode" name="processorBatchCode" required>
-        </div>
-
-        <div class="form-group">
+        
+        <!-- <div class="form-group">
           <label for="productCode">Product Code</label>
           <input type="text" class="form-control" [(ngModel)]="processingTransaction.productCode" name="productCode" required>
-        </div>
+        </div> -->
 
         <div class="form-group">
-          <label for="guidNumber">GUID/GTIN</label>
+          <label for="guidNumber">Product Code (GUID/GTIN)</label>
           <select class="form-control" [(ngModel)]="processingTransaction.guidNumber" (click)="setGuid();" name="guidNumber" required>
               <option value="0" selected="selected"></option>
               <option *ngFor="let guid of commonData.processingTransactionProducts" [value]="guid.code">{{guid.code}}</option>
@@ -29,19 +32,27 @@
         </div>
 
         <div class="form-group">
-            <label for="materialName">Material Name</label>
+            <label for="materialName">Product</label>
             <input type="text" [(ngModel)]="processingTransaction.materialName" class="form-control" name="materialName" required>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="materialGrade">Material Grade</label>
           <select class="form-control" [(ngModel)]="processingTransaction.materialGrade" name="materialGrade" required>
               <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
           </select>
-        </div>
+        </div> -->
+
+        <div class="form-group">
+            <label for="usedByDate">Packaging Date</label>
+            <input type="text" [(ngModel)]="processingTransaction.packagingDate" name="packagingDate" class="form-control" bsDatepicker required/>
+          </div>
+
       </div>
 
       <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
+         
+
         <div class="form-group">
           <label for="usedByDate">Used By Date</label>
           <input type="text" [(ngModel)]="processingTransaction.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
@@ -51,13 +62,28 @@
             <label for="quantity" style="display: block;">Quantity</label>
             <input type="text" class="form-control input-inline-small" [(ngModel)]="processingTransaction.quantity" name="quantity" required>
             <select class="form-control input-inline-small" [(ngModel)]="processingTransaction.quantityUnit" name="qunatityUnit" required >
-                <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
+                <option *ngFor="let unit of commonData.processingTransactionUnits" [value]="unit">{{unit}}</option>
             </select>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="qualityControlDocument">Quality Control Document</label>
           <textarea [(ngModel)]="processingTransaction.qualityControlDocument" class="form-control" name="qualityControlDocument" required></textarea>
+        </div> -->
+
+        <div class="form-group clearfix">
+            <label for="alterEgo">Quality Control Document</label>
+            <br>
+            <div *ngFor="let item of qualityControlDocuments">
+                <label class="checkbox-style">                  
+                    <input [(ngModel)]="item.checked" [name]="'cb_' + item.name.replace(' ','')"
+                        [value]="item.id" type="checkbox" required/> {{item.name}}
+                        <span class="checkmark" ></span>                        
+                </label>
+                <label class="checkbox-style-file">
+                <input type="file" *ngIf="item.checked" class="form-control" accept=".pdf,.png,.jpeg" [id]="'file_' + item.name.replace(' ','')">
+                </label>
+            </div>
         </div>
 
         <div class="form-group">

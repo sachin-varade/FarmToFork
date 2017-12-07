@@ -76,6 +76,11 @@ type IkeaDispatch struct {
 	Quantity							string	`json:"quantity"`
 	QuantityUnit						string	`json:"quantityUnit"`	
 	DispatchDateTime					string	`json:"dispatchDateTime"`
+	SoldFromDate					string	`json:"soldFromDate"`
+	SoldUntillDate					string	`json:"soldUntillDate"`
+	PreparedBy					string	`json:"preparedBy"`
+	PreparedOn					string	`json:"preparedOn"`
+	SoldAt					string	`json:"soldAt"`
 }
 
 type IkeaBill struct {

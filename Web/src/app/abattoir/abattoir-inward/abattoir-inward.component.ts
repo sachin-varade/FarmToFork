@@ -55,6 +55,7 @@ export class AbattoirInwardComponent implements OnInit {
   }
   saveAbattoirReceived(myForm: NgForm) {
     var formData = new FormData();
+    let file: File;
     this.abattoirReceived.updatedBy = this.currentUser.id;
     this.abattoirReceived.updatedOn = new Date();
     this.abattoirReceived.certificates = new Array<AbattoirModels.FarmersCertificate>();
@@ -63,7 +64,7 @@ export class AbattoirInwardComponent implements OnInit {
       if (element.checked === true && this.document.getElementById('file_'+ element.name).files.length > 0){
         let fileList: FileList = this.document.getElementById('file_'+ element.name).files;
         this.abattoirReceived.certificates.push(element);
-        let file: File = fileList[0];        
+        file = fileList[0];        
         formData.append(element.name, file);
         //console.log(formData.get(element.name));            
       }
@@ -79,24 +80,32 @@ export class AbattoirInwardComponent implements OnInit {
     if(certificateError.length > 0){
       this.alertService.error(certificateError);        
       return false;
-    }   
+    } 
     this.abattoirReceived.abattoirId = this.currentUser.id;
-    this.abattoirService.uploadCertificate(formData)
+    if (formData && file && file.name){ 
+      this.abattoirService.uploadCertificate(formData)
+      .then((results: any) => {
+          this.abattoirReceived.certificates = results;
+          this.save(myForm);
+      });
+    }
+    else{
+      this.save(myForm);
+    }
+  }
+  
+  save(myForm){
+    this.abattoirService.saveAbattoirReceived(this.abattoirReceived)
     .then((results: any) => {
-        this.abattoirReceived.certificates = results;
-        this.abattoirService.saveAbattoirReceived(this.abattoirReceived)
-        .then((results: any) => {
-          if(results[0].status.indexOf('SUCCESS') > -1){
-            this.clearForm(myForm);
-            this.alertService.success("Abattoir receipt saved.");
-            window.scrollTo(0, 0);
-          }
-          else{
-            this.alertService.error("Error occured...");
-          }
-        });
+      if(results[0].status.indexOf('SUCCESS') > -1){
+        this.clearForm(myForm);
+        this.alertService.success("Abattoir receipt saved.");
+        window.scrollTo(0, 0);
+      }
+      else{
+        this.alertService.error("Error occured...");
+      }
     });
-    
   }
 
   clearForm(myForm: NgForm){

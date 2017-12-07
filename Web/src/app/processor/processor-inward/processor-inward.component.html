@@ -3,23 +3,35 @@
         <h1 class="title-main">Meatball Manufacturer Receipt</h1>
         <form #myForm="ngForm">
             <div class="col-lg-6 col-md-6 col-sm-12 left-pane"> 
+            
             <div class="form-group">
-                <label for="consignmentNumber">Transport Consignment Number</label>
+                <label for="purchaseOrderNumber">Purchase Order Number</label>
+                <input type="text" class="form-control" [(ngModel)]="processorReceived.purchaseOrderNumber" name="purchaseOrderNumber" required>
+            </div>
+                
+            <div class="form-group">
+            <label for="processorReceiptNumber">Batch ID</label>
+            <input type="text" disabled class="form-control" [(ngModel)]="processorReceived.processorReceiptNumber" name="processorReceiptNumber" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="receivedDate">Received Date</label>
+                <input type="text" [(ngModel)]="processorReceived.receivedDate" name="receivedDate" class="form-control" bsDatepicker required/>
+            </div>
+
+            <div class="form-group">
+                <label for="consignmentNumber">Consignment Number</label>
                 <select class="form-control" [(ngModel)]="processorReceived.consignmentNumber" (change)="checkLogisticConsignment();" name="consignmentNumber" required>        
                 <option *ngFor="let rec of logisticTransactionList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
                 </select>
             </div>
             
+
             <div class="form-group">
-            <label for="processorReceiptNumber">Meatball Manufacturer Receipt Number</label>
-            <input type="text" disabled class="form-control" [(ngModel)]="processorReceived.processorReceiptNumber" name="processorReceiptNumber" required>
+                <label for="processorReceiptNumber">Transporter</label>
+                <input type="text" disabled class="form-control" [(ngModel)]="logisticTransaction.logisticName" name="logisticName">
             </div>
-    
-            <div class="form-group">
-                <label for="purchaseOrderNumber">Purchase Order Number</label>
-                <input type="text" class="form-control" [(ngModel)]="processorReceived.purchaseOrderNumber" name="purchaseOrderNumber" required>
-            </div>
-    
+
             <div class="form-group">
                 <label for="transportConsitionSatisfied">Transport conditions satisfied?</label>
                 <br>
@@ -52,48 +64,60 @@
                 </table>
             </div>
     
+              
+          
+                
+
+
+
+            
+
+            </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
+            
             <div class="form-group">
                 <label for="guidNumber">GUID/GTIN</label>
-                <select class="form-control" [(ngModel)]="processorReceived.guidNumber" (click)="setGuid();" name="guidNumber" required>
+                <select disabled class="form-control" [(ngModel)]="processorReceived.guidNumber" (click)="setGuid();" name="guidNumber" required>
                     <option value="0" selected="selected"></option>
-                    <option *ngFor="let guid of commonData.processorInwardProducts" [value]="guid.code">{{guid.code}}</option>
+                    <option *ngFor="let guid of commonData.abattoirsProducts" [value]="guid.code">{{guid.code}}</option>
                 </select>
             </div>
     
             <div class="form-group">
-                <label for="materialName">Material Name</label>
-                <input type="text" [(ngModel)]="processorReceived.materialName" class="form-control" name="materialName" required>
+                <label for="materialName">Item Name</label>
+                <input disabled type="text" [(ngModel)]="processorReceived.materialName" class="form-control" name="materialName" required>
             </div>
     
             <div class="form-group">
-            <label for="materialGrade">Material Grade</label>
-            <select class="form-control" [(ngModel)]="processorReceived.materialGrade" name="materialGrade" required>
-                <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
+            <label for="materialGrade">Item Class</label>
+            <select disabled class="form-control" [(ngModel)]="processorReceived.materialGrade" name="materialGrade" required>
+                <option *ngFor="let grade of commonData.abattoirItemClasses" [value]="grade">{{grade}}</option>
             </select>
             </div>
-            </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
+
             <div class="form-group">
-                <label for="receivedDate">Received Date</label>
-                <input type="text" [(ngModel)]="processorReceived.receivedDate" name="receivedDate" class="form-control" bsDatepicker required/>
+                <label for="fatCoverClass">Fat Cover Class</label>
+                <select disabled class="form-control" [(ngModel)]="processorReceived.fatCoverClass" name="fatCoverClass" required>
+                    <option *ngFor="let grade of commonData.fatCoverClasses" [value]="grade">{{grade}}</option>
+                </select>
             </div>
-    
-            <div class="form-group">
+
+            <!-- <div class="form-group">
                 <label for="usedByDate">Used By Date</label>
                 <input type="text" [(ngModel)]="processorReceived.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
-            </div>
+            </div> -->
     
             <div class="form-group">
                 <label for="quantity" style="display: block;">Quantity</label>
-                <input type="text" class="form-control input-inline-small" [(ngModel)]="processorReceived.quantity" name="quantity" required>
-                <select class="form-control input-inline-small" [(ngModel)]="processorReceived.quantityUnit" name="qunatityUnit" required >
+                <input disabled type="text" class="form-control input-inline-small" [(ngModel)]="processorReceived.quantity" name="quantity" required>
+                <select disabled class="form-control input-inline-small" [(ngModel)]="processorReceived.quantityUnit" name="qunatityUnit" required >
                     <option *ngFor="let unit of commonData.units" [value]="unit">{{unit}}</option>
                 </select>
             </div>
     
             <div class="form-group">
                 <label for="transitTime">Transit Time(Hrs)</label>
-                <input type="text" [(ngModel)]="processorReceived.transitTime" class="form-control" name="transitTime" required>
+                <input disabled type="text" [(ngModel)]="processorReceived.transitTime" class="form-control" name="transitTime" required>
             </div>
     
             <div class="form-group">

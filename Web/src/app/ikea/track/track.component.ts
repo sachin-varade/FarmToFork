@@ -28,6 +28,7 @@ export class TrackComponent implements OnInit {
     this.ikeaService.getAllIkeaDispatch('ids')
     .then((results: any) => {
       this.ikeaDispatchList = <Array<IkeaModels.IkeaDispatch>>results.ikeaDispatchNumbers;      
+      //this.ikeaDispatchList = <any>["12121","1231231231"];
     }); 
   }
 

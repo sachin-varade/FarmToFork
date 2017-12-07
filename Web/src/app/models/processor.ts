@@ -7,6 +7,7 @@ export class ProcessorReceived {
     guidNumber: string;
     materialName: string;
     materialGrade: string;
+    fatCoverClass: string;
     usedByDate: Date;
     receivedDate: Date;
     quantity: number;
@@ -32,14 +33,20 @@ export class ProcessingTransaction{
     guidNumber: string;
     materialName: string;
     materialGrade: string;
+    packagingDate: Date;
     usedByDate: Date;    
     quantity: number;
     quantityUnit: string;
-    qualityControlDocument: string;
+    qualityControlDocument: Array<QualityControlDocument> = new Array<QualityControlDocument>();
     storage: string;
     processingAction: Array<ProcessingAction>;
     updatedOn: Date;
     updatedBy: string;  
+}
+
+export class QualityControlDocument {
+    id: number;
+    name: string;
 }
 
 export class ProcessingAction{
@@ -59,9 +66,10 @@ export class ProcessorDispatch{
     temperatureStorageMax: string;
     packagingDate: Date;
     usedByDate: Date;    
+    dispatchDate: Date;
     quantity: number;
     quantityUnit: string;
-    qualityControlDocument: string;
+    qualityControlDocument: Array<QualityControlDocument> = new Array<QualityControlDocument>();
     storage: string;
     updatedOn: Date;
     updatedBy: string;  

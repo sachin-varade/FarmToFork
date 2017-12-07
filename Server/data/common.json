@@ -1,6 +1,7 @@
 {
 "abattoirDispatchUnits" : ["Tonne CWE"],
 "units" : ["Units", "Kg", "Tonne", "Box", "Tonne CWE"],
+"processingTransactionUnits" : [ "5kg Pack", "10 kg Pack", "20 kg Pack"],
 "materialGrades": ["HQB Grain-fed", "HQB Grass-fed"],
 "abattoirItemClasses": ["Superior","Excellent","Very Good","Good","Fair","Poor"],
 "fatCoverClasses": ["Low","Slight","Average","High","Very High"],
@@ -48,6 +49,9 @@
                             { "id": 1, "name": "KRAV"},
                             { "id": 1, "name": "IFOAM"}
                         ],
+"qualityControlDocuments": [
+                            { "id": 1, "name": "DNA Test", "checked": false}
+                        ],                    
 "farmersProducts": [
                             { "id": 1, "code": "Angus", "name": "Angus"},
                             { "id": 2, "code": "Wagyu", "name": "Wagyu"}                            
@@ -93,6 +97,8 @@
 "ikeaAcceptanceCriteria": [
                             { "id": 1, "ruleCondition": "Temperature maintained", "conditionSatisfied": false}, 
                             { "id": 2, "ruleCondition": "Delivered On Time", "conditionSatisfied": false}
-                        ]
+                        ],
+"dishPreparedBy": ["John Doe"],
+"ikeaStoreList": [" IKEA Gotenburg"]
 }
  

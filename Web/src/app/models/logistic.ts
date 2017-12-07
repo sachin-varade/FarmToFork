@@ -1,6 +1,7 @@
 
 export class LogisticTransaction {
     logisticId: number;    
+    logisticName: string;
     logisticType: string;
     consignmentNumber: string;
     routeId: number;    

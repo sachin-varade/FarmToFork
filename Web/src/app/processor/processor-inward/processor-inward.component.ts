@@ -8,6 +8,7 @@ import { ProcessorService } from '../../processor.service';
 import * as LogisticModels from '../../models/logistic';
 import * as ProcessorModels from '../../models/processor';
 import { AlertService } from '../../alert.service';
+import { AbattoirService } from '../../abattoir.service';
 
 @Component({
   selector: 'app-processor-inward',
@@ -25,6 +26,7 @@ export class ProcessorInwardComponent implements OnInit {
   constructor(private user: UserService,
     private logisticService: LogisticService,
     private processorService: ProcessorService,
+    private abattoirService: AbattoirService,
   private alertService: AlertService) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
@@ -44,7 +46,7 @@ export class ProcessorInwardComponent implements OnInit {
   }
 
   setGuid() {
-    this.commonData.processorInwardProducts.forEach(element => {
+    this.commonData.abattoirsProducts.forEach(element => {
       if(element.code == this.processorReceived.guidNumber){
         this.processorReceived.materialName = element.name;
       }
@@ -94,13 +96,21 @@ export class ProcessorInwardComponent implements OnInit {
     else{
       this.processorReceived.transportConsitionSatisfied = "true";
     }
+    this.logisticTransaction.logisticName = this.userData.users.logistics.filter(function(o){return o.id == Number(obj.logisticTransaction.logisticId)})[0].displayName;
     this.processorReceived.quantityUnit = this.logisticTransaction.quantityUnit;
     this.processorReceived.quantity = this.logisticTransaction.quantity;
     var diff= new Date(new Date(this.logisticTransaction.actualDeliveryDateTime).getTime() - new Date(this.logisticTransaction.shipmentStatus[1].shipmentDate).getTime());
     this.processorReceived.transitTime = ( ((diff.getUTCDate()-1)*24) + diff.getUTCHours()).toString() +"."+ diff.getUTCMinutes().toString();
     this.processorReceived.receivedDate = this.logisticTransaction.actualDeliveryDateTime;
     this.processorReceived.usedByDate =new Date();
-    this.processorReceived.usedByDate.setDate(new Date().getDate()+10);  
+    this.processorReceived.usedByDate.setDate(new Date().getDate()+10); 
+    this.abattoirService.getAllAbattoirDispatch('id', this.logisticTransaction.abattoirConsignmentNumber)
+    .then((results: any) => {
+      this.processorReceived.guidNumber = results.abattoirMaterialDispatch[0].guidNumber;
+      this.setGuid();
+      this.processorReceived.materialGrade = results.abattoirMaterialDispatch[0].materialGrade;
+      this.processorReceived.fatCoverClass = results.abattoirMaterialDispatch[0].fatCoverClass;
+    }); 
   }
 
   setDefaultValues(){
@@ -109,9 +119,6 @@ export class ProcessorInwardComponent implements OnInit {
     }
     
     this.checkLogisticConsignment();
-    this.processorReceived.guidNumber = this.commonData.processorInwardProducts[0].code;
-    this.setGuid();
-    this.processorReceived.materialGrade = this.commonData.materialGrades[0];
     this.processorReceived.storage = this.commonData.storage[0];
   }
 }

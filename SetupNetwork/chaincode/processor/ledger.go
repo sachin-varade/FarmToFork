@@ -75,12 +75,20 @@ type ProcessingTransaction struct {
 	MaterialGrade						string	`json:"materialGrade"`	
 	Quantity							string	`json:"quantity"`
 	QuantityUnit						string	`json:"quantityUnit"`	
+	PackagingDate							string	`json:"packagingDate"`
 	UsedByDate							string	`json:"usedByDate"`
-	QualityControlDocument				string	`json:"qualityControlDocument"`	
+	QualityControlDocument				[]QualityControlDocument	`json:"qualityControlDocument"`	
 	Storage								string	`json:"storage"`
 	ProcessingAction					[]ProcessingAction	`json:"processingAction"`
 	UpdatedOn			string	`json:"updatedOn"`
 	UpdatedBy			string	`json:"updatedBy"`
+}
+
+type QualityControlDocument struct {
+	Id			string	`json:"id"`	
+	Name			string	`json:"name"`
+	FileName			string	`json:"fileName"`
+	Hash			string	`json:"hash"`
 }
 
 // ProcessingAction - (W - St - P - QC - F)
@@ -101,9 +109,10 @@ type ProcessorDispatch struct {
 	TemperatureStorageMax			string	`json:"temperatureStorageMax"`
 	PackagingDate					string	`json:"packagingDate"`
 	UsedByDate						string	`json:"usedByDate"`
+	DispatchDate					string	`json:"dispatchDate"`
 	Quantity						string	`json:"quantity"`	
 	QuantityUnit					string	`json:"quantityUnit"`
-	QualityControlDocument			string	`json:"qualityControlDocument"`	
+	QualityControlDocument				[]QualityControlDocument	`json:"qualityControlDocument"`	
 	Storage							string	`json:"storage"`	
 	UpdatedOn			string	`json:"updatedOn"`
 	UpdatedBy			string	`json:"updatedBy"`

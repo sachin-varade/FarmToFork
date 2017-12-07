@@ -34,6 +34,11 @@ export class IkeaDispatch{
     quantity: number;
     quantityUnit: string;
     dispatchDateTime: Date;
+    preparedBy: string;
+    soldFromDate: Date;
+    soldUntillDate: Date;
+    preparedOn: Date;
+    soldAt: string;
 }
 
 export class IkeaBill{

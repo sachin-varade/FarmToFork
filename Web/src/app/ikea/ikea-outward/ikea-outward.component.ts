@@ -75,9 +75,13 @@ export class IkeaOutwardComponent implements OnInit {
     
     this.ikeaDispatch.guidNumber = this.commonData.ikeaDispatchProducts[0].code;
     this.setGuid();
-    this.ikeaDispatch.materialGrade = this.commonData.materialGrades[0];
+    //this.ikeaDispatch.materialGrade = this.commonData.materialGrades[0];
+    this.ikeaDispatch.preparedOn = new Date();
     this.ikeaDispatch.dispatchDateTime = new Date();
+    this.ikeaDispatch.soldFromDate = new Date();
+    this.ikeaDispatch.soldUntillDate = new Date();
+    this.ikeaDispatch.soldUntillDate.setDate(new Date().getDate()+30);  
     this.ikeaDispatch.quantity = 10;
-    this.ikeaDispatch.quantityUnit = this.commonData.units[0];
+    this.ikeaDispatch.quantityUnit = this.commonData.processingTransactionUnits[0];
   }
 }

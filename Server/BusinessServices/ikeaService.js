@@ -113,10 +113,15 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     ikeaDispatch.ikeaId.toString(),
                     ikeaDispatch.guidNumber,
                     ikeaDispatch.materialName,
-                    ikeaDispatch.materialGrade,
+                    ikeaDispatch.materialGrade ? ikeaDispatch.materialGrade : "",
                     ikeaDispatch.quantity.toString(),
                     ikeaDispatch.quantityUnit,
-                    ikeaDispatch.dispatchDateTime
+                    ikeaDispatch.dispatchDateTime,
+                    ikeaDispatch.soldFromDate,
+                    ikeaDispatch.soldUntillDate,
+                    ikeaDispatch.preparedBy,
+                    ikeaDispatch.preparedOn,
+                    ikeaDispatch.soldAt
                 ]);
         }).then((results) => {
             return results;

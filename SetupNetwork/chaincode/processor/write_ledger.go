@@ -107,9 +107,9 @@ func saveProcessingTransaction(stub  shim.ChaincodeStubInterface, args []string)
 	var err error
 	fmt.Println("Running saveProcessingTransaction..")
 
-	if len(args) != 15 {
-		fmt.Println("Incorrect number of arguments. Expecting 15..")
-		return shim.Error("Incorrect number of arguments. Expecting 15")
+	if len(args) != 16 {
+		fmt.Println("Incorrect number of arguments. Expecting 16..")
+		return shim.Error("Incorrect number of arguments. Expecting 16")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
@@ -137,14 +137,29 @@ func saveProcessingTransaction(stub  shim.ChaincodeStubInterface, args []string)
 	bt.Quantity							= args[7]
 	bt.QuantityUnit						= args[8]
 	bt.UsedByDate						= args[9]
-	bt.QualityControlDocument			= args[10]	
-	bt.Storage							= args[11]
-	bt.UpdatedBy						= args[13]
-	bt.UpdatedOn						= args[14]
+	bt.PackagingDate					= args[10]
+	bt.Storage							= args[12]
+	bt.UpdatedBy						= args[14]
+	bt.UpdatedOn						= args[15]
 	var pa ProcessingAction
-	pa.Action = args[12]
-	pa.DoneWhen = args[14]
+	pa.Action = args[13]
+	pa.DoneWhen = args[15]
 	bt.ProcessingAction					= append(bt.ProcessingAction, pa)	
+
+	var cert QualityControlDocument
+	
+	if args[11] != "" {
+		p := strings.Split(args[11], ",")
+		for i := range p {
+			c := strings.Split(p[i], "^")
+			cert.Id = c[0]
+			cert.Name = c[1]
+			cert.FileName = c[2]
+			cert.Hash = c[3]
+			bt.QualityControlDocument = append(bt.QualityControlDocument, cert)
+		}
+	}
+
 	//Commit Inward entry to ledger
 	fmt.Println("saveProcessingTransaction - Commit ProcessingTransaction To Ledger");
 	btAsBytes, _ := json.Marshal(bt)
@@ -171,9 +186,9 @@ func saveProcessorDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.
 	var err error
 	fmt.Println("Running saveProcessorDispatch..")
 
-	if len(args) != 17 {
-		fmt.Println("Incorrect number of arguments. Expecting 17..")
-		return shim.Error("Incorrect number of arguments. Expecting 17")
+	if len(args) != 18 {
+		fmt.Println("Incorrect number of arguments. Expecting 18..")
+		return shim.Error("Incorrect number of arguments. Expecting 18")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
@@ -202,12 +217,28 @@ func saveProcessorDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.
 	bt.TemperatureStorageMax			= args[8]
 	bt.PackagingDate					= args[9]
 	bt.UsedByDate						= args[10]	
-	bt.Quantity							= args[11]
-	bt.QuantityUnit						= args[12]
-	bt.QualityControlDocument			= args[13]
-	bt.Storage							= args[14]
-	bt.UpdatedBy						= args[15]
-	bt.UpdatedOn						= args[16]
+	bt.DispatchDate						= args[11]
+
+	bt.Quantity							= args[12]
+	bt.QuantityUnit						= args[13]
+	
+	bt.Storage							= args[15]
+	bt.UpdatedBy						= args[16]
+	bt.UpdatedOn						= args[17]
+
+	var cert QualityControlDocument
+	
+	if args[14] != "" {
+		p := strings.Split(args[14], ",")
+		for i := range p {
+			c := strings.Split(p[i], "^")
+			cert.Id = c[0]
+			cert.Name = c[1]
+			cert.FileName = c[2]
+			cert.Hash = c[3]
+			bt.QualityControlDocument = append(bt.QualityControlDocument, cert)
+		}
+	}
 	//Commit Inward entry to ledger
 	fmt.Println("saveProcessorDispatch - Commit ProcessorDispatch To Ledger");
 	btAsBytes, _ := json.Marshal(bt)

@@ -8,6 +8,11 @@ var helper = require('./helper.js');
 var queryChainCode = require('../hfcInterface/queryChainCode.js');
 var invokeChainCode = require('../hfcInterface/invokeChainCode.js');
 var config = require('../config/config.js');
+const save = require('save-file');
+var crypto = require('crypto');
+var fs = require('fs');
+var uuid = require('node-uuid');
+var commonData = require('../data/common.json');
 
 var processorConfig = config.network.processor;
 var member_user;
@@ -72,6 +77,15 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             else
                 processingAction += ","+ element.action;
           });
+        var qualityControlDocument = "";        
+        if(processingTransaction.qualityControlDocument){
+            processingTransaction.qualityControlDocument.forEach(element => {
+                if(qualityControlDocument == "")
+                    qualityControlDocument = element.id +"^"+ element.name +"^"+ element.fileName +"^"+ element.hash;
+                else
+                    qualityControlDocument += ","+ element.id +"^"+ element.name +"^"+ element.fileName +"^"+ element.hash;
+            });
+        }
         return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
@@ -85,14 +99,15 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     processingTransaction.processorBatchCode,
                     processingTransaction.processorId.toString(),
                     processingTransaction.processorReceiptNumber,
-                    processingTransaction.productCode,
+                    processingTransaction.productCode ? processingTransaction.productCode : "",
                     processingTransaction.guidNumber,
                     processingTransaction.materialName,
-                    processingTransaction.materialGrade,
+                    processingTransaction.materialGrade ? processingTransaction.materialGrade : "",
                     processingTransaction.quantity.toString(),
                     processingTransaction.quantityUnit,
                     processingTransaction.usedByDate,
-                    processingTransaction.qualityControlDocument,
+                    processingTransaction.packagingDate,                    
+                    qualityControlDocument,
                     processingTransaction.storage,
                     processingAction,
                     processingTransaction.updatedBy.toString(),
@@ -107,6 +122,15 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
 
     processorService.saveProcessorDispatch = function(processorDispatch){
         console.log("saveProcessorDispatch");        
+        var qualityControlDocument = "";        
+        if(processorDispatch.qualityControlDocument){
+            processorDispatch.qualityControlDocument.forEach(element => {
+                if(qualityControlDocument == "")
+                    qualityControlDocument = element.id +"^"+ element.name +"^"+ element.fileName +"^"+ element.hash;
+                else
+                    qualityControlDocument += ","+ element.id +"^"+ element.name +"^"+ element.fileName +"^"+ element.hash;
+            });
+        }
         return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
@@ -123,15 +147,16 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     processorDispatch.ikeaPurchaseOrderNumber,
                     processorDispatch.guidNumber,
                     processorDispatch.materialName,
-                    processorDispatch.materialGrade,
+                    processorDispatch.materialGrade ? processorDispatch.materialGrade : "",
                     processorDispatch.temperatureStorageMin,
                     processorDispatch.temperatureStorageMax,
                     processorDispatch.packagingDate,
                     processorDispatch.usedByDate,
+                    processorDispatch.dispatchDate,
                     processorDispatch.quantity.toString(),
                     processorDispatch.quantityUnit,
-                    processorDispatch.qualityControlDocument,
-                    processorDispatch.storage,
+                    qualityControlDocument,
+                    processorDispatch.storage ? processorDispatch.storage : "",
                     processorDispatch.updatedBy.toString(),
                     processorDispatch.updatedOn,
                 ]);                
@@ -245,6 +270,77 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             return results;
         }).catch((err) => {
             throw err;
+        });
+    }
+
+    processorService.uploadQualityControlDocument = function(files){
+        var file;
+        var fileName='';
+        var ext = 'png';
+        var fileNameList = [];
+        if(files){
+            commonData.qualityControlDocuments.forEach(element => {
+                file = element.name == "DNA Test" ? files.DNATest : "";
+                if(file){
+                    if(file.name){
+                        ext = file.name.split('.');
+                        ext = ext[ext.length-1];
+                    }
+                    
+                    fileName = 'qcd-'+ element.name +'-'+ uuid.v4() +'.'+ ext;
+                    fileNameList.push({id: element.id, name: element.name, fileName: fileName, fileData: file.data});
+                }
+            });
+            var promises = [];
+            fileNameList.forEach(element => {
+                promises.push(
+                save(element.fileData, "../qualityControlDocuments/"+ element.fileName, (err, data) => {
+                    if (err) throw err;                    
+                })
+                );              
+            });
+
+            return Promise.all(promises)
+            .then((results) => {
+                var hashPromises = [];
+                var count= 0;
+                fileNameList.forEach(element => {
+                    hashPromises.push(
+                        gen_hash(element)
+                        .then((hash) => {
+                            element.hash = hash;        
+                            element.fileData = null;
+                        })
+                    );
+                });
+                
+                return Promise.all(hashPromises)
+                .then((results) => {
+                    return fileNameList;
+                }).catch((err) => {
+                    throw err;
+                });
+            }).catch((err) => {
+                throw err;
+            });
+        } 
+        else{
+            return fileNameList;
+        }       
+    }
+
+    function gen_hash (element) {
+        return new Promise((resolve, reject) => {
+            var algo = 'md5';
+            var shasum = crypto.createHash(algo);
+            var file = 'Server/qualityControlDocuments/'+ element.fileName;
+            var s = fs.ReadStream(file);
+            s.on('end', function() {
+                var d = shasum.digest('hex');
+                resolve(d);
+            });
+            s.on('error', reject);
+            s.on('data', function(d) { shasum.update(d); });
         });
     }
 	return processorService;

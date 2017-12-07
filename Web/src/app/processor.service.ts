@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers, Http, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as AbattoirModels from './models/abattoir';
 import * as ProcessorModels from './models/processor';
@@ -83,5 +83,18 @@ export class ProcessorService {
       this.alertService.error("Error occured...");
     });
   }  
+
+  uploadQualityControlDocument(formData: any): Promise<any> {
+    let headers = new Headers();
+    headers.append('Accept', 'application/json');    
+    let options = new RequestOptions({ headers: headers });
+    this.url = `${this.BASE_URL}/uploadQualityControlDocument`;
+    return this.http.post(this.url, formData, options).toPromise()
+    .then((results: any) => {
+      return JSON.parse(results._body);
+    }).catch((err) => {
+      this.alertService.error("Error occured...");
+    });
+  }
 }
 

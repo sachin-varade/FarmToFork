@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { FormsModule, NgControl } from '@angular/forms';
 import { NgModel, NgForm } from '@angular/forms';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
@@ -6,6 +6,7 @@ import { UserService } from '../../user.service';
 import { ProcessorService } from '../../processor.service';
 import * as ProcessorModels from '../../models/processor';
 import { AlertService } from '../../alert.service';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-process-item',
@@ -17,11 +18,13 @@ export class ProcessItemComponent implements OnInit {
   currentUser: any;
   commonData: any;
   userData: any;
+  qualityControlDocuments: any;
   processorReceivedList: Array<ProcessorModels.ProcessorReceived> = new Array<ProcessorModels.ProcessorReceived>();
   processingTransaction : ProcessorModels.ProcessingTransaction = new ProcessorModels.ProcessingTransaction();
   constructor(private user: UserService,
     private processorService: ProcessorService,
-  private alertService: AlertService) {
+  private alertService: AlertService,
+  @Inject(DOCUMENT) private document) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
@@ -37,6 +40,7 @@ export class ProcessItemComponent implements OnInit {
     .then((results: any) => {
       this.processingTransaction.processorBatchCode = results;
     }); 
+    this.qualityControlDocuments = JSON.parse(JSON.stringify(this.commonData.qualityControlDocuments));    
   }
 
   ngOnInit() {
@@ -51,6 +55,8 @@ export class ProcessItemComponent implements OnInit {
   }
 
   saveProcessingTransaction(myForm: NgForm){
+    var formData = new FormData();
+    let file: File;
     this.processingTransaction.updatedBy = this.currentUser.id;
     this.processingTransaction.updatedOn = new Date();
     this.processingTransaction.processorId = this.currentUser.id;
@@ -60,6 +66,43 @@ export class ProcessItemComponent implements OnInit {
         this.processingTransaction.processingAction.push(element)
       }
     });
+
+    var qualityControlDocumentsError = "";
+    this.qualityControlDocuments.forEach(element => {
+      if (element.checked === true && this.document.getElementById('file_'+ element.name.replace(' ','')).files.length > 0){
+        let fileList: FileList = this.document.getElementById('file_'+ element.name.replace(' ','')).files;
+        this.processingTransaction.qualityControlDocument.push(element);
+        file = fileList[0];        
+        formData.append(element.name.replace(' ',''), file);
+        //console.log(formData.get(element.name));            
+      }
+      else if (element.checked === true){
+        if(qualityControlDocumentsError === ''){
+          qualityControlDocumentsError = "Please select document for "+ element.name;
+        }
+        else{
+          qualityControlDocumentsError += ", "+ element.name;        
+        }        
+      }
+    }); 
+    if(qualityControlDocumentsError.length > 0){
+      this.alertService.error(qualityControlDocumentsError);        
+      return false;
+    } 
+
+    if (formData && file && file.name){ 
+      this.processorService.uploadQualityControlDocument(formData)
+      .then((results: any) => {
+          this.processingTransaction.qualityControlDocument = results;
+          this.save(myForm);
+      });
+    }
+    else{
+      this.save(myForm);
+    }
+  }
+
+  save(myForm){
     this.processorService.saveProcessingTransaction(this.processingTransaction)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
@@ -79,7 +122,10 @@ export class ProcessItemComponent implements OnInit {
       this.commonData.processingActions.forEach(element => {
         element.checked = true;      
       });      
-    }, 10);    
+    }, 10);  
+    this.qualityControlDocuments.forEach(element => {
+      element.checked = false;
+    });  
   }
 
   setDefaultValues(){
@@ -89,12 +135,12 @@ export class ProcessItemComponent implements OnInit {
     
     this.processingTransaction.guidNumber = this.commonData.processingTransactionProducts[0].code;
     this.setGuid();
-    this.processingTransaction.materialGrade = this.commonData.materialGrades[0];
+    //this.processingTransaction.materialGrade = this.commonData.materialGrades[0];
+    this.processingTransaction.packagingDate = new Date();
     this.processingTransaction.usedByDate = new Date();
     this.processingTransaction.usedByDate.setDate(new Date().getDate()+10);  
     this.processingTransaction.quantity = 10;
-    this.processingTransaction.quantityUnit = this.commonData.units[0];
-    this.processingTransaction.qualityControlDocument = "testing...";
+    this.processingTransaction.quantityUnit = this.commonData.processingTransactionUnits[0];    
     this.processingTransaction.storage = this.commonData.storage[0];
   }
 }

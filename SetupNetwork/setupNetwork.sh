@@ -1,10 +1,15 @@
 #!/bin/bash
-#
-# Copyright IBM Corp. All Rights Reserved.
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-
+function printHelp () {
+  echo "Usage: "
+  echo "  setupNetwork.sh -m n|ns|nsw|s|w"
+  echo "  setupNetwork.sh -h (print this message)"
+  echo "    -m <mode> - one of 'n', 'ns', 'nsw'"
+  echo "      - 'n' - bring up the network"
+  echo "      - 'ns' - bring up the network and Server API"
+  echo "      - 'nsw' - bring up the network, Server API and Client application"
+  echo "      - 's' - bring up the Server API"
+  echo "      - 'w' - bring up the Client Application"
+}
 function dkcl(){
         CONTAINER_IDS=$(docker ps -aq)
 	echo
@@ -53,7 +58,6 @@ function registerUsers() {
 	node ../Server/hfcInterface/users.js
 }
 
-
 function startAPI() {		
 	echo $PWD
 	cd ../
@@ -61,19 +65,71 @@ function startAPI() {
 	npm start	
 }
 
-
 function startWEB() {		
 	echo $PWD
 	cd ../
 	cd Web
-	netstat -ano | findstr :4200
-	taskkill /PID 3296 /F
-	#npm start
+	port=`netstat -ano | findstr :4200 | awk '{ print $5 }'`	
+	for pid in $port[0]; do
+	  echo $pid
+	  taskkill /PID $pid /F
+	done
+	sleep 5
+	npm start
+
+	# port=".4200*"
+
+	# echo $ntstat
+	# echo $port
+
+	# if [[ $ntstat =~ $port ]]; then
+	# echo "Output of Netstat command $ntstat port number $port";
+	# else 
+	# wait 60; /usr/local/etc/rc.d/tomcat6 restart;
+	# fi
+
 }
 
 starttime=$(date +%s)
-restartNetwork
-registerUsers
-#startAPI
-#startWEB
+
+while getopts "h?m:c:t:d:f:s:" opt; do
+  case "$opt" in
+    h|\?)
+      printHelp
+      exit 0
+    ;;
+    m)  MODE=$OPTARG
+    ;;    
+  esac
+done
+
+# Determine whether starting, stopping, restarting or generating for announce
+if [ "$MODE" == "n" ]; then
+  echo "Starting Network"
+  restartNetwork
+  registerUsers
+elif [ "$MODE" == "ns" ]; then
+  echo "Starting Network and API Server application"
+  restartNetwork
+  registerUsers
+  startAPI
+elif [ "$MODE" == "nsw" ]; then
+  echo "Starting Network, API Server application, and Client application"
+  restartNetwork
+  registerUsers
+  startAPI
+  startWEB
+elif [ "$MODE" == "s" ]; then
+  echo "Starting API Server application"
+  startAPI
+elif [ "$MODE" == "w" ]; then
+  echo "Starting Client application"
+  startWEB
+else
+  printHelp
+fi
+
+
 printf "\nTotal execution time : $(($(date +%s) - starttime)) secs ...\n\n"
+
+

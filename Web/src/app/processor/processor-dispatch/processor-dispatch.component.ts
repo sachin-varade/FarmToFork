@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { FormsModule, NgControl } from '@angular/forms';
 import { NgModel, NgForm } from '@angular/forms';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
@@ -7,6 +7,7 @@ import { ProcessorService } from '../../processor.service';
 import { LogisticService } from '../../logistic.service';
 import * as ProcessorModels from '../../models/processor';
 import { AlertService } from '../../alert.service';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-processor-dispatch',
@@ -18,12 +19,14 @@ export class ProcessorDispatchComponent implements OnInit {
   currentUser: any;
   commonData: any;
   userData: any;
+  qualityControlDocuments: any;
   processingTransactionList: Array<ProcessorModels.ProcessingTransaction> = new Array<ProcessorModels.ProcessingTransaction>();
   processorDispatch : ProcessorModels.ProcessorDispatch = new ProcessorModels.ProcessorDispatch();
   constructor(private user: UserService,
     private logisticService: LogisticService,
     private processorService: ProcessorService,
-  private alertService: AlertService) {
+  private alertService: AlertService,
+  @Inject(DOCUMENT) private document) {
     this.currentUser = this.user.getUserLoggedIn();
     this.userData = this.user.getUserData();
     this.commonData = this.user.getCommonData();    
@@ -36,6 +39,7 @@ export class ProcessorDispatchComponent implements OnInit {
     .then((results: any) => {
       this.processorDispatch.consignmentNumber = results;
     });  
+    this.qualityControlDocuments = JSON.parse(JSON.stringify(this.commonData.qualityControlDocuments));    
   }
 
   ngOnInit() {
@@ -53,12 +57,20 @@ export class ProcessorDispatchComponent implements OnInit {
         console.log(results);
         this.processorDispatch.temperatureStorageMin = results.logisticTransactions[0].temperatureStorageMin;
         this.processorDispatch.temperatureStorageMax = results.logisticTransactions[0].temperatureStorageMax;
+        
+        this.processorService.getAllProcessingTransactions('id', this.processorDispatch.processorBatchCode)
+        .then((results: any) => {
+          this.processorDispatch.guidNumber = results.processingTransaction[0].guidNumber;
+          this.setGuid();
+          this.processorDispatch.materialGrade = results.processingTransaction[0].materialGrade;        
+          this.processorDispatch.packagingDate = results.processingTransaction[0].packagingDate;
+        });   
       }); 
     });
   }
 
   setGuid() {
-    this.commonData.processorDispatchProducts.forEach(element => {
+    this.commonData.processingTransactionProducts.forEach(element => {
       if(element.code == this.processorDispatch.guidNumber){
         this.processorDispatch.materialName = element.name;
       }
@@ -66,9 +78,48 @@ export class ProcessorDispatchComponent implements OnInit {
   }
 
   saveProcessorDispatch(myForm: NgForm){
+    var formData = new FormData();
+    let file: File;
     this.processorDispatch.updatedBy = this.currentUser.id;
     this.processorDispatch.updatedOn = new Date();
     this.processorDispatch.processorId = this.currentUser.id;
+  
+    var qualityControlDocumentsError = "";
+    this.qualityControlDocuments.forEach(element => {
+      if (element.checked === true && this.document.getElementById('file_'+ element.name.replace(' ','')).files.length > 0){
+        let fileList: FileList = this.document.getElementById('file_'+ element.name.replace(' ','')).files;
+        this.processorDispatch.qualityControlDocument.push(element);
+        file = fileList[0];        
+        formData.append(element.name.replace(' ',''), file);
+        //console.log(formData.get(element.name));            
+      }
+      else if (element.checked === true){
+        if(qualityControlDocumentsError === ''){
+          qualityControlDocumentsError = "Please select document for "+ element.name;
+        }
+        else{
+          qualityControlDocumentsError += ", "+ element.name;        
+        }        
+      }
+    }); 
+    if(qualityControlDocumentsError.length > 0){
+      this.alertService.error(qualityControlDocumentsError);        
+      return false;
+    } 
+
+    if (formData && file && file.name){ 
+      this.processorService.uploadQualityControlDocument(formData)
+      .then((results: any) => {
+          this.processorDispatch.qualityControlDocument = results;
+          this.save(myForm);
+      });
+    }
+    else{
+      this.save(myForm);
+    }    
+  }
+
+  save(myForm){
     this.processorService.saveProcessorDispatch(this.processorDispatch)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
@@ -92,15 +143,11 @@ export class ProcessorDispatchComponent implements OnInit {
     }
     
     this.getProductDetails();
-    this.processorDispatch.guidNumber = this.commonData.processorDispatchProducts[0].code;
-    this.setGuid();
-    this.processorDispatch.materialGrade = this.commonData.materialGrades[0];
-    this.processorDispatch.packagingDate = new Date();
+    this.processorDispatch.dispatchDate = new Date();
     this.processorDispatch.usedByDate = new Date();
     this.processorDispatch.usedByDate.setDate(new Date().getDate()+10);  
     this.processorDispatch.quantity = 10;
-    this.processorDispatch.quantityUnit = this.commonData.units[0];
-    this.processorDispatch.qualityControlDocument = "Quality control documents verified";
-    this.processorDispatch.storage = this.commonData.storage[0];
+    this.processorDispatch.quantityUnit = this.commonData.processingTransactionUnits[0];    
+    //this.processorDispatch.storage = this.commonData.storage[0];
   }
 }
