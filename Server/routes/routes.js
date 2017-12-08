@@ -267,35 +267,35 @@ router.post("/saveIkeaBill", function(req, res) {
 router.get("/abattoir/getUniqueId/:option/:value?", function(req, res) {    
     var promise = abattoirService.getUniqueId(req.params.option, req.params.value?req.params.value: "")
 	promise.then(function(resp,err){
-		res.send(resp);
+		res.send({"uniqueId": resp});
 	});	
 });
 
 router.get("/processor/getUniqueId/:option/:value?", function(req, res) {    
     var promise = processorService.getUniqueId(req.params.option, req.params.value?req.params.value: "")
 	promise.then(function(resp,err){
-		res.send(resp);
+		res.send({"uniqueId": resp});
 	});	
 });
 
 router.get("/ikea/getUniqueId/:option/:value?", function(req, res) {    
     var promise = ikeaService.getUniqueId(req.params.option, req.params.value?req.params.value: "")
 	promise.then(function(resp,err){
-		res.send(resp);
+		res.send({"uniqueId": resp});
 	});	
 });
 
 router.get("/A2P/getUniqueId/:option/:value?", function(req, res) {    
     var promise = logisticService.getA2PUniqueId(req.params.option, req.params.value?req.params.value: "")
 	promise.then(function(resp,err){
-		res.send(resp);
+		res.send({"uniqueId": resp});
 	});	
 });
 
 router.get("/P2I/getUniqueId/:option/:value?", function(req, res) {    
     var promise = logisticService.getP2IUniqueId(req.params.option, req.params.value?req.params.value: "")
 	promise.then(function(resp,err){
-		res.send(resp);
+		res.send({"uniqueId": resp});
 	});	
 });
 

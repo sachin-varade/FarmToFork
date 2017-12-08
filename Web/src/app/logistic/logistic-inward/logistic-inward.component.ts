@@ -235,7 +235,7 @@ export class LogisticInwardComponent implements OnInit {
   }
 
   setTemp(){
-    var obj: any = this.currentUser.type === 'A2P' ? this.abattoirDispatchList[0] : this.processorDispatchList[0];
+    var obj: any = this.currentUser.type === 'A2P' ? this.abattoirDispatchList[this.abattoirDispatchList.length-1] : this.processorDispatchList[this.processorDispatchList.length-1];
     this.logisticTransaction.temperatureStorageMin = obj.temperatureStorageMin;
     this.logisticTransaction.temperatureStorageMax = obj.temperatureStorageMax;
     this.logisticTransaction.quantityUnit = obj.quantityUnit;

@@ -27,8 +27,8 @@ export class LoginComponent implements OnInit {
   	var password = e.target.elements[1].value;
     this.user.login({userName: username, password: password})
     .then((results) => {
-      if(results._body.indexOf("Error") > -1){
-        this.errorMessage = results._body;
+      if(!results){
+        this.errorMessage = "Authentication failed...";
         return;
       }
       else {

@@ -152,22 +152,30 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         return fabric_client.getUserContext(users.ikeaUser.enrollmentID, true)
         .then((user_from_store) => {
             helper.checkUserEnrolled(user_from_store);            
-            return invokeChainCode.invokeChainCode(fabric_client, 
-                channels.ikeachannel, 
-                eventHubPeers.ikeaEventHubPeer._url, 
-                //"grpc://localhost:7053",
+            
+            return queryChainCode.queryChainCode(channels.ikeachannel, 
                 ikeaConfig.channels.ikeachannel.chaincodeId, 
-                "saveIkeaBill",  
-                [
-                    ikeaBill.billNumber,
-                    ikeaBill.billDateTime,
-                    ikeaBill.ikeaFamily.toString(),
-                    ikeaBill.guidUniqueNumber ? ikeaBill.guidUniqueNumber : "",
-                    ikeaBill.materialName,
-                    ikeaBill.quantity.toString(),
-                    ikeaBill.ikeaDispatchNumber ? ikeaBill.ikeaDispatchNumber : "",
-                    ikeaBill.amount.toString()
-                ]);
+                "getAllIkeaDispatch", 
+                ["ids", ""])           
+            .then((results) => {
+                ikeaBill.ikeaDispatchNumber = results.ikeaDispatchNumbers[results.ikeaDispatchNumbers.length - 1];
+                return invokeChainCode.invokeChainCode(fabric_client, 
+                    channels.ikeachannel, 
+                    eventHubPeers.ikeaEventHubPeer._url, 
+                    //"grpc://localhost:7053",
+                    ikeaConfig.channels.ikeachannel.chaincodeId, 
+                    "saveIkeaBill",  
+                    [
+                        ikeaBill.billNumber,
+                        ikeaBill.billDateTime,
+                        ikeaBill.ikeaFamily.toString(),
+                        ikeaBill.guidUniqueNumber ? ikeaBill.guidUniqueNumber : "",
+                        ikeaBill.materialName,
+                        ikeaBill.quantity.toString(),
+                        ikeaBill.ikeaDispatchNumber ? ikeaBill.ikeaDispatchNumber : "",
+                        ikeaBill.amount.toString()
+                    ]);
+            })
         }).then((results) => {
             return results;
         }).catch((err) => {

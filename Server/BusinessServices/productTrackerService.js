@@ -161,15 +161,15 @@ module.exports = function (abattoirService, logisticService, processorService, i
                 return;
             }
             productTrackingEntity.billDetails = result.ikeaBillNumbers[0];
-            return ikeaService.getAllIkeaDispatch("details","")
-            .then((result) => {
-                var latestIkeaDispatchNumber = "";
-                if(result.ikeaDispatch.length>0){
-                    latestIkeaDispatchNumber = result.ikeaDispatch[result.ikeaDispatch.length-1].IkeaDispatchNumber;
-                }
-                else{
-                    return;
-                }
+            var latestIkeaDispatchNumber = result.ikeaBillNumbers[0].ikeaDispatchNumber;
+            // return ikeaService.getAllIkeaDispatch("details","")
+            // .then((result) => {
+            //     if(result.ikeaDispatch.length>0){
+            //         latestIkeaDispatchNumber = result.ikeaDispatch[result.ikeaDispatch.length-1].IkeaDispatchNumber;
+            //     }
+            //     else{
+            //         return;
+            //     }
             
         // Ikea Dispatch
         return ikeaService.getAllIkeaDispatch(option, latestIkeaDispatchNumber)
@@ -300,7 +300,7 @@ module.exports = function (abattoirService, logisticService, processorService, i
                                 });
                             });
                         })
-                    });
+                    // });
                 });
             });
         });

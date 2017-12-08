@@ -92,7 +92,7 @@
             <div *ngFor="let item of qualityControlDocuments">
                 <label class="checkbox-style">                  
                     <input [(ngModel)]="item.checked" [name]="'cb_' + item.name.replace(' ','')"
-                        [value]="item.id" type="checkbox" required/> {{item.name}}
+                        [value]="item.id" type="checkbox"/> {{item.name}}
                         <span class="checkmark" ></span>                        
                 </label>
                 <label class="checkbox-style-file">

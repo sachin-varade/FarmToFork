@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as Constants from './constants';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
@@ -10,7 +11,7 @@ export class UserService {
   private headers: Headers = new Headers({'Content-Type': 'application/json'});
   private loggedInUser: any = null;
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     if (localStorage.getItem('loggedInUser')) {
       this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     }
@@ -20,11 +21,11 @@ export class UserService {
     const url = `${this.BASE_URL}/login`;
     return this.http.post(url, user).toPromise()
     .then((results: any) => {
-      if(results._body.indexOf("Error") > -1){
+      if(!results || !results.name){
         return results;
       }
-      this.loggedInUser = JSON.parse(results._body);
-      localStorage.setItem('loggedInUser', results._body);
+      this.loggedInUser = results;
+      localStorage.setItem('loggedInUser', JSON.stringify(results));
       return results;
     }).catch((err) => {
         throw err;
@@ -45,8 +46,8 @@ export class UserService {
       const url = `${this.BASE_URL}/getUserData`;
       return this.http.get(url).toPromise()
       .then((results: any) => {
-        localStorage.setItem('userData', results._body);
-        return JSON.parse(results._body);
+        localStorage.setItem('userData', JSON.stringify(results));
+        return results;
       }).catch((err) => {
           throw err;
       });
@@ -60,8 +61,8 @@ export class UserService {
       const url = `${this.BASE_URL}/getCommonData`;
       return this.http.get(url).toPromise()
       .then((results: any) => {
-        localStorage.setItem('commonData', results._body);
-        return JSON.parse(results._body);
+        localStorage.setItem('commonData', JSON.stringify(results));
+        return results;
       }).catch((err) => {
           throw err;
       });

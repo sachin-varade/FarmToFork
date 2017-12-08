@@ -5,6 +5,7 @@ import * as LogisticModels from './models/logistic';
 import * as Constants from './constants';
 import { UserService } from './user.service';
 import { AlertService } from './alert.service';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @Injectable()
 export class LogisticService {
@@ -12,7 +13,7 @@ export class LogisticService {
   private BASE_URL = Constants.API_URL;
   private headers: Headers = new Headers({'Content-Type': 'application/json'});
   private url = '';
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
     private userService: UserService,
     private alertService: AlertService) {
   }
@@ -21,7 +22,7 @@ export class LogisticService {
     this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/saveLogisticTransaction";
     return this.http.post(this.url, logisticTransaction).toPromise()
     .then((results: any) => {
-      return JSON.parse(results._body);
+      return results;
     }).catch((err) => {
       this.alertService.error("Error occured...");
     });
@@ -31,7 +32,7 @@ export class LogisticService {
     this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/updateLogisticTransactionStatus";
     return this.http.post(this.url, logisticTransaction).toPromise()
     .then((results: any) => {
-      return JSON.parse(results._body);
+      return results;
     }).catch((err) => {
       this.alertService.error("Error occured...");
     });
@@ -41,7 +42,7 @@ export class LogisticService {
     this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/pushIotDetailsToLogisticTransaction";
     return this.http.post(this.url, iotData).toPromise()
     .then((results: any) => {
-      return JSON.parse(results._body);
+      return results;
     }).catch((err) => {
       this.alertService.error("Error occured...");
     });
@@ -51,7 +52,7 @@ export class LogisticService {
     this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/getAllLogisticTransactions";
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
     .then((results: any) => {
-      return JSON.parse(results._body);
+      return results;
     }).catch((err) => {
       this.alertService.error("Error occured...");
     });
@@ -61,7 +62,7 @@ export class LogisticService {
     this.url = this.BASE_URL +"/"+ this.userService.getUserLoggedIn().type +"/getUniqueId";
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
     .then((results: any) => {
-      return results._body;
+      return results.uniqueId;
     }).catch((err) => {
       this.alertService.error("Error occured...");
     });

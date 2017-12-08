@@ -42,6 +42,9 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { AlertComponent } from './alert/alert.component';
 import { AlertService } from './alert.service';
 import { TrackComponent } from './ikea/track/track.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { InterceptorService } from "./interceptor.service";
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 const appRoutes:Routes = [
   {
@@ -128,7 +131,7 @@ const appRoutes:Routes = [
 @NgModule({
   declarations: [AppComponent, HeaderComponent, LoginComponent, FooterComponent, 
     DashboardComponent, AbattoirInwardComponent, AbattoirOutwardComponent, LogisticInwardComponent, LogisticOutwardComponent, LogisticDashboardComponent, ProcessorInwardComponent, ProcessorDispatchComponent, ProcessItemComponent, IkeaInwardComponent, TrackProductComponent, DialogComponent, IkeaOutwardComponent, MenuComponent, BlockComponent, PosComponent, AlertComponent, TrackComponent],
-  imports: [
+  imports: [  
   RouterModule.forRoot(appRoutes),
   FormsModule,
   BrowserModule,    
@@ -137,10 +140,17 @@ const appRoutes:Routes = [
   NgbModule.forRoot(),
   HttpModule,
   BrowserAnimationsModule,
-  NgxQRCodeModule
-  
+  NgxQRCodeModule,
+  HttpClientModule,
+  Ng4LoadingSpinnerModule
   ],
-  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, LogisticService, IkeaService, BlockService, AlertService, NotifyService],
+  providers: [UserService, AuthguardGuard, FormsModule, AbattoirService, ProcessorService, LogisticService, IkeaService, BlockService, AlertService, NotifyService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 
