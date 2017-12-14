@@ -22,6 +22,9 @@ export class ProcessorDispatchComponent implements OnInit {
   qualityControlDocuments: any;
   processingTransactionList: Array<ProcessorModels.ProcessingTransaction> = new Array<ProcessorModels.ProcessingTransaction>();
   processorDispatch : ProcessorModels.ProcessorDispatch = new ProcessorModels.ProcessorDispatch();
+  packagingDateTime: any;
+  usedByDateTime: any;
+  dispatchDateTime: any;
   constructor(private user: UserService,
     private logisticService: LogisticService,
     private processorService: ProcessorService,
@@ -32,8 +35,7 @@ export class ProcessorDispatchComponent implements OnInit {
     this.commonData = this.user.getCommonData();    
     this.processorService.getAllProcessingTransactions('details')
     .then((results: any) => {
-      this.processingTransactionList = <Array<ProcessorModels.ProcessingTransaction>>results.processingTransaction;
-      this.setDefaultValues();
+      this.processingTransactionList = <Array<ProcessorModels.ProcessingTransaction>>results.processingTransaction;      
     });   
     this.processorService.getUniqueId('dispatch')
     .then((results: any) => {
@@ -64,6 +66,10 @@ export class ProcessorDispatchComponent implements OnInit {
           this.setGuid();
           this.processorDispatch.materialGrade = results.processingTransaction[0].materialGrade;        
           this.processorDispatch.packagingDate = results.processingTransaction[0].packagingDate;
+          this.processorDispatch.usedByDate = results.processingTransaction[0].usedByDate          
+          
+          this.packagingDateTime = {hour: new Date(this.processorDispatch.packagingDate).getHours(), minute: new Date(this.processorDispatch.packagingDate).getMinutes()};
+          this.usedByDateTime = {hour: new Date(this.processorDispatch.usedByDate).getHours(), minute: new Date(this.processorDispatch.usedByDate).getMinutes()};
         });   
       }); 
     });
@@ -83,7 +89,13 @@ export class ProcessorDispatchComponent implements OnInit {
     this.processorDispatch.updatedBy = this.currentUser.id;
     this.processorDispatch.updatedOn = new Date();
     this.processorDispatch.processorId = this.currentUser.id;
-  
+    this.processorDispatch.packagingDate.setHours(this.packagingDateTime.hour);
+    this.processorDispatch.packagingDate.setMinutes(this.packagingDateTime.minute);
+    this.processorDispatch.usedByDate.setHours(this.usedByDateTime.hour);
+    this.processorDispatch.usedByDate.setMinutes(this.usedByDateTime.minute);
+    this.processorDispatch.dispatchDate.setHours(this.dispatchDateTime.hour);
+    this.processorDispatch.dispatchDate.setMinutes(this.dispatchDateTime.minute);
+
     var qualityControlDocumentsError = "";
     this.qualityControlDocuments.forEach(element => {
       if (element.checked === true && this.document.getElementById('file_'+ element.name.replace(' ','')).files.length > 0){
@@ -142,12 +154,15 @@ export class ProcessorDispatchComponent implements OnInit {
       this.processorDispatch.processorBatchCode = this.processingTransactionList[this.processingTransactionList.length-1].processorBatchCode;
     }
     
-    this.getProductDetails();
+    
     this.processorDispatch.dispatchDate = new Date();
-    this.processorDispatch.usedByDate = new Date();
-    this.processorDispatch.usedByDate.setDate(new Date().getDate()+10);  
+    this.dispatchDateTime = {hour: 10, minute: 30};
+    // this.processorDispatch.usedByDate = new Date();
+    // this.processorDispatch.usedByDate.setDate(new Date().getDate()+10);  
     this.processorDispatch.quantity = 10;
     this.processorDispatch.quantityUnit = this.commonData.processingTransactionUnits[0];    
-    //this.processorDispatch.storage = this.commonData.storage[0];
+    //this.processorDispatch.storage = this.commonData.storage[0];   
+    this.processorDispatch.ikeaPurchaseOrderNumber = "IKPON001";
+    this.getProductDetails();
   }
 }

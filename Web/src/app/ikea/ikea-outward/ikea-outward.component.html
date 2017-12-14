@@ -1,16 +1,16 @@
 <div class="container">
-  <h1 class="title-main">IKEA Checkout</h1>
+  <h1 class="title-main">Checkout</h1>
   <form #myForm="ngForm">
     <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
       
       <div class="form-group">
-        <label for="ikeaDispatchNumber">Ikea Dispatch Number</label>
+        <label for="ikeaDispatchNumber">Kitchen Checkout ID</label>
         <input type="text" disabled [(ngModel)]="ikeaDispatch.ikeaDispatchNumber" class="form-control" name="ikeaDispatchNumber" required>
       </div>
       
       <div class="form-group">
-        <label for="ikeaReceivedNumber">Receipt Batch</label>
-        <select class="form-control" [(ngModel)]="ikeaDispatch.ikeaReceivedNumber" name="ikeaReceivedNumber" required>        
+        <label for="ikeaReceivedNumber">Material Batch</label>
+        <select (change)="setDefaultValues();" class="form-control" [(ngModel)]="ikeaDispatch.ikeaReceivedNumber" name="ikeaReceivedNumber" required>        
         <option *ngFor="let rec of ikeaReceivedList" [value]="rec.ikeaReceivedNumber">{{rec.ikeaReceivedNumber}}</option>
         </select>
       </div>
@@ -29,18 +29,12 @@
           <input type="text" [(ngModel)]="ikeaDispatch.materialName" class="form-control" name="materialName" required>
       </div>
 
-      <div class="form-group">
-          <label for="preparedBy">Prepared By</label>
-          <select class="form-control" [(ngModel)]="ikeaDispatch.preparedBy" name="preparedBy" required>              
-              <option *ngFor="let item of commonData.dishPreparedBy" [value]="item">{{item}}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
+      
+        <!-- <div class="form-group">
             <label for="preparedOn">Prepared On</label>
             <input type="text" [(ngModel)]="ikeaDispatch.preparedOn" name="preparedOn" class="form-control" bsDatepicker required/>
           </div>
-      
+       -->
     </div>
 
     <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
@@ -51,13 +45,27 @@
             <option *ngFor="let grade of commonData.materialGrades" [value]="grade">{{grade}}</option>
         </select>
       </div>   -->
-      
       <div class="form-group">
-        <label for="dispatchDateTime">Dispatch Date</label>
+          <label for="preparedBy">Checkout By</label>
+          <select class="form-control" [(ngModel)]="ikeaDispatch.preparedBy" name="preparedBy" required>              
+              <option *ngFor="let item of commonData.dishPreparedBy" [value]="item">{{item}}</option>
+          </select>
+        </div>
+
+      <!-- <div class="form-group">
+        <label for="dispatchDateTime">Checkout Date</label>
         <input type="text" [(ngModel)]="ikeaDispatch.dispatchDateTime" name="dispatchDateTime" class="form-control" bsDatepicker required/>
+      </div> -->
+
+      <div class="form-group date-picker-div">
+          <label for="dispatchDateTime">Checkout Date</label>
+          <div class="clearfix">
+              <input type="text" placeholder="Date" [(ngModel)]="ikeaDispatch.dispatchDateTime" name="dispatchDateTime" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+              <ngb-timepicker [(ngModel)]="dispatchDateTime" name="dispatchDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+          </div>
       </div>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
           <label for="preparedBy">Sold At</label>
           <select class="form-control" [(ngModel)]="ikeaDispatch.soldAt" name="soldAt" required>              
               <option *ngFor="let item of commonData.ikeaStoreList" [value]="item">{{item}}</option>
@@ -72,7 +80,7 @@
         <div class="form-group">
             <label for="soldUntillDate">Sold Untill</label>
             <input type="text" [(ngModel)]="ikeaDispatch.soldUntillDate" name="soldUntillDate" class="form-control" bsDatepicker required/>
-          </div>
+          </div> -->
 
       <div class="form-group">
           <label for="quantity" style="display: block;">Quantity</label>

@@ -23,6 +23,7 @@ export class ProcessorInwardComponent implements OnInit {
   logisticTransactionList: Array<LogisticModels.LogisticTransaction> = new Array<LogisticModels.LogisticTransaction>();
   logisticTransaction: LogisticModels.LogisticTransaction = new LogisticModels.LogisticTransaction();
   processorReceived : ProcessorModels.ProcessorReceived = new ProcessorModels.ProcessorReceived();
+  receivedDateTime: any;
   constructor(private user: UserService,
     private logisticService: LogisticService,
     private processorService: ProcessorService,
@@ -37,8 +38,7 @@ export class ProcessorInwardComponent implements OnInit {
     });
     this.logisticService.getAllLogisticTransactions('details')
     .then((results: any) => {
-      this.logisticTransactionList = <Array<LogisticModels.LogisticTransaction>>results.logisticTransactions;
-      this.setDefaultValues();
+      this.logisticTransactionList = <Array<LogisticModels.LogisticTransaction>>results.logisticTransactions;      
     });    
   }
 
@@ -63,6 +63,8 @@ export class ProcessorInwardComponent implements OnInit {
         this.processorReceived.acceptanceCheckList.push(element)
       }
     });
+    this.processorReceived.receivedDate.setHours(this.receivedDateTime.hour);
+    this.processorReceived.receivedDate.setMinutes(this.receivedDateTime.minute);
     this.processorService.saveProcessorReceived(this.processorReceived)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
@@ -102,6 +104,7 @@ export class ProcessorInwardComponent implements OnInit {
     var diff= new Date(new Date(this.logisticTransaction.actualDeliveryDateTime).getTime() - new Date(this.logisticTransaction.shipmentStatus[1].shipmentDate).getTime());
     this.processorReceived.transitTime = ( ((diff.getUTCDate()-1)*24) + diff.getUTCHours()).toString() +"."+ diff.getUTCMinutes().toString();
     this.processorReceived.receivedDate = this.logisticTransaction.actualDeliveryDateTime;
+    this.receivedDateTime = {hour: new Date(this.processorReceived.receivedDate).getHours(), minute: new Date(this.processorReceived.receivedDate).getMinutes()};
     this.processorReceived.usedByDate =new Date();
     this.processorReceived.usedByDate.setDate(new Date().getDate()+10); 
     this.abattoirService.getAllAbattoirDispatch('id', this.logisticTransaction.abattoirConsignmentNumber)
@@ -120,5 +123,6 @@ export class ProcessorInwardComponent implements OnInit {
     
     this.checkLogisticConsignment();
     this.processorReceived.storage = this.commonData.storage[0];
+    //this.receivedDateTime = {hour: 10, minute: 15};
   }
 }

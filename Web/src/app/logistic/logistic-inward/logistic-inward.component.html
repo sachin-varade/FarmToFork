@@ -1,6 +1,6 @@
 <div class="page-container">
         <div class="container">
-            <h1 class="title-main">Logistics Serv. Provider Receipt</h1>
+            <h1 class="title-main">Delivery Pickup</h1>
             <form #myForm="ngForm" id="myForm">
                 <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
                   
@@ -18,13 +18,13 @@
                   
           
                   <div class="form-group" *ngIf="user.getUserLoggedIn().type == 'A2P'">
-                        <label for="abattoirConsignmentNumber">Abattoir Consignment Number</label>      
+                        <label for="abattoirConsignmentNumber">Pickup Consignment Ref.</label>      
                         <select class="form-control" (change)="setTemp()" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.abattoirConsignmentNumber" name="abattoirConsignmentNumber" required>        
                         <option *ngFor="let rec of abattoirDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
                         </select>
                 </div> 
                 <div class="form-group" *ngIf="user.getUserLoggedIn().type == 'P2I'">
-                        <label for="processorConsignmentNumber">Meatball Manufacturer Consignment Number</label>      
+                        <label for="processorConsignmentNumber">Pickup Consignment Ref.</label>      
                         <select class="form-control" (change)="setTemp()" [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="logisticTransaction.processorConsignmentNumber" name="processorConsignmentNumber" required>        
                         <option *ngFor="let rec of processorDispatchList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
                         </select>
@@ -92,12 +92,29 @@
                     <fieldset class="delivery-fieldset">
                           <legend class="delivery-legend">In Transit:</legend>                  
                     <div class="form-group date-picker-div">
-                        <label for="inTransitDateTime">In Transit Date/Time</label>
+                        <label for="inTransitDateTime">Node 1</label>
                         <div class="clearfix">
                             <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.inTransitDateTime" name="inTransitDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
                             <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="inTransitDateTime" name="inTransitDateTime" class="date-picker-time float-left" required></ngb-timepicker>
                         </div>
+                        
                     </div>
+                    <div class="form-group date-picker-div">
+                            <label for="inTransitDateTime">Node 2</label>
+                            <div class="clearfix">
+                                <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.inTransitDateTime" name="inTransitDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                                <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="inTransitDateTime" name="inTransitDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group date-picker-div">
+                                <label for="inTransitDateTime">Node 3</label>
+                                <div class="clearfix">
+                                    <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.inTransitDateTime" name="inTransitDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                                    <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="inTransitDateTime" name="inTransitDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+                                </div>
+                                
+                            </div>
         
                     <button type="submit" [disabled]="(logisticTransaction.currentStatus == '')" (click)="showDialog = !showDialog" class="btn btn-normal"> IOT Data </button>
                     

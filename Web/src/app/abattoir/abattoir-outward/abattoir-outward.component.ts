@@ -18,6 +18,8 @@ export class AbattoirOutwardComponent implements OnInit {
   abattoirReceived: AbattoirModels.AbattoirReceived = new AbattoirModels.AbattoirReceived();
   abattoirDispatch: AbattoirModels.AbattoirDispatch = new AbattoirModels.AbattoirDispatch();
   abattoirReceivedList: Array<AbattoirModels.AbattoirReceived> = new Array<AbattoirModels.AbattoirReceived>();
+  dispatchDateTime: any;
+  productionDateTime: any;
   constructor(private user: UserService,
     private abattoirService: AbattoirService,
   private alertService: AlertService) {
@@ -27,8 +29,7 @@ export class AbattoirOutwardComponent implements OnInit {
 
     this.abattoirService.getAllAbattoirReceived('details')
     .then((results: any) => {
-      this.abattoirReceivedList = <Array<AbattoirModels.AbattoirReceived>>results.abattoirMaterialReceived;
-      this.setDefaultValues();
+      this.abattoirReceivedList = <Array<AbattoirModels.AbattoirReceived>>results.abattoirMaterialReceived;      
     });
     this.abattoirDispatch.dispatchDate = new Date();
     this.userData.users.logistics = this.userData.users.logistics.filter(function(o){return o.type === 'A2P'});
@@ -48,7 +49,7 @@ export class AbattoirOutwardComponent implements OnInit {
     this.abattoirReceivedList.forEach(element => {
       if(this.abattoirDispatch.receiptBatchId == element.receiptBatchId){
         this.abattoirReceived = element;
-        this.abattoirDispatch.purchaseOrderReferenceNumber = element.purchaseOrderReferenceNumber;
+        this.abattoirDispatch.purchaseOrderReferenceNumber = "POBF001";//element.purchaseOrderReferenceNumber;
         this.abattoirDispatch.livestockBatchId = element.livestockBatchId;
       }
     });
@@ -66,11 +67,15 @@ export class AbattoirOutwardComponent implements OnInit {
     this.abattoirDispatch.abattoirId = this.currentUser.id;
     this.abattoirDispatch.updatedBy = this.currentUser.id;
     this.abattoirDispatch.updatedOn = new Date();
+    this.abattoirDispatch.dispatchDate.setHours(this.dispatchDateTime.hour);
+    this.abattoirDispatch.dispatchDate.setMinutes(this.dispatchDateTime.minute);
+    this.abattoirDispatch.productionDate.setHours(this.productionDateTime.hour);
+    this.abattoirDispatch.productionDate.setMinutes(this.productionDateTime.minute);
     this.abattoirService.saveAbattoirDispatch(this.abattoirDispatch)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        this.alertService.success("Abattoir dispatch saved.");
+        this.alertService.success("Dispatch saved.");
       }
       else{
         this.alertService.error("Error occured...");
@@ -98,5 +103,7 @@ export class AbattoirOutwardComponent implements OnInit {
     this.abattoirDispatch.productionDate = new Date();
     this.setGuid();
     this.getProductDetails();
+    this.dispatchDateTime = {hour: 10, minute: 15};
+    this.productionDateTime = {hour: 8, minute: 15};
   }
 }

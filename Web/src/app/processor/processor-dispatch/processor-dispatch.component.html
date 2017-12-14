@@ -3,17 +3,17 @@
     <h1 class="title-main">Meatball Manufacturer Dispatch</h1>
     <form #myForm="ngForm">
       <div class="col-lg-6 col-md-6 col-sm-12 left-pane"> 
-        <div class="form-group">
-          <label for="processorBatchCode">Meatball Batch ID</label>
-          <select class="form-control" (change)="getProductDetails();" [(ngModel)]="processorDispatch.processorBatchCode" name="processorBatchCode" required>        
-            <option *ngFor="let rec of processingTransactionList" [value]="rec.processorBatchCode">{{rec.processorBatchCode}}</option>
-          </select>
-        </div>
-
-
+        
         <div class="form-group">
           <label for="consignmentNumber">Consignment Number</label>
           <input type="text" disabled class="form-control" [(ngModel)]="processorDispatch.consignmentNumber" name="consignmentNumber" required>
+        </div>
+
+        <div class="form-group">
+          <label for="processorBatchCode">Meatball Batch ID</label>
+          <select class="form-control" (change)="setDefaultValues();" [(ngModel)]="processorDispatch.processorBatchCode" name="processorBatchCode" required>        
+            <option *ngFor="let rec of processingTransactionList" [value]="rec.processorBatchCode">{{rec.processorBatchCode}}</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -44,7 +44,7 @@
 
       <div class="col-lg-6 col-md-6 col-sm-12 right-pane">     
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="packagingDate">Packaging Date</label>
           <input type="text" disabled [(ngModel)]="processorDispatch.packagingDate" name="packagingDate" class="form-control" bsDatepicker required/>
         </div>
@@ -52,13 +52,36 @@
         <div class="form-group">
           <label for="usedByDate">Used By Date</label>
           <input type="text" [(ngModel)]="processorDispatch.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
-        </div>  
+        </div>  -->
         
-        <div class="form-group">
+        <div class="form-group date-picker-div">
+            <label for="packagingDate">Packaging Date</label>
+            <div class="clearfix">
+                <input type="text" placeholder="Date" [(ngModel)]="processorDispatch.packagingDate" name="packagingDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                <ngb-timepicker [(ngModel)]="packagingDateTime" name="packagingDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+            </div>
+        </div>
+        
+        <div class="form-group date-picker-div">
+            <label for="usedByDate">Used By Date</label>
+            <div class="clearfix">
+                <input type="text" placeholder="Date" [(ngModel)]="processorDispatch.usedByDate" name="usedByDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                <ngb-timepicker [(ngModel)]="usedByDateTime" name="usedByDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+            </div>
+        </div>
+
+        <div class="form-group date-picker-div">
+            <label for="dispatchDate">Date of Disptach</label>
+            <div class="clearfix">
+                <input type="text" placeholder="Date" [(ngModel)]="processorDispatch.dispatchDate" name="dispatchDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                <ngb-timepicker [(ngModel)]="dispatchDateTime" name="dispatchDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+            </div>
+        </div>
+        <!-- <div class="form-group">
             <label for="usedByDate">Date of Disptach</label>
             <input type="text" [(ngModel)]="processorDispatch.dispatchDate" name="dispatchDate" class="form-control" bsDatepicker required/>
           </div>  
-      
+       -->
         <div class="form-group temp-min-max">
           <label for="minTemp">Storage Temperature (min-max °C)</label>      
           <div class="min-max-temp-field">      

@@ -27,19 +27,27 @@
             </div>
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.billDetails && productTracking.ikeaReceived && productTracking.ikeaDispatch">                
+                  
+                  <li>
+                      <span class="label-text"><b>SWEDISH MEATBALLS</b></span>                      
+                  </li> 
                   <li>
                       <span class="label-text">Item Prepared On:</span>
-                      <span class="value">{{productTracking.ikeaDispatch.preparedOn | date : "short"}}</span>
+                      <span class="value">{{productTracking.ikeaDispatch.dispatchDateTime | date : "short"}}</span>
                     </li>
                 <li>
                     <span class="label-text">Sold At:</span>
                     <span class="value">{{productTracking.ikeaDispatch.soldAt}}</span>
                   </li>
                 <li>
-                  <span class="label-text">Bill Number:</span>
+                  <span class="label-text">Bill Id:</span>
                   <span class="value">{{productTracking.BillNumber}}</span>
                 </li>
                 <li>
+                  <span class="label-text">Bill Date:</span>
+                  <span class="value">{{productTracking.billDetails.billDateTime}}</span>
+                </li>
+                <!-- <li>
                   <span class="label-text">Batch Code:</span>
                   <span class="value">{{productTracking.IkeaReceivedNumber}}</span>
                 </li>
@@ -57,7 +65,7 @@
                     <span *ngIf="i == 0">{{item.ruleCondition}}</span>
                     <span *ngIf="i != 0">, {{item.ruleCondition}}</span>
                   </span>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
@@ -71,6 +79,9 @@
             </div>
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.logisticP2ITransactions">
+                  <li>
+                      <span class="label-text"><b>MEATBALLS delivery</b></span>                      
+                  </li> 
                 <li>
                     <span class="label-text">Handling Violations:</span>
                     <span class="value">{{productTracking.ProcessorToIkeaTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span>
@@ -87,14 +98,14 @@
                     <span class="label-text">Transporter:</span>
                     <span class="value">{{productTracking.ProcessorToIkeaTransporterName}}</span>
                 </li>
-                <li *ngIf="currentUser && currentUser.name != ''">
+                <!-- <li *ngIf="currentUser && currentUser.name != ''">
                   <span class="label-text">Transporter Id:</span>
                   <span class="value">{{productTracking.logisticP2ITransactions.logisticId}}</span>
               </li>
               <li *ngIf="currentUser && currentUser.name != ''">
                 <span class="label-text">Consignment Nbr. Ref:</span>
                 <span class="value">{{productTracking.logisticP2ITransactions.consignmentNumber}}</span>
-            </li>
+            </li> -->
               </ul>
             </div>
           </div>
@@ -108,6 +119,9 @@
             </div>
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.processorDispatch">
+                  <li>
+                      <span class="label-text"><b>MEATBALLS delivery</b></span>                      
+                  </li> 
                 <li>
                   <span class="label-text">Manufactured:</span>
                   <span class="value">{{productTracking.ProcessingDate | date : "short"}}</span>
@@ -116,9 +130,13 @@
                   <span class="label-text">Use by:</span>
                   <span class="value">{{productTracking.ProcessorUseByDate | date : "short"}}</span>
                 </li>
-                <li *ngIf="currentUser && currentUser.name != ''">
+                <!-- <li *ngIf="currentUser && currentUser.name != ''">
                   <span class="label-text">Batch ID:</span>
                   <span class="value">{{productTracking.processorDispatch.processorBatchCode}}</span>
+              </li> -->
+              <li *ngIf="currentUser && currentUser.name != ''">
+                  <span class="label-text">DNA Test:</span>
+                  <span class="value">{{productTracking.processorDispatch.qualityControlDocument && productTracking.processorDispatch.qualityControlDocument.length > 0 ? "OK" : "NO"}}</span>
               </li>
                 <li>
                     <span class="label-text">Meatball Manufacturer:</span>
@@ -137,6 +155,9 @@
             </div>
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.logisticA2PTransactions">
+                  <li>
+                      <span class="label-text"><b>BEEF carcass delivery</b></span>                      
+                  </li> 
                 <li>
                     <span class="label-text">Handling Violations:</span>
                     <span class="value">{{productTracking.AbattoirToProcessorTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span>
@@ -153,14 +174,14 @@
                     <span class="label-text">Transporter:</span>
                     <span class="value">{{productTracking.AbattoirToProcessorTransporterName}}</span>
                 </li>
-                <li *ngIf="currentUser && currentUser.name != ''">
+                <!-- <li *ngIf="currentUser && currentUser.name != ''">
                   <span class="label-text">Transporter Id:</span>
                   <span class="value">{{productTracking.logisticA2PTransactions.logisticId}}</span>
               </li>
               <li *ngIf="currentUser && currentUser.name != ''">
                 <span class="label-text">Consignment Nbr. Ref:</span>
                 <span class="value">{{productTracking.logisticA2PTransactions.consignmentNumber}}</span>
-            </li>
+            </li> -->
               </ul>
             </div>
           </div>
@@ -174,7 +195,10 @@
             </div>
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.abattoirMaterialReceived && productTracking.abattoirMaterialDispatch">
-                  <li *ngIf="currentUser && currentUser.name != ''">
+                  <li>
+                      <span class="label-text"><b>BEEF carcass</b></span>                      
+                  </li> 
+                  <!-- <li *ngIf="currentUser && currentUser.name != ''">
                       <span class="label-text">Product GTIN:</span>
                       <span class="value">{{productTracking.abattoirMaterialDispatch.guidNumber}}</span>
                   </li>
@@ -185,7 +209,7 @@
                   <li *ngIf="currentUser && currentUser.name != ''">
                       <span class="label-text">Processed On:</span>
                       <span class="value">{{productTracking.abattoirMaterialDispatch.productionDate | date : "short"}}</span>
-                  </li>
+                  </li> -->
                 <li>
                     <span class="label-text">Class:</span>
                     <span class="value">{{productTracking.abattoirMaterialDispatch.materialGrade}}</span>
@@ -198,9 +222,13 @@
                   <span class="label-text">Abattoir:</span>
                   <span class="value">{{productTracking.AbattoirName}}</span>
                 </li>
-                <li>
+                <!-- <li>
                   <span class="label-text">Livestock Batch ID Ref.:</span>
                   <span class="value">{{productTracking.abattoirMaterialReceived.livestockBatchId}}</span>
+                </li> -->
+                <li>
+                    <span class="label-text">Processed On:</span>
+                    <span class="value">{{productTracking.abattoirMaterialDispatch.productionDate | date : "short"}}</span>
                 </li>
               </ul>
             </div>
@@ -215,6 +243,9 @@
               </div>
               <div class="info-pane">
                 <ul *ngIf="productTracking && productTracking.abattoirMaterialReceived">
+                    <li>
+                        <span class="label-text"><b>ANGUS</b></span>                      
+                    </li> 
                   <li>
                       <span class="label-text">Class:</span>
                       <span class="value">{{productTracking.FarmerMaterialClass}}</span>

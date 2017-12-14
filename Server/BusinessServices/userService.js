@@ -7,10 +7,10 @@ module.exports = function () {
 
     userService.login = function(user){
         
-        var abattoirs = userData.users.abattoirs.filter(function(obj){ return obj.name == user.userName});
-        var logistics = userData.users.logistics.filter(function(obj){ return obj.name == user.userName});
-        var processors = userData.users.processors.filter(function(obj){ return obj.name == user.userName});
-        var ikeas = userData.users.ikeas.filter(function(obj){ return obj.name == user.userName});
+        var abattoirs = userData.users.abattoirs.filter(function(obj){ return obj.name.toLowerCase() == user.userName.toLowerCase()});
+        var logistics = userData.users.logistics.filter(function(obj){ return obj.name.toLowerCase() == user.userName.toLowerCase()});
+        var processors = userData.users.processors.filter(function(obj){ return obj.name.toLowerCase() == user.userName.toLowerCase()});
+        var ikeas = userData.users.ikeas.filter(function(obj){ return obj.name.toLowerCase() == user.userName.toLowerCase()});
 
         if (abattoirs.length > 0 && abattoirs[0].password == user.password){
             var _user= JSON.parse(JSON.stringify(abattoirs[0]));
@@ -70,15 +70,15 @@ module.exports = function () {
     userService.getUserNameById = function(userType, userId){
 
         if(userType === "farmers") {
-            return userData.users.farmers.filter(function(f){return f.id.toString() === userId; })[0].name;
+            return userData.users.farmers.filter(function(f){return f.id.toString() === userId; })[0].displayName;
         } else if(userType === "abattoirs") {
-            return userData.users.abattoirs.filter(function(f){return f.id.toString() === userId; })[0].name;
+            return userData.users.abattoirs.filter(function(f){return f.id.toString() === userId; })[0].displayName;
         } else if(userType === "logistics") {
-            return userData.users.logistics.filter(function(f){return f.id.toString() === userId; })[0].name;
+            return userData.users.logistics.filter(function(f){return f.id.toString() === userId; })[0].displayName;
         } else if(userType === "processors") {
-            return userData.users.processors.filter(function(f){return f.id.toString() === userId; })[0].name;
+            return userData.users.processors.filter(function(f){return f.id.toString() === userId; })[0].displayName;
         } else if(userType === "ikeas") {
-            return userData.users.ikeas.filter(function(f){return f.id.toString() === userId; })[0].name;
+            return userData.users.ikeas.filter(function(f){return f.id.toString() === userId; })[0].displayName;
         }
     }
 

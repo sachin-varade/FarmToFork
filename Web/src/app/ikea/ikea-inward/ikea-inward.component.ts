@@ -23,6 +23,8 @@ export class IkeaInwardComponent implements OnInit {
   logisticTransactionList: Array<LogisticModels.LogisticTransaction> = new Array<LogisticModels.LogisticTransaction>();
   logisticTransaction: LogisticModels.LogisticTransaction = new LogisticModels.LogisticTransaction();
   ikeaReceived : IkeaModels.IkeaReceived = new IkeaModels.IkeaReceived();
+  receivedDateTime: any;
+  usedByDateTime: any;
   constructor(private user: UserService,
     private logisticService: LogisticService,
     private ikeaService: IkeaService,
@@ -34,7 +36,7 @@ export class IkeaInwardComponent implements OnInit {
     this.logisticService.getAllLogisticTransactions('details')
     .then((results: any) => {
       this.logisticTransactionList = <Array<LogisticModels.LogisticTransaction>>results.logisticTransactions;
-      this.setDefaultValues();
+      //this.setDefaultValues();
     });  
     this.ikeaService.getUniqueId('received')
     .then((results: any) => {
@@ -58,16 +60,22 @@ export class IkeaInwardComponent implements OnInit {
     this.ikeaReceived.updatedOn = new Date();
     this.ikeaReceived.ikeaId = this.currentUser.id;
     this.ikeaReceived.acceptanceCheckList = new Array<IkeaModels.AcceptanceCriteria>();
+
     this.commonData.ikeaAcceptanceCriteria.forEach(element => {
       if (element.conditionSatisfied === true){
         this.ikeaReceived.acceptanceCheckList.push(element)
       }
     });
+    this.ikeaReceived.receivedDate.setHours(this.receivedDateTime.hour);
+    this.ikeaReceived.receivedDate.setMinutes(this.receivedDateTime.minute);
+    this.ikeaReceived.usedByDate.setHours(this.usedByDateTime.hour);
+    this.ikeaReceived.usedByDate.setMinutes(this.usedByDateTime.minute);
+    
     this.ikeaService.saveIkeaReceived(this.ikeaReceived)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        this.alertService.success("Ikea receipt saved.");
+        this.alertService.success("Kitchen receipt saved.");
       }
       else{
         this.alertService.error("Error occured...");
@@ -109,6 +117,8 @@ export class IkeaInwardComponent implements OnInit {
       this.setGuid();
       this.ikeaReceived.materialGrade = results.processorDispatch[0].materialGrade;
       this.ikeaReceived.usedByDate =results.processorDispatch[0].usedByDate;
+      this.receivedDateTime = {hour: new Date(this.ikeaReceived.receivedDate).getHours(), minute: new Date(this.ikeaReceived.receivedDate).getMinutes()};
+      this.usedByDateTime = {hour: new Date(this.ikeaReceived.usedByDate).getHours(), minute: new Date(this.ikeaReceived.usedByDate).getMinutes()};
     });
     
   }

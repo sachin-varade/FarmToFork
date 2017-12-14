@@ -26,8 +26,8 @@
         "abattoirs": [
             {
                 "id": 1,
-                "name": "abattoir1",
-                "displayName": "abattoir1",
+                "name": "AbattoirSWE",
+                "displayName": "ABATTOIR SWE",
                 "role": "abattoir",
                 "password": "123456",
                 "uniqueId": "A001",
@@ -36,8 +36,8 @@
             },
             {
                 "id": 2,
-                "name": "abattoir2",
-                "displayName": "abattoir2",
+                "name": "AbattoirFN",
+                "displayName": "ABATTOIR FN",
                 "role": "abattoir",
                 "password": "123456",
                 "uniqueId": "A002",
@@ -49,8 +49,8 @@
         "logistics": [
             {
                 "id": 1,
-                "name": "logistic1",
-                "displayName": "Logistics Serv. Provider 1",
+                "name": "LTABC",
+                "displayName": "Livestock Transport ABC",
                 "role": "logistic",
                 "password": "123456",
                 "uniqueId": "L001",
@@ -59,8 +59,8 @@
             },
             {
                 "id": 2,
-                "name": "logistic2",
-                "displayName": "Logistics Serv. Provider 2",
+                "name": "DBS",
+                "displayName": "DB Schenker",
                 "role": "logistic",
                 "password": "123456",
                 "uniqueId": "L002",
@@ -72,8 +72,8 @@
         "processors": [
             {
                 "id": 1,
-                "name": "processor1",
-                "displayName": "Meatball Manufacturer 1",
+                "name": "DafgardSWE",
+                "displayName": "Gunnar Dafgård,SWE",
                 "role": "processor",
                 "password": "123456",
                 "uniqueId": "P001",
@@ -83,8 +83,8 @@
             },
             {
                 "id": 2,
-                "name": "processor2",
-                "displayName": "Meatball Manufacturer 2",
+                "name": "DafgardFN",
+                "displayName": "Gunnar Dafgård,FN",
                 "role": "processor",
                 "password": "123456",
                 "uniqueId": "P002",
@@ -97,23 +97,25 @@
         "ikeas": [
             {
                 "id": 1,
-                "name": "ikea1",
-                "displayName": "ikea1",
+                "name": "IkeaStore",
+                "displayName": "IKEA Göteborg Bäckebol-Store",
                 "role": "ikea",
                 "password": "123456",
                 "uniqueId": "I001",
                 "GUID-GTIN": "GUID-I001",
-                "type": "P2I"               
+                "type": "P2I",
+				"subRole": "store"
             },
             {
                 "id": 2,
-                "name": "ikea2",
-                "displayName": "ikea2",
+                "name": "IkeaRestaurant",
+                "displayName": "IKEA Göteborg Bäckebol-Restaurant",
                 "role": "ikea",
                 "password": "123456",
                 "uniqueId": "I002",
                 "GUID-GTIN": "GUID-I002",
-                "type": "P2I"            
+                "type": "P2I",
+				"subRole": "restaurant"				
             }
         ]
     }

@@ -8,10 +8,10 @@
 "storage": ["Pallet-R1C1","Pallet-R1C2","Pallet-R1C3","Pallet-R1C4","Pallet-R1C5"],
 "routes":[
             {
-                "id": 1, "name": "Vikhroli-Jogeshwari-Borivali"
+                "id": 1, "name": "Node 1 - Node 2 - Källby"
             },
             {
-                "id": 1, "name": "Vikhroli-Mira Road-Borivali"
+                "id": 1, "name": "Källby - Node 2 - Göteborg"
             }
         ],
 "pickDropLocations": [
@@ -29,12 +29,13 @@
                         {"id": 5, "name": "Location5"}
                     ],
 "vehicles": [
-    { "id": 1, "lpn": "TAT180", "type": "Normal Container"}, 
-    { "id": 2, "lpn": "TAT181", "type": "Container with Freezer"}
+    { "id": 1, "lpn": "TAT180", "type": "Tank Container"}, 
+    { "id": 2, "lpn": "TAT181", "type": "Refrigerated Container"}
 ],
 "vehicleTypes": [                    
-                    { "id": 2, "type": "Container with Freezer"},
-                    { "id": 1, "type": "Normal Container"}
+                    { "id": 2, "type": "Refrigerated Container"},
+                    { "id": 1, "type": "Tank Container"},
+                    { "id": 3, "type": "Dry Freight Container"}
                 ],
 "shipmentStatus": ["PickedUp", "InTransit", "Delivered"],
 "processorAcceptanceChecklist": ["Condition1", "Condition2", "Condition3"],
@@ -84,18 +85,15 @@
                             { "id": 4, "code": "899900464", "name": "Meatballs frozen 4000g SE"}
                         ],     
 "ikeaDispatchProducts": [
-                            { "id": 1, "code": "999900461", "name": "Meatballs frozen 1000g SE"},
-                            { "id": 2, "code": "999900462", "name": "Meatballs frozen 2000g SE"},
-                            { "id": 3, "code": "999900463", "name": "Meatballs frozen 3000g SE"},
-                            { "id": 4, "code": "999900464", "name": "Meatballs frozen 4000g SE"}
+                            { "id": 1, "code": "999900461", "name": "Meatballs frozen"}                            
                         ],                                              
 
 "processorAcceptanceCriteria": [
-                            { "id": 1, "ruleCondition": "Temperature maintained", "conditionSatisfied": false}, 
+                            { "id": 1, "ruleCondition": "Delivered In Full", "conditionSatisfied": false}, 
                             { "id": 2, "ruleCondition": "Delivered On Time", "conditionSatisfied": false}
                         ],
 "ikeaAcceptanceCriteria": [
-                            { "id": 1, "ruleCondition": "Temperature maintained", "conditionSatisfied": false}, 
+                            { "id": 1, "ruleCondition": "Delivered In Full", "conditionSatisfied": false}, 
                             { "id": 2, "ruleCondition": "Delivered On Time", "conditionSatisfied": false}
                         ],
 "dishPreparedBy": ["John Doe"],

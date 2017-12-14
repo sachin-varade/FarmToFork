@@ -1,6 +1,6 @@
 <div class="page-container">
     <div class="container">
-        <h1 class="title-main">IKEA Dispatch Tracker</h1>
+        <h1 class="title-main">Tracker</h1>
        <div class="tracker-page-wrapper clearfix">
           <!-- <img class="logo" src="assets/images/ikea-logo.png">
         <div class="bg-wrap">
@@ -12,9 +12,11 @@
           
           
           <table class="table table-striped table-bordered mrg-top-10">
-              <tr><th colspan="10">Ikea Dispatch Numbers</th></tr>
+              <tr><th colspan="10">Checkout ID</th></tr>
               <tr *ngFor="let item of this.ikeaDispatchList; let i = index" [attr.data-index]="i">
-                  <td (click)="getProductTrackingDetails(item)">{{item}}</td>
+                  <td (click)="getProductTrackingDetails(item.IkeaDispatchNumber)">
+                    {{item.IkeaDispatchNumber}} ({{item.dispatchDateTime | date : "short"}})
+                  </td>
               </tr> 
                              
           </table>
@@ -53,10 +55,10 @@
                   <li>
                       <span class="label-text"><b>PREP:</b></span>                      
                   </li>
-                  <li>
+                  <!-- <li>
                       <span class="label-text">Prepared On:</span>
                       <span class="value">{{productTracking.ikeaDispatch.preparedOn | date : "short"}}</span>
-                    </li>
+                    </li> -->
                     <li>
                     <span class="label-text">Prepared By:</span>
                     <span class="value">{{productTracking.ikeaDispatch.preparedBy}}</span>

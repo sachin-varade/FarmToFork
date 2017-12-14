@@ -243,13 +243,15 @@ export class LogisticInwardComponent implements OnInit {
   }
 
   setDefaultValues(){
-    this.logisticTransaction.routeId = this.commonData.routes[0].id;
+    
     if(this.abattoirDispatchList && this.abattoirDispatchList.length){
       this.logisticTransaction.abattoirConsignmentNumber =  this.abattoirDispatchList[this.abattoirDispatchList.length-1].consignmentNumber;
+      this.logisticTransaction.routeId = this.commonData.routes[0].id;
     }
     
     if(this.processorDispatchList && this.processorDispatchList.length){
       this.logisticTransaction.processorConsignmentNumber = this.processorDispatchList[this.processorDispatchList.length-1].consignmentNumber;
+      this.logisticTransaction.routeId = this.commonData.routes[1].id;
     }
     
     this.logisticTransaction.vehicleId = this.commonData.vehicles[0].id;

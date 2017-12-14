@@ -21,6 +21,8 @@ export class ProcessItemComponent implements OnInit {
   qualityControlDocuments: any;
   processorReceivedList: Array<ProcessorModels.ProcessorReceived> = new Array<ProcessorModels.ProcessorReceived>();
   processingTransaction : ProcessorModels.ProcessingTransaction = new ProcessorModels.ProcessingTransaction();
+  packagingDateTime: any;
+  usedByDateTime: any;
   constructor(private user: UserService,
     private processorService: ProcessorService,
   private alertService: AlertService,
@@ -30,8 +32,7 @@ export class ProcessItemComponent implements OnInit {
     this.commonData = this.user.getCommonData();    
     this.processorService.getAllProcessorReceived('details')
     .then((results: any) => {
-      this.processorReceivedList = <Array<ProcessorModels.ProcessorReceived>>results.processorReceived;
-      this.setDefaultValues();
+      this.processorReceivedList = <Array<ProcessorModels.ProcessorReceived>>results.processorReceived;      
     }); 
     this.commonData.processingActions.forEach(element => {
       element.checked = true;
@@ -103,6 +104,10 @@ export class ProcessItemComponent implements OnInit {
   }
 
   save(myForm){
+    this.processingTransaction.packagingDate.setHours(this.packagingDateTime.hour);
+    this.processingTransaction.packagingDate.setMinutes(this.packagingDateTime.minute);
+    this.processingTransaction.usedByDate.setHours(this.usedByDateTime.hour);
+    this.processingTransaction.usedByDate.setMinutes(this.usedByDateTime.minute);
     this.processorService.saveProcessingTransaction(this.processingTransaction)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
@@ -142,6 +147,8 @@ export class ProcessItemComponent implements OnInit {
     this.processingTransaction.quantity = 10;
     this.processingTransaction.quantityUnit = this.commonData.processingTransactionUnits[0];    
     this.processingTransaction.storage = this.commonData.storage[0];
+    this.packagingDateTime = {hour: 10, minute: 15};
+    this.usedByDateTime = {hour: 22, minute: 15};
   }
 }
 

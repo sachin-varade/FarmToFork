@@ -12,7 +12,7 @@
 
         <div class="form-group">
           <label for="processorReceiptNumber">Meat Batch ID</label>
-          <select class="form-control" [(ngModel)]="processingTransaction.processorReceiptNumber" name="processorReceiptNumber" required>        
+          <select class="form-control" (change)="setDefaultValues();" [(ngModel)]="processingTransaction.processorReceiptNumber" name="processorReceiptNumber" required>        
           <option *ngFor="let rec of processorReceivedList" [value]="rec.processorReceiptNumber">{{rec.processorReceiptNumber}}</option>
           </select>
         </div>
@@ -43,19 +43,33 @@
           </select>
         </div> -->
 
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="usedByDate">Packaging Date</label>
             <input type="text" [(ngModel)]="processingTransaction.packagingDate" name="packagingDate" class="form-control" bsDatepicker required/>
-          </div>
-
+          </div> -->
+        <div class="form-group date-picker-div">
+            <label for="packagingDate">Packaging Date</label>
+            <div class="clearfix">
+                <input type="text" placeholder="Date" [(ngModel)]="processingTransaction.packagingDate" name="packagingDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                <ngb-timepicker [(ngModel)]="packagingDateTime" name="packagingDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+            </div>
+        </div>
       </div>
 
       <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
          
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="usedByDate">Used By Date</label>
           <input type="text" [(ngModel)]="processingTransaction.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
+        </div> -->
+
+        <div class="form-group date-picker-div">
+            <label for="usedByDate">Used By Date</label>
+            <div class="clearfix">
+                <input type="text" placeholder="Date" [(ngModel)]="processingTransaction.usedByDate" name="usedByDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                <ngb-timepicker [(ngModel)]="usedByDateTime" name="usedByDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+            </div>
         </div>
 
         <div class="form-group">

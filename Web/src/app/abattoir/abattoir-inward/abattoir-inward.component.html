@@ -1,17 +1,17 @@
 <div class="page-container">
     <div class="container">
-        <h1 class="title-main">Abattoir Receipt</h1>
+        <h1 class="title-main">Livestock Receipts</h1>
         <form #myForm="ngForm" class="clearfix">
             <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
 
             <div class="form-group">
-            <label for="receiptBatchId">Abattoir Receipt No</label>
+            <label for="receiptBatchId">Receipt ID</label>
             <input type="text" disabled [(ngModel)]="abattoirReceived.receiptBatchId"  class="form-control" name="receiptBatchId" required>
             </div>
 
             <div class="form-group">
-                <label for="materialInwardNumber">Purchase Order Ref.</label>
-                <input type="text" [(ngModel)]="abattoirReceived.purchaseOrderReferenceNumber"  class="form-control" name="purchaseOrderReferenceNumber" required>
+                <label for="materialInwardNumber">Purchase Order ID</label>
+                <input type="text" (change)="setDefaultValues();" [(ngModel)]="abattoirReceived.purchaseOrderReferenceNumber"  class="form-control" name="purchaseOrderReferenceNumber" required>
             </div>
 
             <div class="form-group">
@@ -19,9 +19,16 @@
                 <input type="text" [(ngModel)]="abattoirReceived.livestockBatchId"  class="form-control" name="purchaseOrderReferenceNumber" required>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="receiptOn">Receipt On</label>
                 <input type="text" [(ngModel)]="abattoirReceived.receiptOn" name="receiptOn" class="form-control" bsDatepicker required/>
+            </div> -->
+            <div class="form-group date-picker-div">
+                <label for="receiptOnTime">Receipt On</label>
+                <div class="clearfix">
+                    <input type="text" placeholder="Date" [(ngModel)]="abattoirReceived.receiptOn" name="receiptOn" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                    <ngb-timepicker [(ngModel)]="receiptOnTime" name="receiptOnTime" class="date-picker-time float-left" required></ngb-timepicker>
+                </div>
             </div>
 
             <div class="form-group">

@@ -24,6 +24,18 @@ module.exports = function (abattoirService, logisticService, processorService, i
                 return;
             }
 
+            return ikeaService.getIkeaBillDetails("ikeacheckout", productTrackingEntity.IkeaDispatchNumber)
+            .then((result) => {
+                if(!result || (result && !result.ikeaBillNumbers) || (result && result.ikeaBillNumbers.length == 0 )){
+                    productTrackingEntity.ikeaDispatch.soldFromDate = "";
+                    productTrackingEntity.ikeaDispatch.soldUntillDate =  "";    
+                }
+                else{
+                    productTrackingEntity.ikeaDispatch.soldFromDate = result.ikeaBillNumbers[0].billDateTime;
+                    productTrackingEntity.ikeaDispatch.soldUntillDate =  result.ikeaBillNumbers[result.ikeaBillNumbers.length-1].billDateTime;
+                }
+            
+                
             //Ikea Received
             return ikeaService.getAllIkeaReceived(option, productTrackingEntity.IkeaReceivedNumber)
                 .then((result) => {
@@ -141,7 +153,10 @@ module.exports = function (abattoirService, logisticService, processorService, i
                         })
                     });
                 });
+            
+            
             });
+        });
         
     }
     // ----- Get Product tracking details

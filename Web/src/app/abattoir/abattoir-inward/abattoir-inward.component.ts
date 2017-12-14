@@ -20,6 +20,7 @@ export class AbattoirInwardComponent implements OnInit {
   selectFarmer: any;
   certificates: any;
   abattoirReceived: AbattoirModels.AbattoirReceived = new AbattoirModels.AbattoirReceived();
+  receiptOnTime: any;
   constructor(private user: UserService,
               private abattoirService: AbattoirService,
               private alertService: AlertService,
@@ -31,7 +32,7 @@ export class AbattoirInwardComponent implements OnInit {
     this.certificates.forEach(element => {
       element.checked = false;
     });    
-    this.setDefaultValues();
+    
     this.abattoirService.getUniqueId('received')
     .then((results: any) => {
       this.abattoirReceived.receiptBatchId = results;
@@ -60,6 +61,8 @@ export class AbattoirInwardComponent implements OnInit {
     this.abattoirReceived.updatedOn = new Date();
     this.abattoirReceived.certificates = new Array<AbattoirModels.FarmersCertificate>();
     var certificateError = "";
+    this.abattoirReceived.receiptOn.setHours(this.receiptOnTime.hour);
+    this.abattoirReceived.receiptOn.setMinutes(this.receiptOnTime.minute);
     this.certificates.forEach(element => {
       if (element.checked === true && this.document.getElementById('file_'+ element.name).files.length > 0){
         let fileList: FileList = this.document.getElementById('file_'+ element.name).files;
@@ -99,7 +102,7 @@ export class AbattoirInwardComponent implements OnInit {
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        this.alertService.success("Abattoir receipt saved.");
+        this.alertService.success("Receipt saved.");
         window.scrollTo(0, 0);
       }
       else{
@@ -123,6 +126,7 @@ export class AbattoirInwardComponent implements OnInit {
     this.abattoirReceived.materialGrade = this.commonData.materialGrades[0];
     this.abattoirReceived.quantityUnit = this.commonData.units[0];
     this.abattoirReceived.quantity = 10;
+    this.receiptOnTime = {hour: 10, minute: 15};
   }
 
   onChange(event: any) {

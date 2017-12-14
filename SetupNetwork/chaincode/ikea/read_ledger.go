@@ -202,13 +202,15 @@ func getIkeaBillDetails(stub  shim.ChaincodeStubInterface, option string, value 
 			allIds.IkeaBillNumbers = append(allIds.IkeaBillNumbers,sb.BillNumber);	
 		} else if strings.ToLower(option) == "details" {
 			allDetails.IkeaBillNumbers = append(allDetails.IkeaBillNumbers,sb);	
+		} else if strings.ToLower(option) == "ikeacheckout" && strings.ToLower(sb.IkeaDispatchNumber) == strings.ToLower(value)  {
+			allDetails.IkeaBillNumbers = append(allDetails.IkeaBillNumbers,sb);	
 		}
 	}
 	
 	if strings.ToLower(option) == "ids" {
 		rabAsBytes, _ := json.Marshal(allIds)		
 		return shim.Success(rabAsBytes)	
-	} else if strings.ToLower(option) == "details" {
+	} else if strings.ToLower(option) == "details" || strings.ToLower(option) == "ikeacheckout" {
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}

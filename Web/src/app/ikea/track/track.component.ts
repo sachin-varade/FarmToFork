@@ -25,9 +25,9 @@ export class TrackComponent implements OnInit {
       this.userData = this.user.getUserData();
       this.commonData = this.user.getCommonData();   
     }   
-    this.ikeaService.getAllIkeaDispatch('ids')
+    this.ikeaService.getAllIkeaDispatch('details')
     .then((results: any) => {
-      this.ikeaDispatchList = <Array<IkeaModels.IkeaDispatch>>results.ikeaDispatchNumbers;      
+      this.ikeaDispatchList = <Array<IkeaModels.IkeaDispatch>>results.ikeaDispatch;      
       //this.ikeaDispatchList = <any>["12121","1231231231"];
     }); 
   }

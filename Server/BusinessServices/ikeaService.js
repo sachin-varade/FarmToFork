@@ -117,11 +117,11 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     ikeaDispatch.quantity.toString(),
                     ikeaDispatch.quantityUnit,
                     ikeaDispatch.dispatchDateTime,
-                    ikeaDispatch.soldFromDate,
-                    ikeaDispatch.soldUntillDate,
+                    ikeaDispatch.soldFromDate ? ikeaDispatch.soldFromDate : "",
+                    ikeaDispatch.soldUntillDate ? ikeaDispatch.soldUntillDate : "",
                     ikeaDispatch.preparedBy,
-                    ikeaDispatch.preparedOn,
-                    ikeaDispatch.soldAt
+                    ikeaDispatch.preparedOn ? ikeaDispatch.preparedOn : "",
+                    ikeaDispatch.soldAt ? ikeaDispatch.soldAt : ""
                 ]);
         }).then((results) => {
             return results;

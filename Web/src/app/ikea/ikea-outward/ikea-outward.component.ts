@@ -18,6 +18,7 @@ export class IkeaOutwardComponent implements OnInit {
   userData: any;
   ikeaReceivedList: Array<IkeaModels.IkeaReceived> = new Array<IkeaModels.IkeaReceived>();
   ikeaDispatch : IkeaModels.IkeaDispatch = new IkeaModels.IkeaDispatch();
+  dispatchDateTime: any;
   constructor(private user: UserService,    
     private ikeaService: IkeaService,
   private alertService: AlertService) {
@@ -27,7 +28,7 @@ export class IkeaOutwardComponent implements OnInit {
     this.ikeaService.getAllIkeaReceived('details')
     .then((results: any) => {
       this.ikeaReceivedList = <Array<IkeaModels.IkeaReceived>>results.ikeaReceived;
-      this.setDefaultValues();
+      //this.setDefaultValues();
     }); 
     this.ikeaService.getUniqueId('dispatch')
     .then((results: any) => {
@@ -48,11 +49,14 @@ export class IkeaOutwardComponent implements OnInit {
   
   saveIkeaDispatch(myForm: NgForm){
     this.ikeaDispatch.ikeaId = this.currentUser.id;
+    this.ikeaDispatch.dispatchDateTime.setHours(this.dispatchDateTime.hour);
+    this.ikeaDispatch.dispatchDateTime.setMinutes(this.dispatchDateTime.minute);
+    
     this.ikeaService.saveIkeaDispatch(this.ikeaDispatch)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){
         this.clearForm(myForm);
-        this.alertService.success("Ikea dispatch saved.");
+        this.alertService.success("Kitchen checkout saved.");
       }
       else{
         this.alertService.error("Error occured...");
@@ -76,12 +80,14 @@ export class IkeaOutwardComponent implements OnInit {
     this.ikeaDispatch.guidNumber = this.commonData.ikeaDispatchProducts[0].code;
     this.setGuid();
     //this.ikeaDispatch.materialGrade = this.commonData.materialGrades[0];
-    this.ikeaDispatch.preparedOn = new Date();
+    //this.ikeaDispatch.preparedOn = new Date();
     this.ikeaDispatch.dispatchDateTime = new Date();
-    this.ikeaDispatch.soldFromDate = new Date();
-    this.ikeaDispatch.soldUntillDate = new Date();
-    this.ikeaDispatch.soldUntillDate.setDate(new Date().getDate()+30);  
+    this.dispatchDateTime = {hour: this.ikeaDispatch.dispatchDateTime.getHours(), minute: this.ikeaDispatch.dispatchDateTime.getMinutes()};
+    // this.ikeaDispatch.soldFromDate = new Date();
+    // this.ikeaDispatch.soldUntillDate = new Date();
+    // this.ikeaDispatch.soldUntillDate.setDate(new Date().getDate()+30);  
     this.ikeaDispatch.quantity = 10;
+    this.ikeaDispatch.soldAt =  this.currentUser.displayName;
     this.ikeaDispatch.quantityUnit = this.commonData.processingTransactionUnits[0];
   }
 }

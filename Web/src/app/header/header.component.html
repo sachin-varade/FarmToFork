@@ -7,7 +7,7 @@
           <div class="user-name">
             <img src="assets/images/user.png">
             <span>{{user.loggedInUser.displayName}}</span>
-            <span> ({{user.loggedInUser.role}})</span>
+            <!-- <span > ({{user.loggedInUser.role}})</span> -->
           </div>
           <div class="logout">
             <a (click)="logout();"><img src="assets/images/logout.png"></a>
@@ -21,8 +21,8 @@
       <div class="container">  
           
           <ul *ngIf="getUser().role == 'abattoir'" class="nav navbar-nav" routerLinkActive="active">
-              <li class="nav-item"><a class="nav-link" routerLink="abattoir/inward">Abattoir Receipt</a></li>
-              <li class="nav-item"><a class="nav-link" routerLink="abattoir/outward">Abattoir Dispatch</a></li>            
+              <li class="nav-item"><a class="nav-link" routerLink="abattoir/inward">Receipt</a></li>
+              <li class="nav-item"><a class="nav-link" routerLink="abattoir/outward">Dispatch</a></li>            
               <li class="nav-item"><a class="nav-link" routerLink="block/recent">Blocks</a></li>
           </ul>
           <ul *ngIf="getUser().role == 'logistic'" class="nav navbar-nav" routerLinkActive="active">
@@ -31,20 +31,21 @@
               <li class="nav-item"><a class="nav-link" routerLink="block/recent">Blocks</a></li>
           </ul>
           <ul *ngIf="getUser().role == 'processor'" class="nav navbar-nav" routerLinkActive="active">
-              <li class="nav-item"><a class="nav-link" routerLink="processor/inward">Meatball Manufacturer Receipt</a></li>
+              <li class="nav-item"><a class="nav-link" routerLink="processor/inward">Receipt</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="processor/process">Process Item</a></li>
-              <li class="nav-item"><a class="nav-link" routerLink="processor/dispatch">Meatball Manufacturer Dispatch</a></li>
+              <li class="nav-item"><a class="nav-link" routerLink="processor/dispatch">Dispatch</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="block/recent">Blocks</a></li>
           </ul>
           <ul *ngIf="getUser().role == 'ikea'" class="nav navbar-nav" routerLinkActive="active">
-              <li class="nav-item"><a class="nav-link" routerLink="ikea/inward">Ikea Receipt</a></li>
-              <li class="nav-item"><a class="nav-link" routerLink="ikea/outward">Ikea Dispatch</a></li>
+              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="ikea/inward">Receipt</a></li>
+              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="ikea/outward">Kitchen Checkout</a></li>
               
-              <li class="nav-item"><a class="nav-link" routerLink="ikea/pos">Sale</a></li>
-              <li class="nav-item"><a class="nav-link" routerLink="block/recent">Blocks</a></li>
-              <li class="nav-item"><a class="nav-link" routerLink="ikea/track">Track</a></li>
-              <li class="nav-item" style="right: 200px; position: absolute;" ><a class="nav-link" routerLink="product/track">View Farm-to-Fork Journey</a></li>
+              <li class="nav-item" *ngIf="getUser().subRole == 'restaurant'"><a class="nav-link" routerLink="ikea/pos">Sale</a></li>
+              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="block/recent">Blocks</a></li>
+              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="ikea/track">Track Farm-to-Fork</a></li>
+              <li class="nav-item" *ngIf="getUser().subRole == 'restaurant'" ><a class="nav-link" routerLink="product/track">View Farm-to-Fork Journey</a></li>
           </ul>
+          
       </div>
     </nav>
   

@@ -1,6 +1,6 @@
 <div class="page-container">
 <div class="container">
-  <h1 class="title-main">IKEA Receipt</h1>
+  <h1 class="title-main">Receipt</h1>
   <form #myForm="ngForm">
     <div class="col-lg-6 col-md-6 col-sm-12 left-pane">
       
@@ -11,7 +11,7 @@
       
       <div class="form-group">
         <label for="purchaseOrderNumber">Purchase Order Number</label>
-        <input type="text" [(ngModel)]="ikeaReceived.purchaseOrderNumber" class="form-control" name="purchaseOrderNumber" required>
+        <input type="text" (change)="setDefaultValues();" [(ngModel)]="ikeaReceived.purchaseOrderNumber" class="form-control" name="purchaseOrderNumber" required>
       </div>
       
       <div class="form-group">
@@ -20,6 +20,16 @@
         <option *ngFor="let rec of logisticTransactionList" [value]="rec.consignmentNumber">{{rec.consignmentNumber}}</option>
         </select>
       </div>
+
+      <div class="form-group clearfix">
+        <label for="ikeaAcceptanceChecklist">Acceptance Checklist</label>
+        <br>
+        <label class="checkbox-style" *ngFor="let item of commonData.ikeaAcceptanceCriteria">
+            <input [(ngModel)]="item.conditionSatisfied" name="ikeaAcceptanceChecklist" 
+                [value]="item.id" type="checkbox" required/> {{item.ruleCondition}}
+                <span class="checkmark"></span>
+            </label>
+    </div>
 
       <div class="form-group">
           <label for="transportConsitionSatisfied">Transport conditions satisfied?</label>
@@ -53,18 +63,7 @@
           </table>
       </div>
 
-      <div class="form-group">
-        <label for="guidNumber">Product Code (GUID/GTIN)</label>
-        <select disabled class="form-control" [(ngModel)]="ikeaReceived.guidNumber" (click)="setGuid();" name="guidNumber" required>
-            <option value="0" selected="selected"></option>
-            <option *ngFor="let guid of commonData.processingTransactionProducts" [value]="guid.code">{{guid.code}}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-          <label for="materialName">Product</label>
-          <input disabled type="text" [(ngModel)]="ikeaReceived.materialName" class="form-control" name="materialName" required>
-      </div>
+    
 
       <!-- <div class="form-group">
       <label for="materialGrade">Material Grade</label>
@@ -77,6 +76,19 @@
 
     <div class="col-lg-6 col-md-6 col-sm-12 right-pane">
       
+        <div class="form-group">
+            <label for="guidNumber">Product Code (GUID/GTIN)</label>
+            <select disabled class="form-control" [(ngModel)]="ikeaReceived.guidNumber" (click)="setGuid();" name="guidNumber" required>
+                <option value="0" selected="selected"></option>
+                <option *ngFor="let guid of commonData.processingTransactionProducts" [value]="guid.code">{{guid.code}}</option>
+            </select>
+          </div>
+    
+          <div class="form-group">
+              <label for="materialName">Product</label>
+              <input disabled type="text" [(ngModel)]="ikeaReceived.materialName" class="form-control" name="materialName" required>
+          </div>
+<!--           
       <div class="form-group">
         <label for="receivedDate">Received Date</label>
         <input type="text" [(ngModel)]="ikeaReceived.receivedDate" name="receivedDate" class="form-control" bsDatepicker required/>
@@ -85,7 +97,23 @@
       <div class="form-group">
           <label for="usedByDate">Used By Date</label>
           <input disabled type="text" [(ngModel)]="ikeaReceived.usedByDate" name="usedByDate" class="form-control" bsDatepicker required/>
-      </div>
+      </div> -->
+
+      <div class="form-group date-picker-div">
+            <label for="receivedDate">Received Date</label>
+            <div class="clearfix">
+                <input type="text" placeholder="Date" [(ngModel)]="ikeaReceived.receivedDate" name="receivedDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                <ngb-timepicker [(ngModel)]="receivedDateTime" name="receivedDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+            </div>
+        </div>
+        
+        <div class="form-group date-picker-div">
+            <label for="usedByDate">Used By Date</label>
+            <div class="clearfix">
+                <input type="text" placeholder="Date" [(ngModel)]="ikeaReceived.usedByDate" name="usedByDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                <ngb-timepicker [(ngModel)]="usedByDateTime" name="usedByDateTime" class="date-picker-time float-left" required></ngb-timepicker>
+            </div>
+        </div>
 
       <div class="form-group">
           <label for="quantity" style="display: block;">Quantity</label>
@@ -108,15 +136,7 @@
       </div>
       
 
-      <div class="form-group clearfix">
-          <label for="ikeaAcceptanceChecklist">Acceptance Checklist</label>
-          <br>
-          <label class="checkbox-style" *ngFor="let item of commonData.ikeaAcceptanceCriteria">
-              <input [(ngModel)]="item.conditionSatisfied" name="ikeaAcceptanceChecklist" 
-                  [value]="item.id" type="checkbox" required/> {{item.ruleCondition}}
-                  <span class="checkmark"></span>
-              </label>
-      </div>
+     
       
     </div>
     
