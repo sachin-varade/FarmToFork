@@ -12,6 +12,7 @@ import * as LogisticModels from '../../models/logistic';
 import * as ProcessorModels from '../../models/processor';
 import { forEach } from '@angular/router/src/utils/collection';
 import { AlertService } from '../../alert.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-logistic-inward',
@@ -35,6 +36,12 @@ export class LogisticInwardComponent implements OnInit {
   expectedDeliveryDateTime: any;
   actualDeliveryDateTime: any;
   processorDispatchList: Array<ProcessorModels.ProcessorDispatch> = new Array<ProcessorModels.ProcessorDispatch>();
+  node1Date: any;
+  node1DateTime: any;
+  node2Date: any;
+  node2DateTime: any;
+  node3Date: any;
+  node3DateTime: any;
   constructor(private user: UserService,
               private abattoirService: AbattoirService,
               private logisticService: LogisticService,
@@ -268,6 +275,24 @@ export class LogisticInwardComponent implements OnInit {
     this.logisticTransaction.actualDeliveryDateTime = new Date();
     this.logisticTransaction.actualDeliveryDateTime.setDate(new Date().getDate()+1);
     this.actualDeliveryDateTime = {hour:1, minute: 0};    
+
+    this.logisticTransaction.inTransitDateTime.setHours(this.inTransitDateTime.hour);
+    this.logisticTransaction.inTransitDateTime.setMinutes(this.inTransitDateTime.minute);
+    this.logisticTransaction.actualDeliveryDateTime.setHours(this.actualDeliveryDateTime.hour);
+    this.logisticTransaction.actualDeliveryDateTime.setMinutes(this.actualDeliveryDateTime.minute);
+    
+    var diff= new Date(new Date(this.logisticTransaction.actualDeliveryDateTime).getTime() - new Date(this.logisticTransaction.inTransitDateTime).getTime());
+    var transitTime = ( ((diff.getUTCDate()-1)*24) + diff.getUTCHours()).toString() +"."+ diff.getUTCMinutes().toString();
+    // this.node1Date = new Date(moment(this.logisticTransaction.inTransitDateTime).add((Number(transitTime)/2),'h').toString());
+    // this.node1DateTime = {hour: this.node1Date.getHours(), minute: this.node1Date.getMinutes()};
+    this.node1Date = this.logisticTransaction.inTransitDateTime;
+    this.node1DateTime = this.inTransitDateTime;    
+    this.node2Date = new Date(moment(this.node1Date).add((Number(transitTime)/2),'h').toString());
+    this.node2DateTime = {hour: this.node2Date.getHours(), minute: this.node2Date.getMinutes()};
+    // this.node3Date = new Date(moment(this.node2Date).add((Number(transitTime)/2),'h').toString());
+    // this.node3DateTime = {hour: this.node3Date.getHours(), minute: this.node3Date.getMinutes()};
+    this.node3Date = this.logisticTransaction.actualDeliveryDateTime;
+    this.node3DateTime = this.actualDeliveryDateTime;
   }
 }
 

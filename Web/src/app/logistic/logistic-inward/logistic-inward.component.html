@@ -90,9 +90,9 @@
         
                 
                     <fieldset class="delivery-fieldset">
-                          <legend class="delivery-legend">In Transit:</legend>                  
-                    <div class="form-group date-picker-div">
-                        <label for="inTransitDateTime">Node 1</label>
+                          <legend class="delivery-legend">In Transit:</legend>  
+                        <div class="form-group date-picker-div" style="display:none;">
+                        <label for="inTransitDateTime">In Transit Time</label>
                         <div class="clearfix">
                             <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.inTransitDateTime" name="inTransitDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
                             <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="inTransitDateTime" name="inTransitDateTime" class="date-picker-time float-left" required></ngb-timepicker>
@@ -100,21 +100,26 @@
                         
                     </div>
                     <div class="form-group date-picker-div">
-                            <label for="inTransitDateTime">Node 2</label>
-                            <div class="clearfix">
-                                <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.inTransitDateTime" name="inTransitDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
-                                <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="inTransitDateTime" name="inTransitDateTime" class="date-picker-time float-left" required></ngb-timepicker>
-                            </div>
-                            
+                        <label for="node1Date">Node 1</label>
+                        <div class="clearfix">
+                            <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="node1Date" name="node1Date" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                            <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="node1DateTime" name="node1DateTime" class="date-picker-time float-left" required></ngb-timepicker>
                         </div>
-                        <div class="form-group date-picker-div">
-                                <label for="inTransitDateTime">Node 3</label>
-                                <div class="clearfix">
-                                    <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="logisticTransaction.inTransitDateTime" name="inTransitDate" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
-                                    <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="inTransitDateTime" name="inTransitDateTime" class="date-picker-time float-left" required></ngb-timepicker>
-                                </div>
-                                
-                            </div>
+                    </div>
+                    <div class="form-group date-picker-div">
+                        <label for="node2Date">Node 2</label>
+                        <div class="clearfix">
+                            <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="node2Date" name="node2Date" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                            <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="node2DateTime" name="node2DateTime" class="date-picker-time float-left" required></ngb-timepicker>
+                        </div>
+                    </div>
+                    <div class="form-group date-picker-div">
+                        <label for="node3Date">Node 3</label>
+                        <div class="clearfix">
+                            <input type="text" [disabled]="(logisticTransaction.currentStatus != '')" placeholder="Date" [(ngModel)]="node3Date" name="node3Date" class="form-control date-picker-date date-input-small float-left" bsDatepicker required/>     
+                            <ngb-timepicker [disabled]="(logisticTransaction.currentStatus != '')" [(ngModel)]="node3DateTime" name="node3DateTime" class="date-picker-time float-left" required></ngb-timepicker>
+                        </div>
+                    </div>
         
                     <button type="submit" [disabled]="(logisticTransaction.currentStatus == '')" (click)="showDialog = !showDialog" class="btn btn-normal"> IOT Data </button>
                     

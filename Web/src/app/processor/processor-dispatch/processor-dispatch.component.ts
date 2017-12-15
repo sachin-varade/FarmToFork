@@ -57,8 +57,8 @@ export class ProcessorDispatchComponent implements OnInit {
       this.logisticService.getAllLogisticTransactions('id', results.processorReceived[0].consignmentNumber)
       .then((results: any) => {
         console.log(results);
-        this.processorDispatch.temperatureStorageMin = results.logisticTransactions[0].temperatureStorageMin;
-        this.processorDispatch.temperatureStorageMax = results.logisticTransactions[0].temperatureStorageMax;
+        this.processorDispatch.temperatureStorageMin = "-28"; // results.logisticTransactions[0].temperatureStorageMin;
+        this.processorDispatch.temperatureStorageMax = "-26"; // results.logisticTransactions[0].temperatureStorageMax;
         
         this.processorService.getAllProcessingTransactions('id', this.processorDispatch.processorBatchCode)
         .then((results: any) => {

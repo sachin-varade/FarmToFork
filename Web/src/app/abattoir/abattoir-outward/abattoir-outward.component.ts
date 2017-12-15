@@ -98,8 +98,8 @@ export class AbattoirOutwardComponent implements OnInit {
     this.abattoirDispatch.fatCoverClass = this.commonData.fatCoverClasses[0];
     this.abattoirDispatch.quantityUnit = this.commonData.abattoirDispatchUnits[0];
     this.abattoirDispatch.quantity = 10;
-    this.abattoirDispatch.temperatureStorageMin = "1";
-    this.abattoirDispatch.temperatureStorageMax = "10";
+    this.abattoirDispatch.temperatureStorageMin = "-20";
+    this.abattoirDispatch.temperatureStorageMax = "-18";
     this.abattoirDispatch.productionDate = new Date();
     this.setGuid();
     this.getProductDetails();
