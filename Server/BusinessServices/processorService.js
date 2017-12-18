@@ -159,6 +159,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     processorDispatch.storage ? processorDispatch.storage : "",
                     processorDispatch.updatedBy.toString(),
                     processorDispatch.updatedOn,
+                    processorDispatch.ikeaId.toString()
                 ]);                
         }).then((results) => {
             return results;
@@ -191,6 +192,22 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
             return queryChainCode.queryChainCode(channels.processorchannel, 
                 processorConfig.channels.processorchannel.chaincodeId, 
                 "getAllProcessorReceived", 
+                [option, value]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
+    processorService.getAllIkeaPOs = function(option, value){
+        console.log("getAllIkeaPOs");
+        return fabric_client.getUserContext(users.processorUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.processorchannel, 
+                processorConfig.channels.processorchannel.chaincodeId, 
+                "getAllIkeaPOs", 
                 [option, value]);
         }).then((results) => {
             return results;

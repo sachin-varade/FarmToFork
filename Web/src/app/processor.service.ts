@@ -85,6 +85,16 @@ export class ProcessorService {
     });
   }  
 
+  getAllIkeaPOs(option: string = "", value: string = ""): Promise<any> {
+    this.url = `${this.BASE_URL}/getAllIkeaPOs`;
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
+    .then((results: any) => {
+      return results;
+    }).catch((err) => {
+      this.alertService.error("Error occured...");
+    });
+  }
+
   uploadQualityControlDocument(formData: any): Promise<any> {
     let headers = new Headers();
     headers.append('Accept', 'application/json');    

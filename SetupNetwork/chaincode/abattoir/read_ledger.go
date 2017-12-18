@@ -152,12 +152,20 @@ func getAllAbattoirDispatch(stub  shim.ChaincodeStubInterface, option string, va
 			allIds.ConsignmentNumbers = append(allIds.ConsignmentNumbers,sb.ConsignmentNumber);	
 		} else if strings.ToLower(option) == "details" {
 			allDetails.AbattoirMaterialDispatch = append(allDetails.AbattoirMaterialDispatch,sb);	
-		}}
+		} else if strings.ToLower(option) == "po" {
+			c := strings.Split(value, "^")
+			fmt.Println("value is "+ c[0] +", should equal-"+ sb.PurchaseOrderReferenceNumber);
+			fmt.Println("value is "+ c[1] +", should equal-"+ sb.ProcessorId);
+			if strings.ToLower(sb.PurchaseOrderReferenceNumber) == strings.ToLower(c[0]) && strings.ToLower(sb.ProcessorId) == strings.ToLower(c[1]) {
+				allDetails.AbattoirMaterialDispatch = append(allDetails.AbattoirMaterialDispatch,sb);	
+			}
+		}
+	}
 
 	if strings.ToLower(option) == "ids" {
 		rabAsBytes, _ := json.Marshal(allIds)		
 		return shim.Success(rabAsBytes)	
-	} else if strings.ToLower(option) == "details" {
+	} else if strings.ToLower(option) == "details" || strings.ToLower(option) == "po" {
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}
@@ -327,5 +335,43 @@ func getUniqueId(stub  shim.ChaincodeStubInterface, option string, value string)
 		return shim.Success(rabAsBytes)	
 	}
 
+	return shim.Success(nil)
+}
+
+// ============================================================================================================================
+// Get All Abattoir Received
+// ============================================================================================================================
+func getAllProcessorPOs(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
+	fmt.Println("getAllProcessorPOs:Looking for All Abattoir Received");
+
+	//get the AllAllProcessorPOs index
+	allBAsBytes, err := stub.GetState("allProcessorPOs")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Received")
+	}
+
+	var res AllProcessorPOs
+	err = json.Unmarshal(allBAsBytes, &res)
+	//fmt.Println(allBAsBytes);
+	if err != nil {
+		fmt.Println("Printing Unmarshal error:-");
+		fmt.Println(err);
+		return shim.Error("Failed to Unmarshal all processor POs")
+	}
+	var allProcessorPOs AllProcessorPOs
+	if strings.ToLower(option) == "po" || strings.ToLower(option) == "so" {
+		for i := range res.ProcessorPOs{
+			if strings.ToLower(option) == "po" && strings.ToLower(res.ProcessorPOs[i].PurchaseOrderReferenceNumber) == strings.ToLower(value) {
+				allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,res.ProcessorPOs[i]);	
+			} else if strings.ToLower(option) == "so" && strings.ToLower(res.ProcessorPOs[i].SalesOrder) == strings.ToLower(value) {
+				allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,res.ProcessorPOs[i]);	
+			}		
+		}
+		rabAsBytes, _ := json.Marshal(allProcessorPOs)
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "details" {
+		rabAsBytes, _ := json.Marshal(res)		
+		return shim.Success(rabAsBytes)		
+	}
 	return shim.Success(nil)
 }

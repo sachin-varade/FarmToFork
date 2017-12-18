@@ -11,15 +11,22 @@
 
         <div class="form-group">
           <label for="processorBatchCode">Meatball Batch ID</label>
-          <select class="form-control" (change)="setDefaultValues();" [(ngModel)]="processorDispatch.processorBatchCode" name="processorBatchCode" required>        
+          <select class="form-control" [(ngModel)]="processorDispatch.processorBatchCode" name="processorBatchCode" required>        
             <option *ngFor="let rec of processingTransactionList" [value]="rec.processorBatchCode">{{rec.processorBatchCode}}</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="ikeaPurchaseOrderNumber">Ikea Purchase Order Number</label>
-          <input type="text" class="form-control" [(ngModel)]="processorDispatch.ikeaPurchaseOrderNumber" name="ikeaPurchaseOrderNumber" required>
+          <input type="text" (change)="setDefaultValues();" placeholder="POIK001" class="form-control" [(ngModel)]="processorDispatch.ikeaPurchaseOrderNumber" name="ikeaPurchaseOrderNumber" required>
         </div>
+
+        <div class="form-group">
+          <label>IKEA Store</label>
+          <select class="form-control selectpicker" [(ngModel)]="processorDispatch.ikeaId" name="ikeaId" id="ikeaId" required>  
+              <option *ngFor="let item of ikeaStores" [value]="item.id">{{item.displayName +" (Ikea Store Id-"+ item.id +")"}}</option>      
+          </select>
+      </div>
 
         <div class="form-group">
           <label for="guidNumber">Product Code (GUID/GTIN)</label>

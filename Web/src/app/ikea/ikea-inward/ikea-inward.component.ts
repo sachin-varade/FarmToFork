@@ -124,10 +124,24 @@ export class IkeaInwardComponent implements OnInit {
   }
 
   setDefaultValues(){
-    if(this.logisticTransactionList && this.logisticTransactionList.length>0){
-      this.ikeaReceived.consignmentNumber = this.logisticTransactionList[this.logisticTransactionList.length-1].consignmentNumber;
-    }    
-    this.checkLogisticConsignment();    
-    this.ikeaReceived.storage = this.commonData.storage[0];
+    this.processorService.getAllProcessorDispatch('po', this.ikeaReceived.purchaseOrderNumber +"^"+ this.currentUser.id)
+    .then((results: any) => {
+
+      if(results && results.processorDispatch && results.processorDispatch.length > 0){
+        if(this.logisticTransactionList && this.logisticTransactionList.length>0){
+          this.ikeaReceived.consignmentNumber = this.logisticTransactionList[this.logisticTransactionList.length-1].consignmentNumber;
+        }    
+        this.checkLogisticConsignment();    
+        this.ikeaReceived.storage = this.commonData.storage[0];
+      }
+      else{
+        this.alertService.error("Purchase Order Number- "+ this.ikeaReceived.purchaseOrderNumber +" is not created by you. Please use another Purchase Order Number");
+        this.ikeaReceived.purchaseOrderNumber = "";
+        return false;
+      }
+      
+    }); 
+
+    
   }
 }

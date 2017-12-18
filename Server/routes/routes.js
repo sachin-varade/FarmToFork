@@ -75,6 +75,13 @@ router.post("/saveAbattoirDispatch", function(req, res) {
 	});			
 });
 
+router.get("/getAllProcessorPOs/:option?/:value?", function(req, res) {    
+    var promise = abattoirService.getAllProcessorPOs(req.params.option?req.params.option:"", req.params.value?req.params.value: "");
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
+
 // ------------------------ Logistics routes --------------------
 //A2P
 router.get("/A2P/getAllLogisticTransactions/:option/:value?", function(req, res) {    
@@ -179,6 +186,12 @@ router.get("/getAllProcessorDispatch/:option/:value?", function(req, res) {
 });
 
 
+router.get("/getAllIkeaPOs/:option?/:value?", function(req, res) {    
+    var promise = processorService.getAllIkeaPOs(req.params.option?req.params.option:"", req.params.value?req.params.value: "");
+	promise.then(function(resp,err){
+		res.send(resp);
+	});	
+});
 // ------------------------ IKEA routes --------------------
 
 router.post("/saveIkeaReceived", function(req, res) {    

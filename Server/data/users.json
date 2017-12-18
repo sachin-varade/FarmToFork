@@ -97,8 +97,8 @@
         "ikeas": [
             {
                 "id": 1,
-                "name": "IkeaStore",
-                "displayName": "IKEA Göteborg Bäckebol-Store",
+                "name": "IkeaStoreSwe",
+                "displayName": "IKEA Göteborg Bäckebol-Store-SWE",
                 "role": "ikea",
                 "password": "123456",
                 "uniqueId": "I001",
@@ -108,6 +108,17 @@
             },
             {
                 "id": 2,
+                "name": "IkeaStoreFN",
+                "displayName": "IKEA Göteborg Bäckebol-Store-FN",
+                "role": "ikea",
+                "password": "123456",
+                "uniqueId": "I001",
+                "GUID-GTIN": "GUID-I001",
+                "type": "P2I",
+				"subRole": "store"
+            },
+            {
+                "id": 3,
                 "name": "IkeaRestaurant",
                 "displayName": "IKEA Göteborg Bäckebol-Restaurant",
                 "role": "ikea",

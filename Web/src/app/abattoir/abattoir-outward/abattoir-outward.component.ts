@@ -20,6 +20,7 @@ export class AbattoirOutwardComponent implements OnInit {
   abattoirReceivedList: Array<AbattoirModels.AbattoirReceived> = new Array<AbattoirModels.AbattoirReceived>();
   dispatchDateTime: any;
   productionDateTime: any;
+  allProcessorPOs: any;
   constructor(private user: UserService,
     private abattoirService: AbattoirService,
   private alertService: AlertService) {
@@ -37,6 +38,10 @@ export class AbattoirOutwardComponent implements OnInit {
     .then((results: any) => {
       this.abattoirDispatch.consignmentNumber = results;
     });
+    this.abattoirService.getAllProcessorPOs('details')
+    .then((results: any) => {
+      this.allProcessorPOs = results.processorPOs;
+    });
   }
 
   ngOnInit() {
@@ -49,10 +54,11 @@ export class AbattoirOutwardComponent implements OnInit {
     this.abattoirReceivedList.forEach(element => {
       if(this.abattoirDispatch.receiptBatchId == element.receiptBatchId){
         this.abattoirReceived = element;
-        this.abattoirDispatch.purchaseOrderReferenceNumber = "POBF001";//element.purchaseOrderReferenceNumber;
+        //this.abattoirDispatch.purchaseOrderReferenceNumber = "POBF001";//element.purchaseOrderReferenceNumber;
         this.abattoirDispatch.livestockBatchId = element.livestockBatchId;
       }
     });
+
   }
 
   setGuid() {
@@ -89,6 +95,20 @@ export class AbattoirOutwardComponent implements OnInit {
   }
 
   setDefaultValues(){
+    var poFound = false;
+    this.allProcessorPOs.forEach(element => {
+      if(element.salesOrder === this.abattoirDispatch.salesOrder){
+        poFound = true;
+        this.abattoirDispatch.purchaseOrderReferenceNumber = element.purchaseOrderReferenceNumber;
+        this.abattoirDispatch.processorId = element.processorId;
+      }
+    });
+    if(!poFound){
+      this.alertService.error("Purchase order not found against this Sales Order-"+ this.abattoirDispatch.salesOrder +", Please use Sales Order starting from SOBF001.");
+      this.abattoirDispatch.salesOrder = "";
+      return false;
+    }
+
     this.abattoirDispatch.logistic.id = this.userData.users.logistics[0].id;
     if(this.abattoirReceivedList && this.abattoirReceivedList.length > 0){
       this.abattoirDispatch.receiptBatchId = this.abattoirReceivedList[this.abattoirReceivedList.length-1].receiptBatchId;

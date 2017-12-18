@@ -41,6 +41,22 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         });
     }
 
+    abattoirService.getAllProcessorPOs = function(option, value){
+        console.log("getAllProcessorPOs");
+        return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
+        .then((user_from_store) => {
+            helper.checkUserEnrolled(user_from_store);
+            return queryChainCode.queryChainCode(channels.abattoirchannel, 
+                abattoirConfig.channels.abattoirchannel.chaincodeId, 
+                "getAllProcessorPOs", 
+                [option, value]);
+        }).then((results) => {
+            return results;
+        }).catch((err) => {
+            throw err;
+        });
+    }
+
     abattoirService.getAllAbattoirReceived = function(option, value){
         console.log("getAllAbattoirReceived");
         return fabric_client.getUserContext(users.abattoirUser.enrollmentID, true)
@@ -69,7 +85,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
         }).then((results) => {
             return results;
         }).catch((err) => {
-            throw err;
+            return null;
         });
     }    
 
@@ -148,7 +164,8 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     abattoirDispatch.quantity.toString(),
                     abattoirDispatch.quantityUnit,
                     abattoirDispatch.updatedBy.toString(),
-                    abattoirDispatch.updatedOn                  
+                    abattoirDispatch.updatedOn,
+                    abattoirDispatch.processorId.toString(),                
                 ]                
             );                
         }).then((results) => {

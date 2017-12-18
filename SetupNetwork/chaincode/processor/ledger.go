@@ -101,7 +101,8 @@ type ProcessorDispatch struct {
 	ConsignmentNumber				string	`json:"consignmentNumber"`
 	ProcessorBatchCode				string	`json:"processorBatchCode"`
 	ProcessorId				string	`json:"processorId"`
-	IkeaPurchaseOrderNumber			string	`json:"ikeaPurchaseOrderNumber"`	
+	IkeaPurchaseOrderNumber			string	`json:"ikeaPurchaseOrderNumber"`
+	IkeaId		string	`json:"ikeaId"`	
 	GUIDNumber						string	`json:"guidNumber"`
 	MaterialName					string	`json:"materialName"`
 	MaterialGrade					string	`json:"materialGrade"`
@@ -118,6 +119,15 @@ type ProcessorDispatch struct {
 	UpdatedBy			string	`json:"updatedBy"`
 }
 
+type IkeaPOs struct {
+	SalesOrder		string	`json:"salesOrder"`
+	IkeaPurchaseOrderNumber		string	`json:"ikeaPurchaseOrderNumber"`
+	IkeaId		string	`json:"ikeaId"`
+}
+
+type AllIkeaPOs struct{
+	IkeaPOs []IkeaPOs `json:"ikeaPOs"`
+}
 
 type LogisticTransaction struct {	
 	LogisticId				string	`json:"logisticId"`
@@ -243,6 +253,34 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
+	var allIkeaPOs AllIkeaPOs
+	var ikeaPOs IkeaPOs
+	ikeaPOs.SalesOrder = "";
+	ikeaPOs.IkeaPurchaseOrderNumber = "POIK001";
+	ikeaPOs.IkeaId = "1";
+	allIkeaPOs.IkeaPOs = append(allIkeaPOs.IkeaPOs,ikeaPOs);
+	ikeaPOs.SalesOrder = "";
+	ikeaPOs.IkeaPurchaseOrderNumber = "POIK002";
+	ikeaPOs.IkeaId = "2";
+	allIkeaPOs.IkeaPOs = append(allIkeaPOs.IkeaPOs,ikeaPOs);
+	ikeaPOs.SalesOrder = "";
+	ikeaPOs.IkeaPurchaseOrderNumber = "POIK003";
+	ikeaPOs.IkeaId = "3";
+	allIkeaPOs.IkeaPOs = append(allIkeaPOs.IkeaPOs,ikeaPOs);
+	ikeaPOs.SalesOrder = "";
+	ikeaPOs.IkeaPurchaseOrderNumber = "POIK004";
+	ikeaPOs.IkeaId = "4";
+	allIkeaPOs.IkeaPOs = append(allIkeaPOs.IkeaPOs,ikeaPOs);
+	ikeaPOs.SalesOrder = "";
+	ikeaPOs.IkeaPurchaseOrderNumber = "POIK005";
+	ikeaPOs.IkeaId = "5";
+	allIkeaPOs.IkeaPOs = append(allIkeaPOs.IkeaPOs,ikeaPOs);
+
+	jsonAsBytesallIkeaPOs, _ := json.Marshal(allIkeaPOs)
+	err = stub.PutState("allIkeaPOs", jsonAsBytesallIkeaPOs)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
 	fmt.Println(" - ready for action")                        
 	return shim.Success(nil)
 }
@@ -280,6 +318,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return pushIotDetailsToLogisticTransaction(stub, args)
 	} else if function == "getUniqueId" {
 		return getUniqueId(stub, args[0], args[1])
+	} else if function == "getAllIkeaPOs" {
+		return getAllIkeaPOs(stub, args[0], args[1])
 	}
 	
 	// error out

@@ -107,9 +107,9 @@ func saveAbattoirDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	var err error
 	fmt.Println("Running saveAbattoirDispatch..")
 
-	if len(args) != 19 {
-		fmt.Println("Incorrect number of arguments. Expecting 19 - AbattoirId..")
-		return shim.Error("Incorrect number of arguments. Expecting 19")
+	if len(args) != 20 {
+		fmt.Println("Incorrect number of arguments. Expecting 20 - AbattoirId..")
+		return shim.Error("Incorrect number of arguments. Expecting 20")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]+","+args[13]+","+args[14]);
@@ -148,7 +148,8 @@ func saveAbattoirDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.R
 	bt.Quantity					= args[15]
 	bt.QuantityUnit				= args[16]
 	bt.UpdatedBy					= args[17]	
-	bt.UpdatedOn					= args[18]	
+	bt.UpdatedOn					= args[18]
+	bt.ProcessorId					= args[19]	
 	//Commit Inward entry to ledger
 	fmt.Println("saveAbattoirDispatch - Commit AbattoirDispatch To Ledger");
 	btAsBytes, _ := json.Marshal(bt)

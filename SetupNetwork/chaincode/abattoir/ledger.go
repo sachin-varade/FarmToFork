@@ -65,10 +65,21 @@ type FarmersCertificate struct {
 	Hash			string	`json:"hash"`
 }
 
+type ProcessorPOs struct {
+	SalesOrder		string	`json:"salesOrder"`
+	PurchaseOrderReferenceNumber		string	`json:"purchaseOrderReferenceNumber"`
+	ProcessorId		string	`json:"processorId"`
+}
+
+type AllProcessorPOs struct{
+	ProcessorPOs []ProcessorPOs `json:"processorPOs"`
+}
+
 type AbattoirDispatch struct {
 	AbattoirId				string	`json:"abattoirId"`
 	ConsignmentNumber		string	`json:"consignmentNumber"`
 	PurchaseOrderReferenceNumber		string	`json:"purchaseOrderReferenceNumber"`
+	ProcessorId		string	`json:"processorId"`
 	ReceiptBatchId				string	`json:"receiptBatchId"`
 	DispatchDate				string	`json:"dispatchDate"`
 	LogisticId				string	`json:"logisticId"`
@@ -196,6 +207,55 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
+	var allProcessorPOs AllProcessorPOs
+	var processorPOs ProcessorPOs
+	processorPOs.SalesOrder = "SOBF001";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF001";
+	processorPOs.ProcessorId = "1";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);
+	processorPOs.SalesOrder = "SOBF002";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF002";
+	processorPOs.ProcessorId = "1";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);
+	processorPOs.SalesOrder = "SOBF003";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF003";
+	processorPOs.ProcessorId = "1";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);
+	processorPOs.SalesOrder = "SOBF004";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF004";
+	processorPOs.ProcessorId = "1";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);
+	processorPOs.SalesOrder = "SOBF005";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF005";
+	processorPOs.ProcessorId = "1";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);
+	processorPOs.SalesOrder = "SOBF006";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF006";
+	processorPOs.ProcessorId = "2";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);
+	processorPOs.SalesOrder = "SOBF007";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF007";
+	processorPOs.ProcessorId = "2";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);
+	processorPOs.SalesOrder = "SOBF008";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF008";
+	processorPOs.ProcessorId = "2";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);
+	processorPOs.SalesOrder = "SOBF009";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF009";
+	processorPOs.ProcessorId = "2";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);
+	processorPOs.SalesOrder = "SOBF0010";
+	processorPOs.PurchaseOrderReferenceNumber = "POBF0010";
+	processorPOs.ProcessorId = "2";
+	allProcessorPOs.ProcessorPOs = append(allProcessorPOs.ProcessorPOs,processorPOs);	
+
+	jsonAsBytesallProcessorPOs, _ := json.Marshal(allProcessorPOs)
+	err = stub.PutState("allProcessorPOs", jsonAsBytesallProcessorPOs)
+	if err != nil {		
+		return shim.Error(err.Error())
+	}
+
 	fmt.Println(" - ready for action")                        
 	return shim.Success(nil)
 }
@@ -229,6 +289,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return pushIotDetailsToLogisticTransaction(stub, args)
 	} else if function == "getUniqueId" {
 		return getUniqueId(stub, args[0], args[1])
+	} else if function == "getAllProcessorPOs" {
+		return getAllProcessorPOs(stub, args[0], args[1])
 	}
 	
 	// error out

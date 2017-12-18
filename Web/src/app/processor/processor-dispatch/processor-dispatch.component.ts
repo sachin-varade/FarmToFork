@@ -25,6 +25,8 @@ export class ProcessorDispatchComponent implements OnInit {
   packagingDateTime: any;
   usedByDateTime: any;
   dispatchDateTime: any;
+  allIkeaPOs: any;
+  ikeaStores: any;
   constructor(private user: UserService,
     private logisticService: LogisticService,
     private processorService: ProcessorService,
@@ -41,7 +43,12 @@ export class ProcessorDispatchComponent implements OnInit {
     .then((results: any) => {
       this.processorDispatch.consignmentNumber = results;
     });  
-    this.qualityControlDocuments = JSON.parse(JSON.stringify(this.commonData.qualityControlDocuments));    
+    this.qualityControlDocuments = JSON.parse(JSON.stringify(this.commonData.qualityControlDocuments));  
+    this.processorService.getAllIkeaPOs('details')
+    .then((results: any) => {
+      this.allIkeaPOs = results.ikeaPOs;
+    });  
+    this.ikeaStores = this.userData.users.ikeas.filter(function(o){return o.subRole === 'store'});
   }
 
   ngOnInit() {
@@ -150,6 +157,19 @@ export class ProcessorDispatchComponent implements OnInit {
   }
 
   setDefaultValues(){
+    var poFound = false;
+    this.allIkeaPOs.forEach(element => {
+      if(element.ikeaPurchaseOrderNumber === this.processorDispatch.ikeaPurchaseOrderNumber){
+        poFound = true;
+        this.processorDispatch.ikeaId = element.ikeaId;
+      }
+    });
+    if(!poFound){
+      this.alertService.error("Purchase order not found, Please use Ikea Purchase Order starting from POIK001.");
+      this.processorDispatch.ikeaPurchaseOrderNumber = "";
+      return false;
+    }
+
     if(this.processingTransactionList && this.processingTransactionList.length > 0){
       this.processorDispatch.processorBatchCode = this.processingTransactionList[this.processingTransactionList.length-1].processorBatchCode;
     }
@@ -162,7 +182,6 @@ export class ProcessorDispatchComponent implements OnInit {
     this.processorDispatch.quantity = 10;
     this.processorDispatch.quantityUnit = this.commonData.processingTransactionUnits[0];    
     //this.processorDispatch.storage = this.commonData.storage[0];   
-    this.processorDispatch.ikeaPurchaseOrderNumber = "IKPON001";
     this.getProductDetails();
   }
 }

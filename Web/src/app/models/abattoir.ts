@@ -41,6 +41,7 @@ export class AbattoirDispatch {
     abattoirId: number;    
     consignmentNumber: string;
     purchaseOrderReferenceNumber: string;
+    processorId: number;  
     receiptBatchId: string;
     livestockBatchId: string;
     dispatchDate: Date;

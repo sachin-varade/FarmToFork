@@ -199,13 +199,20 @@ func getAllProcessorDispatch(stub  shim.ChaincodeStubInterface, option string, v
 			allIds.ConsignmentNumbers = append(allIds.ConsignmentNumbers,sb.ConsignmentNumber);	
 		} else if strings.ToLower(option) == "details" {
 			allDetails.ProcessorDispatch = append(allDetails.ProcessorDispatch,sb);	
+		} else if strings.ToLower(option) == "po" {
+			c := strings.Split(value, "^")
+			fmt.Println("value is "+ c[0] +", should equal-"+ sb.IkeaPurchaseOrderNumber);
+			fmt.Println("value is "+ c[1] +", should equal-"+ sb.IkeaId);
+			if strings.ToLower(sb.IkeaPurchaseOrderNumber) == strings.ToLower(c[0]) && strings.ToLower(sb.IkeaId) == strings.ToLower(c[1]) {
+				allDetails.ProcessorDispatch = append(allDetails.ProcessorDispatch,sb);		
+			}
 		}
 	}
 
 	if strings.ToLower(option) == "ids" {
 		rabAsBytes, _ := json.Marshal(allIds)		
 		return shim.Success(rabAsBytes)	
-	} else if strings.ToLower(option) == "details" {
+	} else if strings.ToLower(option) == "details" || strings.ToLower(option) == "po" {
 		rabAsBytes, _ := json.Marshal(allDetails)
 		return shim.Success(rabAsBytes)	
 	}
@@ -405,5 +412,43 @@ func getUniqueId(stub  shim.ChaincodeStubInterface, option string, value string)
 		return shim.Success(rabAsBytes)	
 	}
 
+	return shim.Success(nil)
+}
+
+// ============================================================================================================================
+// Get All Abattoir Received
+// ============================================================================================================================
+func getAllIkeaPOs(stub  shim.ChaincodeStubInterface, option string, value string) pb.Response {
+	fmt.Println("getAllIkeaPOs:Looking for All Abattoir Received");
+
+	//get the AllAllIkeaPOs index
+	allBAsBytes, err := stub.GetState("allIkeaPOs")
+	if err != nil {
+		return shim.Error("Failed to get all Abattoir Received")
+	}
+
+	var res AllIkeaPOs
+	err = json.Unmarshal(allBAsBytes, &res)
+	//fmt.Println(allBAsBytes);
+	if err != nil {
+		fmt.Println("Printing Unmarshal error:-");
+		fmt.Println(err);
+		return shim.Error("Failed to Unmarshal all processor POs")
+	}
+	var allIkeaPOs AllIkeaPOs
+	if strings.ToLower(option) == "po" || strings.ToLower(option) == "so" {
+		for i := range res.IkeaPOs{
+			if strings.ToLower(option) == "po" && strings.ToLower(res.IkeaPOs[i].IkeaPurchaseOrderNumber) == strings.ToLower(value) {
+				allIkeaPOs.IkeaPOs = append(allIkeaPOs.IkeaPOs,res.IkeaPOs[i]);	
+			} else if strings.ToLower(option) == "so" && strings.ToLower(res.IkeaPOs[i].SalesOrder) == strings.ToLower(value) {
+				allIkeaPOs.IkeaPOs = append(allIkeaPOs.IkeaPOs,res.IkeaPOs[i]);	
+			}		
+		}
+		rabAsBytes, _ := json.Marshal(allIkeaPOs)
+		return shim.Success(rabAsBytes)	
+	} else if strings.ToLower(option) == "details" {
+		rabAsBytes, _ := json.Marshal(res)		
+		return shim.Success(rabAsBytes)		
+	}
 	return shim.Success(nil)
 }

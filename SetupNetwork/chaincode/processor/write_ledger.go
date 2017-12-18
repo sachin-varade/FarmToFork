@@ -186,9 +186,9 @@ func saveProcessorDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.
 	var err error
 	fmt.Println("Running saveProcessorDispatch..")
 
-	if len(args) != 18 {
-		fmt.Println("Incorrect number of arguments. Expecting 18..")
-		return shim.Error("Incorrect number of arguments. Expecting 18")
+	if len(args) != 19 {
+		fmt.Println("Incorrect number of arguments. Expecting 19..")
+		return shim.Error("Incorrect number of arguments. Expecting 19")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]+","+args[11]+","+args[12]);
@@ -225,6 +225,7 @@ func saveProcessorDispatch(stub  shim.ChaincodeStubInterface, args []string) pb.
 	bt.Storage							= args[15]
 	bt.UpdatedBy						= args[16]
 	bt.UpdatedOn						= args[17]
+	bt.IkeaId						= args[18]
 
 	var cert QualityControlDocument
 	

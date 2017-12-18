@@ -55,6 +55,16 @@ export class AbattoirService {
     });
   }
 
+  getAllProcessorPOs(option: string = "", value: string = ""): Promise<any> {
+    this.url = `${this.BASE_URL}/getAllProcessorPOs`;
+    return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()
+    .then((results: any) => {
+      return results;
+    }).catch((err) => {
+      this.alertService.error("Error occured...");
+    });
+  }
+
   getAllAbattoirDispatch(option: string, value: string = ""): Promise<any> {
     this.url = `${this.BASE_URL}/getAllAbattoirDispatch`;
     return this.http.get(this.url+"/"+ option +"/"+ value).toPromise()

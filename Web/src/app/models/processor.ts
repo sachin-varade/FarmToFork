@@ -73,4 +73,5 @@ export class ProcessorDispatch{
     storage: string;
     updatedOn: Date;
     updatedBy: string;  
+    ikeaId: number;
 }

@@ -117,12 +117,24 @@ export class ProcessorInwardComponent implements OnInit {
   }
 
   setDefaultValues(){
-    if(this.logisticTransactionList && this.logisticTransactionList.length > 0){
-      this.processorReceived.consignmentNumber = this.logisticTransactionList[this.logisticTransactionList.length-1].consignmentNumber;
-    }
-    
-    this.checkLogisticConsignment();
-    this.processorReceived.storage = this.commonData.storage[0];
-    //this.receivedDateTime = {hour: 10, minute: 15};
+    this.abattoirService.getAllAbattoirDispatch('po', this.processorReceived.purchaseOrderNumber +"^"+ this.currentUser.id)
+    .then((results: any) => {
+
+      if(results && results.abattoirMaterialDispatch && results.abattoirMaterialDispatch.length > 0){
+        if(this.logisticTransactionList && this.logisticTransactionList.length > 0){
+          this.processorReceived.consignmentNumber = this.logisticTransactionList[this.logisticTransactionList.length-1].consignmentNumber;
+        }
+        
+        this.checkLogisticConsignment();
+        this.processorReceived.storage = this.commonData.storage[0];
+        //this.receivedDateTime = {hour: 10, minute: 15};
+      }
+      else{
+        this.alertService.error("Purchase Order Number- "+ this.processorReceived.purchaseOrderNumber +" is not created by you. Please use another Purchase Order Number");
+        this.processorReceived.purchaseOrderNumber = "";
+        return false;
+      }
+      
+    }); 
   }
 }
