@@ -11,7 +11,7 @@
                 "id": 1, "name": "Node 1 - Node 2 - Källby"
             },
             {
-                "id": 1, "name": "Källby - Node 2 - Göteborg"
+                "id": 2, "name": "Källby - Node 2 - Göteborg"
             }
         ],
 "pickDropLocations": [

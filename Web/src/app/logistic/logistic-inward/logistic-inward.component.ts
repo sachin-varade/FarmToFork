@@ -192,7 +192,9 @@ export class LogisticInwardComponent implements OnInit {
   populateIOTData(){    
     this.iotData = new Array<any>();
     for(var i=0; i<5; i++){
-      var temp = Math.floor((Math.random() * Number(this.iotMaxTemp+10)) + Number(this.iotMinTemp-5));
+      //var temp = Math.floor((Math.random() * Number(this.iotMaxTemp+5)) + Number(this.iotMinTemp-5));
+      //var temp = Math.floor((Math.random() * Number(this.iotMinTemp-5)) + Number(this.iotMaxTemp+5));
+      var temp = Math.floor(Math.random() * ((this.iotMaxTemp+5) - (this.iotMinTemp-5) + 1) + (this.iotMinTemp-5));
       var date = this.randomDate(this.logisticTransaction.inTransitDateTime, this.logisticTransaction.actualDeliveryDateTime);      
       this.iotData.push({temp: temp, date: date});
     }
