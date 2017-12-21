@@ -66,10 +66,10 @@ export class IkeaInwardComponent implements OnInit {
         this.ikeaReceived.acceptanceCheckList.push(element)
       }
     });
-    this.ikeaReceived.receivedDate.setHours(this.receivedDateTime.hour);
-    this.ikeaReceived.receivedDate.setMinutes(this.receivedDateTime.minute);
-    this.ikeaReceived.usedByDate.setHours(this.usedByDateTime.hour);
-    this.ikeaReceived.usedByDate.setMinutes(this.usedByDateTime.minute);
+    this.ikeaReceived.receivedDate = new Date(new Date(this.ikeaReceived.receivedDate).setHours(this.receivedDateTime.hour));
+    this.ikeaReceived.receivedDate = new Date(new Date(this.ikeaReceived.receivedDate).setMinutes(this.receivedDateTime.minute));
+    this.ikeaReceived.usedByDate = new Date(new Date(this.ikeaReceived.usedByDate).setHours(this.usedByDateTime.hour));
+    this.ikeaReceived.usedByDate = new Date(new Date(this.ikeaReceived.usedByDate).setMinutes(this.usedByDateTime.minute));
     
     this.ikeaService.saveIkeaReceived(this.ikeaReceived)
     .then((results: any) => {

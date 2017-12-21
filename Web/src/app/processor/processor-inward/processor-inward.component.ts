@@ -63,7 +63,9 @@ export class ProcessorInwardComponent implements OnInit {
         this.processorReceived.acceptanceCheckList.push(element)
       }
     });
-    this.processorReceived.receivedDate.setHours(this.receivedDateTime.hour);
+    
+
+    this.processorReceived.receivedDate = new Date(new Date(this.processorReceived.receivedDate).setHours(this.receivedDateTime.hour));
     this.processorReceived.receivedDate.setMinutes(this.receivedDateTime.minute);
     this.processorService.saveProcessorReceived(this.processorReceived)
     .then((results: any) => {

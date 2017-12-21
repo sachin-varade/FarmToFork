@@ -96,12 +96,13 @@ export class ProcessorDispatchComponent implements OnInit {
     this.processorDispatch.updatedBy = this.currentUser.id;
     this.processorDispatch.updatedOn = new Date();
     this.processorDispatch.processorId = this.currentUser.id;
-    this.processorDispatch.packagingDate.setHours(this.packagingDateTime.hour);
-    this.processorDispatch.packagingDate.setMinutes(this.packagingDateTime.minute);
-    this.processorDispatch.usedByDate.setHours(this.usedByDateTime.hour);
-    this.processorDispatch.usedByDate.setMinutes(this.usedByDateTime.minute);
-    this.processorDispatch.dispatchDate.setHours(this.dispatchDateTime.hour);
-    this.processorDispatch.dispatchDate.setMinutes(this.dispatchDateTime.minute);
+    this.processorDispatch.packagingDate = new Date(new Date(this.processorDispatch.packagingDate).setHours(this.packagingDateTime.hour));
+    this.processorDispatch.packagingDate = new Date(new Date(this.processorDispatch.packagingDate).setMinutes(this.packagingDateTime.minute));
+    this.processorDispatch.usedByDate = new Date(new Date(this.processorDispatch.usedByDate).setHours(this.usedByDateTime.hour));
+    this.processorDispatch.usedByDate = new Date(new Date(this.processorDispatch.usedByDate).setMinutes(this.usedByDateTime.minute))
+
+    this.processorDispatch.dispatchDate = new Date(new Date(this.processorDispatch.dispatchDate).setHours(this.dispatchDateTime.hour));
+    this.processorDispatch.dispatchDate = new Date(new Date(this.processorDispatch.dispatchDate).setMinutes(this.dispatchDateTime.minute));
 
     var qualityControlDocumentsError = "";
     this.qualityControlDocuments.forEach(element => {

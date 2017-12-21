@@ -36,17 +36,17 @@
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.billDetails && productTracking.ikeaReceived && productTracking.ikeaDispatch">                
                   
-                  <li>
+                  <!-- <li>
                       <span class="label-text"><b>SWEDISH MEATBALLS</b></span>                      
-                  </li> 
+                  </li>  -->
                   <li>
-                      <span class="label-text">Item Prepared On:</span>
-                      <span class="value">{{productTracking.ikeaDispatch.dispatchDateTime | date : "short"}}</span>
-                    </li>
-                <li>
                     <span class="label-text">Sold At:</span>
                     <span class="value">{{productTracking.ikeaDispatch.soldAt}}</span>
                   </li>
+                  <li>
+                      <span class="label-text">Item Prepared On:</span>
+                      <span class="value">{{productTracking.ikeaDispatch.dispatchDateTime | date : "short"}}</span>
+                  </li>                
                 <li>
                   <span class="label-text">Bill Id:</span>
                   <span class="value">{{productTracking.BillNumber}}</span>
@@ -55,6 +55,11 @@
                   <span class="label-text">Bill Date:</span>
                   <span class="value">{{productTracking.billDetails.billDateTime}}</span>
                 </li>
+                <!-- <li>
+                  <span class="label-text">Safe Shipping:</span>
+                  <span [ngClass]="{alert: productTracking.ProcessorToIkeaTransportConsitionSatisfied == 'false', value: productTracking.ProcessorToIkeaTransportConsitionSatisfied == 'true'}">
+                    {{productTracking.ProcessorToIkeaTransportConsitionSatisfied == "true" ? "Yes" : "No"}}</span>
+                </li> -->
                 <!-- <li>
                   <span class="label-text">Batch Code:</span>
                   <span class="value">{{productTracking.IkeaReceivedNumber}}</span>
@@ -78,7 +83,7 @@
             </div>
           </div>
 
-          <div class="timeline-block">
+          <div class="timeline-block" style="display:none">
             <div class="title-pane">
               <h5>Transport</h5>
             </div>
@@ -127,9 +132,13 @@
             </div>
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.processorDispatch">
-                  <li>
+                  <!-- <li>
                       <span class="label-text"><b>MEATBALLS delivery</b></span>                      
-                  </li> 
+                  </li>  -->
+                <li>
+                    <span class="label-text">Meatball Manufacturer:</span>
+                    <span class="value">{{productTracking.ProcessorCompanyName}}</span>
+                </li>                  
                 <li>
                   <span class="label-text">Manufactured:</span>
                   <span class="value">{{productTracking.ProcessingDate | date : "short"}}</span>
@@ -142,19 +151,20 @@
                   <span class="label-text">Batch ID:</span>
                   <span class="value">{{productTracking.processorDispatch.processorBatchCode}}</span>
               </li> -->
+              <!-- <li>
+                <span class="label-text">Safe Shipping:</span>
+                <span class="value" *ngIf="productTracking.AbattoirToProcessorTransportConsitionSatisfied == 'true'">Yes</span>
+                <span class="alert" *ngIf="productTracking.AbattoirToProcessorTransportConsitionSatisfied != 'true'">No</span>
+              </li> -->
               <li *ngIf="currentUser && currentUser.name != ''">
                   <span class="label-text">DNA Test:</span>
                   <span class="value">{{productTracking.processorDispatch.qualityControlDocument && productTracking.processorDispatch.qualityControlDocument.length > 0 ? "OK" : "NO"}}</span>
-              </li>
-                <li>
-                    <span class="label-text">Meatball Manufacturer:</span>
-                    <span class="value">{{productTracking.ProcessorCompanyName}}</span>
-                </li>
+              </li>                
               </ul>
             </div>
           </div>
 
-          <div class="timeline-block">
+          <div class="timeline-block" style="display:none">
             <div class="title-pane">
               <h5>Transport</h5>
             </div>
@@ -203,9 +213,13 @@
             </div>
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.abattoirMaterialReceived && productTracking.abattoirMaterialDispatch">
-                  <li>
+                  <!-- <li>
                       <span class="label-text"><b>BEEF carcass</b></span>                      
-                  </li> 
+                  </li> -->
+                  <li>
+                    <span class="label-text">Abattoir Name:</span>
+                    <span class="value">{{productTracking.AbattoirName}}</span>
+                  </li>
                   <!-- <li *ngIf="currentUser && currentUser.name != ''">
                       <span class="label-text">Product GTIN:</span>
                       <span class="value">{{productTracking.abattoirMaterialDispatch.guidNumber}}</span>
@@ -225,11 +239,7 @@
                 <li>
                     <span class="label-text">Fat Cover Class:</span>
                     <span class="value">{{productTracking.abattoirMaterialDispatch.fatCoverClass}}</span>
-                </li>
-                <li>
-                  <span class="label-text">Abattoir:</span>
-                  <span class="value">{{productTracking.AbattoirName}}</span>
-                </li>
+                </li>                
                 <!-- <li>
                   <span class="label-text">Livestock Batch ID Ref.:</span>
                   <span class="value">{{productTracking.abattoirMaterialReceived.livestockBatchId}}</span>
@@ -244,28 +254,32 @@
 
           <div class="timeline-block">
               <div class="title-pane">
-                <h5>Angus</h5>
+                <h5>Feedlot</h5>
               </div>
               <div class="icon">
                 <img src="assets/images/angus-cow-icon.png">
               </div>
               <div class="info-pane">
                 <ul *ngIf="productTracking && productTracking.abattoirMaterialReceived">
+                    <!-- <li>
+                        <span class="label-text"><b>Feedlot</b></span>                      
+                    </li>  -->
                     <li>
-                        <span class="label-text"><b>ANGUS</b></span>                      
-                    </li> 
-                  <li>
+                      <span class="label-text">Feedlot Name:</span>
+                      <span class="value">{{productTracking.FarmerName}}</span>
+                    </li>
+                    <li>
+                      <span class="label-text">Material Name:</span>
+                      <span class="value">{{productTracking.abattoirMaterialReceived.materialName }}</span>
+                    </li>
+                    <li>
                       <span class="label-text">Class:</span>
                       <span class="value">{{productTracking.FarmerMaterialClass}}</span>
                   </li>
-                  <li>
-                    <span class="label-text">From:</span>
-                    <span class="value">{{productTracking.FarmerName}}</span>
-                  </li>
-                  <li>
+                  <!-- <li>
                     <span class="label-text">Traceability Batch Id:</span>
                     <span class="value">{{productTracking.ReceiptBatchId}}</span>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </div>

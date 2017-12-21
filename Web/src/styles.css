@@ -542,13 +542,26 @@
     }
     
     .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li .label-text{
-        font-size: 11px;
+        font-size: 12px;
         color: #000;
+        font-weight: bold;
+    }
+
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li .section-heading{
+        color: #ffcd08;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
     
     .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li .value{
-        font-size: 11px;
-        color: #999;
+        font-size: 12px;
+        color: #232f84;
+        padding-left: 1px;
+    }
+
+    .tracker-page-wrapper .tracker-wrap .timeline-wrapper .timeline-block .info-pane ul li .alert{
+        font-size: 12px;
+        color: #ff0000;
         padding-left: 1px;
     }
     
