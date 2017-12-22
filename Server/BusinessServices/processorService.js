@@ -59,7 +59,8 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     processorReceived.transitTime,
                     acceptanceCriteria,
                     processorReceived.updatedBy.toString(),
-                    processorReceived.updatedOn
+                    processorReceived.updatedOn,
+                    processorReceived.reasonForAcceptance ? processorReceived.reasonForAcceptance: ""
                 ]);                
         }).then((results) => {
             return results;

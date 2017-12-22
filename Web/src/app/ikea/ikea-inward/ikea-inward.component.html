@@ -63,7 +63,18 @@
           </table>
       </div>
 
-    
+      <div class="form-group">
+            <label for="reasonForAcceptance">
+                Reason for Acceptance
+                <span class="text-danger" *ngIf="logisticTransaction.iotTemperatureHistory && logisticTransaction.iotTemperatureHistory.length > 0">
+                    (is mandatory since there are descrepancies in temperature while transportation.)
+                </span>
+            </label>
+            <textarea [required]="logisticTransaction.iotTemperatureHistory && logisticTransaction.iotTemperatureHistory.length > 0" 
+                [(ngModel)]="ikeaReceived.reasonForAcceptance" class="form-control" name="reasonForAcceptance" ></textarea>
+        </div>
+            
+
 
       <!-- <div class="form-group">
       <label for="materialGrade">Material Grade</label>

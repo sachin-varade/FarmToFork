@@ -55,7 +55,8 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     ikeaReceived.storage,
                     acceptanceCriteria,                    
                     ikeaReceived.updatedOn,
-                    ikeaReceived.updatedBy.toString()
+                    ikeaReceived.updatedBy.toString(),
+                    ikeaReceived.reasonForAcceptance ? ikeaReceived.reasonForAcceptance: ""
                 ]);
         }).then((results) => {
             return results;
@@ -166,6 +167,7 @@ module.exports = function (fabric_client, channels, peers, eventHubPeers, ordere
                     ikeaConfig.channels.ikeachannel.chaincodeId, 
                     "saveIkeaBill",  
                     [
+                        ikeaBill.restaurantId.toString(),
                         ikeaBill.billNumber,
                         ikeaBill.billDateTime,
                         ikeaBill.ikeaFamily.toString(),

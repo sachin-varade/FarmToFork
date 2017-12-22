@@ -33,6 +33,9 @@ module.exports = function (abattoirService, logisticService, processorService, i
                 else{
                     productTrackingEntity.ikeaDispatch.soldFromDate = result.ikeaBillNumbers[0].billDateTime;
                     productTrackingEntity.ikeaDispatch.soldUntillDate =  result.ikeaBillNumbers[result.ikeaBillNumbers.length-1].billDateTime;
+                    if(result.ikeaBillNumbers[0].restaurantId){
+                        productTrackingEntity.soldAt = this.userData.users.ikeas.filter(function(o){return o.id.toString() == result.ikeaBillNumbers[0].restaurantId.toString()})[0].storeName;
+                    }                     
                 }
             
                 
@@ -175,6 +178,9 @@ module.exports = function (abattoirService, logisticService, processorService, i
             if(!result || (result && !result.ikeaBillNumbers) || (result && result.ikeaBillNumbers.length == 0 )){
                 return;
             }
+            if(result.ikeaBillNumbers[0].restaurantId){
+                productTrackingEntity.soldAt = this.userData.users.ikeas.filter(function(o){return o.id.toString() == result.ikeaBillNumbers[0].restaurantId.toString()})[0].storeName;
+            } 
             productTrackingEntity.billDetails = result.ikeaBillNumbers[0];
             var latestIkeaDispatchNumber = result.ikeaBillNumbers[0].ikeaDispatchNumber;
             // return ikeaService.getAllIkeaDispatch("details","")

@@ -57,6 +57,7 @@ type IkeaReceived struct {
 	AcceptanceCheckList					[]AcceptanceCriteria	`json:"acceptanceCheckList"`
 	UpdatedOn							string	`json:"updatedOn"`
 	UpdatedBy							string	`json:"updatedBy"`
+	ReasonForAcceptance			string	`json:"reasonForAcceptance"`	
 }
 
 type AcceptanceCriteria struct {
@@ -84,6 +85,7 @@ type IkeaDispatch struct {
 }
 
 type IkeaBill struct {
+	RestaurantId							string	`json:"restaurantId"`		
 	BillNumber							string	`json:"billNumber"`	
 	BillDateTime						string	`json:"billDateTime"`		
 	IkeaFamily							string	`json:"ikeaFamily"`

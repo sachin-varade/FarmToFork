@@ -33,9 +33,9 @@ func saveProcessorReceived(stub  shim.ChaincodeStubInterface, args []string) pb.
 	var err error
 	fmt.Println("Running saveProcessorReceived..")
 
-	if len(args) != 16 {
-		fmt.Println("Incorrect number of arguments. Expecting 16")
-		return shim.Error("Incorrect number of arguments. Expecting 16")
+	if len(args) != 17 {
+		fmt.Println("Incorrect number of arguments. Expecting 17")
+		return shim.Error("Incorrect number of arguments. Expecting 17")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]);
@@ -68,7 +68,7 @@ func saveProcessorReceived(stub  shim.ChaincodeStubInterface, args []string) pb.
 	bt.TransitTime						= args[12]
 	bt.UpdatedBy						= args[14]
 	bt.UpdatedOn						= args[15]
-
+	bt.ReasonForAcceptance						= args[16]
 	var acceptanceCriteria AcceptanceCriteria
 	
 	if args[13] != "" {

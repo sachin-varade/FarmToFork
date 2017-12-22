@@ -121,6 +121,7 @@
                 "id": 3,
                 "name": "IkeaRestaurant",
                 "displayName": "IKEA Göteborg Bäckebol-Restaurant",
+                "storeName": "IKEA Göteborg Bäckebol",
                 "role": "ikea",
                 "password": "123456",
                 "uniqueId": "I002",

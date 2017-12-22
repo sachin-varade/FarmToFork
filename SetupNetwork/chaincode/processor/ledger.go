@@ -57,6 +57,7 @@ type ProcessorReceived struct {
 	AcceptanceCheckList					[]AcceptanceCriteria	`json:"acceptanceCheckList"`
 	UpdatedOn			string	`json:"updatedOn"`
 	UpdatedBy			string	`json:"updatedBy"`
+	ReasonForAcceptance			string	`json:"reasonForAcceptance"`	
 }
 
 type AcceptanceCriteria struct {

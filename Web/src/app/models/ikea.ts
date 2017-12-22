@@ -15,7 +15,8 @@ export class IkeaReceived {
     storage: string;
     acceptanceCheckList: Array<AcceptanceCriteria>;
     updatedOn: Date;
-    updatedBy: string;    
+    updatedBy: string;  
+    reasonForAcceptance: string;  
 }
 
 export class AcceptanceCriteria {
@@ -42,6 +43,7 @@ export class IkeaDispatch{
 }
 
 export class IkeaBill{
+    restaurantId: number;
     billNumber: string;
     billDateTime: Date;
     ikeaFamily: boolean = false;

@@ -42,7 +42,7 @@
                     </li>
                   <li>
                     <span class="label-text">Sold At:</span>
-                    <span class="value">{{productTracking.ikeaDispatch.soldAt}}</span>
+                    <span class="value" *ngIf="productTracking.soldAt">{{productTracking.soldAt}}</span>
                   </li>
                   <li>
                       <span class="label-text">Sold From:</span>
@@ -53,7 +53,7 @@
                     <span class="value">{{productTracking.ikeaDispatch.soldUntillDate | date : "short"}}</span>
                   </li>
                   <li>
-                      <span class="section-heading"><b>PREPERATION</b></span>                      
+                      <span class="section-heading"><b>PREPARATION</b></span>                      
                   </li>
                   <!-- <li>
                       <span class="label-text">Prepared On:</span>
@@ -125,8 +125,48 @@
                   </li>
                   <li>
                       <span class="label-text">Handling Violations:</span>
-                      <span [ngClass]="{alert: productTracking.ProcessorToIkeaTransportConsitionSatisfied == 'false', value: productTracking.ProcessorToIkeaTransportConsitionSatisfied == 'true'}">
-                          {{productTracking.ProcessorToIkeaTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span>
+                      <span (click)="logisticType='P2I'; productTracking.ProcessorToIkeaTransportConsitionSatisfied == 'false' ? showDialog = !showDialog : logisticType='P2I';" role="button"                      
+                        [ngClass]="{'alert': productTracking.ProcessorToIkeaTransportConsitionSatisfied == 'false', value: productTracking.ProcessorToIkeaTransportConsitionSatisfied == 'true'}">
+                          {{productTracking.ProcessorToIkeaTransportConsitionSatisfied == "false" ? "Yes" : "No"}}
+                      </span>
+                          <app-dialog [(visible)]="showDialog">
+                              <h3 class="popup-title">Handling Violations</h3>
+                              <div class="form-group">
+                                <label *ngIf="logisticType=='P2I'">Consignment Number: {{productTracking.logisticP2ITransactions.consignmentNumber}}</label> 
+                                <label *ngIf="logisticType=='A2P'">Consignment Number: {{productTracking.logisticA2PTransactions.consignmentNumber}}</label> 
+                              </div>
+                              <table *ngIf="logisticType=='P2I' && productTracking.logisticP2ITransactions.iotTemperatureHistory && productTracking.logisticP2ITransactions.iotTemperatureHistory.length > 0" class="table table-striped">
+                                  <tr>
+                                      <th colspan="10">Discrepancies in Temperature</th>
+                                  </tr>
+                                  <tr>
+                                      <th>Temp</th>
+                                      <th>Location</th>
+                                      <th>Date/Time</th>
+                                  </tr>
+                                  <tr *ngFor="let item of productTracking.logisticP2ITransactions.iotTemperatureHistory; let i = index" [attr.data-index]="i">
+                                      <td>{{item.temperature}}</td>
+                                      <td>{{item.location}}</td>
+                                      <td>{{item.updatedOn | date : "short"}}</td>
+                                  </tr>               
+                               </table>
+
+                               <table *ngIf="logisticType=='A2P' && productTracking.logisticA2PTransactions.iotTemperatureHistory && productTracking.logisticA2PTransactions.iotTemperatureHistory.length > 0" class="table table-striped">
+                                  <tr>
+                                      <th colspan="10">Discrepancies in Temperature</th>
+                                  </tr>
+                                  <tr>
+                                      <th>Temp</th>
+                                      <th>Location</th>
+                                      <th>Date/Time</th>
+                                  </tr>
+                                  <tr *ngFor="let item of productTracking.logisticA2PTransactions.iotTemperatureHistory; let i = index" [attr.data-index]="i">
+                                      <td>{{item.temperature}}</td>
+                                      <td>{{item.location}}</td>
+                                      <td>{{item.updatedOn | date : "short"}}</td>
+                                  </tr>               
+                               </table>
+                          </app-dialog>
                   </li>
                 </ul>
               </div>
@@ -195,8 +235,9 @@
                   </li>
                   <li>
                       <span class="label-text">Handling Violations:</span>
-                      <span class="value">{{productTracking.AbattoirToProcessorTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span>
-                      <span [ngClass]="{alert: productTracking.AbattoirToProcessorTransportConsitionSatisfied == 'false', value: productTracking.AbattoirToProcessorTransportConsitionSatisfied == 'true'}">
+                      <!-- <span class="value">{{productTracking.AbattoirToProcessorTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span> -->
+                      <span (click)="logisticType='A2P'; productTracking.AbattoirToProcessorTransportConsitionSatisfied == 'false' ? showDialog = !showDialog : logisticType='A2P';" role="button"                      
+                      [ngClass]="{alert: productTracking.AbattoirToProcessorTransportConsitionSatisfied == 'false', value: productTracking.AbattoirToProcessorTransportConsitionSatisfied == 'true'}">
                           {{productTracking.AbattoirToProcessorTransportConsitionSatisfied == "false" ? "Yes" : "No"}}</span>
                   </li>
 
@@ -254,11 +295,11 @@
                 <div class="info-pane">
                   <ul *ngIf="productTracking && productTracking.abattoirMaterialReceived">
                     <li>
-                        <span class="label-text">Feedlot Name:</span>
+                        <span class="label-text">Feedlot:</span>
                         <span class="value">{{productTracking.FarmerName}}</span>
                     </li>
                     <li>
-                        <span class="label-text">Material Name:</span>
+                        <span class="label-text">Livestock:</span>
                         <span class="value">{{productTracking.abattoirMaterialReceived.materialName }}</span>
                     </li>
                     <li>
@@ -269,10 +310,10 @@
                         <span class="label-text">Livestock Batch ID:</span>
                         <span class="value">{{productTracking.abattoirMaterialReceived.livestockBatchId}}</span>
                     </li>
-                    <li>
+                    <!-- <li>
                       <span class="label-text">Traceability Batch Id:</span>
                       <span class="value">{{productTracking.ReceiptBatchId}}</span>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>

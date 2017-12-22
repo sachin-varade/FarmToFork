@@ -16,7 +16,8 @@ export class ProcessorReceived {
     storage: string;
     acceptanceCheckList: Array<AcceptanceCriteria>;
     updatedOn: Date;
-    updatedBy: string;    
+    updatedBy: string;  
+    reasonForAcceptance: string;      
 }
 
 export class AcceptanceCriteria {

@@ -13,6 +13,8 @@ import * as IkeaModels from '../../models/ikea';
   encapsulation: ViewEncapsulation.None
 })
 export class TrackComponent implements OnInit {
+  showDialog: boolean = false;
+  logisticType: string = "";
   currentUser: any;
   commonData: any;
   userData: any;

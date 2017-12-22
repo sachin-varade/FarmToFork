@@ -40,7 +40,8 @@ export class PosComponent implements OnInit {
   ngOnInit() {
   }
 
-  saveIkeaBill(myForm: NgForm){
+  saveIkeaBill(myForm: NgForm){    
+    this.ikeaBill.restaurantId = this.currentUser.id;
     this.ikeaService.saveIkeaBill(this.ikeaBill)
     .then((results: any) => {
       if(results[0].status.indexOf('SUCCESS') > -1){

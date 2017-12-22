@@ -33,9 +33,9 @@ func saveIkeaReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Respo
 	var err error
 	fmt.Println("Running saveIkeaReceived..")
 
-	if len(args) != 17 {
-		fmt.Println("Incorrect number of arguments. Expecting 17")
-		return shim.Error("Incorrect number of arguments. Expecting 17")
+	if len(args) != 18 {
+		fmt.Println("Incorrect number of arguments. Expecting 18")
+		return shim.Error("Incorrect number of arguments. Expecting 18")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]+","+args[7]+","+args[8]+","+args[9]+","+args[10]);
@@ -71,7 +71,8 @@ func saveIkeaReceived(stub  shim.ChaincodeStubInterface, args []string) pb.Respo
 	bt.Storage							= args[13]
 	bt.UpdatedBy						= args[15]
 	bt.UpdatedOn						= args[16]
-
+	bt.ReasonForAcceptance						= args[17]
+	
 	var acceptanceCriteria AcceptanceCriteria
 	
 	if args[14] != "" {
@@ -172,9 +173,9 @@ func saveIkeaBill(stub  shim.ChaincodeStubInterface, args []string) pb.Response 
 	var err error
 	fmt.Println("Running saveIkeaBill..")
 
-	if len(args) != 8 {
-		fmt.Println("Incorrect number of arguments. Expecting 8")
-		return shim.Error("Incorrect number of arguments. Expecting 8")
+	if len(args) != 9 {
+		fmt.Println("Incorrect number of arguments. Expecting 9")
+		return shim.Error("Incorrect number of arguments. Expecting 9")
 	}
 
 	fmt.Println("Arguments :"+args[0]+","+args[1]+","+args[2]+","+args[3]+","+args[4]+","+args[5]+","+args[6]);
@@ -187,19 +188,20 @@ func saveIkeaBill(stub  shim.ChaincodeStubInterface, args []string) pb.Response 
 	if err != nil {
 		return shim.Error("Failed to Unmarshal all Bills")
 	}
-	if checkDuplicateId(allb.IkeaBillNumbers, args[0]) == 0{
-		return shim.Error("Duplicate BillNumber - "+ args[0])
+	if checkDuplicateId(allb.IkeaBillNumbers, args[1]) == 0{
+		return shim.Error("Duplicate BillNumber - "+ args[1])
 	}
 
 	var bt IkeaBill
-	bt.BillNumber				= args[0]
-	bt.BillDateTime				= args[1]	
-	bt.IkeaFamily				= args[2]
-	bt.GUIDUniqueNumber			= args[3]
-	bt.MaterialName				= args[4]
-	bt.Quantity					= args[5]
-	bt.IkeaDispatchNumber		= args[6]
-	bt.Amount		= args[7]
+	bt.RestaurantId				= args[0]
+	bt.BillNumber				= args[1]
+	bt.BillDateTime				= args[2]	
+	bt.IkeaFamily				= args[3]
+	bt.GUIDUniqueNumber			= args[4]
+	bt.MaterialName				= args[5]
+	bt.Quantity					= args[6]
+	bt.IkeaDispatchNumber		= args[7]
+	bt.Amount		= args[8]
 
 	//Commit Inward entry to ledger
 	fmt.Println("saveIkeaBill - Commit Ikea Bill To Ledger");
