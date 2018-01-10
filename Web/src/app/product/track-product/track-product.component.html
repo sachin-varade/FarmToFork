@@ -1,6 +1,6 @@
 <div class="page-container">
   <div class="container">
-    <h1 class="title-main">Meatball Journey Tracker</h1>
+    <h1 class="title-main">Burger Journey Tracker</h1>
    
     <div class="tracker-page-wrapper clearfix">
         <img class="logo" src="assets/images/ikea-logo.png">
@@ -8,18 +8,18 @@
       </div>
       <div class="title-wrap">
           <div class="meatball-info">
-              <h1>Swedish Meatballs</h1>
-              <h5>with mashed potato, cream sauce and lingonberry jam</h5>
+              <h1>Burger</h1>
+              <h5>with Cheese and french fries</h5>
               <h6>The sauce contains milk and traces of gluten.</h6>
-              <h5>10 Meatballs:</h5>
+              <h5>1 Burger:</h5>
               <h1 class="price">€ 4.99</h1>
             </div>        
       </div>
       <div class="tracker-wrap">         
 
             <div class="bill-number">
-                <p><span class="label-text">Welcome to IKEA’s Farm-to-Fork tracer!</span></p>
-                <p><span class="label-text">Check the origin and learn more on what goes into bringing the delicious meatballs to you!
+                <p><span class="label-text">Welcome to TANGO’s Farm-to-Fork tracker!</span></p>
+                <p><span class="label-text">Check the origin and learn more on what goes into bringing the delicious burger to you!
                 Please enter you bill id OR date & time of purchase, to view the details.</span></p>
               <input class="form-control" type="text" [(ngModel)]="productTracking.BillNumber" placeholder="Enter Bill Number" name="BillNumber">
               <button type="submit" [disabled]="productTracking.BillNumber.length == 0" (click)="getProductTrackingDetails();" class="btn btn-normal">Track</button>
@@ -28,7 +28,7 @@
         <div class="timeline-wrapper">
           <div class="timeline-block">
             <div class="title-pane">
-              <h5>IKEA Restaurant</h5>
+              <h5>TANGO Restaurant</h5>
             </div>
             <div class="icon">
               <img src="assets/images/tracker-ikea-icon.png">
@@ -93,7 +93,7 @@
             <div class="info-pane">
               <ul *ngIf="productTracking && productTracking.logisticP2ITransactions">
                   <li>
-                      <span class="label-text"><b>MEATBALLS delivery</b></span>                      
+                      <span class="label-text"><b>Ground Meat delivery</b></span>                      
                   </li> 
                 <li>
                     <span class="label-text">Handling Violations:</span>
@@ -125,7 +125,7 @@
 
           <div class="timeline-block">
             <div class="title-pane">
-              <h5>Meatball Manufacturer</h5>
+              <h5>Ground Meat Manufacturer</h5>
             </div>
             <div class="icon">
               <img src="assets/images/tracker-process-icon.png">
@@ -136,7 +136,7 @@
                       <span class="label-text"><b>MEATBALLS delivery</b></span>                      
                   </li>  -->
                 <li>
-                    <span class="label-text">Meatball Manufacturer:</span>
+                    <span class="label-text">Ground Meat Manufacturer:</span>
                     <span class="value">{{productTracking.ProcessorCompanyName}}</span>
                 </li>                  
                 <li>

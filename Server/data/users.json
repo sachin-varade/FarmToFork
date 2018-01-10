@@ -4,7 +4,7 @@
             {
                 "id": "WAAB0119",
                 "name": "farmer1",
-                "displayName": "Princess Royal Feedlot",
+                "displayName": "AZ Feedlot",
                 "role": "farmer",
                 "password": "123456",
                 "uniqueId": "F001",
@@ -14,7 +14,7 @@
             {
                 "id": "WKFL0028",
                 "name": "farmer2",
-                "displayName": " Bundarra Farm Feedlot",
+                "displayName": " XY Feedlot",
                 "role": "farmer",
                 "password": "123456",
                 "uniqueId": "F002",
@@ -72,8 +72,8 @@
         "processors": [
             {
                 "id": 1,
-                "name": "DafgardSWE",
-                "displayName": "Gunnar Dafgård,SWE",
+                "name": "Meats&MoreSWE",
+                "displayName": "Meats and More,SWE",
                 "role": "processor",
                 "password": "123456",
                 "uniqueId": "P001",
@@ -83,8 +83,8 @@
             },
             {
                 "id": 2,
-                "name": "DafgardFN",
-                "displayName": "Gunnar Dafgård,FN",
+                "name": "Meats&MoreFN",
+                "displayName": "Meats & More,FN",
                 "role": "processor",
                 "password": "123456",
                 "uniqueId": "P002",
@@ -97,9 +97,9 @@
         "ikeas": [
             {
                 "id": 1,
-                "name": "IkeaStoreSwe",
-                "displayName": "IKEA Göteborg Bäckebol-Store-SWE",
-                "role": "ikea",
+                "name": "TangoWareHouseSWE",
+                "displayName": "Tango WareHouse, SWE",  
+                 "role": "tango",
                 "password": "123456",
                 "uniqueId": "I001",
                 "GUID-GTIN": "GUID-I001",
@@ -108,9 +108,9 @@
             },
             {
                 "id": 2,
-                "name": "IkeaStoreFN",
-                "displayName": "IKEA Store Espoo, Finland",
-                "role": "ikea",
+                "name": "TangoWareHouseFN",
+                "displayName": "Tango Warehouse, FN", 
+                "role": "tango",
                 "password": "123456",
                 "uniqueId": "I001",
                 "GUID-GTIN": "GUID-I001",
@@ -119,10 +119,10 @@
             },
             {
                 "id": 3,
-                "name": "IkeaRestaurant",
-                "displayName": "IKEA Göteborg Bäckebol-Restaurant",
-                "storeName": "IKEA Göteborg Bäckebol",
-                "role": "ikea",
+                "name": "TangoRestaurant",
+                "displayName":"Tango Restaurant",
+                "storeName": "Tango Restaurant",
+                "role": "tango",
                 "password": "123456",
                 "uniqueId": "I002",
                 "GUID-GTIN": "GUID-I002",

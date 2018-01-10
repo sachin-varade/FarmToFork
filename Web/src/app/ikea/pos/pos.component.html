@@ -8,8 +8,8 @@
               <h6 class="receipt-number">Bill No: {{ikeaBill.billNumber}}</h6>
               <div class="receipt">
                 <div class="top-heading">
-                  Welcome to IKEA POS Upgrade !<br>
-                  Ronnovsgatan 1, 252 25 Helsingborg
+                  Welcome to TANGO POS Upgrade !<br>
+                  <!-- Ronnovsgatan 1, 252 25 Helsingborg -->
                 </div>
                 <div class="info-text">
                   Open all week 10-20<br>
@@ -36,10 +36,10 @@
             </div>
             <div class="btn-area">
               <div class="float-left half-width">
-                <label class="checkbox-style">
-                  <input name="ikea-family" [(ngModel)]="ikeaBill.ikeaFamily" type="checkbox"/> IKEA FAMILY
+                <!-- <label class="checkbox-style">
+                  <input name="ikea-family" [(ngModel)]="ikeaBill.ikeaFamily" type="checkbox"/>TANGO FAMILY
                       <span class="checkmark"></span>
-                </label>
+                </label> -->
                 <div class="qr-code">                  
                   <ngx-qrcode [qrc-element-type]="img" [qrc-value] = "ikeaBill.billNumber"></ngx-qrcode>
                 </div>
@@ -59,7 +59,7 @@
                   <li>
                     <div (click)="addProduct();" class="menu-item red">
                       <span class="item-pic"><img src="assets/images/meatball-plate-icon.png"></span>
-                      <span class="item-name">Meatball Plate</span>
+                      <span class="item-name">Burger Plate</span>
                     </div>
                   </li>
                   <li>

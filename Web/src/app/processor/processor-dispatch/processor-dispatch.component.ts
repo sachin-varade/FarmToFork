@@ -166,7 +166,7 @@ export class ProcessorDispatchComponent implements OnInit {
       }
     });
     if(!poFound){
-      this.alertService.error("Purchase order not found, Please use Ikea Purchase Order starting from POIK001.");
+      this.alertService.error("Purchase order not found, Please use Purchase Order starting from POIK001.");
       this.processorDispatch.ikeaPurchaseOrderNumber = "";
       return false;
     }

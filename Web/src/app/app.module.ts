@@ -97,17 +97,17 @@ const appRoutes:Routes = [
     component: ProcessorDispatchComponent
   },
   {
-    path: 'ikea/inward',
+    path: 'tango/inward',
     canActivate: [AuthguardGuard],
     component: IkeaInwardComponent
   },
   {
-    path: 'ikea/outward',
+    path: 'tango/outward',
     canActivate: [AuthguardGuard],
     component: IkeaOutwardComponent
   },
   {
-    path: 'ikea/track',
+    path: 'tango/track',
     canActivate: [AuthguardGuard],
     component: TrackComponent
   },
@@ -122,7 +122,7 @@ const appRoutes:Routes = [
     component: BlockComponent
   },
   {
-    path: 'ikea/pos',
+    path: 'tango/pos',
     canActivate: [AuthguardGuard],
     component: PosComponent
   }

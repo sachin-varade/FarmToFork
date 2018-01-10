@@ -1,6 +1,6 @@
 <div class="page-container">
   <div class="container">
-    <h1 class="title-main">Meatball Manufacturer Dispatch</h1>
+    <h1 class="title-main">Ground Meat Manufacturer Dispatch</h1>
     <form #myForm="ngForm">
       <div class="col-lg-6 col-md-6 col-sm-12 left-pane"> 
         
@@ -10,21 +10,21 @@
         </div>
 
         <div class="form-group">
-          <label for="processorBatchCode">Meatball Batch ID</label>
+          <label for="processorBatchCode">Ground Meat Batch ID</label>
           <select class="form-control" [(ngModel)]="processorDispatch.processorBatchCode" name="processorBatchCode" required>        
             <option *ngFor="let rec of processingTransactionList" [value]="rec.processorBatchCode">{{rec.processorBatchCode}}</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="ikeaPurchaseOrderNumber">Ikea Purchase Order Number</label>
+          <label for="ikeaPurchaseOrderNumber">Tango Purchase Order Number</label>
           <input type="text" (change)="setDefaultValues();" placeholder="POIK001" class="form-control" [(ngModel)]="processorDispatch.ikeaPurchaseOrderNumber" name="ikeaPurchaseOrderNumber" required>
         </div>
 
         <div class="form-group">
-          <label>IKEA Store</label>
+          <label>Tango Store</label>
           <select class="form-control selectpicker" [(ngModel)]="processorDispatch.ikeaId" name="ikeaId" id="ikeaId" required>  
-              <option *ngFor="let item of ikeaStores" [value]="item.id">{{item.displayName +" (Ikea Store Id-"+ item.id +")"}}</option>      
+              <option *ngFor="let item of ikeaStores" [value]="item.id">{{item.displayName +" (Tango Store Id-"+ item.id +")"}}</option>      
           </select>
       </div>
 

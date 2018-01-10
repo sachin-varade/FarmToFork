@@ -36,13 +36,13 @@
               <li class="nav-item"><a class="nav-link" routerLink="processor/dispatch">Dispatch</a></li>
               <li class="nav-item"><a class="nav-link" routerLink="block/recent">Blocks</a></li>
           </ul>
-          <ul *ngIf="getUser().role == 'ikea'" class="nav navbar-nav" routerLinkActive="active">
-              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="ikea/inward">Receipt</a></li>
-              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="ikea/outward">Kitchen Checkout</a></li>
+          <ul *ngIf="getUser().role == 'tango'" class="nav navbar-nav" routerLinkActive="active">
+              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="tango/inward">Receipt</a></li>
+              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="tango/outward">Kitchen Checkout</a></li>
               
-              <li class="nav-item" *ngIf="getUser().subRole == 'restaurant'"><a class="nav-link" routerLink="ikea/pos">Sale</a></li>
+              <li class="nav-item" *ngIf="getUser().subRole == 'restaurant'"><a class="nav-link" routerLink="tango/pos">Sale</a></li>
               <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="block/recent">Blocks</a></li>
-              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="ikea/track">Track Farm-to-Fork</a></li>
+              <li class="nav-item" *ngIf="getUser().subRole == 'store'"><a class="nav-link" routerLink="tango/track">Track Farm-to-Fork</a></li>
               <li class="nav-item" *ngIf="getUser().subRole == 'restaurant'" ><a class="nav-link" routerLink="product/track">View Farm-to-Fork Journey</a></li>
           </ul>
           

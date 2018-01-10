@@ -61,31 +61,31 @@
                             { "id": 1, "code": "BF-ZS2", "name": "Beef Carcass"}                            
                         ],
 "processorInwardProducts": [
-                            { "id": 1, "code": "499900461", "name": "Meatballs frozen 1000g SE"},
-                            { "id": 2, "code": "499900462", "name": "Meatballs frozen 2000g SE"},
-                            { "id": 3, "code": "499900463", "name": "Meatballs frozen 3000g SE"},
-                            { "id": 4, "code": "499900464", "name": "Meatballs frozen 4000g SE"}
+                            { "id": 1, "code": "499900461", "name": "Ground Meat frozen 1000g SE"},
+                            { "id": 2, "code": "499900462", "name": "Ground Meat frozen 2000g SE"},
+                            { "id": 3, "code": "499900463", "name": "Ground Meat frozen 3000g SE"},
+                            { "id": 4, "code": "499900464", "name": "Ground Meat frozen 4000g SE"}
                         ],
 "processingTransactionProducts": [
-                            { "id": 1, "code": "599900461", "name": "Meatballs frozen 1000g SE"},
-                            { "id": 2, "code": "599900462", "name": "Meatballs frozen 2000g SE"},
-                            { "id": 3, "code": "599900463", "name": "Meatballs frozen 3000g SE"},
-                            { "id": 4, "code": "599900464", "name": "Meatballs frozen 4000g SE"}
+                            { "id": 1, "code": "599900461", "name": "Ground Meat frozen 1000g SE"},
+                            { "id": 2, "code": "599900462", "name": "Ground Meat frozen 2000g SE"},
+                            { "id": 3, "code": "599900463", "name": "Ground Meat frozen 3000g SE"},
+                            { "id": 4, "code": "599900464", "name": "Ground Meat frozen 4000g SE"}
                         ],
 "processorDispatchProducts": [
-                            { "id": 1, "code": "699900461", "name": "Meatballs frozen 1000g SE"},
-                            { "id": 2, "code": "699900462", "name": "Meatballs frozen 2000g SE"},
-                            { "id": 3, "code": "699900463", "name": "Meatballs frozen 3000g SE"},
-                            { "id": 4, "code": "699900464", "name": "Meatballs frozen 4000g SE"}
+                            { "id": 1, "code": "699900461", "name": "Ground Meat frozen 1000g SE"},
+                            { "id": 2, "code": "699900462", "name": "Ground Meat frozen 2000g SE"},
+                            { "id": 3, "code": "699900463", "name": "Ground Meat frozen 3000g SE"},
+                            { "id": 4, "code": "699900464", "name": "Ground Meat frozen 4000g SE"}
                         ],
 "ikeaInwardProducts": [
-                            { "id": 1, "code": "899900461", "name": "Meatballs frozen 1000g SE"},
-                            { "id": 2, "code": "899900462", "name": "Meatballs frozen 2000g SE"},
-                            { "id": 3, "code": "899900463", "name": "Meatballs frozen 3000g SE"},
-                            { "id": 4, "code": "899900464", "name": "Meatballs frozen 4000g SE"}
+                            { "id": 1, "code": "899900461", "name": "Ground Meat frozen 1000g SE"},
+                            { "id": 2, "code": "899900462", "name": "Ground Meat frozen 2000g SE"},
+                            { "id": 3, "code": "899900463", "name": "Ground Meat frozen 3000g SE"},
+                            { "id": 4, "code": "899900464", "name": "Ground Meat frozen 4000g SE"}
                         ],     
 "ikeaDispatchProducts": [
-                            { "id": 1, "code": "999900461", "name": "Meatballs frozen"}                            
+                            { "id": 1, "code": "999900461", "name": "Ground Meat frozen"}                            
                         ],                                              
 
 "processorAcceptanceCriteria": [

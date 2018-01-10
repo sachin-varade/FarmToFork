@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
   getDefaultRoute(){
     this.currentUser = this.user.getUserLoggedIn();
     if(this.currentUser && this.currentUser.role){
-      if(this.currentUser.role.toLowerCase() === 'ikea' && this.currentUser.subRole === 'restaurant'){
+      if(this.currentUser.role.toLowerCase() === 'tango' && this.currentUser.subRole === 'restaurant'){
         return this.currentUser.role +"/pos";
       }
       return this.currentUser.role +"/inward";

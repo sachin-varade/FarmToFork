@@ -386,6 +386,7 @@
         width: 100%;
         display: table;
         margin-top: 20px;
+        min-height: 600px;
     }
     
     .tracker-page-wrapper .logo{
